@@ -5,7 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -24,11 +27,34 @@ class MainActivity : ComponentActivity() {
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = "No Data")
+                            Row {
+                                CharacterCard("캐릭터1")
+                                CharacterCard("캐릭터2")
+                            }
+                            Row {
+                                CharacterCard("캐릭터3")
+                                CharacterCard("캐릭터4")
+                            }
+                            Row {
+                                CharacterCard("캐릭터5")
+                                CharacterCard("캐릭터6")
+                            }
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun CharacterCard(character: String){
+    Card {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = character)
         }
     }
 }
