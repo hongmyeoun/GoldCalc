@@ -48,7 +48,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             GoldCalcTheme {
-                MainScreen()
+//                MainScreen()
+                Setting()
             }
         }
     }
@@ -182,12 +183,151 @@ fun Setting() {
 
                 val valtan = twoPhaseBoss(name = "발탄", smn1 = 300, smn2 = 400, ncg1 = 500, ncg2 = 700, smh1 = 450, smh2 = 600, hcg1 = 700, hcg2 = 1100)
                 val biackiss = twoPhaseBoss(name = "비아키스", smn1 = 300, smn2 = 450, ncg1 = 600, ncg2 = 1000, smh1 = 500, smh2 = 650, hcg1 = 900, hcg2 = 1500)
+                val koukuSaton = threePhaseBoss(name = "쿠크세이튼", seeMoreGold = listOf(300, 500, 600, 300, 500, 600), clearGold = listOf(600, 900, 1500, 600, 900, 1500))
+                val abrelshud = fourPhaseBoss(name = "아브렐슈드", seeMoreGold = listOf(400, 600, 800, 1500, 700, 900, 1100, 1800), clearGold = listOf(1500, 1500, 1500, 2500, 2000, 2000, 2000, 3000))
+                val illiakan = threePhaseBoss(name = "일리아칸", seeMoreGold = listOf(900, 1100, 1500, 1200, 1400, 1900), clearGold = listOf(1500, 2000, 4000, 1750, 2500, 5750))
+                val kamen = fourPhaseBoss(name = "카멘", seeMoreGold = listOf(1500, 1800, 2500, 0, 2000, 2400, 2800, 3600), clearGold = listOf(3500, 4000, 5500, 0, 5000, 6000, 9000, 21000))
 
-                totalGold = valtan + biackiss
+                totalGold = valtan + biackiss + koukuSaton + abrelshud + illiakan + kamen
             }
         }
+        item {
+            var expanded by remember { mutableStateOf(false) }
+            var totalGold by remember { mutableStateOf(0) }
+            val height = if(expanded) Modifier.wrapContentHeight() else Modifier.height(80.dp)
+
+            Card(
+                modifier = Modifier
+                    .animateContentSize()
+                    .then(height)
+                    .fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        modifier = Modifier.weight(0.5f),
+                        imageVector = Icons.Default.AccountBox,
+                        contentDescription = "어비스던전 이미지"
+                    )
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = "어비스던전"
+                    )
+                    Row(
+                        modifier = Modifier.weight(1f),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "$totalGold")
+                    }
+                    IconButton(
+                        modifier = Modifier.weight(0.5f),
+                        onClick = { expanded = !expanded },
+                        interactionSource = remember { MutableInteractionSource() },
+                    ) {
+                        Icon(
+                            imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                            contentDescription = "펼치기"
+                        )
+                    }
+                }
+
+                val kayangel = threePhaseBoss(name = "카양겔", seeMoreGold = listOf(600, 800, 1000, 700, 900, 1100), clearGold = listOf(1000, 1500, 2000, 1500, 2000, 3000))
+                val ivoryTower = fourPhaseBoss(name = "상아탑", seeMoreGold = listOf(700, 800, 900, 1100, 1000, 1000, 1500, 2000), clearGold = listOf(1500, 1750, 2500, 3250, 2000, 2500, 4000, 6000))
+
+                totalGold = kayangel + ivoryTower
+            }
+        }
+
     }
 }
+
+@Composable
+fun fourPhaseBoss(
+    name: String,
+    seeMoreGold: List<Int>,
+    clearGold: List<Int>
+): Int {
+    var totalGold by remember { mutableStateOf(0) }
+
+    Column(
+        modifier = Modifier.padding(16.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "보스 이미지")
+            Text(
+                modifier = Modifier.weight(3f),
+                text = name
+            )
+            Row(
+                modifier = Modifier.weight(1f),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = "$totalGold")
+            }
+        }
+        val (cg1, smg1) = phase(gate = "1 관문", seeMoreGoldN = seeMoreGold[0], seeMoreGoldH = seeMoreGold[4], clearGoldN = clearGold[0], clearGoldH = clearGold[4])
+        val (cg2, smg2) = phase(gate = "2 관문", seeMoreGoldN = seeMoreGold[1], seeMoreGoldH = seeMoreGold[5], clearGoldN = clearGold[1], clearGoldH = clearGold[5])
+        val (cg3, smg3) = phase(gate = "3 관문", seeMoreGoldN = seeMoreGold[2], seeMoreGoldH = seeMoreGold[6], clearGoldN = clearGold[2], clearGoldH = clearGold[6])
+        val (cg4, smg4) = phase(gate = "4 관문", seeMoreGoldN = seeMoreGold[3], seeMoreGoldH = seeMoreGold[7], clearGoldN = clearGold[3], clearGoldH = clearGold[7])
+
+        totalGold = cg1 + cg2 + cg3 + cg4 - smg1 - smg2 - smg3 - smg4
+    }
+
+    return totalGold
+}
+
+@Composable
+fun threePhaseBoss(
+    name: String,
+    seeMoreGold: List<Int>,
+    clearGold: List<Int>
+): Int {
+    var totalGold by remember { mutableStateOf(0) }
+
+    Column(
+        modifier = Modifier.padding(16.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "보스 이미지")
+            Text(
+                modifier = Modifier.weight(3f),
+                text = name
+            )
+            Row(
+                modifier = Modifier.weight(1f),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = "$totalGold")
+            }
+        }
+        val (cg1, smg1) = phase(gate = "1 관문", seeMoreGoldN = seeMoreGold[0], seeMoreGoldH = seeMoreGold[3], clearGoldN = clearGold[0], clearGoldH = clearGold[3])
+        val (cg2, smg2) = phase(gate = "2 관문", seeMoreGoldN = seeMoreGold[1], seeMoreGoldH = seeMoreGold[4], clearGoldN = clearGold[1], clearGoldH = clearGold[4])
+        val (cg3, smg3) = phase(gate = "3 관문", seeMoreGoldN = seeMoreGold[2], seeMoreGoldH = seeMoreGold[5], clearGoldN = clearGold[2], clearGoldH = clearGold[5])
+
+        totalGold = cg1 + cg2 + cg3 - smg1 - smg2 - smg3
+    }
+
+    return totalGold
+}
+
 
 @Composable
 fun twoPhaseBoss(
