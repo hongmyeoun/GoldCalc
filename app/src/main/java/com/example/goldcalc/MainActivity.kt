@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
@@ -27,6 +27,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -134,19 +135,15 @@ fun Character() {
 fun Setting() {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
-            var expanded by remember { mutableStateOf(true) }
+            var expanded by remember { mutableStateOf(false) }
             var totalGold by remember { mutableStateOf(0) }
+            val height = if(expanded) Modifier.wrapContentHeight() else Modifier.height(80.dp)
+
             Card(
                 modifier = Modifier
                     .animateContentSize()
-                    .height(if (expanded) 800.dp else 50.dp)
+                    .then(height)
                     .fillMaxWidth()
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null
-                    ) {
-                        expanded = !expanded
-                    }
             ) {
                 Row(
                     modifier = Modifier
@@ -171,18 +168,22 @@ fun Setting() {
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(text = "$totalGold")
                     }
-                    Icon(
+                    IconButton(
                         modifier = Modifier.weight(0.5f),
-                        imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                        contentDescription = "펼치기"
-                    )
+                        onClick = { expanded = !expanded },
+                        interactionSource = remember { MutableInteractionSource() },
+                    ) {
+                        Icon(
+                            imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                            contentDescription = "펼치기"
+                        )
+                    }
                 }
-                if (expanded) {
-                    val valtan = twoPhaseBoss(name = "발탄", smn1 = 300, smn2 = 400, ncg1 = 500, ncg2 = 700, smh1 = 450, smh2 = 600, hcg1 = 700, hcg2 = 1100)
-                    val biackiss = twoPhaseBoss(name = "비아키스", smn1 = 300, smn2 = 450, ncg1 = 600, ncg2 = 1000, smh1 = 500, smh2 = 650, hcg1 = 900, hcg2 = 1500)
 
-                    totalGold = valtan + biackiss
-                }
+                val valtan = twoPhaseBoss(name = "발탄", smn1 = 300, smn2 = 400, ncg1 = 500, ncg2 = 700, smh1 = 450, smh2 = 600, hcg1 = 700, hcg2 = 1100)
+                val biackiss = twoPhaseBoss(name = "비아키스", smn1 = 300, smn2 = 450, ncg1 = 600, ncg2 = 1000, smh1 = 500, smh2 = 650, hcg1 = 900, hcg2 = 1500)
+
+                totalGold = valtan + biackiss
             }
         }
     }
