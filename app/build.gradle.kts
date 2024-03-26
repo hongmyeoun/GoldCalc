@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.goldcalc"
+    namespace = "com.hongmyeoun.goldcalc"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.goldcalc"
+        applicationId = "com.hongmyeoun.goldcalc"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

@@ -1,4 +1,4 @@
-package com.example.goldcalc
+package com.hongmyeoun.goldcalc
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -41,7 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.goldcalc.ui.theme.GoldCalcTheme
+import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package com.example.goldcalc
+package com.hongmyeoun.goldcalc
 
 import org.junit.Test
 

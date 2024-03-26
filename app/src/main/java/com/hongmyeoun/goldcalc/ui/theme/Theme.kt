@@ -1,4 +1,4 @@
-package com.example.goldcalc.ui.theme
+package com.hongmyeoun.goldcalc.ui.theme
 
 import android.app.Activity
 import android.os.Build
