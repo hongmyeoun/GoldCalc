@@ -181,8 +181,8 @@ fun Setting() {
                     }
                 }
 
-                val valtan = twoPhaseBoss(name = "발탄", smn1 = 300, smn2 = 400, ncg1 = 500, ncg2 = 700, smh1 = 450, smh2 = 600, hcg1 = 700, hcg2 = 1100)
-                val biackiss = twoPhaseBoss(name = "비아키스", smn1 = 300, smn2 = 450, ncg1 = 600, ncg2 = 1000, smh1 = 500, smh2 = 650, hcg1 = 900, hcg2 = 1500)
+                val valtan = twoPhaseBoss(name = "발탄", seeMoreGold = listOf(300, 400, 450, 600), clearGold = listOf(500, 700, 700,1100))
+                val biackiss = twoPhaseBoss(name = "비아키스", seeMoreGold = listOf(300, 450, 500, 650), clearGold = listOf(600, 1000, 900, 1500))
                 val koukuSaton = threePhaseBoss(name = "쿠크세이튼", seeMoreGold = listOf(300, 500, 600, 300, 500, 600), clearGold = listOf(600, 900, 1500, 600, 900, 1500))
                 val abrelshud = fourPhaseBoss(name = "아브렐슈드", seeMoreGold = listOf(400, 600, 800, 1500, 700, 900, 1100, 1800), clearGold = listOf(1500, 1500, 1500, 2500, 2000, 2000, 2000, 3000))
                 val illiakan = threePhaseBoss(name = "일리아칸", seeMoreGold = listOf(900, 1100, 1500, 1200, 1400, 1900), clearGold = listOf(1500, 2000, 4000, 1750, 2500, 5750))
@@ -332,14 +332,8 @@ fun threePhaseBoss(
 @Composable
 fun twoPhaseBoss(
     name: String,
-    smn1: Int,
-    smn2: Int,
-    ncg1: Int,
-    ncg2: Int,
-    smh1: Int,
-    smh2: Int,
-    hcg1: Int,
-    hcg2: Int
+    seeMoreGold: List<Int>,
+    clearGold: List<Int>
 ): Int {
     var totalGold by remember { mutableStateOf(0) }
 
@@ -365,8 +359,8 @@ fun twoPhaseBoss(
                 Text(text = "$totalGold")
             }
         }
-        val (cg1, smg1) = phase(gate = "1 관문", seeMoreGoldN = smn1, seeMoreGoldH = smh1, clearGoldN = ncg1, clearGoldH = hcg1)
-        val (cg2, smg2) = phase(gate = "2 관문", seeMoreGoldN = smn2, seeMoreGoldH = smh2, clearGoldN = ncg2, clearGoldH = hcg2)
+        val (cg1, smg1) = phase(gate = "1 관문", seeMoreGoldN = seeMoreGold[0], seeMoreGoldH = seeMoreGold[2], clearGoldN = clearGold[0], clearGoldH = clearGold[2])
+        val (cg2, smg2) = phase(gate = "2 관문", seeMoreGoldN = seeMoreGold[1], seeMoreGoldH = seeMoreGold[3], clearGoldN = clearGold[1], clearGoldH = clearGold[3])
 
         totalGold = cg1 + cg2 - smg1 - smg2
     }
