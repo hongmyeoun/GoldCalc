@@ -25,7 +25,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
@@ -44,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
+import com.hongmyeoun.goldcalc.viewModel.AbyssDungeonVM
 import com.hongmyeoun.goldcalc.viewModel.CommandBossVM
 
 class MainActivity : ComponentActivity() {
@@ -137,11 +137,12 @@ fun Character() {
 
 @Composable
 fun Setting() {
-    val viewModel = CommandBossVM()
+    val cbVM = CommandBossVM()
+    val adVM = AbyssDungeonVM()
 
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+    LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         item {
-            val height = if (viewModel.expanded) Modifier.wrapContentHeight() else Modifier.height(80.dp)
+            val height = if (cbVM.expanded) Modifier.wrapContentHeight() else Modifier.height(80.dp)
 
             Card(
                 modifier = Modifier
@@ -170,115 +171,113 @@ fun Setting() {
                     ) {
                         Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "${viewModel.totalGold}")
+                        Text(text = "${cbVM.totalGold}")
                     }
                     IconButton(
                         modifier = Modifier.weight(0.5f),
-                        onClick = { viewModel.expand() },
+                        onClick = { cbVM.expand() },
                         interactionSource = remember { MutableInteractionSource() },
                     ) {
                         Icon(
-                            imageVector = if (viewModel.expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                            imageVector = if (cbVM.expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
                             contentDescription = "펼치기"
                         )
                     }
                 }
 
                 val valtan = twoPhaseBoss(
-                    name = "발탄",
-                    seeMoreGold = listOf(300, 400, 450, 600),
-                    clearGold = listOf(500, 700, 700, 1100)
+                    name = cbVM.valtan,
+                    seeMoreGold = cbVM.valtanSMG,
+                    clearGold = cbVM.valtanCG
                 )
                 val biackiss = twoPhaseBoss(
-                    name = "비아키스",
-                    seeMoreGold = listOf(300, 450, 500, 650),
-                    clearGold = listOf(600, 1000, 900, 1500)
+                    name = cbVM.bi,
+                    seeMoreGold = cbVM.biSMG,
+                    clearGold = cbVM.biCG
                 )
                 val koukuSaton = threePhaseBoss(
-                    name = "쿠크세이튼",
-                    seeMoreGold = listOf(300, 500, 600, 300, 500, 600),
-                    clearGold = listOf(600, 900, 1500, 600, 900, 1500)
+                    name = cbVM.kuku,
+                    seeMoreGold = cbVM.kukuSMG,
+                    clearGold = cbVM.kukuCG
                 )
                 val abrelshud = fourPhaseBoss(
-                    name = "아브렐슈드",
-                    seeMoreGold = listOf(400, 600, 800, 1500, 700, 900, 1100, 1800),
-                    clearGold = listOf(1500, 1500, 1500, 2500, 2000, 2000, 2000, 3000)
+                    name = cbVM.abrel,
+                    seeMoreGold = cbVM.abrelSMG,
+                    clearGold = cbVM.abrelCG
                 )
                 val illiakan = threePhaseBoss(
-                    name = "일리아칸",
-                    seeMoreGold = listOf(900, 1100, 1500, 1200, 1400, 1900),
-                    clearGold = listOf(1500, 2000, 4000, 1750, 2500, 5750)
+                    name = cbVM.illi,
+                    seeMoreGold = cbVM.illiSMG,
+                    clearGold = cbVM.illiCG
                 )
                 val kamen = fourPhaseBoss(
-                    name = "카멘",
-                    seeMoreGold = listOf(1500, 1800, 2500, 0, 2000, 2400, 2800, 3600),
-                    clearGold = listOf(3500, 4000, 5500, 0, 5000, 6000, 9000, 21000)
+                    name = cbVM.kamen,
+                    seeMoreGold = cbVM.kamenSMG,
+                    clearGold = cbVM.kamenCG
                 )
 
-                viewModel.sumGold(valtan, biackiss, koukuSaton, abrelshud, illiakan, kamen)
+                cbVM.sumGold(valtan, biackiss, koukuSaton, abrelshud, illiakan, kamen)
 
             }
         }
-//        item {
-//            var expanded by remember { mutableStateOf(false) }
-//            var totalGold by remember { mutableStateOf(0) }
-//            val height = if (expanded) Modifier.wrapContentHeight() else Modifier.height(80.dp)
-//
-//            Card(
-//                modifier = Modifier
-//                    .animateContentSize()
-//                    .then(height)
-//                    .fillMaxWidth()
-//            ) {
-//                Row(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(vertical = 16.dp),
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//                    Icon(
-//                        modifier = Modifier.weight(0.5f),
-//                        imageVector = Icons.Default.AccountBox,
-//                        contentDescription = "어비스던전 이미지"
-//                    )
-//                    Text(
-//                        modifier = Modifier.weight(1f),
-//                        text = "어비스던전"
-//                    )
-//                    Row(
-//                        modifier = Modifier.weight(1f),
-//                        horizontalArrangement = Arrangement.End
-//                    ) {
-//                        Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
-//                        Spacer(modifier = Modifier.width(8.dp))
-//                        Text(text = "$totalGold")
-//                    }
-//                    IconButton(
-//                        modifier = Modifier.weight(0.5f),
-//                        onClick = { expanded = !expanded },
-//                        interactionSource = remember { MutableInteractionSource() },
-//                    ) {
-//                        Icon(
-//                            imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-//                            contentDescription = "펼치기"
-//                        )
-//                    }
-//                }
-//
-//                val kayangel = threePhaseBoss(
-//                    name = "카양겔",
-//                    seeMoreGold = listOf(600, 800, 1000, 700, 900, 1100),
-//                    clearGold = listOf(1000, 1500, 2000, 1500, 2000, 3000)
-//                )
-//                val ivoryTower = fourPhaseBoss(
-//                    name = "상아탑",
-//                    seeMoreGold = listOf(700, 800, 900, 1100, 1000, 1000, 1500, 2000),
-//                    clearGold = listOf(1500, 1750, 2500, 3250, 2000, 2500, 4000, 6000)
-//                )
-//
-//                totalGold = kayangel + ivoryTower
-//            }
-//        }
+        item {
+            val height = if (adVM.expanded) Modifier.wrapContentHeight() else Modifier.height(80.dp)
+
+            Card(
+                modifier = Modifier
+                    .animateContentSize()
+                    .then(height)
+                    .fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        modifier = Modifier.weight(0.5f),
+                        imageVector = Icons.Default.AccountBox,
+                        contentDescription = "어비스던전 이미지"
+                    )
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = "어비스던전"
+                    )
+                    Row(
+                        modifier = Modifier.weight(1f),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "${adVM.totalGold}")
+                    }
+                    IconButton(
+                        modifier = Modifier.weight(0.5f),
+                        onClick = { adVM.expand() },
+                        interactionSource = remember { MutableInteractionSource() },
+                    ) {
+                        Icon(
+                            imageVector = if (adVM.expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                            contentDescription = "펼치기"
+                        )
+                    }
+                }
+
+                val kayangel = threePhaseBoss(
+                    name = adVM.kayang,
+                    seeMoreGold = adVM.kayangSMG,
+                    clearGold = adVM.kayangCG
+                )
+                val ivoryTower = fourPhaseBoss(
+                    name = adVM.ivT,
+                    seeMoreGold = adVM.ivTSMG,
+                    clearGold = adVM.ivTCG
+                )
+
+                adVM.sumGold(kayangel, ivoryTower)
+            }
+        }
 //        item {
 //            var expanded by remember { mutableStateOf(false) }
 //            var totalGold by remember { mutableStateOf(0) }
@@ -384,6 +383,88 @@ fun Setting() {
 
 
     }
+}
+
+@Composable
+fun GoldSettingCard(viewModel: CommandBossVM){
+    val height = if (viewModel.expanded) Modifier.wrapContentHeight() else Modifier.height(80.dp)
+
+    Card(
+        modifier = Modifier
+            .animateContentSize(animationSpec = tween(durationMillis = 1500))
+            .then(height)
+            .fillMaxWidth()
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                modifier = Modifier.weight(0.5f),
+                imageVector = Icons.Default.AccountBox,
+                contentDescription = "군단장레이드 이미지"
+            )
+            Text(
+                modifier = Modifier.weight(1f),
+                text = "군단장"
+            )
+            Row(
+                modifier = Modifier.weight(1f),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = "${viewModel.totalGold}")
+            }
+            IconButton(
+                modifier = Modifier.weight(0.5f),
+                onClick = { viewModel.expand() },
+                interactionSource = remember { MutableInteractionSource() },
+            ) {
+                Icon(
+                    imageVector = if (viewModel.expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                    contentDescription = "펼치기"
+                )
+            }
+        }
+
+        val valtan = twoPhaseBoss(
+            name = viewModel.valtan,
+            seeMoreGold = viewModel.valtanSMG,
+            clearGold = viewModel.valtanCG
+        )
+        val biackiss = twoPhaseBoss(
+            name = viewModel.bi,
+            seeMoreGold = viewModel.biSMG,
+            clearGold = viewModel.biCG
+        )
+        val koukuSaton = threePhaseBoss(
+            name = viewModel.kuku,
+            seeMoreGold = viewModel.kukuSMG,
+            clearGold = viewModel.kukuCG
+        )
+        val abrelshud = fourPhaseBoss(
+            name = viewModel.abrel,
+            seeMoreGold = viewModel.abrelSMG,
+            clearGold = viewModel.abrelCG
+        )
+        val illiakan = threePhaseBoss(
+            name = viewModel.illi,
+            seeMoreGold = viewModel.illiSMG,
+            clearGold = viewModel.illiCG
+        )
+        val kamen = fourPhaseBoss(
+            name = viewModel.kamen,
+            seeMoreGold = viewModel.kamenSMG,
+            clearGold = viewModel.kamenCG
+        )
+
+        viewModel.sumGold(valtan, biackiss, koukuSaton, abrelshud, illiakan, kamen)
+
+    }
+
 }
 
 @Composable
