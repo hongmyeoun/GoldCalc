@@ -57,6 +57,7 @@ fun CommandBossCard(viewModel: CommandBossVM){
             )
             Row(
                 modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End
             ) {
                 Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
