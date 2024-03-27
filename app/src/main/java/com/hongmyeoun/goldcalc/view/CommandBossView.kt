@@ -36,7 +36,7 @@ fun CommandBossCard(viewModel: CommandBossVM){
 
     Card(
         modifier = Modifier
-            .animateContentSize(animationSpec = tween(durationMillis = 1500))
+            .animateContentSize(animationSpec = tween(durationMillis = 1000))
             .then(height)
             .fillMaxWidth()
     ) {

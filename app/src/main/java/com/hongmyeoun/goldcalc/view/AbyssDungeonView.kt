@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.view
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -34,7 +35,7 @@ fun AbyssDungeonCard(viewModel: AbyssDungeonVM){
 
     Card(
         modifier = Modifier
-            .animateContentSize()
+            .animateContentSize(animationSpec = tween(durationMillis = 1000))
             .then(height)
             .fillMaxWidth()
     ) {
