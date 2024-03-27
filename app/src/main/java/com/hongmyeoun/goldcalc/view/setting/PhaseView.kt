@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view
+package com.hongmyeoun.goldcalc.view.setting
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

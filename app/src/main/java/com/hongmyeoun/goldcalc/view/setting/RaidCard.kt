@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view
+package com.hongmyeoun.goldcalc.view.setting
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -24,12 +23,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import com.hongmyeoun.goldcalc.viewModel.KazerothRaidVM
 
 @Composable
-fun KazerothRaidCard(viewModel: KazerothRaidVM) {
-    val height = if (viewModel.expanded) Modifier.wrapContentHeight() else Modifier.height(80.dp)
+fun RaidCard(
+    raidType: String,
+    raidImg: ImageVector,
+    totalGold: Int,
+    expanded: Boolean,
+    onArrowClicked: () -> Unit,
+    raidContent: @Composable () -> Unit
+) {
+    val height = if (expanded) Modifier.wrapContentHeight() else Modifier.height(80.dp)
 
     Card(
         modifier = Modifier
@@ -45,12 +51,12 @@ fun KazerothRaidCard(viewModel: KazerothRaidVM) {
         ) {
             Icon(
                 modifier = Modifier.weight(0.5f),
-                imageVector = Icons.Default.AccountBox,
-                contentDescription = "카제로스레이드 이미지"
+                imageVector = raidImg,
+                contentDescription = "$raidType 이미지"
             )
             Text(
                 modifier = Modifier.weight(1f),
-                text = "카제로스레이드"
+                text = raidType
             )
             Row(
                 modifier = Modifier.weight(1f),
@@ -59,31 +65,25 @@ fun KazerothRaidCard(viewModel: KazerothRaidVM) {
             ) {
                 Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "${viewModel.totalGold}")
+                Text(text = "$totalGold")
             }
             IconButton(
                 modifier = Modifier.weight(0.5f),
-                onClick = { viewModel.expand() },
+                onClick = { onArrowClicked() },
                 interactionSource = remember { MutableInteractionSource() },
             ) {
                 Icon(
-                    imageVector = if (viewModel.expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                    imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
                     contentDescription = "펼치기"
                 )
             }
         }
 
-        val echidna = twoPhaseBoss(
-            name = viewModel.echi,
-            seeMoreGold = viewModel.echiSMG,
-            clearGold = viewModel.echiCG
-        )
-
-        viewModel.sumGold(echidna)
+        raidContent()
 
         IconButton(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { viewModel.expand() }
+            onClick = { onArrowClicked() }
         ) {
             Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "접기")
         }

@@ -1,6 +1,8 @@
-package com.hongmyeoun.goldcalc.view
+package com.hongmyeoun.goldcalc.view.setting.cardContent
 
 import androidx.compose.runtime.Composable
+import com.hongmyeoun.goldcalc.view.setting.fourPhaseBoss
+import com.hongmyeoun.goldcalc.view.setting.threePhaseBoss
 import com.hongmyeoun.goldcalc.viewModel.AbyssDungeonVM
 
 @Composable
