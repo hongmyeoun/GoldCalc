@@ -81,6 +81,13 @@ fun EpicRaidCard(viewModel: EpicRaidVM) {
         )
 
         viewModel.sumGold(behemoth)
+
+        IconButton(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { viewModel.expand() }
+        ) {
+            Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "접기")
+        }
     }
 
     Spacer(modifier = Modifier.height(16.dp))

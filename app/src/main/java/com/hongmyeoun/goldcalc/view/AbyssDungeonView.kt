@@ -87,6 +87,13 @@ fun AbyssDungeonCard(viewModel: AbyssDungeonVM){
         )
 
         viewModel.sumGold(kayangel, ivoryTower)
+
+        IconButton(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { viewModel.expand() }
+        ) {
+            Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "접기")
+        }
     }
 
     Spacer(modifier = Modifier.height(16.dp))

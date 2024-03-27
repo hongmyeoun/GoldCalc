@@ -108,6 +108,13 @@ fun CommandBossCard(viewModel: CommandBossVM){
         )
 
         viewModel.sumGold(valtan, biackiss, koukuSaton, abrelshud, illiakan, kamen)
+
+        IconButton(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { viewModel.expand() }
+        ) {
+            Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "접기")
+        }
         
     }
     
