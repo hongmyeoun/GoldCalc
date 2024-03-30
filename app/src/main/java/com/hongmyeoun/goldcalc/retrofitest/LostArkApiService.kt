@@ -9,4 +9,9 @@ interface LostArkApiService {
     fun getCharacters(
         @Path("characterName") characterName: String
     ): Call<List<CharacterInfo>>
+
+    @GET("/armories/characters/{characterName}/profiles")
+    fun getCharacterDetail(
+        @Path("characterName") characterName: String
+    ): Call<CharacterDetail>
 }
