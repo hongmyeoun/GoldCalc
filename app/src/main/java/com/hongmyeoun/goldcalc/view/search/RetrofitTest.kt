@@ -49,6 +49,8 @@ import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterInfo
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.lostArkApi.LostArkApiService
+import com.hongmyeoun.goldcalc.model.roomDB.Character
+import com.hongmyeoun.goldcalc.model.roomDB.CharacterDB
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -146,9 +148,17 @@ fun CharacterScreen(navController: NavHostController) {
 fun CharacterDetailScreen(charName: String){
     val context = LocalContext.current
     var characterDetail by remember { mutableStateOf<CharacterDetail?>(null)}
+    var isSaved by remember { mutableStateOf(false) }
+
+    val db = remember { CharacterDB.getDB(context) }
+
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit){
         characterDetail = getCharDetail(context, charName)
+
+        val savedNames = withContext(Dispatchers.IO) { db.characterDao().getNames() }
+        isSaved = savedNames.contains(characterDetail?.characterName)
     }
 
     Column(
@@ -161,7 +171,20 @@ fun CharacterDetailScreen(charName: String){
             contentDescription = null,
         )
         Text(text = "${characterDetail?.characterClassName?:"ERROR"} ${characterDetail?.characterName?:"ERROR"} : Lv. ${characterDetail?.itemMaxLevel?:0}")
-        OutlinedButton(onClick = { /*character의 정보들을 가져간다. 서버*/ }) {
+        OutlinedButton(
+            onClick = {
+                val character = Character(
+                    name = characterDetail!!.characterName,
+                    itemLevel = characterDetail!!.itemMaxLevel,
+                    serverName = characterDetail!!.serverName,
+                    className = characterDetail!!.characterClassName
+                )
+                scope.launch(Dispatchers.IO) {
+                    db.characterDao().insertAll(character)
+                }
+            },
+            enabled = !isSaved
+        ) {
             
         }
     }
