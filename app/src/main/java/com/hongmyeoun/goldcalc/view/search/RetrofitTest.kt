@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.retrofitest
+package com.hongmyeoun.goldcalc.view.search
 
 import android.content.Context
 import android.util.Log
@@ -45,6 +45,10 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.google.gson.GsonBuilder
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
+import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterInfo
+import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
+import com.hongmyeoun.goldcalc.model.lostArkApi.LostArkApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

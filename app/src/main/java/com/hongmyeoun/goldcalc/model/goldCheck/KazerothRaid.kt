@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.model
+package com.hongmyeoun.goldcalc.model.goldCheck
 
 enum class KazerothRaid(
     val boss: String,

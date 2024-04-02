@@ -1,5 +1,7 @@
-package com.hongmyeoun.goldcalc.retrofitest
+package com.hongmyeoun.goldcalc.model.lostArkApi
 
+import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
+import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterInfo
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

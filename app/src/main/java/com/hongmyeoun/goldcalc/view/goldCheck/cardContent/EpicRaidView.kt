@@ -1,8 +1,8 @@
-package com.hongmyeoun.goldcalc.view.setting.cardContent
+package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
 
 import androidx.compose.runtime.Composable
-import com.hongmyeoun.goldcalc.view.setting.twoPhaseBoss
-import com.hongmyeoun.goldcalc.viewModel.EpicRaidVM
+import com.hongmyeoun.goldcalc.view.goldCheck.twoPhaseBoss
+import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
 
 @Composable
 fun EpicRaid(viewModel: EpicRaidVM) {

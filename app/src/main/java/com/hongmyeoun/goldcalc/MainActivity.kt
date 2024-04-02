@@ -36,10 +36,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.hongmyeoun.goldcalc.retrofitest.CharacterDetailScreen
-import com.hongmyeoun.goldcalc.retrofitest.CharacterScreen
+import com.hongmyeoun.goldcalc.view.search.CharacterDetailScreen
+import com.hongmyeoun.goldcalc.view.search.CharacterScreen
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
-import com.hongmyeoun.goldcalc.view.setting.Setting
+import com.hongmyeoun.goldcalc.view.goldCheck.Setting
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

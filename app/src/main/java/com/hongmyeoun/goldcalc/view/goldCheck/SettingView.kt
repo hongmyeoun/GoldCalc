@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.setting
+package com.hongmyeoun.goldcalc.view.goldCheck
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,15 +21,15 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.hongmyeoun.goldcalc.view.setting.cardContent.AbyssDungeon
-import com.hongmyeoun.goldcalc.view.setting.cardContent.CommandRaid
-import com.hongmyeoun.goldcalc.view.setting.cardContent.EpicRaid
-import com.hongmyeoun.goldcalc.view.setting.cardContent.KazerothRaid
-import com.hongmyeoun.goldcalc.viewModel.AbyssDungeonVM
-import com.hongmyeoun.goldcalc.viewModel.CommandBossVM
-import com.hongmyeoun.goldcalc.viewModel.EpicRaidVM
-import com.hongmyeoun.goldcalc.viewModel.GoldSettingVM
-import com.hongmyeoun.goldcalc.viewModel.KazerothRaidVM
+import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.AbyssDungeon
+import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.CommandRaid
+import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.EpicRaid
+import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.KazerothRaid
+import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
+import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
+import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
+import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
+import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
 
 @Composable
 fun Setting(

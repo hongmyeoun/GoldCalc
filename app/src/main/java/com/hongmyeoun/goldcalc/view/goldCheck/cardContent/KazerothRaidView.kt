@@ -1,8 +1,8 @@
-package com.hongmyeoun.goldcalc.view.setting.cardContent
+package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
 
 import androidx.compose.runtime.Composable
-import com.hongmyeoun.goldcalc.view.setting.twoPhaseBoss
-import com.hongmyeoun.goldcalc.viewModel.KazerothRaidVM
+import com.hongmyeoun.goldcalc.view.goldCheck.twoPhaseBoss
+import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
 
 @Composable
 fun KazerothRaid(viewModel: KazerothRaidVM) {

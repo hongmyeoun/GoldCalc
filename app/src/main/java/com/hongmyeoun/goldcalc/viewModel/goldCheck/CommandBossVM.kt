@@ -1,10 +1,10 @@
-package com.hongmyeoun.goldcalc.viewModel
+package com.hongmyeoun.goldcalc.viewModel.goldCheck
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.hongmyeoun.goldcalc.model.CommandBossModel
+import com.hongmyeoun.goldcalc.model.goldCheck.CommandBossModel
 
 class CommandBossVM: ViewModel() {
     val cbModel = CommandBossModel()

@@ -1,10 +1,10 @@
-package com.hongmyeoun.goldcalc.view.setting.cardContent
+package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
 
 import androidx.compose.runtime.Composable
-import com.hongmyeoun.goldcalc.view.setting.fourPhaseBoss
-import com.hongmyeoun.goldcalc.view.setting.threePhaseBoss
-import com.hongmyeoun.goldcalc.view.setting.twoPhaseBoss
-import com.hongmyeoun.goldcalc.viewModel.CommandBossVM
+import com.hongmyeoun.goldcalc.view.goldCheck.fourPhaseBoss
+import com.hongmyeoun.goldcalc.view.goldCheck.threePhaseBoss
+import com.hongmyeoun.goldcalc.view.goldCheck.twoPhaseBoss
+import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
 
 @Composable
 fun CommandRaid(viewModel: CommandBossVM) {

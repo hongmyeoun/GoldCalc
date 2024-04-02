@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.retrofitest
+package com.hongmyeoun.goldcalc.model.lostArkApi
 
 import com.hongmyeoun.goldcalc.R
 
