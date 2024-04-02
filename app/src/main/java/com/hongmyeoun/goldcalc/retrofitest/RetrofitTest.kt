@@ -22,6 +22,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -101,7 +102,9 @@ fun CharacterScreen(navController: NavHostController) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(characterInfo, key = { item -> item.characterName }) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().clickable { navController.navigate("CharDetail/${it.characterName}") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { navController.navigate("CharDetail/${it.characterName}") },
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Image(
@@ -153,8 +156,12 @@ fun CharacterDetailScreen(charName: String){
             model = characterDetail?.characterImage,
             contentDescription = null,
         )
-        Text(text = "${characterDetail?.itemMaxLevel?:0}")
+        Text(text = "${characterDetail?.characterClassName?:"ERROR"} ${characterDetail?.characterName?:"ERROR"} : Lv. ${characterDetail?.itemMaxLevel?:0}")
+        OutlinedButton(onClick = { /*character의 정보들을 가져간다. 서버*/ }) {
+            
+        }
     }
+    
 }
 
 suspend fun getCharDetail(context: Context, characterName: String): CharacterDetail? {

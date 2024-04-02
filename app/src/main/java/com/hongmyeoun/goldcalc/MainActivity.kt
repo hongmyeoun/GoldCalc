@@ -78,6 +78,11 @@ fun MainScreen(navController: NavHostController) {
         modifier = Modifier.fillMaxSize()
     ) {
         item { Character(navController) }
+        item {
+            OutlinedButton(onClick = { navController.navigate("Search") }) {
+                Text(text = "검색")
+            }
+        }
     }
 }
 
