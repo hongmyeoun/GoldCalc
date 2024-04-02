@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
@@ -65,8 +66,9 @@ class MainActivity : ComponentActivity() {
                     composable("Main"){
                         MainScreen(navController)
                     }
-                    composable("Check"){
-                        Setting()
+                    composable("Check/{charName}"){
+                        val charName = it.arguments?.getString("charName")?: "ERROR"
+                        Setting(charName, navController)
                     }
                     composable("Search"){
                         CharacterScreen(navController)
@@ -131,7 +133,11 @@ fun CharacterCard(
                 Row {
                     Text(text = character.name)
                     Icon(imageVector = Icons.Default.Notifications, contentDescription = "골드체크")
-                    Icon(imageVector = Icons.Default.Settings, contentDescription = "설정", modifier = Modifier.clickable { navController.navigate("Check") })
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = "설정",
+                        modifier = Modifier
+                            .clickable { navController.navigate("Check/${character.name}") })
                 }
                 Row {
                     Text(text = character.itemLevel)
@@ -141,16 +147,23 @@ fun CharacterCard(
             }
             Column(
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(1.5f)
                     .padding(8.dp)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    Text(text = "진행도")
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Text(text = "${(progressPercentage * 100).toInt()}%")
+                    Column {
+                        Row {
+                            Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = "${character.weeklyGold}")
+                        }
+                        Text(text = "진행도")
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(text = "${(progressPercentage * 100).toInt()}%")
+                    }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 LinearProgressIndicator(

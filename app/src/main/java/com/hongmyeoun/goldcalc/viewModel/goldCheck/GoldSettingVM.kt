@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 class GoldSettingVM: ViewModel() {
     var plusGold by mutableStateOf("0")
     var minusGold by mutableStateOf("0")
-    private var totalGold by mutableStateOf(0)
+    var totalGold by mutableStateOf(0)
 
     fun plusGoldValue(newValue: String){
         plusGold = newValue.filter { it.isDigit() }

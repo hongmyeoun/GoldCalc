@@ -23,4 +23,7 @@ interface CharacterDao {
 
     @Query("SELECT name FROM character")
     fun getNames(): List<String>
+
+    @Query("SELECT * FROM Character WHERE name = :name")
+    fun getCharacterByName(name: String): Flow<Character>
 }
