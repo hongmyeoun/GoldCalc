@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import com.hongmyeoun.goldcalc.view.goldCheck.fourPhaseBoss
 import com.hongmyeoun.goldcalc.view.goldCheck.threePhaseBoss
 import com.hongmyeoun.goldcalc.view.goldCheck.twoPhaseBoss
@@ -39,5 +40,8 @@ fun CommandRaid(viewModel: CommandBossVM) {
         clearGold = viewModel.kamenCG
     )
 
-    viewModel.sumGold(valtan, biackiss, koukuSaton, abrelshud, illiakan, kamen)
+    LaunchedEffect(valtan, biackiss, koukuSaton, abrelshud, illiakan, kamen) {
+        viewModel.sumGold(valtan, biackiss, koukuSaton, abrelshud, illiakan, kamen)
+    }
+
 }

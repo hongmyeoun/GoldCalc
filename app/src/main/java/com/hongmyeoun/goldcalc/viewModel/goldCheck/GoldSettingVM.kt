@@ -18,11 +18,15 @@ class GoldSettingVM: ViewModel() {
         minusGold = newValue.filter { it.isDigit() }
     }
 
-    fun calcTotalGold(cb: Int, ad: Int, kz: Int, ep: Int): Int {
+    private fun calcTotalGold(cb: Int, ad: Int, kz: Int, ep: Int): Int {
         val plusGoldInt = plusGold.toIntOrNull()?:0
         val minusGoldInt = minusGold.toIntOrNull()?:0
         totalGold = cb + ad + kz + ep + plusGoldInt - minusGoldInt
         return totalGold
+    }
+
+    fun updateTotalGold(cb: Int, ad: Int, kz: Int, ep: Int) {
+        calcTotalGold(cb, ad, kz, ep)
     }
 
 }

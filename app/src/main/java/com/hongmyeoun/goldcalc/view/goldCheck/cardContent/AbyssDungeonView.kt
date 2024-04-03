@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import com.hongmyeoun.goldcalc.view.goldCheck.fourPhaseBoss
 import com.hongmyeoun.goldcalc.view.goldCheck.threePhaseBoss
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
@@ -17,5 +18,9 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM){
         seeMoreGold = viewModel.ivTSMG,
         clearGold = viewModel.ivTCG
     )
-    viewModel.sumGold(kayangel, ivoryTower)
+
+    LaunchedEffect(kayangel, ivoryTower) {
+        viewModel.sumGold(kayangel, ivoryTower)
+    }
+
 }

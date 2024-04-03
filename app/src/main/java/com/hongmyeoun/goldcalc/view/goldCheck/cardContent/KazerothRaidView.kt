@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import com.hongmyeoun.goldcalc.view.goldCheck.twoPhaseBoss
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
 
@@ -12,5 +13,7 @@ fun KazerothRaid(viewModel: KazerothRaidVM) {
         clearGold = viewModel.echiCG
     )
 
-    viewModel.sumGold(echidna)
+    LaunchedEffect(echidna) {
+        viewModel.sumGold(echidna)
+    }
 }
