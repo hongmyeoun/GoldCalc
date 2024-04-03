@@ -15,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -143,7 +144,10 @@ fun twoPhaseBoss(
             clearGoldH = clearGold[3]
         )
 
-        totalGold = cg1 + cg2 - smg1 - smg2
+        LaunchedEffect(cg1, cg2, smg1, smg2) {
+            totalGold = cg1 + cg2 - smg1 - smg2
+        }
+
     }
 
     return totalGold
@@ -202,7 +206,10 @@ fun threePhaseBoss(
             clearGoldH = clearGold[5]
         )
 
-        totalGold = cg1 + cg2 + cg3 - smg1 - smg2 - smg3
+        LaunchedEffect(cg1, cg2, cg3, smg1, smg2, smg3) {
+            totalGold = cg1 + cg2 + cg3 - smg1 - smg2 - smg3
+        }
+
     }
 
     return totalGold
@@ -268,7 +275,9 @@ fun fourPhaseBoss(
             clearGoldH = clearGold[7]
         )
 
-        totalGold = cg1 + cg2 + cg3 + cg4 - smg1 - smg2 - smg3 - smg4
+        LaunchedEffect(cg1, cg2, cg3, cg4, smg1, smg2, smg3, smg4) {
+            totalGold = cg1 + cg2 + cg3 + cg4 - smg1 - smg2 - smg3 - smg4
+        }
     }
 
     return totalGold
