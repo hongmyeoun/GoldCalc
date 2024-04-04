@@ -7,14 +7,23 @@ import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
 
 @Composable
 fun EpicRaid(viewModel: EpicRaidVM) {
-    val behemoth = twoPhaseBoss(
+
+    LaunchedEffect(viewModel.behemothTG) {
+        viewModel.sumGold()
+    }
+
+    twoPhaseBoss(
         name = viewModel.behe,
         seeMoreGold = viewModel.beheSMG,
-        clearGold = viewModel.beheCG
+        clearGold = viewModel.beheCG,
+        totalGold = viewModel.behemothTG,
+        onUpdateTotalGoldOnePhase = { update ->
+            viewModel.behemothOnePhase(update)
+        },
+        onUpdateTotalGoldTwoPhase = { update ->
+            viewModel.behemothTwoPhase(update)
+        }
     )
 
-    LaunchedEffect(behemoth) {
-        viewModel.sumGold(behemoth)
-    }
 
 }

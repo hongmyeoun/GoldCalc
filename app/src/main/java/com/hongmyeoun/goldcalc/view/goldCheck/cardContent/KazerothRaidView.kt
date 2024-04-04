@@ -7,13 +7,22 @@ import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
 
 @Composable
 fun KazerothRaid(viewModel: KazerothRaidVM) {
-    val echidna = twoPhaseBoss(
+
+    LaunchedEffect(viewModel.echidnaTG) {
+        viewModel.sumGold()
+    }
+
+    twoPhaseBoss(
         name = viewModel.echi,
         seeMoreGold = viewModel.echiSMG,
-        clearGold = viewModel.echiCG
+        clearGold = viewModel.echiCG,
+        totalGold = viewModel.echidnaTG,
+        onUpdateTotalGoldOnePhase = { update ->
+                                    viewModel.echidnaOnePhase(update)
+        },
+        onUpdateTotalGoldTwoPhase = { update ->
+            viewModel.echidnaTwoPhase(update)
+        }
     )
 
-    LaunchedEffect(echidna) {
-        viewModel.sumGold(echidna)
-    }
 }

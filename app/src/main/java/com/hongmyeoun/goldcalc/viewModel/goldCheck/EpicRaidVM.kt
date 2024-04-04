@@ -7,16 +7,26 @@ import androidx.lifecycle.ViewModel
 import com.hongmyeoun.goldcalc.model.goldCheck.EpicRaidModel
 
 class EpicRaidVM: ViewModel() {
-    val epModel = EpicRaidModel()
-
-    var expanded by mutableStateOf(false)
-    fun expand(){
-        expanded = !expanded
-    }
+    private val epModel = EpicRaidModel()
 
     var totalGold by mutableStateOf(0)
-    fun sumGold(be: Int){
-        totalGold = be
+    fun sumGold(){
+        totalGold = behemothTG
+    }
+
+    var behemothTG by mutableStateOf(0)
+    private var behemothOne by mutableStateOf(0)
+    private var behemothTwo by mutableStateOf(0)
+    fun behemothOnePhase(update: Int) {
+        behemothOne = update
+        behemothTotal()
+    }
+    fun behemothTwoPhase(update: Int) {
+        behemothTwo = update
+        behemothTotal()
+    }
+    fun behemothTotal() {
+        behemothTG = behemothOne + behemothTwo
     }
 
     val behe = epModel.behe
