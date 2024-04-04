@@ -26,6 +26,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,27 +46,39 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.CharacterDB
+import com.hongmyeoun.goldcalc.model.roomDB.CharacterDao
 import com.hongmyeoun.goldcalc.model.roomDB.CharacterRepository
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.view.goldCheck.Setting
 import com.hongmyeoun.goldcalc.view.search.CharacterDetailScreen
 import com.hongmyeoun.goldcalc.view.search.CharacterScreen
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             GoldCalcTheme {
-//                MainScreen()
-//                Setting()
-//                CharacterScreen()
                 val navController = rememberNavController()
 
                 val context = this
-                val db = CharacterDB.getDB(context)
-                val dao = db.characterDao()
-                val repository = CharacterRepository(dao)
+                val db = remember { mutableStateOf<CharacterDB?>(null) }
+                val dao = remember { mutableStateOf<CharacterDao?>(null) }
+                val repository = remember { mutableStateOf<CharacterRepository?>(null) }
+
+                LaunchedEffect(Unit) {
+                    val asyncDb = CoroutineScope(Dispatchers.IO).async {
+                        CharacterDB.getDB(context)
+                    }
+                    val dbInstance = asyncDb.await()
+                    db.value = dbInstance
+                    dao.value = dbInstance.characterDao()
+                    repository.value = CharacterRepository(dao.value!!)
+                }
+
 
                 NavHost(navController = navController, startDestination = "Main") {
                     composable("Main"){
@@ -73,7 +86,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("Check/{charName}"){
                         val charName = it.arguments?.getString("charName")?: "ERROR"
-                        val gSVM = GoldSettingVM(repository, charName)
+                        val gSVM = GoldSettingVM(repository.value!!, charName)
                         Setting(navController, gSVM)
                     }
                     composable("Search"){
@@ -84,7 +97,6 @@ class MainActivity : ComponentActivity() {
                         CharacterDetailScreen(charName)
                     }
                 }
-//                CharacterDetailScreen()
             }
         }
     }
