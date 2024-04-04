@@ -56,142 +56,6 @@ import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
 
-//@Composable
-//fun Setting(
-//    charName: String,
-//    navController: NavHostController,
-//    viewModel: GoldSettingVM = viewModel(),
-//    cbVM: CommandBossVM = viewModel(),
-//    adVM: AbyssDungeonVM = viewModel(),
-//    kzVM: KazerothRaidVM = viewModel(),
-//    epVM: EpicRaidVM = viewModel()
-//) {
-//    val keyboardController = LocalSoftwareKeyboardController.current
-
-//    val focusState = LocalFocusManager.current
-//    val scope = rememberCoroutineScope()
-//    val context = LocalContext.current
-//    val db = remember { CharacterDB.getDB(context) }
-//    val dao = db.characterDao()
-//    val character by dao.getCharacterByName(charName).collectAsState(initial = null)
-//
-//    LaunchedEffect(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold, viewModel.plusGold, viewModel.minusGold) {
-//        viewModel.updateTotalGold(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold)
-//    }
-//
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(16.dp)
-//            .verticalScroll(rememberScrollState())
-//    ) {
-//        RaidCard(
-//            raidType = "군단장 레이드",
-//            raidImg = Icons.Default.AccountBox,
-//            totalGold = cbVM.totalGold,
-//            expanded = cbVM.expanded,
-//            onArrowClicked = { cbVM.expand() }
-//        ) {
-//            CommandRaid(viewModel = cbVM)
-//        }
-//        RaidCard(
-//            raidType = "어비스 던전",
-//            raidImg = Icons.Default.AccountBox,
-//            totalGold = adVM.totalGold,
-//            expanded = adVM.expanded,
-//            onArrowClicked = { adVM.expand() },
-//        ) {
-//            AbyssDungeon(viewModel = adVM)
-//        }
-//        RaidCard(
-//            raidType = "카제로스 레이드",
-//            raidImg = Icons.Default.AccountBox,
-//            totalGold = kzVM.totalGold,
-//            expanded = kzVM.expanded,
-//            onArrowClicked = { kzVM.expand() }
-//        ) {
-//            KazerothRaid(viewModel = kzVM)
-//        }
-//        RaidCard(
-//            raidType = "에픽 레이드",
-//            raidImg = Icons.Default.AccountBox,
-//            totalGold = epVM.totalGold,
-//            expanded = epVM.expanded,
-//            onArrowClicked = { epVM.expand() }
-//        ) {
-//            EpicRaid(viewModel = epVM)
-//        }
-//
-//        Row(modifier = Modifier.fillMaxWidth()) {
-//            OutlinedTextField(
-//                modifier = Modifier.weight(1f),
-//                value = viewModel.plusGold,
-//                onValueChange = { viewModel.plusGoldValue(it) },
-//                label = { Text(text = "추가 골드") },
-//                keyboardOptions = KeyboardOptions(
-//                    keyboardType = KeyboardType.Number,
-//                    imeAction = ImeAction.Done
-//                ),
-//                keyboardActions = KeyboardActions(
-//                    onDone = {
-//                        viewModel.updateTotalGold(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold)
-//                        keyboardController?.hide()
-//                        focusState.clearFocus()
-//                    }
-//                )
-//            )
-//
-//            OutlinedTextField(
-//                modifier = Modifier.weight(1f),
-//                value = viewModel.minusGold,
-//                onValueChange = { viewModel.minusGoldValue(it) },
-//                label = { Text(text = "사용 골드") },
-//                keyboardOptions = KeyboardOptions(
-//                    keyboardType = KeyboardType.Number,
-//                    imeAction = ImeAction.Done
-//                ),
-//                keyboardActions = KeyboardActions(
-//                    onDone = {
-//                        viewModel.updateTotalGold(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold)
-//                        keyboardController?.hide()
-//                        focusState.clearFocus()
-//                    }
-//                )
-//            )
-//        }
-//
-//        Column(
-//            modifier = Modifier.fillMaxWidth(),
-//            horizontalAlignment = Alignment.End
-//        ) {
-//            Row {
-//                Text(text = "주간 수입")
-//                Text(text = "${viewModel.totalGold}")
-//            }
-//            Row {
-//                OutlinedButton(
-//                    onClick = { navController.popBackStack() }
-//                ) {
-//                    Text(text = "취소")
-//                }
-//                Button(
-//                    onClick = {
-//                        scope.launch(Dispatchers.IO) {
-//                            character?.let {
-//                                val update = character!!.copy(weeklyGold = viewModel.totalGold)
-//                                dao.update(update)
-//                            }
-//                        }
-//                        navController.popBackStack()
-//                    }
-//                ) {
-//                    Text(text = "완료")
-//                }
-//            }
-//        }
-//    }
-//}
-
 @Composable
 fun Setting(
     navController: NavHostController,
@@ -406,13 +270,12 @@ fun Setting(
         }
 
     ) { paddingValues ->
-        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .padding(16.dp)
-                .verticalScroll(scrollState)
+                .verticalScroll(rememberScrollState())
         ) {
             when (viewModel.selectedTab) {
                 "군단장" -> {
@@ -432,7 +295,6 @@ fun Setting(
                     ) {
                         AbyssDungeon(viewModel = adVM)
                     }
-
                 }
                 "카제로스" -> {
                     RaidCard(
@@ -490,7 +352,6 @@ fun Setting(
                             )
                         )
                     }
-
                 }
             }
         }
@@ -518,9 +379,4 @@ fun TopBarBox(
         Text(text = title)
     }
 
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewWeeklyCurrencyManagerApp() {
 }
