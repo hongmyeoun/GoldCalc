@@ -45,10 +45,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.CharacterDB
+import com.hongmyeoun.goldcalc.model.roomDB.CharacterRepository
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.view.goldCheck.Setting
 import com.hongmyeoun.goldcalc.view.search.CharacterDetailScreen
 import com.hongmyeoun.goldcalc.view.search.CharacterScreen
+import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,13 +62,19 @@ class MainActivity : ComponentActivity() {
 //                CharacterScreen()
                 val navController = rememberNavController()
 
+                val context = this
+                val db = CharacterDB.getDB(context)
+                val dao = db.characterDao()
+                val repository = CharacterRepository(dao)
+
                 NavHost(navController = navController, startDestination = "Main") {
                     composable("Main"){
                         MainScreen(navController)
                     }
                     composable("Check/{charName}"){
                         val charName = it.arguments?.getString("charName")?: "ERROR"
-                        Setting(charName, navController)
+                        val gSVM = GoldSettingVM(repository, charName)
+                        Setting(navController, gSVM)
                     }
                     composable("Search"){
                         CharacterScreen(navController)
@@ -92,7 +100,6 @@ fun MainScreen(navController: NavHostController) {
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
-//        item { Character(navController) }
         items(characterList, key = { item -> item.name }){
             CharacterCard(navController, it)
         }
