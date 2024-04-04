@@ -15,7 +15,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,8 +29,9 @@ fun phase(
     seeMoreGoldN: Int,
     seeMoreGoldH: Int,
     clearGoldN: Int,
-    clearGoldH: Int
-): Pair<Int, Int> {
+    clearGoldH: Int,
+    onUpdateTotalGold: (Int) -> Unit
+) {
     var level by remember { mutableStateOf("노말") }
     var seeMoreCheck by remember { mutableStateOf(false) }
     var clearCheck by remember { mutableStateOf(false) }
@@ -56,6 +56,7 @@ fun phase(
                     level = if (level == "노말") "하드" else "노말"
                     seeMoreGold = if (seeMoreCheck && level == "노말") seeMoreGoldN else if (seeMoreCheck) seeMoreGoldH else 0
                     clearGold = if (clearCheck && level == "노말") clearGoldN else if (clearCheck) clearGoldH else 0
+                    onUpdateTotalGold(clearGold - seeMoreGold)
                 }
             ) {
                 Text(text = level)
@@ -76,6 +77,7 @@ fun phase(
                     onCheckedChange = {
                         clearCheck = !clearCheck
                         clearGold = if (clearCheck && level == "노말") clearGoldN else if (clearCheck && level == "하드") clearGoldH else 0
+                        onUpdateTotalGold(clearGold - seeMoreGold)
                     }
                 )
                 Text(text = "클리어")
@@ -89,23 +91,24 @@ fun phase(
                     onCheckedChange = {
                         seeMoreCheck = !seeMoreCheck
                         seeMoreGold = if (seeMoreCheck && level == "노말") seeMoreGoldN else if (seeMoreCheck && level == "하드") seeMoreGoldH else 0
+                        onUpdateTotalGold(clearGold - seeMoreGold)
                     }
                 )
                 Text(text = "더보기")
             }
         }
     }
-    return Pair(clearGold, seeMoreGold)
 }
 
 @Composable
 fun twoPhaseBoss(
     name: String,
     seeMoreGold: List<Int>,
-    clearGold: List<Int>
-): Int {
-    var totalGold by remember { mutableStateOf(0) }
-
+    clearGold: List<Int>,
+    totalGold: Int,
+    onUpdateTotalGoldOnePhase: (Int) -> Unit,
+    onUpdateTotalGoldTwoPhase: (Int) -> Unit
+) {
     Column(
         modifier = Modifier.padding(16.dp)
     ) {
@@ -129,38 +132,40 @@ fun twoPhaseBoss(
                 Text(text = "$totalGold")
             }
         }
-        val (cg1, smg1) = phase(
+        phase(
             gate = "1 관문",
             seeMoreGoldN = seeMoreGold[0],
             seeMoreGoldH = seeMoreGold[2],
             clearGoldN = clearGold[0],
-            clearGoldH = clearGold[2]
+            clearGoldH = clearGold[2],
+            onUpdateTotalGold = { updated ->
+                onUpdateTotalGoldOnePhase(updated)
+            }
         )
-        val (cg2, smg2) = phase(
+        phase(
             gate = "2 관문",
             seeMoreGoldN = seeMoreGold[1],
             seeMoreGoldH = seeMoreGold[3],
             clearGoldN = clearGold[1],
-            clearGoldH = clearGold[3]
+            clearGoldH = clearGold[3],
+            onUpdateTotalGold = { updated ->
+                onUpdateTotalGoldTwoPhase(updated)
+            }
         )
-
-        LaunchedEffect(cg1, cg2, smg1, smg2) {
-            totalGold = cg1 + cg2 - smg1 - smg2
-        }
-
     }
-
-    return totalGold
 }
+
 
 @Composable
 fun threePhaseBoss(
     name: String,
     seeMoreGold: List<Int>,
-    clearGold: List<Int>
-): Int {
-    var totalGold by remember { mutableStateOf(0) }
-
+    clearGold: List<Int>,
+    totalGold: Int,
+    onUpdateTotalGoldOnePhase: (Int) -> Unit,
+    onUpdateTotalGoldTwoPhase: (Int) -> Unit,
+    onUpdateTotalGoldThreePhase: (Int) -> Unit,
+) {
     Column(
         modifier = Modifier.padding(16.dp)
     ) {
@@ -184,45 +189,50 @@ fun threePhaseBoss(
                 Text(text = "$totalGold")
             }
         }
-        val (cg1, smg1) = phase(
+        phase(
             gate = "1 관문",
             seeMoreGoldN = seeMoreGold[0],
             seeMoreGoldH = seeMoreGold[3],
             clearGoldN = clearGold[0],
-            clearGoldH = clearGold[3]
+            clearGoldH = clearGold[3],
+            onUpdateTotalGold = { updated ->
+                onUpdateTotalGoldOnePhase(updated)
+            }
         )
-        val (cg2, smg2) = phase(
+        phase(
             gate = "2 관문",
             seeMoreGoldN = seeMoreGold[1],
             seeMoreGoldH = seeMoreGold[4],
             clearGoldN = clearGold[1],
-            clearGoldH = clearGold[4]
+            clearGoldH = clearGold[4],
+            onUpdateTotalGold = { updated ->
+                onUpdateTotalGoldTwoPhase(updated)
+            }
         )
-        val (cg3, smg3) = phase(
+        phase(
             gate = "3 관문",
             seeMoreGoldN = seeMoreGold[2],
             seeMoreGoldH = seeMoreGold[5],
             clearGoldN = clearGold[2],
-            clearGoldH = clearGold[5]
+            clearGoldH = clearGold[5],
+            onUpdateTotalGold = { updated ->
+                onUpdateTotalGoldThreePhase(updated)
+            }
         )
-
-        LaunchedEffect(cg1, cg2, cg3, smg1, smg2, smg3) {
-            totalGold = cg1 + cg2 + cg3 - smg1 - smg2 - smg3
-        }
-
     }
-
-    return totalGold
 }
 
 @Composable
 fun fourPhaseBoss(
     name: String,
     seeMoreGold: List<Int>,
-    clearGold: List<Int>
-): Int {
-    var totalGold by remember { mutableStateOf(0) }
-
+    clearGold: List<Int>,
+    totalGold: Int,
+    onUpdateTotalGoldOnePhase: (Int) -> Unit,
+    onUpdateTotalGoldTwoPhase: (Int) -> Unit,
+    onUpdateTotalGoldThreePhase: (Int) -> Unit,
+    onUpdateTotalGoldFourPhase: (Int) -> Unit
+) {
     Column(
         modifier = Modifier.padding(16.dp)
     ) {
@@ -246,39 +256,45 @@ fun fourPhaseBoss(
                 Text(text = "$totalGold")
             }
         }
-        val (cg1, smg1) = phase(
+        phase(
             gate = "1 관문",
             seeMoreGoldN = seeMoreGold[0],
             seeMoreGoldH = seeMoreGold[4],
             clearGoldN = clearGold[0],
-            clearGoldH = clearGold[4]
+            clearGoldH = clearGold[4],
+            onUpdateTotalGold = { updated ->
+                onUpdateTotalGoldOnePhase(updated)
+            }
         )
-        val (cg2, smg2) = phase(
+        phase(
             gate = "2 관문",
             seeMoreGoldN = seeMoreGold[1],
             seeMoreGoldH = seeMoreGold[5],
             clearGoldN = clearGold[1],
-            clearGoldH = clearGold[5]
+            clearGoldH = clearGold[5],
+            onUpdateTotalGold = { updated ->
+                onUpdateTotalGoldTwoPhase(updated)
+            }
         )
-        val (cg3, smg3) = phase(
+        phase(
             gate = "3 관문",
             seeMoreGoldN = seeMoreGold[2],
             seeMoreGoldH = seeMoreGold[6],
             clearGoldN = clearGold[2],
-            clearGoldH = clearGold[6]
+            clearGoldH = clearGold[6],
+            onUpdateTotalGold = { updated ->
+                onUpdateTotalGoldThreePhase(updated)
+            }
         )
-        val (cg4, smg4) = phase(
+        phase(
             gate = "4 관문",
             seeMoreGoldN = seeMoreGold[3],
             seeMoreGoldH = seeMoreGold[7],
             clearGoldN = clearGold[3],
-            clearGoldH = clearGold[7]
+            clearGoldH = clearGold[7],
+            onUpdateTotalGold = { updated ->
+                onUpdateTotalGoldFourPhase(updated)
+            }
         )
-
-        LaunchedEffect(cg1, cg2, cg3, cg4, smg1, smg2, smg3, smg4) {
-            totalGold = cg1 + cg2 + cg3 + cg4 - smg1 - smg2 - smg3 - smg4
-        }
     }
-
-    return totalGold
 }
