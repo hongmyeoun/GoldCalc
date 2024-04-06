@@ -46,15 +46,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.AbyssDungeon
-import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.CommandRaid
-import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.EpicRaid
+//import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.AbyssDungeon
+//import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.CommandRaid
+//import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.EpicRaid
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.KazerothRaid
+import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.KazerothRaidTest
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
+import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVMTest
 
 @Composable
 fun Setting(
@@ -63,6 +65,7 @@ fun Setting(
     cbVM: CommandBossVM = viewModel(),
     adVM: AbyssDungeonVM = viewModel(),
     kzVM: KazerothRaidVM = viewModel(),
+    kzTVM: KazerothRaidVMTest = viewModel(),
     epVM: EpicRaidVM = viewModel()
 ) {
     val height = if (viewModel.expanded) Modifier.wrapContentHeight() else Modifier.height(65.dp)
@@ -279,22 +282,22 @@ fun Setting(
         ) {
             when (viewModel.selectedTab) {
                 "군단장" -> {
-                    RaidCard(
-                        raidType = "군단장 레이드",
-                        raidImg = Icons.Default.AccountBox,
-                        totalGold = cbVM.totalGold
-                    ) {
-                        CommandRaid(viewModel = cbVM)
-                    }
+//                    RaidCard(
+//                        raidType = "군단장 레이드",
+//                        raidImg = Icons.Default.AccountBox,
+//                        totalGold = cbVM.totalGold
+//                    ) {
+//                        CommandRaid(viewModel = cbVM)
+//                    }
                 }
                 "어비스 던전" -> {
-                    RaidCard(
-                        raidType = "어비스 던전",
-                        raidImg = Icons.Default.AccountBox,
-                        totalGold = adVM.totalGold,
-                    ) {
-                        AbyssDungeon(viewModel = adVM)
-                    }
+//                    RaidCard(
+//                        raidType = "어비스 던전",
+//                        raidImg = Icons.Default.AccountBox,
+//                        totalGold = adVM.totalGold,
+//                    ) {
+//                        AbyssDungeon(viewModel = adVM)
+//                    }
                 }
                 "카제로스" -> {
                     RaidCard(
@@ -307,12 +310,19 @@ fun Setting(
                 }
                 "에픽" -> {
                     RaidCard(
-                        raidType = "에픽 레이드",
+                        raidType = "카제로스 레이드",
                         raidImg = Icons.Default.AccountBox,
-                        totalGold = epVM.totalGold
+                        totalGold = kzVM.totalGold
                     ) {
-                        EpicRaid(viewModel = epVM)
+                        KazerothRaidTest(viewModel = kzTVM)
                     }
+//                    RaidCard(
+//                        raidType = "에픽 레이드",
+//                        raidImg = Icons.Default.AccountBox,
+//                        totalGold = epVM.totalGold
+//                    ) {
+//                        EpicRaid(viewModel = epVM)
+//                    }
                 }
                 "기타" -> {
                     Row(modifier = Modifier.fillMaxWidth()) {
