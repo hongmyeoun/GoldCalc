@@ -82,7 +82,7 @@ fun CommandRaid(
     if (viewModel.valtanCheck) {
         twoPhaseBoss(
             name = viewModel.valtan.name,
-            totalGold = viewModel.totalGold,
+            totalGold = viewModel.valtan.totalGold,
 
             phaseOneLevel = viewModel.valtan.onePhase.level,
             phaseOneSMC = viewModel.valtan.onePhase.seeMoreCheck,
@@ -121,7 +121,7 @@ fun CommandRaid(
     if (viewModel.biaCheck) {
         twoPhaseBoss(
             name = viewModel.biackiss.name,
-            totalGold = viewModel.totalGold,
+            totalGold = viewModel.biackiss.totalGold,
 
             phaseOneLevel = viewModel.biackiss.onePhase.level,
             phaseOneSMC = viewModel.biackiss.onePhase.seeMoreCheck,
@@ -160,7 +160,7 @@ fun CommandRaid(
     if (viewModel.koukuCheck) {
         ThreePhaseBoss(
             name = viewModel.koukuSaton.name,
-            totalGold = viewModel.totalGold,
+            totalGold = viewModel.koukuSaton.totalGold,
 
             phaseOneLevel = viewModel.koukuSaton.onePhase.level,
             phaseOneSMC = viewModel.koukuSaton.onePhase.seeMoreCheck,
@@ -215,7 +215,7 @@ fun CommandRaid(
     if (viewModel.abreCheck) {
         FourPhaseBoss(
             name = viewModel.abrelshud.name,
-            totalGold = viewModel.totalGold,
+            totalGold = viewModel.abrelshud.totalGold,
 
             phaseOneLevel = viewModel.abrelshud.onePhase.level,
             phaseOneSMC = viewModel.abrelshud.onePhase.seeMoreCheck,
@@ -286,7 +286,7 @@ fun CommandRaid(
     if (viewModel.illiCheck) {
         ThreePhaseBoss(
             name = viewModel.illiakan.name,
-            totalGold = viewModel.totalGold,
+            totalGold = viewModel.illiakan.totalGold,
 
             phaseOneLevel = viewModel.illiakan.onePhase.level,
             phaseOneSMC = viewModel.illiakan.onePhase.seeMoreCheck,
@@ -341,7 +341,7 @@ fun CommandRaid(
     if (viewModel.kamenCheck) {
         FourPhaseBoss(
             name = viewModel.kamen.name,
-            totalGold = viewModel.totalGold,
+            totalGold = viewModel.kamen.totalGold,
 
             phaseOneLevel = viewModel.kamen.onePhase.level,
             phaseOneSMC = viewModel.kamen.onePhase.seeMoreCheck,

@@ -29,7 +29,7 @@ fun EpicRaid(viewModel: EpicRaidVM) {
     if (viewModel.beheCheck) {
         twoPhaseBoss(
             name = viewModel.behemoth.name,
-            totalGold = viewModel.totalGold,
+            totalGold = viewModel.behemoth.totalGold,
 
             phaseOneLevel = viewModel.behemoth.onePhase.level,
             phaseOneSMC = viewModel.behemoth.onePhase.seeMoreCheck,

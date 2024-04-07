@@ -40,7 +40,7 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
     if (viewModel.kayangelCheck) {
         ThreePhaseBoss(
             name = viewModel.kayangel.name,
-            totalGold = viewModel.totalGold,
+            totalGold = viewModel.kayangel.totalGold,
 
             phaseOneLevel = viewModel.kayangel.onePhase.level,
             phaseOneSMC = viewModel.kayangel.onePhase.seeMoreCheck,
@@ -95,7 +95,7 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
     if (viewModel.ivoryCheck) {
         FourPhaseBoss(
             name = viewModel.ivoryTower.name,
-            totalGold = viewModel.totalGold,
+            totalGold = viewModel.ivoryTower.totalGold,
 
             phaseOneLevel = viewModel.ivoryTower.onePhase.level,
             phaseOneSMC = viewModel.ivoryTower.onePhase.seeMoreCheck,

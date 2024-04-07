@@ -29,7 +29,7 @@ fun KazerothRaid(viewModel: KazerothRaidVM) {
     if (viewModel.echiCheck) {
         twoPhaseBoss(
             name = viewModel.echidna.name,
-            totalGold = viewModel.totalGold,
+            totalGold = viewModel.echidna.totalGold,
 
             phaseOneLevel = viewModel.echidna.onePhase.level,
             phaseOneSMC = viewModel.echidna.onePhase.seeMoreCheck,
