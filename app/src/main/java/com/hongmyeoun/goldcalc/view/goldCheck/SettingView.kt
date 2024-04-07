@@ -45,6 +45,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.AbyssDungeon
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.EpicRaid
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.KazerothRaid
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
@@ -57,10 +58,10 @@ import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
 fun Setting(
     navController: NavHostController,
     viewModel: GoldSettingVM,
+    adVM: AbyssDungeonVM,
     kzVM: KazerothRaidVM,
     epVM: EpicRaidVM,
     cbVM: CommandBossVM = viewModel(),
-    adVM: AbyssDungeonVM = viewModel(),
 ) {
     val height = if (viewModel.expanded) Modifier.wrapContentHeight() else Modifier.height(65.dp)
     val arrowIcon = if (viewModel.expanded) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp
@@ -255,6 +256,7 @@ fun Setting(
                             Button(
                                 onClick = {
                                     viewModel.onDoneClick(
+                                        abyssDungeon = adVM,
                                         kazerothRaid = kzVM,
                                         epicRaid = epVM
                                     )
@@ -288,13 +290,13 @@ fun Setting(
 //                    }
                 }
                 "어비스 던전" -> {
-//                    RaidCard(
-//                        raidType = "어비스 던전",
-//                        raidImg = Icons.Default.AccountBox,
-//                        totalGold = adVM.totalGold,
-//                    ) {
-//                        AbyssDungeon(viewModel = adVM)
-//                    }
+                    RaidCard(
+                        raidType = "어비스 던전",
+                        raidImg = Icons.Default.AccountBox,
+                        totalGold = adVM.totalGold,
+                    ) {
+                        AbyssDungeon(viewModel = adVM)
+                    }
                 }
                 "카제로스" -> {
                     RaidCard(

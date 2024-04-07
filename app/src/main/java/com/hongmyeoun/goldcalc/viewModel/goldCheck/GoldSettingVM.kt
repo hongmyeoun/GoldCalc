@@ -29,6 +29,7 @@ class GoldSettingVM(private val repository: CharacterRepository, charName: Strin
     }
 
     fun onDoneClick(
+        abyssDungeon: AbyssDungeonVM,
         kazerothRaid: KazerothRaidVM,
         epicRaid: EpicRaidVM,
         ) {
@@ -158,51 +159,51 @@ class GoldSettingVM(private val repository: CharacterRepository, charName: Strin
     //                        isCheck = ,
     //                    ),
     //                ),
-    //                abyssDungeon = listOf(
-    //                    originalCheckList.abyssDungeon[0].copy( // 카양겔
-    //                        phases = listOf(
-    //                            originalCheckList.abyssDungeon[0].phases[0].copy( // 1페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck =
-    //                            ),
-    //                            originalCheckList.abyssDungeon[0].phases[1].copy( // 2페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck =
-    //                            ),
-    //                            originalCheckList.abyssDungeon[0].phases[2].copy( // 3페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck =
-    //                            ),
-    //                        )
-    //                    ),
-    //                    originalCheckList.abyssDungeon[1].copy( // 상아탑
-    //                        phases = listOf(
-    //                            originalCheckList.abyssDungeon[1].phases[0].copy( // 1페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck =
-    //                            ),
-    //                            originalCheckList.abyssDungeon[1].phases[1].copy( // 2페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck =
-    //                            ),
-    //                            originalCheckList.abyssDungeon[1].phases[2].copy( // 3페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck =
-    //                            ),
-    //                            originalCheckList.abyssDungeon[1].phases[3].copy( // 4페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck =
-    //                            ),
-    //                        )
-    //                    )
-    //                ),
+            abyssDungeon = listOf(
+                originalCheckList.abyssDungeon[0].copy( // 카양겔
+                    phases = listOf(
+                        originalCheckList.abyssDungeon[0].phases[0].copy( // 1페
+                            difficulty = abyssDungeon.kayangel.onePhase.level,
+                            isClear = abyssDungeon.kayangel.onePhase.clearCheck,
+                            mCheck = abyssDungeon.kayangel.onePhase.seeMoreCheck
+                        ),
+                        originalCheckList.abyssDungeon[0].phases[1].copy( // 2페
+                            difficulty = abyssDungeon.kayangel.twoPhase.level,
+                            isClear = abyssDungeon.kayangel.twoPhase.clearCheck,
+                            mCheck = abyssDungeon.kayangel.twoPhase.seeMoreCheck
+                        ),
+                        originalCheckList.abyssDungeon[0].phases[2].copy( // 3페
+                            difficulty = abyssDungeon.kayangel.threePhase.level,
+                            isClear = abyssDungeon.kayangel.threePhase.clearCheck,
+                            mCheck = abyssDungeon.kayangel.threePhase.seeMoreCheck
+                        ),
+                    )
+                ),
+                originalCheckList.abyssDungeon[1].copy( // 상아탑
+                    phases = listOf(
+                        originalCheckList.abyssDungeon[1].phases[0].copy( // 1페
+                            difficulty = abyssDungeon.ivoryTower.onePhase.level,
+                            isClear = abyssDungeon.ivoryTower.onePhase.clearCheck,
+                            mCheck = abyssDungeon.ivoryTower.onePhase.seeMoreCheck
+                        ),
+                        originalCheckList.abyssDungeon[1].phases[1].copy( // 2페
+                            difficulty = abyssDungeon.ivoryTower.twoPhase.level,
+                            isClear = abyssDungeon.ivoryTower.twoPhase.clearCheck,
+                            mCheck = abyssDungeon.ivoryTower.twoPhase.seeMoreCheck
+                        ),
+                        originalCheckList.abyssDungeon[1].phases[2].copy( // 3페
+                            difficulty = abyssDungeon.ivoryTower.threePhase.level,
+                            isClear = abyssDungeon.ivoryTower.threePhase.clearCheck,
+                            mCheck = abyssDungeon.ivoryTower.threePhase.seeMoreCheck
+                        ),
+                        originalCheckList.abyssDungeon[1].phases[3].copy( // 4페
+                            difficulty = abyssDungeon.ivoryTower.fourPhase.level,
+                            isClear = abyssDungeon.ivoryTower.fourPhase.clearCheck,
+                            mCheck = abyssDungeon.ivoryTower.fourPhase.seeMoreCheck
+                        ),
+                    )
+                )
+            ),
             kazeroth = listOf(
                 originalCheckList.kazeroth[0].copy( // 에키드나
                     phases = listOf(
