@@ -294,19 +294,12 @@ fun Setting(
         ) {
             when (viewModel.selectedTab) {
                 "군단장" -> {
-//                    RaidCard(
-//                        raidType = "군단장 레이드",
-//                        raidImg = Icons.Default.AccountBox,
-//                        totalGold = cbVM.totalGold
-//                    ) {
-//                        CommandRaid(viewModel = cbVM)
-//                    }
                     RaidCard(
-                        raidType = "카제로스 레이드",
+                        raidType = "군단장 레이드",
                         raidImg = Icons.Default.AccountBox,
-                        totalGold = kzVM.totalGold
+                        totalGold = cbVM.totalGold
                     ) {
-                        KazerothRaid(viewModel = kzVM)
+                        CommandRaid(viewModel = cbVM)
                     }
                 }
                 "어비스 던전" -> {
@@ -319,19 +312,12 @@ fun Setting(
                     }
                 }
                 "카제로스" -> {
-//                    RaidCard(
-//                        raidType = "카제로스 레이드",
-//                        raidImg = Icons.Default.AccountBox,
-//                        totalGold = kzVM.totalGold
-//                    ) {
-//                        KazerothRaid(viewModel = kzVM)
-//                    }
                     RaidCard(
-                        raidType = "군단장 레이드",
+                        raidType = "카제로스 레이드",
                         raidImg = Icons.Default.AccountBox,
-                        totalGold = cbVM.totalGold
+                        totalGold = kzVM.totalGold
                     ) {
-                        CommandRaid(viewModel = cbVM)
+                        KazerothRaid(viewModel = kzVM)
                     }
                 }
                 "에픽" -> {

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import com.hongmyeoun.goldcalc.view.goldCheck.FourPhaseBoss
 import com.hongmyeoun.goldcalc.view.goldCheck.ThreePhaseBoss
@@ -16,17 +15,6 @@ import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
 fun CommandRaid(
     viewModel: CommandBossVM,
 ) {
-    LaunchedEffect(
-        viewModel.valtanTG,
-        viewModel.biakissTG,
-        viewModel.koukuSatonTG,
-        viewModel.abrelshudTG,
-        viewModel.illiakanTG,
-        viewModel.kamenTG
-    ) {
-        viewModel.sumGold()
-    }
-
     Row(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier.weight(1f)) {
             Text(text = "발탄")
@@ -99,15 +87,15 @@ fun CommandRaid(
             phaseOneCC = viewModel.valtan.onePhase.clearCheck,
             onOnePhaseLevelClicked = {
                 viewModel.valtan.onePhase.onLevelClicked()
-                viewModel.valtanTotal()
+                viewModel.sumGold()
             },
             onOnePhaseClearCheckBoxChecked = {
                 viewModel.valtan.onePhase.onClearCheckBoxClicked(it)
-                viewModel.valtanTotal()
+                viewModel.sumGold()
             },
             onOnePhaseSeeMoreCheckBoxChecked = {
                 viewModel.valtan.onePhase.onSeeMoreCheckBoxClicked(it)
-                viewModel.valtanTotal()
+                viewModel.sumGold()
             },
 
             phaseTwoLevel = viewModel.valtan.twoPhase.level,
@@ -115,15 +103,15 @@ fun CommandRaid(
             phaseTwoCC = viewModel.valtan.twoPhase.clearCheck,
             onTwoPhaseLevelClicked = {
                 viewModel.valtan.twoPhase.onLevelClicked()
-                viewModel.valtanTotal()
+                viewModel.sumGold()
             },
             onTwoPhaseClearCheckBoxChecked = {
                 viewModel.valtan.twoPhase.onClearCheckBoxClicked(it)
-                viewModel.valtanTotal()
+                viewModel.sumGold()
             },
             onTwoPhaseSeeMoreCheckBoxChecked = {
                 viewModel.valtan.twoPhase.onSeeMoreCheckBoxClicked(it)
-                viewModel.valtanTotal()
+                viewModel.sumGold()
             },
         )
     }
@@ -138,15 +126,15 @@ fun CommandRaid(
             phaseOneCC = viewModel.biackiss.onePhase.clearCheck,
             onOnePhaseLevelClicked = {
                 viewModel.biackiss.onePhase.onLevelClicked()
-                viewModel.biackissTotal()
+                viewModel.sumGold()
             },
             onOnePhaseClearCheckBoxChecked = {
                 viewModel.biackiss.onePhase.onClearCheckBoxClicked(it)
-                viewModel.biackissTotal()
+                viewModel.sumGold()
             },
             onOnePhaseSeeMoreCheckBoxChecked = {
                 viewModel.biackiss.onePhase.onSeeMoreCheckBoxClicked(it)
-                viewModel.biackissTotal()
+                viewModel.sumGold()
             },
 
             phaseTwoLevel = viewModel.biackiss.twoPhase.level,
@@ -154,15 +142,15 @@ fun CommandRaid(
             phaseTwoCC = viewModel.biackiss.twoPhase.clearCheck,
             onTwoPhaseLevelClicked = {
                 viewModel.biackiss.twoPhase.onLevelClicked()
-                viewModel.biackissTotal()
+                viewModel.sumGold()
             },
             onTwoPhaseClearCheckBoxChecked = {
                 viewModel.biackiss.twoPhase.onClearCheckBoxClicked(it)
-                viewModel.biackissTotal()
+                viewModel.sumGold()
             },
             onTwoPhaseSeeMoreCheckBoxChecked = {
                 viewModel.biackiss.twoPhase.onSeeMoreCheckBoxClicked(it)
-                viewModel.biackissTotal()
+                viewModel.sumGold()
             },
         )
     }
@@ -177,15 +165,15 @@ fun CommandRaid(
             phaseOneCC = viewModel.koukuSaton.onePhase.clearCheck,
             onOnePhaseLevelClicked = {
                 viewModel.koukuSaton.onePhase.onLevelClicked()
-                viewModel.koukuSatonTotal()
+                viewModel.sumGold()
             },
             onOnePhaseClearCheckBoxChecked = {
                 viewModel.koukuSaton.onePhase.onClearCheckBoxClicked(it)
-                viewModel.koukuSatonTotal()
+                viewModel.sumGold()
             },
             onOnePhaseSeeMoreCheckBoxChecked = {
                 viewModel.koukuSaton.onePhase.onSeeMoreCheckBoxClicked(it)
-                viewModel.koukuSatonTotal()
+                viewModel.sumGold()
             },
 
             phaseTwoLevel = viewModel.koukuSaton.twoPhase.level,
@@ -193,15 +181,15 @@ fun CommandRaid(
             phaseTwoCC = viewModel.koukuSaton.twoPhase.clearCheck,
             onTwoPhaseLevelClicked = {
                 viewModel.koukuSaton.twoPhase.onLevelClicked()
-                viewModel.koukuSatonTotal()
+                viewModel.sumGold()
             },
             onTwoPhaseClearCheckBoxChecked = {
                 viewModel.koukuSaton.twoPhase.onClearCheckBoxClicked(it)
-                viewModel.koukuSatonTotal()
+                viewModel.sumGold()
             },
             onTwoPhaseSeeMoreCheckBoxChecked = {
                 viewModel.koukuSaton.twoPhase.onSeeMoreCheckBoxClicked(it)
-                viewModel.koukuSatonTotal()
+                viewModel.sumGold()
             },
 
             phaseThreeLevel = viewModel.koukuSaton.threePhase.level,
@@ -209,15 +197,15 @@ fun CommandRaid(
             phaseThreeCC = viewModel.koukuSaton.threePhase.clearCheck,
             onThreePhaseLevelClicked = {
                 viewModel.koukuSaton.threePhase.onLevelClicked()
-                viewModel.koukuSatonTotal()
+                viewModel.sumGold()
             },
             onThreePhaseClearCheckBoxChecked = {
                 viewModel.koukuSaton.threePhase.onClearCheckBoxClicked(it)
-                viewModel.koukuSatonTotal()
+                viewModel.sumGold()
             },
             onThreePhaseSeeMoreCheckBoxChecked = {
                 viewModel.koukuSaton.threePhase.onSeeMoreCheckBoxClicked(it)
-                viewModel.koukuSatonTotal()
+                viewModel.sumGold()
             }
         )
     }
@@ -232,15 +220,15 @@ fun CommandRaid(
             phaseOneCC = viewModel.abrelshud.onePhase.clearCheck,
             onOnePhaseLevelClicked = {
                 viewModel.abrelshud.onePhase.onLevelClicked()
-                viewModel.abrelshudTotal()
+                viewModel.sumGold()
             },
             onOnePhaseClearCheckBoxChecked = {
                 viewModel.abrelshud.onePhase.onClearCheckBoxClicked(it)
-                viewModel.abrelshudTotal()
+                viewModel.sumGold()
             },
             onOnePhaseSeeMoreCheckBoxChecked = {
                 viewModel.abrelshud.onePhase.onSeeMoreCheckBoxClicked(it)
-                viewModel.abrelshudTotal()
+                viewModel.sumGold()
             },
 
             phaseTwoLevel = viewModel.abrelshud.twoPhase.level,
@@ -248,15 +236,15 @@ fun CommandRaid(
             phaseTwoCC = viewModel.abrelshud.twoPhase.clearCheck,
             onTwoPhaseLevelClicked = {
                 viewModel.abrelshud.twoPhase.onLevelClicked()
-                viewModel.abrelshudTotal()
+                viewModel.sumGold()
             },
             onTwoPhaseClearCheckBoxChecked = {
                 viewModel.abrelshud.twoPhase.onClearCheckBoxClicked(it)
-                viewModel.abrelshudTotal()
+                viewModel.sumGold()
             },
             onTwoPhaseSeeMoreCheckBoxChecked = {
                 viewModel.abrelshud.twoPhase.onSeeMoreCheckBoxClicked(it)
-                viewModel.abrelshudTotal()
+                viewModel.sumGold()
             },
 
             phaseThreeLevel = viewModel.abrelshud.threePhase.level,
@@ -264,15 +252,15 @@ fun CommandRaid(
             phaseThreeCC = viewModel.abrelshud.threePhase.clearCheck,
             onThreePhaseLevelClicked = {
                 viewModel.abrelshud.threePhase.onLevelClicked()
-                viewModel.abrelshudTotal()
+                viewModel.sumGold()
             },
             onThreePhaseClearCheckBoxChecked = {
                 viewModel.abrelshud.threePhase.onClearCheckBoxClicked(it)
-                viewModel.abrelshudTotal()
+                viewModel.sumGold()
             },
             onThreePhaseSeeMoreCheckBoxChecked = {
                 viewModel.abrelshud.threePhase.onSeeMoreCheckBoxClicked(it)
-                viewModel.abrelshudTotal()
+                viewModel.sumGold()
             },
 
             phaseFourLevel = viewModel.abrelshud.fourPhase.level,
@@ -280,15 +268,15 @@ fun CommandRaid(
             phaseFourCC = viewModel.abrelshud.fourPhase.clearCheck,
             onFourPhaseLevelClicked = {
                 viewModel.abrelshud.fourPhase.onLevelClicked()
-                viewModel.abrelshudTotal()
+                viewModel.sumGold()
             },
             onFourPhaseClearCheckBoxChecked = {
                 viewModel.abrelshud.fourPhase.onClearCheckBoxClicked(it)
-                viewModel.abrelshudTotal()
+                viewModel.sumGold()
             },
             onFourPhaseSeeMoreCheckBoxChecked = {
                 viewModel.abrelshud.fourPhase.onSeeMoreCheckBoxClicked(it)
-                viewModel.abrelshudTotal()
+                viewModel.sumGold()
             }
         )
     }
@@ -303,15 +291,15 @@ fun CommandRaid(
             phaseOneCC = viewModel.illiakan.onePhase.clearCheck,
             onOnePhaseLevelClicked = {
                 viewModel.illiakan.onePhase.onLevelClicked()
-                viewModel.illiakanTotal()
+                viewModel.sumGold()
             },
             onOnePhaseClearCheckBoxChecked = {
                 viewModel.illiakan.onePhase.onClearCheckBoxClicked(it)
-                viewModel.illiakanTotal()
+                viewModel.sumGold()
             },
             onOnePhaseSeeMoreCheckBoxChecked = {
                 viewModel.illiakan.onePhase.onSeeMoreCheckBoxClicked(it)
-                viewModel.illiakanTotal()
+                viewModel.sumGold()
             },
 
             phaseTwoLevel = viewModel.illiakan.twoPhase.level,
@@ -319,15 +307,15 @@ fun CommandRaid(
             phaseTwoCC = viewModel.illiakan.twoPhase.clearCheck,
             onTwoPhaseLevelClicked = {
                 viewModel.illiakan.twoPhase.onLevelClicked()
-                viewModel.illiakanTotal()
+                viewModel.sumGold()
             },
             onTwoPhaseClearCheckBoxChecked = {
                 viewModel.illiakan.twoPhase.onClearCheckBoxClicked(it)
-                viewModel.illiakanTotal()
+                viewModel.sumGold()
             },
             onTwoPhaseSeeMoreCheckBoxChecked = {
                 viewModel.illiakan.twoPhase.onSeeMoreCheckBoxClicked(it)
-                viewModel.illiakanTotal()
+                viewModel.sumGold()
             },
 
             phaseThreeLevel = viewModel.illiakan.threePhase.level,
@@ -335,15 +323,15 @@ fun CommandRaid(
             phaseThreeCC = viewModel.illiakan.threePhase.clearCheck,
             onThreePhaseLevelClicked = {
                 viewModel.illiakan.threePhase.onLevelClicked()
-                viewModel.illiakanTotal()
+                viewModel.sumGold()
             },
             onThreePhaseClearCheckBoxChecked = {
                 viewModel.illiakan.threePhase.onClearCheckBoxClicked(it)
-                viewModel.illiakanTotal()
+                viewModel.sumGold()
             },
             onThreePhaseSeeMoreCheckBoxChecked = {
                 viewModel.illiakan.threePhase.onSeeMoreCheckBoxClicked(it)
-                viewModel.illiakanTotal()
+                viewModel.sumGold()
             }
         )
     }
@@ -358,15 +346,15 @@ fun CommandRaid(
             phaseOneCC = viewModel.kamen.onePhase.clearCheck,
             onOnePhaseLevelClicked = {
                 viewModel.kamen.onePhase.onLevelClicked()
-                viewModel.kamenTotal()
+                viewModel.sumGold()
             },
             onOnePhaseClearCheckBoxChecked = {
                 viewModel.kamen.onePhase.onClearCheckBoxClicked(it)
-                viewModel.kamenTotal()
+                viewModel.sumGold()
             },
             onOnePhaseSeeMoreCheckBoxChecked = {
                 viewModel.kamen.onePhase.onSeeMoreCheckBoxClicked(it)
-                viewModel.kamenTotal()
+                viewModel.sumGold()
             },
 
             phaseTwoLevel = viewModel.kamen.twoPhase.level,
@@ -374,15 +362,15 @@ fun CommandRaid(
             phaseTwoCC = viewModel.kamen.twoPhase.clearCheck,
             onTwoPhaseLevelClicked = {
                 viewModel.kamen.twoPhase.onLevelClicked()
-                viewModel.kamenTotal()
+                viewModel.sumGold()
             },
             onTwoPhaseClearCheckBoxChecked = {
                 viewModel.kamen.twoPhase.onClearCheckBoxClicked(it)
-                viewModel.kamenTotal()
+                viewModel.sumGold()
             },
             onTwoPhaseSeeMoreCheckBoxChecked = {
                 viewModel.kamen.twoPhase.onSeeMoreCheckBoxClicked(it)
-                viewModel.kamenTotal()
+                viewModel.sumGold()
             },
 
             phaseThreeLevel = viewModel.kamen.threePhase.level,
@@ -390,15 +378,15 @@ fun CommandRaid(
             phaseThreeCC = viewModel.kamen.threePhase.clearCheck,
             onThreePhaseLevelClicked = {
                 viewModel.kamen.threePhase.onLevelClicked()
-                viewModel.kamenTotal()
+                viewModel.sumGold()
             },
             onThreePhaseClearCheckBoxChecked = {
                 viewModel.kamen.threePhase.onClearCheckBoxClicked(it)
-                viewModel.kamenTotal()
+                viewModel.sumGold()
             },
             onThreePhaseSeeMoreCheckBoxChecked = {
                 viewModel.kamen.threePhase.onSeeMoreCheckBoxClicked(it)
-                viewModel.kamenTotal()
+                viewModel.sumGold()
             },
 
             phaseFourLevel = viewModel.kamen.fourPhase.level,
@@ -406,15 +394,15 @@ fun CommandRaid(
             phaseFourCC = viewModel.kamen.fourPhase.clearCheck,
             onFourPhaseLevelClicked = {
                 viewModel.kamen.fourPhase.onLevelClicked()
-                viewModel.kamenTotal()
+                viewModel.sumGold()
             },
             onFourPhaseClearCheckBoxChecked = {
                 viewModel.kamen.fourPhase.onClearCheckBoxClicked(it)
-                viewModel.kamenTotal()
+                viewModel.sumGold()
             },
             onFourPhaseSeeMoreCheckBoxChecked = {
                 viewModel.kamen.fourPhase.onSeeMoreCheckBoxClicked(it)
-                viewModel.kamenTotal()
+                viewModel.sumGold()
             }
         )
     }

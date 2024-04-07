@@ -158,6 +158,12 @@ class Valtan(character: Character?) {
         clearGoldH = clearGold[3]
     )
 
+    var totalGold = onePhase.totalGold + twoPhase.totalGold
+
+    fun totalGold() {
+        totalGold = onePhase.totalGold + twoPhase.totalGold
+    }
+
 }
 
 class Biackiss(character: Character?) {
@@ -198,6 +204,13 @@ class Biackiss(character: Character?) {
         clearGoldN = clearGold[1],
         clearGoldH = clearGold[3]
     )
+
+    var totalGold = onePhase.totalGold + twoPhase.totalGold
+
+    fun totalGold() {
+        totalGold = onePhase.totalGold + twoPhase.totalGold
+    }
+
 }
 
 class KoukuSaton(character: Character?) {
@@ -253,6 +266,13 @@ class KoukuSaton(character: Character?) {
         clearGoldN = clearGold[2],
         clearGoldH = clearGold[5]
     )
+
+    var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
+
+    fun totalGold() {
+        totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
+    }
+
 }
 
 class Abrelshud(character: Character?) {
@@ -323,6 +343,13 @@ class Abrelshud(character: Character?) {
         clearGoldN = clearGold[3],
         clearGoldH = clearGold[7]
     )
+
+    var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold + fourPhase.totalGold
+
+    fun totalGold() {
+        totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold + fourPhase.totalGold
+    }
+
 }
 
 class Illiakan(character: Character?) {
@@ -378,6 +405,13 @@ class Illiakan(character: Character?) {
         clearGoldN = clearGold[2],
         clearGoldH = clearGold[5]
     )
+
+    var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
+
+    fun totalGold() {
+        totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
+    }
+
 }
 
 class Kamen(character: Character?) {
@@ -448,4 +482,11 @@ class Kamen(character: Character?) {
         clearGoldN = clearGold[3],
         clearGoldH = clearGold[7]
     )
+
+    var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold + fourPhase.totalGold
+
+    fun totalGold() {
+        totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold + fourPhase.totalGold
+    }
+
 }
