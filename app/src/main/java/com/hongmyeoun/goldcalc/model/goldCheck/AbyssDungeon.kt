@@ -103,6 +103,12 @@ class Kayangel(character: Character?) {
         clearGoldH = clearGold[5]
     )
 
+    var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
+
+    fun totalGold() {
+        totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
+    }
+
 }
 
 class IvoryTower(character: Character?) {
@@ -171,5 +177,11 @@ class IvoryTower(character: Character?) {
         clearGoldN = clearGold[3],
         clearGoldH = clearGold[7]
     )
+
+    var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold + fourPhase.totalGold
+
+    fun totalGold() {
+        totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold + fourPhase.totalGold
+    }
 
 }

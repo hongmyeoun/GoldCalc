@@ -10,16 +10,17 @@ import com.hongmyeoun.goldcalc.model.roomDB.Character
 class KazerothRaidVM(val character: Character?) : ViewModel() {
     private val kzModel = KazerothRaidModel(character)
 
+    val echidna = kzModel.echidna
+
     var totalGold by mutableStateOf(0)
+
     fun sumGold() {
-        totalGold = echidnaTG
+        echidna.totalGold()
+        totalGold = echidna.totalGold
     }
 
-    val echidna = kzModel.echidna
-    var echidnaTG by mutableStateOf(echidna.onePhase.totalGold + echidna.twoPhase.totalGold)
-
-    fun echidnaTotal() {
-        echidnaTG = echidna.onePhase.totalGold + echidna.twoPhase.totalGold
+    init {
+        sumGold()
     }
 
 }

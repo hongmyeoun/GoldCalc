@@ -1,16 +1,11 @@
 package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import com.hongmyeoun.goldcalc.view.goldCheck.twoPhaseBoss
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
 
 @Composable
 fun KazerothRaid(viewModel: KazerothRaidVM) {
-
-    LaunchedEffect(viewModel.echidnaTG) {
-        viewModel.sumGold()
-    }
 
     twoPhaseBoss(
         name = viewModel.echidna.name,
@@ -21,15 +16,15 @@ fun KazerothRaid(viewModel: KazerothRaidVM) {
         phaseOneCC = viewModel.echidna.onePhase.clearCheck,
         onOnePhaseLevelClicked = {
             viewModel.echidna.onePhase.onLevelClicked()
-            viewModel.echidnaTotal()
+            viewModel.sumGold()
         },
         onOnePhaseClearCheckBoxChecked = {
             viewModel.echidna.onePhase.onClearCheckBoxClicked(it)
-            viewModel.echidnaTotal()
+            viewModel.sumGold()
         },
         onOnePhaseSeeMoreCheckBoxChecked = {
             viewModel.echidna.onePhase.onSeeMoreCheckBoxClicked(it)
-            viewModel.echidnaTotal()
+            viewModel.sumGold()
         },
 
         phaseTwoLevel = viewModel.echidna.twoPhase.level,
@@ -37,15 +32,15 @@ fun KazerothRaid(viewModel: KazerothRaidVM) {
         phaseTwoCC = viewModel.echidna.twoPhase.clearCheck,
         onTwoPhaseLevelClicked = {
             viewModel.echidna.twoPhase.onLevelClicked()
-            viewModel.echidnaTotal()
+            viewModel.sumGold()
         },
         onTwoPhaseClearCheckBoxChecked = {
             viewModel.echidna.twoPhase.onClearCheckBoxClicked(it)
-            viewModel.echidnaTotal()
+            viewModel.sumGold()
         },
         onTwoPhaseSeeMoreCheckBoxChecked = {
             viewModel.echidna.twoPhase.onSeeMoreCheckBoxClicked(it)
-            viewModel.echidnaTotal()
+            viewModel.sumGold()
         },
     )
 

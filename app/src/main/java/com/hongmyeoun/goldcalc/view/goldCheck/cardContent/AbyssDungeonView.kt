@@ -1,17 +1,12 @@
 package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import com.hongmyeoun.goldcalc.view.goldCheck.FourPhaseBoss
 import com.hongmyeoun.goldcalc.view.goldCheck.ThreePhaseBoss
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
 
 @Composable
 fun AbyssDungeon(viewModel: AbyssDungeonVM) {
-
-    LaunchedEffect(viewModel.kayangelTG, viewModel.ivoryTowerTG) {
-        viewModel.sumGold()
-    }
 
     ThreePhaseBoss(
         name = viewModel.kayangel.name,
@@ -22,15 +17,15 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
         phaseOneCC = viewModel.kayangel.onePhase.clearCheck,
         onOnePhaseLevelClicked = {
             viewModel.kayangel.onePhase.onLevelClicked()
-            viewModel.kayangelTotal()
+            viewModel.sumGold()
         },
         onOnePhaseClearCheckBoxChecked = {
             viewModel.kayangel.onePhase.onClearCheckBoxClicked(it)
-            viewModel.kayangelTotal()
+            viewModel.sumGold()
         },
         onOnePhaseSeeMoreCheckBoxChecked = {
             viewModel.kayangel.onePhase.onSeeMoreCheckBoxClicked(it)
-            viewModel.kayangelTotal()
+            viewModel.sumGold()
         },
 
         phaseTwoLevel = viewModel.kayangel.twoPhase.level,
@@ -38,15 +33,15 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
         phaseTwoCC = viewModel.kayangel.twoPhase.clearCheck,
         onTwoPhaseLevelClicked = {
             viewModel.kayangel.twoPhase.onLevelClicked()
-            viewModel.kayangelTotal()
+            viewModel.sumGold()
         },
         onTwoPhaseClearCheckBoxChecked = {
             viewModel.kayangel.twoPhase.onClearCheckBoxClicked(it)
-            viewModel.kayangelTotal()
+            viewModel.sumGold()
         },
         onTwoPhaseSeeMoreCheckBoxChecked = {
             viewModel.kayangel.twoPhase.onSeeMoreCheckBoxClicked(it)
-            viewModel.kayangelTotal()
+            viewModel.sumGold()
         },
 
         phaseThreeLevel = viewModel.kayangel.threePhase.level,
@@ -54,15 +49,15 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
         phaseThreeCC = viewModel.kayangel.threePhase.clearCheck,
         onThreePhaseLevelClicked = {
             viewModel.kayangel.threePhase.onLevelClicked()
-            viewModel.kayangelTotal()
+            viewModel.sumGold()
         },
         onThreePhaseClearCheckBoxChecked = {
             viewModel.kayangel.threePhase.onClearCheckBoxClicked(it)
-            viewModel.kayangelTotal()
+            viewModel.sumGold()
         },
         onThreePhaseSeeMoreCheckBoxChecked = {
             viewModel.kayangel.threePhase.onSeeMoreCheckBoxClicked(it)
-            viewModel.kayangelTotal()
+            viewModel.sumGold()
         }
     )
 
@@ -75,15 +70,15 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
         phaseOneCC = viewModel.ivoryTower.onePhase.clearCheck,
         onOnePhaseLevelClicked = {
             viewModel.ivoryTower.onePhase.onLevelClicked()
-            viewModel.ivoryTowerTotal()
+            viewModel.sumGold()
         },
         onOnePhaseClearCheckBoxChecked = {
             viewModel.ivoryTower.onePhase.onClearCheckBoxClicked(it)
-            viewModel.ivoryTowerTotal()
+            viewModel.sumGold()
         },
         onOnePhaseSeeMoreCheckBoxChecked = {
             viewModel.ivoryTower.onePhase.onSeeMoreCheckBoxClicked(it)
-            viewModel.ivoryTowerTotal()
+            viewModel.sumGold()
         },
 
         phaseTwoLevel = viewModel.ivoryTower.twoPhase.level,
@@ -91,15 +86,15 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
         phaseTwoCC = viewModel.ivoryTower.twoPhase.clearCheck,
         onTwoPhaseLevelClicked = {
             viewModel.ivoryTower.twoPhase.onLevelClicked()
-            viewModel.ivoryTowerTotal()
+            viewModel.sumGold()
         },
         onTwoPhaseClearCheckBoxChecked = {
             viewModel.ivoryTower.twoPhase.onClearCheckBoxClicked(it)
-            viewModel.ivoryTowerTotal()
+            viewModel.sumGold()
         },
         onTwoPhaseSeeMoreCheckBoxChecked = {
             viewModel.ivoryTower.twoPhase.onSeeMoreCheckBoxClicked(it)
-            viewModel.ivoryTowerTotal()
+            viewModel.sumGold()
         },
 
         phaseThreeLevel = viewModel.ivoryTower.threePhase.level,
@@ -107,15 +102,15 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
         phaseThreeCC = viewModel.ivoryTower.threePhase.clearCheck,
         onThreePhaseLevelClicked = {
             viewModel.ivoryTower.threePhase.onLevelClicked()
-            viewModel.ivoryTowerTotal()
+            viewModel.sumGold()
         },
         onThreePhaseClearCheckBoxChecked = {
             viewModel.ivoryTower.threePhase.onClearCheckBoxClicked(it)
-            viewModel.ivoryTowerTotal()
+            viewModel.sumGold()
         },
         onThreePhaseSeeMoreCheckBoxChecked = {
             viewModel.ivoryTower.threePhase.onSeeMoreCheckBoxClicked(it)
-            viewModel.ivoryTowerTotal()
+            viewModel.sumGold()
         },
 
         phaseFourLevel = viewModel.ivoryTower.fourPhase.level,
@@ -123,15 +118,15 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
         phaseFourCC = viewModel.ivoryTower.fourPhase.clearCheck,
         onFourPhaseLevelClicked = {
             viewModel.ivoryTower.fourPhase.onLevelClicked()
-            viewModel.ivoryTowerTotal()
+            viewModel.sumGold()
         },
         onFourPhaseClearCheckBoxChecked = {
             viewModel.ivoryTower.fourPhase.onClearCheckBoxClicked(it)
-            viewModel.ivoryTowerTotal()
+            viewModel.sumGold()
         },
         onFourPhaseSeeMoreCheckBoxChecked = {
             viewModel.ivoryTower.fourPhase.onSeeMoreCheckBoxClicked(it)
-            viewModel.ivoryTowerTotal()
+            viewModel.sumGold()
         }
     )
 }
