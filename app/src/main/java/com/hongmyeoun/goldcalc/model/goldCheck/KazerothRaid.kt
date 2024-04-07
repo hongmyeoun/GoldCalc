@@ -39,6 +39,8 @@ class Echidna(character: Character?) {
     private val seeMoreGold = KazerothRaid.ECHIDNA.getBossInfo("normal").first + KazerothRaid.ECHIDNA.getBossInfo("hard").first
     private val clearGold = KazerothRaid.ECHIDNA.getBossInfo("normal").second + KazerothRaid.ECHIDNA.getBossInfo("hard").second
 
+    var isChecked = character?.checkList?.kazeroth?.get(0)?.isCheck?:false
+
     private val getOnePhase = character?.checkList?.kazeroth?.get(0)?.phases?.get(0)
 
     private val onePhaseDifficulty = getOnePhase?.difficulty?:"노말"

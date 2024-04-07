@@ -39,6 +39,8 @@ class Behemoth(character: Character?) {
     private val seeMoreGold = EpicRaid.BEHEMOTH.getBossInfo("normal").first + EpicRaid.BEHEMOTH.getBossInfo("hard").first
     private val clearGold = EpicRaid.BEHEMOTH.getBossInfo("normal").second + EpicRaid.BEHEMOTH.getBossInfo("hard").second
 
+    var isChecked = character?.checkList?.epic?.get(0)?.isCheck?:false
+
     private val getOnePhase = character?.checkList?.epic?.get(0)?.phases?.get(0)
 
     private val onePhaseDifficulty = getOnePhase?.difficulty?:"노말"

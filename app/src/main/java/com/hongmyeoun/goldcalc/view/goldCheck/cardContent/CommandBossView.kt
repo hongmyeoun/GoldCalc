@@ -15,7 +15,9 @@ import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
 fun CommandRaid(
     viewModel: CommandBossVM,
 ) {
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row(
+        modifier = Modifier.fillMaxWidth()
+    ) {
         Row(modifier = Modifier.weight(1f)) {
             Text(text = "발탄")
             Checkbox(

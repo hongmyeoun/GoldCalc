@@ -25,4 +25,15 @@ class AbyssDungeonVM(val character: Character?): ViewModel() {
         sumGold()
     }
 
+    var kayangelCheck by mutableStateOf(kayangel.isChecked)
+    var ivoryCheck by mutableStateOf(ivoryTower.isChecked)
+
+    fun onKayangelCheck() {
+        kayangelCheck = !kayangelCheck
+    }
+
+    fun onIvoryCheck() {
+        ivoryCheck = !ivoryCheck
+    }
+
 }

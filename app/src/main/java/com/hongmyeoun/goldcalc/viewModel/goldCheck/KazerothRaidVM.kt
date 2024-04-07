@@ -23,4 +23,10 @@ class KazerothRaidVM(val character: Character?) : ViewModel() {
         sumGold()
     }
 
+    var echiCheck by mutableStateOf(echidna.isChecked)
+
+    fun onEchiCheck() {
+        echiCheck = !echiCheck
+    }
+
 }

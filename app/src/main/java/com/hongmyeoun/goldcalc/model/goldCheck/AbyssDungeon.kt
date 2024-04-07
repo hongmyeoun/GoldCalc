@@ -56,6 +56,8 @@ class Kayangel(character: Character?) {
     private val seeMoreGold = AbyssDungeon.KAYANGEL.getBossInfo("normal").first + AbyssDungeon.KAYANGEL.getBossInfo("hard").first
     private val clearGold = AbyssDungeon.KAYANGEL.getBossInfo("normal").second + AbyssDungeon.KAYANGEL.getBossInfo("hard").second
 
+    var isChecked = character?.checkList?.abyssDungeon?.get(0)?.isCheck?:false
+
     private val getOnePhase = character?.checkList?.abyssDungeon?.get(0)?.phases?.get(0)
 
     private val onePhaseDifficulty = getOnePhase?.difficulty?:"노말"
@@ -115,6 +117,8 @@ class IvoryTower(character: Character?) {
     val name = AbyssDungeon.IVORY_TOWER.boss
     private val seeMoreGold = AbyssDungeon.IVORY_TOWER.getBossInfo("normal").first + AbyssDungeon.IVORY_TOWER.getBossInfo("hard").first
     private val clearGold = AbyssDungeon.IVORY_TOWER.getBossInfo("normal").second + AbyssDungeon.IVORY_TOWER.getBossInfo("hard").second
+
+    var isChecked = character?.checkList?.abyssDungeon?.get(1)?.isCheck?:false
 
     private val getOnePhase = character?.checkList?.abyssDungeon?.get(1)?.phases?.get(0)
 
