@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +23,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedButton
@@ -31,6 +34,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,9 +57,12 @@ import com.hongmyeoun.goldcalc.view.goldCheck.Setting
 import com.hongmyeoun.goldcalc.view.search.CharacterDetailScreen
 import com.hongmyeoun.goldcalc.view.search.CharacterScreen
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
+import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,7 +94,22 @@ class MainActivity : ComponentActivity() {
                     composable("Check/{charName}"){
                         val charName = it.arguments?.getString("charName")?: "ERROR"
                         val gSVM = GoldSettingVM(repository.value!!, charName)
-                        Setting(navController, gSVM)
+                        val character by gSVM.character.collectAsState()
+
+                        var isLoading by remember { mutableStateOf(true) }
+
+                        if (isLoading) {
+                            LoadingScreen()
+                        } else {
+                            val kzVM = KazerothRaidVM(character)
+                            Setting(navController, gSVM, kzVM)
+                        }
+
+                        LaunchedEffect(Unit) {
+                            delay(1000) // 예시로 1초의 로딩 시간을 줍니다. 실제 필요한 시간에 맞게 조정하세요.
+                            isLoading = false // 데이터 로딩이 완료되면 로딩 상태를 false로 변경합니다.
+                        }
+
                     }
                     composable("Search"){
                         CharacterScreen(navController)
@@ -103,17 +125,34 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+fun LoadingScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Transparent),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator() // 프로그레스 바를 사용하여 로딩 상태를 표시합니다.
+    }
+}
+
+@Composable
 fun MainScreen(navController: NavHostController) {
     val context = LocalContext.current
     val db = remember { CharacterDB.getDB(context) }
     val dao = db.characterDao()
     val characterList by dao.getAll().collectAsState(initial = emptyList())
 
+    val scope = rememberCoroutineScope()
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
         items(characterList, key = { item -> item.name }){
-            CharacterCard(navController, it)
+            CharacterCard(navController, it) {
+                scope.launch(Dispatchers.IO) {
+                    dao.delete(it)
+                }
+            }
         }
         item {
             OutlinedButton(onClick = { navController.navigate("Search") }) {
@@ -126,7 +165,8 @@ fun MainScreen(navController: NavHostController) {
 @Composable
 fun CharacterCard(
     navController: NavHostController,
-    character: com.hongmyeoun.goldcalc.model.roomDB.Character
+    character: com.hongmyeoun.goldcalc.model.roomDB.Character,
+    onDelete: () -> Unit
 ) {
     val isDark = isSystemInDarkTheme()
     var progressPercentage by remember { mutableStateOf(0.0f) }
@@ -149,7 +189,12 @@ fun CharacterCard(
                 Text(text = character.serverName)
                 Row {
                     Text(text = character.name)
-                    Icon(imageVector = Icons.Default.Notifications, contentDescription = "골드체크")
+                    Icon(
+                        imageVector = Icons.Default.Notifications,
+                        contentDescription = "골드체크",
+                        modifier = Modifier
+                                .clickable { onDelete() }
+                    )
                     Icon(
                         imageVector = Icons.Default.Settings,
                         contentDescription = "설정",
