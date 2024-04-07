@@ -42,7 +42,8 @@ fun PhaseUI(
             text = "$phase 관문"
         )
         OutlinedButton(
-            onClick = { onLevelClicked() }
+            onClick = { onLevelClicked() },
+            enabled = clearCheck || moreCheck
         ) {
             Text(text = difficulty)
         }
