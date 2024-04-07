@@ -1,17 +1,11 @@
 package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import com.hongmyeoun.goldcalc.view.goldCheck.twoPhaseBoss
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
 
 @Composable
 fun EpicRaid(viewModel: EpicRaidVM) {
-
-    LaunchedEffect(viewModel.behemothTG) {
-        viewModel.sumGold()
-    }
-
     twoPhaseBoss(
         name = viewModel.behemoth.name,
         totalGold = viewModel.totalGold,
@@ -21,15 +15,15 @@ fun EpicRaid(viewModel: EpicRaidVM) {
         phaseOneCC = viewModel.behemoth.onePhase.clearCheck,
         onOnePhaseLevelClicked = {
             viewModel.behemoth.onePhase.onLevelClicked()
-            viewModel.behemothTotal()
+            viewModel.sumGold()
         },
         onOnePhaseClearCheckBoxChecked = {
             viewModel.behemoth.onePhase.onClearCheckBoxClicked(it)
-            viewModel.behemothTotal()
+            viewModel.sumGold()
         },
         onOnePhaseSeeMoreCheckBoxChecked = {
             viewModel.behemoth.onePhase.onSeeMoreCheckBoxClicked(it)
-            viewModel.behemothTotal()
+            viewModel.sumGold()
         },
 
         phaseTwoLevel = viewModel.behemoth.twoPhase.level,
@@ -37,15 +31,15 @@ fun EpicRaid(viewModel: EpicRaidVM) {
         phaseTwoCC = viewModel.behemoth.twoPhase.clearCheck,
         onTwoPhaseLevelClicked = {
             viewModel.behemoth.twoPhase.onLevelClicked()
-            viewModel.behemothTotal()
+            viewModel.sumGold()
         },
         onTwoPhaseClearCheckBoxChecked = {
             viewModel.behemoth.twoPhase.onClearCheckBoxClicked(it)
-            viewModel.behemothTotal()
+            viewModel.sumGold()
         },
         onTwoPhaseSeeMoreCheckBoxChecked = {
             viewModel.behemoth.twoPhase.onSeeMoreCheckBoxClicked(it)
-            viewModel.behemothTotal()
+            viewModel.sumGold()
         },
     )
 

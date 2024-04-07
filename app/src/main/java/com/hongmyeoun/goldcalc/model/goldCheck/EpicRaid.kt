@@ -70,4 +70,11 @@ class Behemoth(character: Character?) {
         clearGoldN = clearGold[1],
         clearGoldH = clearGold[3]
     )
+
+    var totalGold = onePhase.totalGold + twoPhase.totalGold
+
+    fun totalGold() {
+        totalGold = onePhase.totalGold + twoPhase.totalGold
+    }
+
 }

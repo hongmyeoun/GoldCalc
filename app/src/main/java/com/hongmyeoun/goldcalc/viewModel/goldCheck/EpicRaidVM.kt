@@ -10,16 +10,17 @@ import com.hongmyeoun.goldcalc.model.roomDB.Character
 class EpicRaidVM(val character: Character?): ViewModel() {
     private val epModel = EpicRaidModel(character)
 
+    val behemoth = epModel.behemoth
+
     var totalGold by mutableStateOf(0)
-    fun sumGold(){
-        totalGold = behemothTG
+
+    fun sumGold() {
+        behemoth.totalGold()
+        totalGold = behemoth.totalGold
     }
 
-    val behemoth = epModel.behemoth
-    var behemothTG by mutableStateOf(behemoth.onePhase.totalGold + behemoth.twoPhase.totalGold)
-
-    fun behemothTotal() {
-        behemothTG = behemoth.onePhase.totalGold + behemoth.twoPhase.totalGold
+    init {
+        sumGold()
     }
 
 }

@@ -71,7 +71,7 @@ fun Setting(
 
     val character by viewModel.character.collectAsState()
 
-    LaunchedEffect(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold, viewModel.plusGold, viewModel.minusGold) {
+    LaunchedEffect(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold, viewModel.plusGold, viewModel.minusGold, viewModel.selectedTab) {
         viewModel.updateTotalGold(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold)
     }
 
@@ -131,95 +131,107 @@ fun Setting(
                     if (viewModel.expanded) {
                         Row {
                             Text(text = "군단장 레이드")
-                            Text(text = "10,000")
+                            Text(text = "${cbVM.totalGold}")
                         }
                         Row {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(text = "발탄")
-                                Text(text = "1관 난이도 : 골드")
-                                Text(text = "2관 난이도 : 골드")
+                            if (cbVM.valtanCheck) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(text = "발탄")
+                                    Text(text = "1관 ${cbVM.valtan.onePhase.level} : ${cbVM.valtan.onePhase.totalGold}")
+                                    Text(text = "2관 ${cbVM.valtan.twoPhase.level} : ${cbVM.valtan.twoPhase.totalGold}")
+                                }
                             }
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(text = "비아키스")
-                                Text(text = "1관 난이도 : 골드")
-                                Text(text = "2관 난이도 : 골드")
-                            }
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        Row {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(text = "쿠크세이튼")
-                                Text(text = "1관 난이도 : 골드")
-                                Text(text = "2관 난이도 : 골드")
-                                Text(text = "3관 난이도 : 골드")
-                            }
-
-                            Column (modifier = Modifier.weight(1f)) {
-                                Text(text = "아브렐슈드")
-                                Text(text = "1관 난이도 : 골드")
-                                Text(text = "2관 난이도 : 골드")
-                                Text(text = "3관 난이도 : 골드")
-                                Text(text = "4관 난이도 : 골드")
+                            if (cbVM.biaCheck) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(text = "비아키스")
+                                    Text(text = "1관 ${cbVM.biackiss.onePhase.level} : ${cbVM.biackiss.onePhase.totalGold}")
+                                    Text(text = "2관 ${cbVM.biackiss.twoPhase.level} : ${cbVM.biackiss.twoPhase.totalGold}")
+                                }
                             }
                         }
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Row {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(text = "일리아칸")
-                                Text(text = "1관 난이도 : 골드")
-                                Text(text = "2관 난이도 : 골드")
-                                Text(text = "3관 난이도 : 골드")
+                            if (cbVM.koukuCheck) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(text = "쿠크세이튼")
+                                    Text(text = "1관 ${cbVM.koukuSaton.onePhase.level} : ${cbVM.koukuSaton.onePhase.totalGold}")
+                                    Text(text = "2관 ${cbVM.koukuSaton.twoPhase.level} : ${cbVM.koukuSaton.twoPhase.totalGold}")
+                                    Text(text = "3관 ${cbVM.koukuSaton.threePhase.level} : ${cbVM.koukuSaton.threePhase.totalGold}")
+                                }
                             }
 
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(text = "카멘")
-                                Text(text = "1관 난이도 : 골드")
-                                Text(text = "2관 난이도 : 골드")
-                                Text(text = "3관 난이도 : 골드")
-                                Text(text = "4관 난이도 : 골드")
+                            if (cbVM.abreCheck) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(text = "아브렐슈드")
+                                    Text(text = "1관 ${cbVM.abrelshud.onePhase.level} : ${cbVM.abrelshud.onePhase.totalGold}")
+                                    Text(text = "2관 ${cbVM.abrelshud.twoPhase.level} : ${cbVM.abrelshud.twoPhase.totalGold}")
+                                    Text(text = "3관 ${cbVM.abrelshud.threePhase.level} : ${cbVM.abrelshud.threePhase.totalGold}")
+                                    Text(text = "4관 ${cbVM.abrelshud.fourPhase.level} : ${cbVM.abrelshud.fourPhase.totalGold}")
+                                }
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Row {
+                            if (cbVM.illiCheck) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(text = "일리아칸")
+                                    Text(text = "1관 ${cbVM.illiakan.onePhase.level} : ${cbVM.illiakan.onePhase.totalGold}")
+                                    Text(text = "2관 ${cbVM.illiakan.twoPhase.level} : ${cbVM.illiakan.twoPhase.totalGold}")
+                                    Text(text = "3관 ${cbVM.illiakan.threePhase.level} : ${cbVM.illiakan.threePhase.totalGold}")
+                                }
+                            }
+
+                            if (cbVM.kamenCheck) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(text = "카멘")
+                                    Text(text = "1관 ${cbVM.kamen.onePhase.level} : ${cbVM.kamen.onePhase.totalGold}")
+                                    Text(text = "2관 ${cbVM.kamen.twoPhase.level} : ${cbVM.kamen.twoPhase.totalGold}")
+                                    Text(text = "3관 ${cbVM.kamen.threePhase.level} : ${cbVM.kamen.threePhase.totalGold}")
+                                    Text(text = "4관 ${cbVM.kamen.fourPhase.level} : ${cbVM.kamen.fourPhase.totalGold}")
+                                }
                             }
                         }
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Row {
                             Text(text = "어비스 던전")
-                            Text(text = "10,000")
+                            Text(text = "${adVM.totalGold}")
                         }
                         Row {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(text = "카양겔")
-                                Text(text = "1관 난이도 : 골드")
-                                Text(text = "2관 난이도 : 골드")
-                                Text(text = "3관 난이도 : 골드")
+                                Text(text = "1관 ${adVM.kayangel.onePhase.level} : ${adVM.kayangel.onePhase.totalGold}")
+                                Text(text = "2관 ${adVM.kayangel.twoPhase.level} : ${adVM.kayangel.twoPhase.totalGold}")
+                                Text(text = "3관 ${adVM.kayangel.threePhase.level} : ${adVM.kayangel.threePhase.totalGold}")
                             }
 
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(text = "혼돈의 상아탑")
-                                Text(text = "1관 난이도 : 골드")
-                                Text(text = "2관 난이도 : 골드")
-                                Text(text = "3관 난이도 : 골드")
-                                Text(text = "4관 난이도 : 골드")
+                                Text(text = "1관 ${adVM.ivoryTower.onePhase.level} : ${adVM.ivoryTower.onePhase.totalGold}")
+                                Text(text = "2관 ${adVM.ivoryTower.twoPhase.level} : ${adVM.ivoryTower.twoPhase.totalGold}")
+                                Text(text = "3관 ${adVM.ivoryTower.threePhase.level} : ${adVM.ivoryTower.threePhase.totalGold}")
+                                Text(text = "4관 ${adVM.ivoryTower.fourPhase.level} : ${adVM.ivoryTower.fourPhase.totalGold}")
                             }
                         }
 
                         Row {
                             Text(text = "카제로스 레이드")
-                            Text(text = "10,000")
+                            Text(text = "${kzVM.totalGold}")
                         }
                         Text(text = "에키드나")
-                        Text(text = "1관 난이도 : 골드")
-                        Text(text = "2관 난이도 : 골드")
+                        Text(text = "1관 ${kzVM.echidna.onePhase.level} : ${kzVM.echidna.onePhase.totalGold}")
+                        Text(text = "2관 ${kzVM.echidna.twoPhase.level} : ${kzVM.echidna.twoPhase.totalGold}")
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Row {
                             Text(text = "에픽 레이드")
-                            Text(text = "10,000")
+                            Text(text = "${epVM.totalGold}")
                         }
                         Text(text = "베히모스")
-                        Text(text = "1관 난이도 : 골드")
-                        Text(text = "2관 난이도 : 골드")
+                        Text(text = "1관 ${epVM.behemoth.onePhase.level} : ${epVM.behemoth.onePhase.totalGold}")
+                        Text(text = "2관 ${epVM.behemoth.twoPhase.level} : ${epVM.behemoth.twoPhase.totalGold}")
                         Spacer(modifier = Modifier.height(8.dp))
                     }
                     Row(
@@ -282,12 +294,19 @@ fun Setting(
         ) {
             when (viewModel.selectedTab) {
                 "군단장" -> {
+//                    RaidCard(
+//                        raidType = "군단장 레이드",
+//                        raidImg = Icons.Default.AccountBox,
+//                        totalGold = cbVM.totalGold
+//                    ) {
+//                        CommandRaid(viewModel = cbVM)
+//                    }
                     RaidCard(
-                        raidType = "군단장 레이드",
+                        raidType = "카제로스 레이드",
                         raidImg = Icons.Default.AccountBox,
-                        totalGold = cbVM.totalGold
+                        totalGold = kzVM.totalGold
                     ) {
-                        CommandRaid(viewModel = cbVM)
+                        KazerothRaid(viewModel = kzVM)
                     }
                 }
                 "어비스 던전" -> {
@@ -300,12 +319,19 @@ fun Setting(
                     }
                 }
                 "카제로스" -> {
+//                    RaidCard(
+//                        raidType = "카제로스 레이드",
+//                        raidImg = Icons.Default.AccountBox,
+//                        totalGold = kzVM.totalGold
+//                    ) {
+//                        KazerothRaid(viewModel = kzVM)
+//                    }
                     RaidCard(
-                        raidType = "카제로스 레이드",
+                        raidType = "군단장 레이드",
                         raidImg = Icons.Default.AccountBox,
-                        totalGold = kzVM.totalGold
+                        totalGold = cbVM.totalGold
                     ) {
-                        KazerothRaid(viewModel = kzVM)
+                        CommandRaid(viewModel = cbVM)
                     }
                 }
                 "에픽" -> {
