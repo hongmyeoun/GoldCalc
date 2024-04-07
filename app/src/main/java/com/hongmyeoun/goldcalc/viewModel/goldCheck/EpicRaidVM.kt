@@ -5,32 +5,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.hongmyeoun.goldcalc.model.goldCheck.EpicRaidModel
+import com.hongmyeoun.goldcalc.model.roomDB.Character
 
-class EpicRaidVM: ViewModel() {
-    private val epModel = EpicRaidModel()
+class EpicRaidVM(val character: Character?): ViewModel() {
+    private val epModel = EpicRaidModel(character)
 
     var totalGold by mutableStateOf(0)
     fun sumGold(){
         totalGold = behemothTG
     }
 
-    var behemothTG by mutableStateOf(0)
-    private var behemothOne by mutableStateOf(0)
-    private var behemothTwo by mutableStateOf(0)
-    fun behemothOnePhase(update: Int) {
-        behemothOne = update
-        behemothTotal()
-    }
-    fun behemothTwoPhase(update: Int) {
-        behemothTwo = update
-        behemothTotal()
-    }
-    fun behemothTotal() {
-        behemothTG = behemothOne + behemothTwo
-    }
+    val behemoth = epModel.behemoth
+    var behemothTG by mutableStateOf(behemoth.onePhase.totalGold + behemoth.twoPhase.totalGold)
 
-    val behe = epModel.behe
-    var beheSMG = epModel.beheSMG
-    var beheCG = epModel.beheCG
+    fun behemothTotal() {
+        behemothTG = behemoth.onePhase.totalGold + behemoth.twoPhase.totalGold
+    }
 
 }

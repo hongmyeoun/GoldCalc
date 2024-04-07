@@ -56,6 +56,7 @@ import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.view.goldCheck.Setting
 import com.hongmyeoun.goldcalc.view.search.CharacterDetailScreen
 import com.hongmyeoun.goldcalc.view.search.CharacterScreen
+import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
 import kotlinx.coroutines.CoroutineScope
@@ -102,7 +103,8 @@ class MainActivity : ComponentActivity() {
                             LoadingScreen()
                         } else {
                             val kzVM = KazerothRaidVM(character)
-                            Setting(navController, gSVM, kzVM)
+                            val epVM = EpicRaidVM(character)
+                            Setting(navController, gSVM, kzVM, epVM)
                         }
 
                         LaunchedEffect(Unit) {

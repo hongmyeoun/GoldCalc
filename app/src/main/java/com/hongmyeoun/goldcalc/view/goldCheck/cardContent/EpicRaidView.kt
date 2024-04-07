@@ -13,16 +13,40 @@ fun EpicRaid(viewModel: EpicRaidVM) {
     }
 
     twoPhaseBoss(
-        name = viewModel.behe,
-        seeMoreGold = viewModel.beheSMG,
-        clearGold = viewModel.beheCG,
-        totalGold = viewModel.behemothTG,
-        onUpdateTotalGoldOnePhase = { update ->
-            viewModel.behemothOnePhase(update)
+        name = viewModel.behemoth.name,
+        totalGold = viewModel.totalGold,
+
+        phaseOneLevel = viewModel.behemoth.onePhase.level,
+        phaseOneSMC = viewModel.behemoth.onePhase.seeMoreCheck,
+        phaseOneCC = viewModel.behemoth.onePhase.clearCheck,
+        onOnePhaseLevelClicked = {
+            viewModel.behemoth.onePhase.onLevelClicked()
+            viewModel.behemothTotal()
         },
-        onUpdateTotalGoldTwoPhase = { update ->
-            viewModel.behemothTwoPhase(update)
-        }
+        onOnePhaseClearCheckBoxChecked = {
+            viewModel.behemoth.onePhase.onClearCheckBoxClicked(it)
+            viewModel.behemothTotal()
+        },
+        onOnePhaseSeeMoreCheckBoxChecked = {
+            viewModel.behemoth.onePhase.onSeeMoreCheckBoxClicked(it)
+            viewModel.behemothTotal()
+        },
+
+        phaseTwoLevel = viewModel.behemoth.twoPhase.level,
+        phaseTwoSMC = viewModel.behemoth.twoPhase.seeMoreCheck,
+        phaseTwoCC = viewModel.behemoth.twoPhase.clearCheck,
+        onTwoPhaseLevelClicked = {
+            viewModel.behemoth.twoPhase.onLevelClicked()
+            viewModel.behemothTotal()
+        },
+        onTwoPhaseClearCheckBoxChecked = {
+            viewModel.behemoth.twoPhase.onClearCheckBoxClicked(it)
+            viewModel.behemothTotal()
+        },
+        onTwoPhaseSeeMoreCheckBoxChecked = {
+            viewModel.behemoth.twoPhase.onSeeMoreCheckBoxClicked(it)
+            viewModel.behemothTotal()
+        },
     )
 
 

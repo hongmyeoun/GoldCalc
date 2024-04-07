@@ -29,7 +29,8 @@ class GoldSettingVM(private val repository: CharacterRepository, charName: Strin
     }
 
     fun onDoneClick(
-        kazerothRaid: KazerothRaidVM
+        kazerothRaid: KazerothRaidVM,
+        epicRaid: EpicRaidVM,
         ) {
         val originalCharacter = _character.value
         val originalCheckList = originalCharacter?.checkList
@@ -218,22 +219,22 @@ class GoldSettingVM(private val repository: CharacterRepository, charName: Strin
                     )
                 )
             ),
-    //                epic = listOf(
-    //                    originalCheckList.epic[0].copy( // 베히모스
-    //                        phases = listOf(
-    //                            originalCheckList.epic[0].phases[0].copy( // 1페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                            originalCheckList.epic[0].phases[1].copy( // 2페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                        )
-    //                    )
-    //                ),
+            epic = listOf(
+                originalCheckList.epic[0].copy( // 베히모스
+                    phases = listOf(
+                        originalCheckList.epic[0].phases[0].copy( // 1페
+                            difficulty = epicRaid.behemoth.name,
+                            isClear = epicRaid.behemoth.onePhase.clearCheck,
+                            mCheck = epicRaid.behemoth.onePhase.seeMoreCheck,
+                        ),
+                        originalCheckList.epic[0].phases[1].copy( // 2페
+                            difficulty = epicRaid.behemoth.name,
+                            isClear = epicRaid.behemoth.onePhase.clearCheck,
+                            mCheck = epicRaid.behemoth.onePhase.seeMoreCheck,
+                        ),
+                    )
+                )
+            ),
         )?.let {
             originalCharacter.copy(
                 weeklyGold = totalGold,

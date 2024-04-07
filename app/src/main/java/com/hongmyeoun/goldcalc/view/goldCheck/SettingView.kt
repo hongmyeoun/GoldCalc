@@ -1,8 +1,5 @@
 package com.hongmyeoun.goldcalc.view.goldCheck
 
-//import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.AbyssDungeon
-//import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.CommandRaid
-//import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.EpicRaid
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -48,6 +45,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.EpicRaid
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.KazerothRaid
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
@@ -60,9 +58,9 @@ fun Setting(
     navController: NavHostController,
     viewModel: GoldSettingVM,
     kzVM: KazerothRaidVM,
+    epVM: EpicRaidVM,
     cbVM: CommandBossVM = viewModel(),
     adVM: AbyssDungeonVM = viewModel(),
-    epVM: EpicRaidVM = viewModel()
 ) {
     val height = if (viewModel.expanded) Modifier.wrapContentHeight() else Modifier.height(65.dp)
     val arrowIcon = if (viewModel.expanded) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp
@@ -257,7 +255,8 @@ fun Setting(
                             Button(
                                 onClick = {
                                     viewModel.onDoneClick(
-                                        kazerothRaid = kzVM
+                                        kazerothRaid = kzVM,
+                                        epicRaid = epVM
                                     )
                                     navController.popBackStack()
                                 }
@@ -307,13 +306,13 @@ fun Setting(
                     }
                 }
                 "에픽" -> {
-//                    RaidCard(
-//                        raidType = "에픽 레이드",
-//                        raidImg = Icons.Default.AccountBox,
-//                        totalGold = epVM.totalGold
-//                    ) {
-//                        EpicRaid(viewModel = epVM)
-//                    }
+                    RaidCard(
+                        raidType = "에픽 레이드",
+                        raidImg = Icons.Default.AccountBox,
+                        totalGold = epVM.totalGold
+                    ) {
+                        EpicRaid(viewModel = epVM)
+                    }
                 }
                 "기타" -> {
                     Row(modifier = Modifier.fillMaxWidth()) {
