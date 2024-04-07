@@ -13,16 +13,40 @@ fun KazerothRaid(viewModel: KazerothRaidVM) {
     }
 
     twoPhaseBoss(
-        name = viewModel.echi,
-        seeMoreGold = viewModel.echiSMG,
-        clearGold = viewModel.echiCG,
-        totalGold = viewModel.echidnaTG,
-        onUpdateTotalGoldOnePhase = { update ->
-                                    viewModel.echidnaOnePhase(update)
+        name = viewModel.echidna.name,
+        totalGold = viewModel.totalGold,
+
+        phaseOneLevel = viewModel.echidna.onePhase.level,
+        phaseOneSMC = viewModel.echidna.onePhase.seeMoreCheck,
+        phaseOneCC = viewModel.echidna.onePhase.clearCheck,
+        onOnePhaseLevelClicked = {
+            viewModel.echidna.onePhase.onLevelClicked()
+            viewModel.echidnaTotal()
         },
-        onUpdateTotalGoldTwoPhase = { update ->
-            viewModel.echidnaTwoPhase(update)
-        }
+        onOnePhaseClearCheckBoxChecked = {
+            viewModel.echidna.onePhase.onClearCheckBoxClicked(it)
+            viewModel.echidnaTotal()
+        },
+        onOnePhaseSeeMoreCheckBoxChecked = {
+            viewModel.echidna.onePhase.onSeeMoreCheckBoxClicked(it)
+            viewModel.echidnaTotal()
+        },
+
+        phaseTwoLevel = viewModel.echidna.twoPhase.level,
+        phaseTwoSMC = viewModel.echidna.twoPhase.seeMoreCheck,
+        phaseTwoCC = viewModel.echidna.twoPhase.clearCheck,
+        onTwoPhaseLevelClicked = {
+            viewModel.echidna.twoPhase.onLevelClicked()
+            viewModel.echidnaTotal()
+        },
+        onTwoPhaseClearCheckBoxChecked = {
+            viewModel.echidna.twoPhase.onClearCheckBoxClicked(it)
+            viewModel.echidnaTotal()
+        },
+        onTwoPhaseSeeMoreCheckBoxChecked = {
+            viewModel.echidna.twoPhase.onSeeMoreCheckBoxClicked(it)
+            viewModel.echidnaTotal()
+        },
     )
 
 }
