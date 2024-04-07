@@ -130,9 +130,12 @@ fun Setting(
 
                     if (viewModel.expanded) {
                         Row {
-                            Text(text = "군단장 레이드")
-                            Text(text = "${cbVM.totalGold}")
+                            if (cbVM.valtanCheck || cbVM.biaCheck || cbVM.koukuCheck || cbVM.abreCheck || cbVM.illiCheck || cbVM.kamenCheck) {
+                                Text(text = "군단장 레이드")
+                                Text(text = "${cbVM.totalGold}")
+                            }
                         }
+
                         Row {
                             if (cbVM.valtanCheck) {
                                 Column(modifier = Modifier.weight(1f)) {
@@ -196,42 +199,63 @@ fun Setting(
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Row {
-                            Text(text = "어비스 던전")
-                            Text(text = "${adVM.totalGold}")
-                        }
-                        Row {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(text = "카양겔")
-                                Text(text = "1관 ${adVM.kayangel.onePhase.level} : ${adVM.kayangel.onePhase.totalGold}")
-                                Text(text = "2관 ${adVM.kayangel.twoPhase.level} : ${adVM.kayangel.twoPhase.totalGold}")
-                                Text(text = "3관 ${adVM.kayangel.threePhase.level} : ${adVM.kayangel.threePhase.totalGold}")
-                            }
-
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(text = "혼돈의 상아탑")
-                                Text(text = "1관 ${adVM.ivoryTower.onePhase.level} : ${adVM.ivoryTower.onePhase.totalGold}")
-                                Text(text = "2관 ${adVM.ivoryTower.twoPhase.level} : ${adVM.ivoryTower.twoPhase.totalGold}")
-                                Text(text = "3관 ${adVM.ivoryTower.threePhase.level} : ${adVM.ivoryTower.threePhase.totalGold}")
-                                Text(text = "4관 ${adVM.ivoryTower.fourPhase.level} : ${adVM.ivoryTower.fourPhase.totalGold}")
+                            if (adVM.kayangelCheck || adVM.ivoryCheck) {
+                                Text(text = "어비스 던전")
+                                Text(text = "${adVM.totalGold}")
                             }
                         }
-
-                        Row {
-                            Text(text = "카제로스 레이드")
-                            Text(text = "${kzVM.totalGold}")
-                        }
-                        Text(text = "에키드나")
-                        Text(text = "1관 ${kzVM.echidna.onePhase.level} : ${kzVM.echidna.onePhase.totalGold}")
-                        Text(text = "2관 ${kzVM.echidna.twoPhase.level} : ${kzVM.echidna.twoPhase.totalGold}")
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Row {
-                            Text(text = "에픽 레이드")
-                            Text(text = "${epVM.totalGold}")
+                            if (adVM.kayangelCheck) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(text = "카양겔")
+                                    Text(text = "1관 ${adVM.kayangel.onePhase.level} : ${adVM.kayangel.onePhase.totalGold}")
+                                    Text(text = "2관 ${adVM.kayangel.twoPhase.level} : ${adVM.kayangel.twoPhase.totalGold}")
+                                    Text(text = "3관 ${adVM.kayangel.threePhase.level} : ${adVM.kayangel.threePhase.totalGold}")
+                                }
+                            }
+
+                            if (adVM.ivoryCheck) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(text = "혼돈의 상아탑")
+                                    Text(text = "1관 ${adVM.ivoryTower.onePhase.level} : ${adVM.ivoryTower.onePhase.totalGold}")
+                                    Text(text = "2관 ${adVM.ivoryTower.twoPhase.level} : ${adVM.ivoryTower.twoPhase.totalGold}")
+                                    Text(text = "3관 ${adVM.ivoryTower.threePhase.level} : ${adVM.ivoryTower.threePhase.totalGold}")
+                                    Text(text = "4관 ${adVM.ivoryTower.fourPhase.level} : ${adVM.ivoryTower.fourPhase.totalGold}")
+                                }
+                            }
                         }
-                        Text(text = "베히모스")
-                        Text(text = "1관 ${epVM.behemoth.onePhase.level} : ${epVM.behemoth.onePhase.totalGold}")
-                        Text(text = "2관 ${epVM.behemoth.twoPhase.level} : ${epVM.behemoth.twoPhase.totalGold}")
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Row {
+                            if (kzVM.echiCheck) {
+                                Text(text = "카제로스 레이드")
+                                Text(text = "${kzVM.totalGold}")
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        if (kzVM.echiCheck) {
+                            Text(text = "에키드나")
+                            Text(text = "1관 ${kzVM.echidna.onePhase.level} : ${kzVM.echidna.onePhase.totalGold}")
+                            Text(text = "2관 ${kzVM.echidna.twoPhase.level} : ${kzVM.echidna.twoPhase.totalGold}")
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Row {
+                            if (epVM.beheCheck) {
+                                Text(text = "에픽 레이드")
+                                Text(text = "${epVM.totalGold}")
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        if (epVM.beheCheck) {
+                            Text(text = "베히모스")
+                            Text(text = "1관 ${epVM.behemoth.onePhase.level} : ${epVM.behemoth.onePhase.totalGold}")
+                            Text(text = "2관 ${epVM.behemoth.twoPhase.level} : ${epVM.behemoth.twoPhase.totalGold}")
+                        }
                         Spacer(modifier = Modifier.height(8.dp))
                     }
                     Row(
