@@ -1,5 +1,8 @@
 package com.hongmyeoun.goldcalc.view.goldCheck
 
+//import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.AbyssDungeon
+//import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.CommandRaid
+//import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.EpicRaid
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -42,30 +45,23 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-//import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.AbyssDungeon
-//import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.CommandRaid
-//import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.EpicRaid
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.KazerothRaid
-import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.KazerothRaidTest
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
-import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVMTest
 
 @Composable
 fun Setting(
     navController: NavHostController,
     viewModel: GoldSettingVM,
+    kzVM: KazerothRaidVM,
     cbVM: CommandBossVM = viewModel(),
     adVM: AbyssDungeonVM = viewModel(),
-    kzVM: KazerothRaidVM = viewModel(),
-    kzTVM: KazerothRaidVMTest = viewModel(),
     epVM: EpicRaidVM = viewModel()
 ) {
     val height = if (viewModel.expanded) Modifier.wrapContentHeight() else Modifier.height(65.dp)
@@ -260,7 +256,9 @@ fun Setting(
                             Spacer(modifier = Modifier.width(8.dp))
                             Button(
                                 onClick = {
-                                    viewModel.onDoneClick()
+                                    viewModel.onDoneClick(
+                                        kazerothRaid = kzVM
+                                    )
                                     navController.popBackStack()
                                 }
                             ) {
@@ -309,13 +307,6 @@ fun Setting(
                     }
                 }
                 "에픽" -> {
-                    RaidCard(
-                        raidType = "카제로스 레이드",
-                        raidImg = Icons.Default.AccountBox,
-                        totalGold = kzVM.totalGold
-                    ) {
-                        KazerothRaidTest(viewModel = kzTVM)
-                    }
 //                    RaidCard(
 //                        raidType = "에픽 레이드",
 //                        raidImg = Icons.Default.AccountBox,
