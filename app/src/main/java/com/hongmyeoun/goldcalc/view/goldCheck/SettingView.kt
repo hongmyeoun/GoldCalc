@@ -257,6 +257,13 @@ fun Setting(
                             Text(text = "2관 ${epVM.behemoth.twoPhase.level} : ${epVM.behemoth.twoPhase.totalGold}")
                         }
                         Spacer(modifier = Modifier.height(8.dp))
+                        
+                        if ((viewModel.plusGold.toIntOrNull() ?: 0) > 0) {
+                            Row {
+                                Text(text = "추가골드 : ${viewModel.plusGold}")
+                                Text(text = "사용골드 : ${viewModel.minusGold}")
+                            }
+                        }
                     }
                     Row(
                         modifier = Modifier.fillMaxWidth(),
