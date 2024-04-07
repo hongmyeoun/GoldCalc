@@ -30,6 +30,10 @@ class CommandBossVM(val character: Character?): ViewModel() {
         totalGold = valtan.totalGold + biackiss.totalGold + koukuSaton.totalGold + abrelshud.totalGold + illiakan.totalGold + kamen.totalGold
     }
 
+    init {
+        sumGold()
+    }
+
     var valtanCheck by mutableStateOf(valtan.isChecked)
     var biaCheck by mutableStateOf(biackiss.isChecked)
     var koukuCheck by mutableStateOf(koukuSaton.isChecked)
