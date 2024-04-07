@@ -5,31 +5,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.hongmyeoun.goldcalc.model.goldCheck.KazerothRaidModel
+import com.hongmyeoun.goldcalc.model.roomDB.Character
 
-class KazerothRaidVM: ViewModel() {
-    val kzModel = KazerothRaidModel()
+class KazerothRaidVM(val character: Character?) : ViewModel() {
+    private val kzModel = KazerothRaidModel(character)
 
     var totalGold by mutableStateOf(0)
-    fun sumGold(){
+    fun sumGold() {
         totalGold = echidnaTG
     }
 
-    var echidnaTG by mutableStateOf(0)
-    private var echidnaOne by mutableStateOf(0)
-    private var echidnaTwo by mutableStateOf(0)
-    fun echidnaOnePhase(update: Int) {
-        echidnaOne = update
-        echidnaTotal()
-    }
-    fun echidnaTwoPhase(update: Int) {
-        echidnaTwo = update
-        echidnaTotal()
-    }
+    val echidna = kzModel.echidna
+    var echidnaTG by mutableStateOf(echidna.onePhase.totalGold + echidna.twoPhase.totalGold)
+
     fun echidnaTotal() {
-        echidnaTG = echidnaOne + echidnaTwo
+        echidnaTG = echidna.onePhase.totalGold + echidna.twoPhase.totalGold
     }
 
-    val echi = kzModel.echi
-    var echiSMG = kzModel.echiSMG
-    var echiCG = kzModel.echiCG
 }
