@@ -16,9 +16,8 @@ class GoldSettingVM(private val repository: CharacterRepository, charName: Strin
     private val _character = MutableStateFlow<Character?>(null)
     val character: StateFlow<Character?> = _character
 
-    init {
-        getCharacter(charName)
-    }
+    var plusGold by mutableStateOf("0")
+    var minusGold by mutableStateOf("0")
 
     private fun getCharacter(charName: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -28,12 +27,61 @@ class GoldSettingVM(private val repository: CharacterRepository, charName: Strin
         }
     }
 
-    fun onDoneClick(
-        commandRaid: CommandBossVM,
-        abyssDungeon: AbyssDungeonVM,
-        kazerothRaid: KazerothRaidVM,
-        epicRaid: EpicRaidVM,
-        ) {
+    init {
+        getCharacter(charName)
+        viewModelScope.launch(Dispatchers.Main){
+            plusGold = _character.value?.plusGold?:"0"
+            minusGold = _character.value?.minusGold?:"0"
+        }
+    }
+
+
+    fun plusGoldValue(newValue: String) {
+        plusGold = newValue.filter { it.isDigit() }
+    }
+
+    fun minusGoldValue(newValue: String) {
+        minusGold = newValue.filter { it.isDigit() }
+    }
+
+    var totalGold by mutableStateOf(0)
+    private fun calcTotalGold(cb: Int, ad: Int, kz: Int, ep: Int) {
+        val plusGoldInt = plusGold.toIntOrNull() ?: 0
+        val minusGoldInt = minusGold.toIntOrNull() ?: 0
+        totalGold = cb + ad + kz + ep + plusGoldInt - minusGoldInt
+    }
+
+    fun updateTotalGold(cb: Int, ad: Int, kz: Int, ep: Int) {
+        calcTotalGold(cb, ad, kz, ep)
+    }
+
+    var expanded by mutableStateOf(false)
+    fun expand() {
+        expanded = !expanded
+    }
+
+    var selectedTab by mutableStateOf("군단장")
+    fun moveCommandRaid() {
+        selectedTab = "군단장"
+    }
+
+    fun moveAbyssDungeon() {
+        selectedTab = "어비스 던전"
+    }
+
+    fun moveKazeRaid() {
+        selectedTab = "카제로스"
+    }
+
+    fun moveEpicRaid() {
+        selectedTab = "에픽"
+    }
+
+    fun moveETC() {
+        selectedTab = "기타"
+    }
+
+    fun onDoneClick(commandRaid: CommandBossVM, abyssDungeon: AbyssDungeonVM, kazerothRaid: KazerothRaidVM, epicRaid: EpicRaidVM) {
         val originalCharacter = _character.value
         val originalCheckList = originalCharacter?.checkList
 
@@ -178,7 +226,8 @@ class GoldSettingVM(private val repository: CharacterRepository, charName: Strin
                             isClear = abyssDungeon.kayangel.threePhase.clearCheck,
                             mCheck = abyssDungeon.kayangel.threePhase.seeMoreCheck
                         ),
-                    )
+                    ),
+                    isCheck = abyssDungeon.kayangelCheck
                 ),
                 originalCheckList.abyssDungeon[1].copy( // 상아탑
                     phases = listOf(
@@ -202,7 +251,8 @@ class GoldSettingVM(private val repository: CharacterRepository, charName: Strin
                             isClear = abyssDungeon.ivoryTower.fourPhase.clearCheck,
                             mCheck = abyssDungeon.ivoryTower.fourPhase.seeMoreCheck
                         ),
-                    )
+                    ),
+                    isCheck = abyssDungeon.ivoryCheck
                 )
             ),
             kazeroth = listOf(
@@ -218,28 +268,32 @@ class GoldSettingVM(private val repository: CharacterRepository, charName: Strin
                             isClear = kazerothRaid.echidna.twoPhase.clearCheck,
                             mCheck = kazerothRaid.echidna.twoPhase.seeMoreCheck,
                         ),
-                    )
+                    ),
+                    isCheck = kazerothRaid.echiCheck
                 )
             ),
             epic = listOf(
                 originalCheckList.epic[0].copy( // 베히모스
                     phases = listOf(
                         originalCheckList.epic[0].phases[0].copy( // 1페
-                            difficulty = epicRaid.behemoth.name,
+                            difficulty = epicRaid.behemoth.onePhase.level,
                             isClear = epicRaid.behemoth.onePhase.clearCheck,
                             mCheck = epicRaid.behemoth.onePhase.seeMoreCheck,
                         ),
                         originalCheckList.epic[0].phases[1].copy( // 2페
-                            difficulty = epicRaid.behemoth.name,
+                            difficulty = epicRaid.behemoth.onePhase.level,
                             isClear = epicRaid.behemoth.onePhase.clearCheck,
                             mCheck = epicRaid.behemoth.onePhase.seeMoreCheck,
                         ),
-                    )
+                    ),
+                    isCheck = epicRaid.beheCheck
                 )
             ),
         )?.let {
             originalCharacter.copy(
                 weeklyGold = totalGold,
+                plusGold = plusGold,
+                minusGold = minusGold,
                 checkList = it
             )
         }
@@ -250,52 +304,5 @@ class GoldSettingVM(private val repository: CharacterRepository, charName: Strin
         }
     }
 
-    var plusGold by mutableStateOf("0")
-    fun plusGoldValue(newValue: String) {
-        plusGold = newValue.filter { it.isDigit() }
-    }
-
-    var minusGold by mutableStateOf("0")
-    fun minusGoldValue(newValue: String) {
-        minusGold = newValue.filter { it.isDigit() }
-    }
-
-    var totalGold by mutableStateOf(0)
-    private fun calcTotalGold(cb: Int, ad: Int, kz: Int, ep: Int): Int {
-        val plusGoldInt = plusGold.toIntOrNull() ?: 0
-        val minusGoldInt = minusGold.toIntOrNull() ?: 0
-        totalGold = cb + ad + kz + ep + plusGoldInt - minusGoldInt
-        return totalGold
-    }
-
-    fun updateTotalGold(cb: Int, ad: Int, kz: Int, ep: Int) {
-        calcTotalGold(cb, ad, kz, ep)
-    }
-
-    var expanded by mutableStateOf(false)
-    fun expand() {
-        expanded = !expanded
-    }
-
-    var selectedTab by mutableStateOf("군단장")
-    fun moveCommandRaid() {
-        selectedTab = "군단장"
-    }
-
-    fun moveAbyssDungeon() {
-        selectedTab = "어비스 던전"
-    }
-
-    fun moveKazeRaid() {
-        selectedTab = "카제로스"
-    }
-
-    fun moveEpicRaid() {
-        selectedTab = "에픽"
-    }
-
-    fun moveETC() {
-        selectedTab = "기타"
-    }
 
 }

@@ -11,9 +11,13 @@ data class Character(
     @ColumnInfo("className") val className: String = "",
     @ColumnInfo("serverName") val serverName: String = "",
     @ColumnInfo("weeklyGold") val weeklyGold: Int = 0,
+    @ColumnInfo("plusGold") val plusGold: String = "0",
+    @ColumnInfo("minusGold") val minusGold: String = "0",
     @ColumnInfo("goldCheck") val goldCheck: Boolean = false,
     @ColumnInfo("checkList") val checkList: CheckList = CheckList()
 )
+
+
 
 data class CheckList(
     @ColumnInfo("Command") val command: List<RaidList> = listOf(
