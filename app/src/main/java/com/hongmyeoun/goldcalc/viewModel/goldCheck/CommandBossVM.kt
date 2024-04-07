@@ -5,158 +5,82 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.hongmyeoun.goldcalc.model.goldCheck.CommandBossModel
+import com.hongmyeoun.goldcalc.model.roomDB.Character
 
-class CommandBossVM: ViewModel() {
-    private val cbModel = CommandBossModel()
+class CommandBossVM(val character: Character?): ViewModel() {
+    private val cbModel = CommandBossModel(character)
 
     var totalGold by mutableStateOf(0)
     fun sumGold(){
         totalGold = valtanTG + biakissTG + koukuSatonTG + abrelshudTG + illiakanTG + kamenTG
     }
 
-    var valtanTG by mutableStateOf(0)
-    private var valtanOne by mutableStateOf(0)
-    private var valtanTwo by mutableStateOf(0)
-    fun valtanOnePhase(update: Int) {
-        valtanOne = update
-        valtanTotal()
-    }
-    fun valtanTwoPhase(update: Int) {
-        valtanTwo = update
-        valtanTotal()
-    }
-    private fun valtanTotal(){
-        valtanTG = valtanOne + valtanTwo
-    }
-
-    var biakissTG by mutableStateOf(0)
-    private var biakissOne by mutableStateOf(0)
-    private var biakissTwo by mutableStateOf(0)
-    fun biakissOnePhase(update: Int) {
-        biakissOne = update
-        biakissTotal()
-    }
-    fun biakissTwoPhase(update: Int) {
-        biakissTwo = update
-        biakissTotal()
-    }
-    private fun biakissTotal() {
-        biakissTG = biakissOne + biakissTwo
-    }
-
-    var koukuSatonTG by mutableStateOf(0)
-    private var koukuSatonOne by mutableStateOf(0)
-    private var koukuSatonTwo by mutableStateOf(0)
-    private var koukuSatonThree by mutableStateOf(0)
-    fun koukuSatonOnePhase(update: Int) {
-        koukuSatonOne = update
-        koukuSatonTotal()
-    }
-    fun koukuSatontwoPhase(update: Int) {
-        koukuSatonTwo = update
-        koukuSatonTotal()
-    }
-    fun koukuSatonThreePhase(update: Int) {
-        koukuSatonThree = update
-        koukuSatonTotal()
-    }
-    private fun koukuSatonTotal() {
-        koukuSatonTG = koukuSatonOne + koukuSatonTwo + koukuSatonThree
-    }
-
-
-    var illiakanTG by mutableStateOf(0)
-    private var illiakanOne by mutableStateOf(0)
-    private var illiakanTwo by mutableStateOf(0)
-    private var illiakanThree by mutableStateOf(0)
-    fun illiakanOnePhase(update: Int) {
-        illiakanOne = update
-        illiakanTotal()
-    }
-    fun illiakantwoPhase(update: Int) {
-        illiakanTwo = update
-        illiakanTotal()
-    }
-    fun illiakanThreePhase(update: Int) {
-        illiakanThree = update
-        illiakanTotal()
-    }
-    fun illiakanTotal() {
-        illiakanTG = illiakanOne + illiakanTwo + illiakanThree
-    }
-
-    var abrelshudTG by mutableStateOf(0)
-    private var abrelshudOne by mutableStateOf(0)
-    private var abrelshudTwo by mutableStateOf(0)
-    private var abrelshudThree by mutableStateOf(0)
-    private var abrelshudFour by mutableStateOf(0)
-    fun abrelshudOnePhase(update: Int) {
-        abrelshudOne = update
-        abrelshudTotal()
-    }
-    fun abrelshudTwoPhase(update: Int) {
-        abrelshudTwo = update
-        abrelshudTotal()
-    }
-    fun abrelshudThreePhase(update: Int) {
-        abrelshudThree = update
-        abrelshudTotal()
-    }
-    fun abrelshudFourPhase(update: Int) {
-        abrelshudFour = update
-        abrelshudTotal()
-    }
-    fun abrelshudTotal() {
-        abrelshudTG = abrelshudOne + abrelshudTwo + abrelshudThree + abrelshudFour
-    }
-
-    var kamenTG by mutableStateOf(0)
-    private var kamenOne by mutableStateOf(0)
-    private var kamenTwo by mutableStateOf(0)
-    private var kamenThree by mutableStateOf(0)
-    private var kamenFour by mutableStateOf(0)
-    fun kamenOnePhase(update: Int) {
-        kamenOne = update
-        kamenTotal()
-    }
-    fun kamentwoPhase(update: Int) {
-        kamenTwo = update
-        kamenTotal()
-    }
-    fun kamenThreePhase(update: Int) {
-        kamenThree = update
-        kamenTotal()
-    }
-    fun kamenFourPhase(update: Int) {
-        kamenFour = update
-        kamenTotal()
-    }
-    fun kamenTotal() {
-        kamenTG = kamenOne + kamenTwo + kamenThree + kamenFour
-    }
-
     val valtan = cbModel.valtan
-    val valtanSMG = cbModel.valtanSMG
-    val valtanCG =  cbModel.valtanCG
+    var valtanTG by mutableStateOf(valtan.onePhase.totalGold + valtan.twoPhase.totalGold)
 
-    val bi = cbModel.bi
-    val biSMG = cbModel.biSMG
-    val biCG = cbModel.biCG
+    fun valtanTotal(){
+        valtanTG = valtan.onePhase.totalGold + valtan.twoPhase.totalGold
+    }
 
-    var kuku = cbModel.kuku
-    var kukuSMG = cbModel.kukuSMG
-    var kukuCG = cbModel.kukuCG
+    val biackiss = cbModel.biackiss
+    var biakissTG by mutableStateOf(biackiss.onePhase.totalGold + biackiss.twoPhase.totalGold)
 
-    var abrel = cbModel.abrel
-    var abrelSMG = cbModel.abrelSMG
-    var abrelCG = cbModel.abrelCG
+    fun biackissTotal() {
+        biakissTG = biackiss.onePhase.totalGold + biackiss.twoPhase.totalGold
+    }
 
-    var illi = cbModel.illi
-    var illiSMG = cbModel.illiSMG
-    var illiCG = cbModel.illiCG
+    val koukuSaton = cbModel.koukuSaton
+    var koukuSatonTG by mutableStateOf(koukuSaton.onePhase.totalGold + koukuSaton.twoPhase.totalGold + koukuSaton.threePhase.totalGold)
 
-    var kamen = cbModel.kamen
-    var kamenSMG = cbModel.kamenSMG
-    var kamenCG = cbModel.kamenCG
+    fun koukuSatonTotal() {
+        koukuSatonTG = koukuSaton.onePhase.totalGold + koukuSaton.twoPhase.totalGold + koukuSaton.threePhase.totalGold
+    }
 
+    val abrelshud = cbModel.abrelshud
+    var abrelshudTG by mutableStateOf(abrelshud.onePhase.totalGold + abrelshud.twoPhase.totalGold + abrelshud.threePhase.totalGold + abrelshud.fourPhase.totalGold)
+
+    fun abrelshudTotal() {
+        abrelshudTG = abrelshud.onePhase.totalGold + abrelshud.twoPhase.totalGold + abrelshud.threePhase.totalGold + abrelshud.fourPhase.totalGold
+    }
+
+    val illiakan = cbModel.illiakan
+    var illiakanTG by mutableStateOf(illiakan.onePhase.totalGold + illiakan.twoPhase.totalGold + illiakan.threePhase.totalGold)
+
+    fun illiakanTotal() {
+        illiakanTG = illiakan.onePhase.totalGold + illiakan.twoPhase.totalGold + illiakan.threePhase.totalGold
+    }
+
+
+    val kamen = cbModel.kamen
+    var kamenTG by mutableStateOf(kamen.onePhase.totalGold + kamen.twoPhase.totalGold + kamen.threePhase.totalGold + kamen.fourPhase.totalGold)
+
+    fun kamenTotal() {
+        kamenTG = kamen.onePhase.totalGold + kamen.twoPhase.totalGold + kamen.threePhase.totalGold + kamen.fourPhase.totalGold
+    }
+
+    var valtanCheck by mutableStateOf(valtan.isChecked)
+    var biaCheck by mutableStateOf(biackiss.isChecked)
+    var koukuCheck by mutableStateOf(koukuSaton.isChecked)
+    var abreCheck by mutableStateOf(abrelshud.isChecked)
+    var illiCheck by mutableStateOf(illiakan.isChecked)
+    var kamenCheck by mutableStateOf(kamen.isChecked)
+
+    fun onValtanCheck() {
+        valtanCheck = !valtanCheck
+    }
+    fun onBiaCheck() {
+        biaCheck = !biaCheck
+    }
+    fun onKoukuCheck() {
+        koukuCheck = !koukuCheck
+    }
+    fun onAbreCheck() {
+        abreCheck = !abreCheck
+    }
+    fun onIlliCheck(){
+        illiCheck = !illiCheck
+    }
+    fun onKamenCheck() {
+        kamenCheck = !kamenCheck
+    }
 }

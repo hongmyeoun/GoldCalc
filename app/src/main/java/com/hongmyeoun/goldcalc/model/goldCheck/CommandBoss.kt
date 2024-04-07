@@ -1,5 +1,7 @@
 package com.hongmyeoun.goldcalc.model.goldCheck
 
+import com.hongmyeoun.goldcalc.model.roomDB.Character
+
 enum class CommandBoss(
     val boss: String,
     val seeMoreGold: Map<String, List<Int>>,
@@ -70,37 +72,380 @@ enum class CommandBoss(
             "normal" to listOf(3500, 4000, 5500, 0),
             "hard" to listOf(5000, 6000, 9000, 21000)
         )
-    )
-}
+    );
 
-class CommandBossModel {
-    var valtan = CommandBoss.VALTAN.boss
-    var valtanSMG = CommandBoss.VALTAN.getBossInfo("normal").first + CommandBoss.VALTAN.getBossInfo("hard").first
-    var valtanCG =  CommandBoss.VALTAN.getBossInfo("normal").second + CommandBoss.VALTAN.getBossInfo("hard").second
-
-    var bi = CommandBoss.BIACKISS.boss
-    var biSMG = CommandBoss.BIACKISS.getBossInfo("normal").first + CommandBoss.BIACKISS.getBossInfo("hard").first
-    var biCG = CommandBoss.BIACKISS.getBossInfo("normal").second + CommandBoss.BIACKISS.getBossInfo("hard").second
-
-    var kuku = CommandBoss.KOUKU_SATON.boss
-    var kukuSMG = CommandBoss.KOUKU_SATON.getBossInfo("normal").first + CommandBoss.KOUKU_SATON.getBossInfo("hard").first
-    var kukuCG = CommandBoss.KOUKU_SATON.getBossInfo("normal").second + CommandBoss.KOUKU_SATON.getBossInfo("hard").second
-
-    var abrel = CommandBoss.ABRELSHUD.boss
-    var abrelSMG = CommandBoss.ABRELSHUD.getBossInfo("normal").first + CommandBoss.ABRELSHUD.getBossInfo("hard").first
-    var abrelCG = CommandBoss.ABRELSHUD.getBossInfo("normal").second + CommandBoss.ABRELSHUD.getBossInfo("hard").second
-
-    var illi = CommandBoss.ILLIAKAN.boss
-    var illiSMG = CommandBoss.ILLIAKAN.getBossInfo("normal").first + CommandBoss.ILLIAKAN.getBossInfo("hard").first
-    var illiCG = CommandBoss.ILLIAKAN.getBossInfo("normal").second + CommandBoss.ILLIAKAN.getBossInfo("hard").second
-
-    var kamen = CommandBoss.KAMEN.boss
-    var kamenSMG = CommandBoss.KAMEN.getBossInfo("normal").first + CommandBoss.KAMEN.getBossInfo("hard").first
-    var kamenCG = CommandBoss.KAMEN.getBossInfo("normal").second + CommandBoss.KAMEN.getBossInfo("hard").second
-
-    private fun CommandBoss.getBossInfo(mode: String): Pair<List<Int>, List<Int>> {
+    fun getBossInfo(mode: String): Pair<List<Int>, List<Int>> {
         val seeMoreGold = seeMoreGold[mode] ?: emptyList()
         val clearGold = clearGold[mode] ?: emptyList()
         return Pair(seeMoreGold, clearGold)
     }
+}
+
+class CommandBossModel(character: Character?) {
+    val valtan: Valtan = if (character != null) {
+        Valtan(character)
+    } else {
+        Valtan(null)
+    }
+
+    val biackiss: Biackiss = if (character != null) {
+        Biackiss(character)
+    } else {
+        Biackiss(null)
+    }
+
+    val koukuSaton: KoukuSaton = if (character != null) {
+        KoukuSaton(character)
+    } else {
+        KoukuSaton(null)
+    }
+
+    val abrelshud: Abrelshud = if (character != null) {
+        Abrelshud(character)
+    } else {
+        Abrelshud(null)
+    }
+
+    val illiakan: Illiakan = if (character != null) {
+        Illiakan(character)
+    } else {
+        Illiakan(null)
+    }
+
+    val kamen: Kamen = if (character != null) {
+        Kamen(character)
+    } else {
+        Kamen(null)
+    }
+}
+
+class Valtan(character: Character?) {
+    var name = CommandBoss.VALTAN.boss
+    private val seeMoreGold = CommandBoss.VALTAN.getBossInfo("normal").first + CommandBoss.VALTAN.getBossInfo("hard").first
+    private val clearGold =  CommandBoss.VALTAN.getBossInfo("normal").second + CommandBoss.VALTAN.getBossInfo("hard").second
+
+    var isChecked = character?.checkList?.command?.get(0)?.isCheck?:false
+
+    private val getOnePhase = character?.checkList?.command?.get(0)?.phases?.get(0)
+
+    private val onePhaseDifficulty = getOnePhase?.difficulty?:"노말"
+    private val onePhaseIsClear = getOnePhase?.isClear?:false
+    private val onePhaseMCheck = getOnePhase?.mCheck?:false
+
+    val onePhase = PhaseInfo(
+        difficulty = onePhaseDifficulty,
+        isClearCheck = onePhaseIsClear,
+        moreCheck = onePhaseMCheck,
+        seeMoreGoldN = seeMoreGold[0],
+        seeMoreGoldH = seeMoreGold[2],
+        clearGoldN = clearGold[0],
+        clearGoldH = clearGold[2]
+    )
+
+    private val getTwoPhase = character?.checkList?.command?.get(0)?.phases?.get(1)
+
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty?:"노말"
+    private val twoPhaseIsClear = getTwoPhase?.isClear?:false
+    private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
+
+    val twoPhase = PhaseInfo(
+        difficulty = twoPhaseDifficulty,
+        isClearCheck = twoPhaseIsClear,
+        moreCheck = twoPhaseMCheck,
+        seeMoreGoldN = seeMoreGold[1],
+        seeMoreGoldH = seeMoreGold[3],
+        clearGoldN = clearGold[1],
+        clearGoldH = clearGold[3]
+    )
+
+}
+
+class Biackiss(character: Character?) {
+    var name = CommandBoss.BIACKISS.boss
+    private val seeMoreGold = CommandBoss.BIACKISS.getBossInfo("normal").first + CommandBoss.BIACKISS.getBossInfo("hard").first
+    private val clearGold = CommandBoss.BIACKISS.getBossInfo("normal").second + CommandBoss.BIACKISS.getBossInfo("hard").second
+
+    var isChecked = character?.checkList?.command?.get(1)?.isCheck?:false
+
+    private val getOnePhase = character?.checkList?.command?.get(1)?.phases?.get(0)
+
+    private val onePhaseDifficulty = getOnePhase?.difficulty?:"노말"
+    private val onePhaseIsClear = getOnePhase?.isClear?:false
+    private val onePhaseMCheck = getOnePhase?.mCheck?:false
+
+    val onePhase = PhaseInfo(
+        difficulty = onePhaseDifficulty,
+        isClearCheck = onePhaseIsClear,
+        moreCheck = onePhaseMCheck,
+        seeMoreGoldN = seeMoreGold[0],
+        seeMoreGoldH = seeMoreGold[2],
+        clearGoldN = clearGold[0],
+        clearGoldH = clearGold[2]
+    )
+
+    private val getTwoPhase = character?.checkList?.command?.get(1)?.phases?.get(1)
+
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty?:"노말"
+    private val twoPhaseIsClear = getTwoPhase?.isClear?:false
+    private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
+
+    val twoPhase = PhaseInfo(
+        difficulty = twoPhaseDifficulty,
+        isClearCheck = twoPhaseIsClear,
+        moreCheck = twoPhaseMCheck,
+        seeMoreGoldN = seeMoreGold[1],
+        seeMoreGoldH = seeMoreGold[3],
+        clearGoldN = clearGold[1],
+        clearGoldH = clearGold[3]
+    )
+}
+
+class KoukuSaton(character: Character?) {
+    var name = CommandBoss.KOUKU_SATON.boss
+    private val seeMoreGold = CommandBoss.KOUKU_SATON.getBossInfo("normal").first + CommandBoss.KOUKU_SATON.getBossInfo("hard").first
+    private val clearGold = CommandBoss.KOUKU_SATON.getBossInfo("normal").second + CommandBoss.KOUKU_SATON.getBossInfo("hard").second
+
+    var isChecked = character?.checkList?.command?.get(2)?.isCheck?:false
+
+    private val getOnePhase = character?.checkList?.command?.get(2)?.phases?.get(0)
+
+    private val onePhaseDifficulty = getOnePhase?.difficulty?:"노말"
+    private val onePhaseIsClear = getOnePhase?.isClear?:false
+    private val onePhaseMCheck = getOnePhase?.mCheck?:false
+
+    val onePhase = PhaseInfo(
+        difficulty = onePhaseDifficulty,
+        isClearCheck = onePhaseIsClear,
+        moreCheck = onePhaseMCheck,
+        seeMoreGoldN = seeMoreGold[0],
+        seeMoreGoldH = seeMoreGold[3],
+        clearGoldN = clearGold[0],
+        clearGoldH = clearGold[3]
+    )
+
+    private val getTwoPhase = character?.checkList?.command?.get(2)?.phases?.get(1)
+
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty?:"노말"
+    private val twoPhaseIsClear = getTwoPhase?.isClear?:false
+    private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
+
+    val twoPhase = PhaseInfo(
+        difficulty = twoPhaseDifficulty,
+        isClearCheck = twoPhaseIsClear,
+        moreCheck = twoPhaseMCheck,
+        seeMoreGoldN = seeMoreGold[1],
+        seeMoreGoldH = seeMoreGold[4],
+        clearGoldN = clearGold[1],
+        clearGoldH = clearGold[4]
+    )
+
+    private val getThreePhase = character?.checkList?.command?.get(2)?.phases?.get(2)
+    private val threePhaseDifficulty = getThreePhase?.difficulty?:"노말"
+    private val threePhaseIsClear = getThreePhase?.isClear?:false
+    private val threePhaseMCheck = getThreePhase?.mCheck?:false
+
+    val threePhase = PhaseInfo(
+        difficulty = threePhaseDifficulty,
+        isClearCheck = threePhaseIsClear,
+        moreCheck = threePhaseMCheck,
+        seeMoreGoldN = seeMoreGold[2],
+        seeMoreGoldH = seeMoreGold[5],
+        clearGoldN = clearGold[2],
+        clearGoldH = clearGold[5]
+    )
+}
+
+class Abrelshud(character: Character?) {
+    var name = CommandBoss.ABRELSHUD.boss
+    private val seeMoreGold = CommandBoss.ABRELSHUD.getBossInfo("normal").first + CommandBoss.ABRELSHUD.getBossInfo("hard").first
+    private val clearGold = CommandBoss.ABRELSHUD.getBossInfo("normal").second + CommandBoss.ABRELSHUD.getBossInfo("hard").second
+
+    var isChecked = character?.checkList?.command?.get(3)?.isCheck?:false
+
+    private val getOnePhase = character?.checkList?.command?.get(3)?.phases?.get(0)
+
+    private val onePhaseDifficulty = getOnePhase?.difficulty?:"노말"
+    private val onePhaseIsClear = getOnePhase?.isClear?:false
+    private val onePhaseMCheck = getOnePhase?.mCheck?:false
+
+    val onePhase = PhaseInfo(
+        difficulty = onePhaseDifficulty,
+        isClearCheck = onePhaseIsClear,
+        moreCheck = onePhaseMCheck,
+        seeMoreGoldN = seeMoreGold[0],
+        seeMoreGoldH = seeMoreGold[4],
+        clearGoldN = clearGold[0],
+        clearGoldH = clearGold[4]
+    )
+
+    private val getTwoPhase = character?.checkList?.command?.get(3)?.phases?.get(1)
+
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty?:"노말"
+    private val twoPhaseIsClear = getTwoPhase?.isClear?:false
+    private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
+
+    val twoPhase = PhaseInfo(
+        difficulty = twoPhaseDifficulty,
+        isClearCheck = twoPhaseIsClear,
+        moreCheck = twoPhaseMCheck,
+        seeMoreGoldN = seeMoreGold[1],
+        seeMoreGoldH = seeMoreGold[5],
+        clearGoldN = clearGold[1],
+        clearGoldH = clearGold[5]
+    )
+
+    private val getThreePhase = character?.checkList?.command?.get(3)?.phases?.get(2)
+    private val threePhaseDifficulty = getThreePhase?.difficulty?:"노말"
+    private val threePhaseIsClear = getThreePhase?.isClear?:false
+    private val threePhaseMCheck = getThreePhase?.mCheck?:false
+
+    val threePhase = PhaseInfo(
+        difficulty = threePhaseDifficulty,
+        isClearCheck = threePhaseIsClear,
+        moreCheck = threePhaseMCheck,
+        seeMoreGoldN = seeMoreGold[2],
+        seeMoreGoldH = seeMoreGold[6],
+        clearGoldN = clearGold[2],
+        clearGoldH = clearGold[6]
+    )
+
+    private val getFourPhase = character?.checkList?.command?.get(3)?.phases?.get(3)
+    private val fourPhaseDifficulty = getFourPhase?.difficulty?:"노말"
+    private val fourPhaseIsClear = getFourPhase?.isClear?:false
+    private val fourPhaseMCheck = getFourPhase?.mCheck?:false
+
+    val fourPhase = PhaseInfo(
+        difficulty = fourPhaseDifficulty,
+        isClearCheck = fourPhaseIsClear,
+        moreCheck = fourPhaseMCheck,
+        seeMoreGoldN = seeMoreGold[3],
+        seeMoreGoldH = seeMoreGold[7],
+        clearGoldN = clearGold[3],
+        clearGoldH = clearGold[7]
+    )
+}
+
+class Illiakan(character: Character?) {
+    var name = CommandBoss.ILLIAKAN.boss
+    private val seeMoreGold = CommandBoss.ILLIAKAN.getBossInfo("normal").first + CommandBoss.ILLIAKAN.getBossInfo("hard").first
+    private val clearGold = CommandBoss.ILLIAKAN.getBossInfo("normal").second + CommandBoss.ILLIAKAN.getBossInfo("hard").second
+
+    var isChecked = character?.checkList?.command?.get(4)?.isCheck?:false
+
+    private val getOnePhase = character?.checkList?.command?.get(4)?.phases?.get(0)
+
+    private val onePhaseDifficulty = getOnePhase?.difficulty?:"노말"
+    private val onePhaseIsClear = getOnePhase?.isClear?:false
+    private val onePhaseMCheck = getOnePhase?.mCheck?:false
+
+    val onePhase = PhaseInfo(
+        difficulty = onePhaseDifficulty,
+        isClearCheck = onePhaseIsClear,
+        moreCheck = onePhaseMCheck,
+        seeMoreGoldN = seeMoreGold[0],
+        seeMoreGoldH = seeMoreGold[3],
+        clearGoldN = clearGold[0],
+        clearGoldH = clearGold[3]
+    )
+
+    private val getTwoPhase = character?.checkList?.command?.get(4)?.phases?.get(1)
+
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty?:"노말"
+    private val twoPhaseIsClear = getTwoPhase?.isClear?:false
+    private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
+
+    val twoPhase = PhaseInfo(
+        difficulty = twoPhaseDifficulty,
+        isClearCheck = twoPhaseIsClear,
+        moreCheck = twoPhaseMCheck,
+        seeMoreGoldN = seeMoreGold[1],
+        seeMoreGoldH = seeMoreGold[4],
+        clearGoldN = clearGold[1],
+        clearGoldH = clearGold[4]
+    )
+
+    private val getThreePhase = character?.checkList?.command?.get(4)?.phases?.get(2)
+    private val threePhaseDifficulty = getThreePhase?.difficulty?:"노말"
+    private val threePhaseIsClear = getThreePhase?.isClear?:false
+    private val threePhaseMCheck = getThreePhase?.mCheck?:false
+
+    val threePhase = PhaseInfo(
+        difficulty = threePhaseDifficulty,
+        isClearCheck = threePhaseIsClear,
+        moreCheck = threePhaseMCheck,
+        seeMoreGoldN = seeMoreGold[2],
+        seeMoreGoldH = seeMoreGold[5],
+        clearGoldN = clearGold[2],
+        clearGoldH = clearGold[5]
+    )
+}
+
+class Kamen(character: Character?) {
+    var name = CommandBoss.KAMEN.boss
+    private val seeMoreGold = CommandBoss.KAMEN.getBossInfo("normal").first + CommandBoss.KAMEN.getBossInfo("hard").first
+    private val clearGold = CommandBoss.KAMEN.getBossInfo("normal").second + CommandBoss.KAMEN.getBossInfo("hard").second
+
+    var isChecked = character?.checkList?.command?.get(5)?.isCheck?:false
+
+    private val getOnePhase = character?.checkList?.command?.get(5)?.phases?.get(0)
+
+    private val onePhaseDifficulty = getOnePhase?.difficulty?:"노말"
+    private val onePhaseIsClear = getOnePhase?.isClear?:false
+    private val onePhaseMCheck = getOnePhase?.mCheck?:false
+
+    val onePhase = PhaseInfo(
+        difficulty = onePhaseDifficulty,
+        isClearCheck = onePhaseIsClear,
+        moreCheck = onePhaseMCheck,
+        seeMoreGoldN = seeMoreGold[0],
+        seeMoreGoldH = seeMoreGold[4],
+        clearGoldN = clearGold[0],
+        clearGoldH = clearGold[4]
+    )
+
+    private val getTwoPhase = character?.checkList?.command?.get(5)?.phases?.get(1)
+
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty?:"노말"
+    private val twoPhaseIsClear = getTwoPhase?.isClear?:false
+    private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
+
+    val twoPhase = PhaseInfo(
+        difficulty = twoPhaseDifficulty,
+        isClearCheck = twoPhaseIsClear,
+        moreCheck = twoPhaseMCheck,
+        seeMoreGoldN = seeMoreGold[1],
+        seeMoreGoldH = seeMoreGold[5],
+        clearGoldN = clearGold[1],
+        clearGoldH = clearGold[5]
+    )
+
+    private val getThreePhase = character?.checkList?.command?.get(5)?.phases?.get(2)
+    private val threePhaseDifficulty = getThreePhase?.difficulty?:"노말"
+    private val threePhaseIsClear = getThreePhase?.isClear?:false
+    private val threePhaseMCheck = getThreePhase?.mCheck?:false
+
+    val threePhase = PhaseInfo(
+        difficulty = threePhaseDifficulty,
+        isClearCheck = threePhaseIsClear,
+        moreCheck = threePhaseMCheck,
+        seeMoreGoldN = seeMoreGold[2],
+        seeMoreGoldH = seeMoreGold[6],
+        clearGoldN = clearGold[2],
+        clearGoldH = clearGold[6]
+    )
+
+    private val getFourPhase = character?.checkList?.command?.get(5)?.phases?.get(3)
+    private val fourPhaseDifficulty = getFourPhase?.difficulty?:"노말"
+    private val fourPhaseIsClear = getFourPhase?.isClear?:false
+    private val fourPhaseMCheck = getFourPhase?.mCheck?:false
+
+    val fourPhase = PhaseInfo(
+        difficulty = fourPhaseDifficulty,
+        isClearCheck = fourPhaseIsClear,
+        moreCheck = fourPhaseMCheck,
+        seeMoreGoldN = seeMoreGold[3],
+        seeMoreGoldH = seeMoreGold[7],
+        clearGoldN = clearGold[3],
+        clearGoldH = clearGold[7]
+    )
 }

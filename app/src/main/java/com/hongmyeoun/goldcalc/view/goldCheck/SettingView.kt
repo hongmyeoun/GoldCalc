@@ -43,9 +43,9 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.AbyssDungeon
+import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.CommandRaid
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.EpicRaid
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.KazerothRaid
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
@@ -58,10 +58,10 @@ import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
 fun Setting(
     navController: NavHostController,
     viewModel: GoldSettingVM,
+    cbVM: CommandBossVM,
     adVM: AbyssDungeonVM,
     kzVM: KazerothRaidVM,
     epVM: EpicRaidVM,
-    cbVM: CommandBossVM = viewModel(),
 ) {
     val height = if (viewModel.expanded) Modifier.wrapContentHeight() else Modifier.height(65.dp)
     val arrowIcon = if (viewModel.expanded) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp
@@ -256,6 +256,7 @@ fun Setting(
                             Button(
                                 onClick = {
                                     viewModel.onDoneClick(
+                                        commandRaid = cbVM,
                                         abyssDungeon = adVM,
                                         kazerothRaid = kzVM,
                                         epicRaid = epVM
@@ -281,13 +282,13 @@ fun Setting(
         ) {
             when (viewModel.selectedTab) {
                 "군단장" -> {
-//                    RaidCard(
-//                        raidType = "군단장 레이드",
-//                        raidImg = Icons.Default.AccountBox,
-//                        totalGold = cbVM.totalGold
-//                    ) {
-//                        CommandRaid(viewModel = cbVM)
-//                    }
+                    RaidCard(
+                        raidType = "군단장 레이드",
+                        raidImg = Icons.Default.AccountBox,
+                        totalGold = cbVM.totalGold
+                    ) {
+                        CommandRaid(viewModel = cbVM)
+                    }
                 }
                 "어비스 던전" -> {
                     RaidCard(

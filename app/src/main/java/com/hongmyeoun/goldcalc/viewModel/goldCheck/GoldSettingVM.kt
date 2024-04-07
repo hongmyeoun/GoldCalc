@@ -29,6 +29,7 @@ class GoldSettingVM(private val repository: CharacterRepository, charName: Strin
     }
 
     fun onDoneClick(
+        commandRaid: CommandBossVM,
         abyssDungeon: AbyssDungeonVM,
         kazerothRaid: KazerothRaidVM,
         epicRaid: EpicRaidVM,
@@ -37,128 +38,128 @@ class GoldSettingVM(private val repository: CharacterRepository, charName: Strin
         val originalCheckList = originalCharacter?.checkList
 
         val update = originalCheckList?.copy(
-    //                command = listOf(
-    //                    originalCheckList.command[0].copy( // 발탄
-    //                        phases = listOf(
-    //                            originalCheckList.command[0].phases[0].copy( // 1페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                            originalCheckList.command[0].phases[1].copy( // 2페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                        ),
-    //                        isCheck = ,
-    //                    ),
-    //                    originalCheckList.command[1].copy( // 비아키스
-    //                        phases = listOf(
-    //                            originalCheckList.command[1].phases[0].copy( // 1페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                            originalCheckList.command[1].phases[1].copy( // 2페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                        ),
-    //                        isCheck = ,
-    //                    ),
-    //                    originalCheckList.command[2].copy( // 쿠크세이튼
-    //                        phases = listOf(
-    //                            originalCheckList.command[2].phases[0].copy( // 1페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                            originalCheckList.command[2].phases[1].copy( // 2페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                            originalCheckList.command[2].phases[2].copy( // 3페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                        ),
-    //                        isCheck = ,
-    //                    ),
-    //                    originalCheckList.command[3].copy( // 아브렐슈드
-    //                        phases = listOf(
-    //                            originalCheckList.command[3].phases[0].copy( // 1페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                            originalCheckList.command[3].phases[1].copy( // 2페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                            originalCheckList.command[3].phases[2].copy( // 3페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                            originalCheckList.command[3].phases[3].copy( // 4페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                        ),
-    //                        isCheck = ,
-    //                    ),
-    //                    originalCheckList.command[4].copy( // 일리아칸
-    //                        phases = listOf(
-    //                            originalCheckList.command[4].phases[0].copy( // 1페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                            originalCheckList.command[4].phases[1].copy( // 2페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                            originalCheckList.command[4].phases[2].copy( // 3페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                        ),
-    //                        isCheck = ,
-    //                    ),
-    //                    originalCheckList.command[5].copy( // 카멘
-    //                        phases = listOf(
-    //                            originalCheckList.command[5].phases[0].copy( // 1페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                            originalCheckList.command[5].phases[1].copy( // 2페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                            originalCheckList.command[5].phases[2].copy( // 3페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                            originalCheckList.command[5].phases[3].copy( // 4페
-    //                                difficulty = ,
-    //                                isClear = ,
-    //                                mCheck = ,
-    //                            ),
-    //                        ),
-    //                        isCheck = ,
-    //                    ),
-    //                ),
+            command = listOf(
+                originalCheckList.command[0].copy( // 발탄
+                    phases = listOf(
+                        originalCheckList.command[0].phases[0].copy( // 1페
+                            difficulty = commandRaid.valtan.onePhase.level,
+                            isClear = commandRaid.valtan.onePhase.clearCheck,
+                            mCheck = commandRaid.valtan.onePhase.seeMoreCheck,
+                        ),
+                        originalCheckList.command[0].phases[1].copy( // 2페
+                            difficulty = commandRaid.valtan.twoPhase.level,
+                            isClear = commandRaid.valtan.twoPhase.clearCheck,
+                            mCheck = commandRaid.valtan.twoPhase.seeMoreCheck,
+                        ),
+                    ),
+                    isCheck = commandRaid.valtanCheck,
+                ),
+                originalCheckList.command[1].copy( // 비아키스
+                    phases = listOf(
+                        originalCheckList.command[1].phases[0].copy( // 1페
+                            difficulty = commandRaid.biackiss.onePhase.level,
+                            isClear = commandRaid.biackiss.onePhase.clearCheck,
+                            mCheck = commandRaid.biackiss.onePhase.seeMoreCheck,
+                        ),
+                        originalCheckList.command[1].phases[1].copy( // 2페
+                            difficulty = commandRaid.biackiss.twoPhase.level,
+                            isClear = commandRaid.biackiss.twoPhase.clearCheck,
+                            mCheck = commandRaid.biackiss.twoPhase.seeMoreCheck,
+                        ),
+                    ),
+                    isCheck = commandRaid.biaCheck,
+                ),
+                originalCheckList.command[2].copy( // 쿠크세이튼
+                    phases = listOf(
+                        originalCheckList.command[2].phases[0].copy( // 1페
+                            difficulty = commandRaid.koukuSaton.onePhase.level,
+                            isClear = commandRaid.koukuSaton.onePhase.clearCheck,
+                            mCheck = commandRaid.koukuSaton.onePhase.seeMoreCheck,
+                        ),
+                        originalCheckList.command[2].phases[1].copy( // 2페
+                            difficulty = commandRaid.koukuSaton.twoPhase.level,
+                            isClear = commandRaid.koukuSaton.twoPhase.clearCheck,
+                            mCheck = commandRaid.koukuSaton.twoPhase.seeMoreCheck,
+                        ),
+                        originalCheckList.command[2].phases[2].copy( // 3페
+                            difficulty = commandRaid.koukuSaton.threePhase.level,
+                            isClear = commandRaid.koukuSaton.threePhase.clearCheck,
+                            mCheck = commandRaid.koukuSaton.threePhase.seeMoreCheck
+                        ),
+                    ),
+                    isCheck = commandRaid.koukuCheck,
+                ),
+                originalCheckList.command[3].copy( // 아브렐슈드
+                    phases = listOf(
+                        originalCheckList.command[3].phases[0].copy( // 1페
+                            difficulty = commandRaid.abrelshud.onePhase.level,
+                            isClear = commandRaid.abrelshud.onePhase.clearCheck,
+                            mCheck = commandRaid.abrelshud.onePhase.seeMoreCheck,
+                        ),
+                        originalCheckList.command[3].phases[1].copy( // 2페
+                            difficulty = commandRaid.abrelshud.twoPhase.level,
+                            isClear = commandRaid.abrelshud.twoPhase.clearCheck,
+                            mCheck = commandRaid.abrelshud.twoPhase.seeMoreCheck,
+                        ),
+                        originalCheckList.command[3].phases[2].copy( // 3페
+                            difficulty = commandRaid.abrelshud.threePhase.level,
+                            isClear = commandRaid.abrelshud.threePhase.clearCheck,
+                            mCheck = commandRaid.abrelshud.threePhase.seeMoreCheck
+                        ),
+                        originalCheckList.command[3].phases[3].copy( // 4페
+                            difficulty = commandRaid.abrelshud.fourPhase.level,
+                            isClear = commandRaid.abrelshud.fourPhase.clearCheck,
+                            mCheck = commandRaid.abrelshud.fourPhase.seeMoreCheck
+                        ),
+                    ),
+                    isCheck = commandRaid.abreCheck,
+                ),
+                originalCheckList.command[4].copy( // 일리아칸
+                    phases = listOf(
+                        originalCheckList.command[4].phases[0].copy( // 1페
+                            difficulty = commandRaid.illiakan.onePhase.level,
+                            isClear = commandRaid.illiakan.onePhase.clearCheck,
+                            mCheck = commandRaid.illiakan.onePhase.seeMoreCheck,
+                        ),
+                        originalCheckList.command[4].phases[1].copy( // 2페
+                            difficulty = commandRaid.illiakan.twoPhase.level,
+                            isClear = commandRaid.illiakan.twoPhase.clearCheck,
+                            mCheck = commandRaid.illiakan.twoPhase.seeMoreCheck,
+                        ),
+                        originalCheckList.command[4].phases[2].copy( // 3페
+                            difficulty = commandRaid.illiakan.threePhase.level,
+                            isClear = commandRaid.illiakan.threePhase.clearCheck,
+                            mCheck = commandRaid.illiakan.threePhase.seeMoreCheck
+                        ),
+                    ),
+                    isCheck = commandRaid.illiCheck,
+                ),
+                originalCheckList.command[5].copy( // 카멘
+                    phases = listOf(
+                        originalCheckList.command[5].phases[0].copy( // 1페
+                            difficulty = commandRaid.kamen.onePhase.level,
+                            isClear = commandRaid.kamen.onePhase.clearCheck,
+                            mCheck = commandRaid.kamen.onePhase.seeMoreCheck,
+                        ),
+                        originalCheckList.command[5].phases[1].copy( // 2페
+                            difficulty = commandRaid.kamen.twoPhase.level,
+                            isClear = commandRaid.kamen.twoPhase.clearCheck,
+                            mCheck = commandRaid.kamen.twoPhase.seeMoreCheck,
+                        ),
+                        originalCheckList.command[5].phases[2].copy( // 3페
+                            difficulty = commandRaid.kamen.threePhase.level,
+                            isClear = commandRaid.kamen.threePhase.clearCheck,
+                            mCheck = commandRaid.kamen.threePhase.seeMoreCheck
+                        ),
+                        originalCheckList.command[5].phases[3].copy( // 4페
+                            difficulty = commandRaid.kamen.fourPhase.level,
+                            isClear = commandRaid.kamen.fourPhase.clearCheck,
+                            mCheck = commandRaid.kamen.fourPhase.seeMoreCheck
+                        ),
+                    ),
+                    isCheck = commandRaid.kamenCheck,
+                ),
+            ),
             abyssDungeon = listOf(
                 originalCheckList.abyssDungeon[0].copy( // 카양겔
                     phases = listOf(

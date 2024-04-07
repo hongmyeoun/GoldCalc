@@ -57,6 +57,7 @@ import com.hongmyeoun.goldcalc.view.goldCheck.Setting
 import com.hongmyeoun.goldcalc.view.search.CharacterDetailScreen
 import com.hongmyeoun.goldcalc.view.search.CharacterScreen
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
+import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
@@ -103,10 +104,11 @@ class MainActivity : ComponentActivity() {
                         if (isLoading) {
                             LoadingScreen()
                         } else {
+                            val cbVM = CommandBossVM(character)
                             val adVM = AbyssDungeonVM(character)
                             val kzVM = KazerothRaidVM(character)
                             val epVM = EpicRaidVM(character)
-                            Setting(navController, gSVM, adVM, kzVM, epVM)
+                            Setting(navController, gSVM, cbVM, adVM, kzVM, epVM)
                         }
 
                         LaunchedEffect(Unit) {
