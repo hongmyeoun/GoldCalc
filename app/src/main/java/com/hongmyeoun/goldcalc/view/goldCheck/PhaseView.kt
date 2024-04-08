@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -79,7 +80,9 @@ fun PhaseUI(
 }
 
 @Composable
-fun twoPhaseBoss(
+fun TwoPhaseBoss(
+    rotaR: Float,
+
     name: String,
     totalGold: Int,
 
@@ -98,7 +101,12 @@ fun twoPhaseBoss(
     onTwoPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier
+            .padding(16.dp)
+            .graphicsLayer {
+                rotationY = rotaR
+                cameraDistance = 8 * density
+            }
     ) {
         Row(
             modifier = Modifier
@@ -146,6 +154,8 @@ fun twoPhaseBoss(
 
 @Composable
 fun ThreePhaseBoss(
+    rotaR: Float,
+
     name: String,
     totalGold: Int,
 
@@ -171,7 +181,12 @@ fun ThreePhaseBoss(
     onThreePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier
+            .padding(16.dp)
+            .graphicsLayer {
+                rotationY = rotaR
+                cameraDistance = 8 * density
+            }
     ) {
         Row(
             modifier = Modifier
@@ -229,6 +244,8 @@ fun ThreePhaseBoss(
 
 @Composable
 fun FourPhaseBoss(
+    rotaR: Float,
+
     name: String,
     totalGold: Int,
 
@@ -261,7 +278,12 @@ fun FourPhaseBoss(
     onFourPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier
+            .padding(16.dp)
+            .graphicsLayer {
+                rotationY = rotaR
+                cameraDistance = 8 * density
+            }
     ) {
         Row(
             modifier = Modifier
@@ -325,3 +347,254 @@ fun FourPhaseBoss(
         )
     }
 }
+
+
+
+
+//@Composable
+//fun twoPhaseBoss(
+//    name: String,
+//    totalGold: Int,
+//
+//    phaseOneLevel: String,
+//    phaseOneSMC: Boolean,
+//    phaseOneCC: Boolean,
+//    onOnePhaseLevelClicked: () -> Unit,
+//    onOnePhaseClearCheckBoxChecked: (Boolean) -> Unit,
+//    onOnePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+//
+//    phaseTwoLevel: String,
+//    phaseTwoSMC: Boolean,
+//    phaseTwoCC: Boolean,
+//    onTwoPhaseLevelClicked: () -> Unit,
+//    onTwoPhaseClearCheckBoxChecked: (Boolean) -> Unit,
+//    onTwoPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+//) {
+//    Column(
+//        modifier = Modifier.padding(16.dp)
+//    ) {
+//        Row(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(16.dp)
+//        ) {
+//            Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "보스 이미지")
+//            Text(
+//                modifier = Modifier.weight(2f),
+//                text = name
+//            )
+//            Row(
+//                modifier = Modifier.weight(1f),
+//                verticalAlignment = Alignment.CenterVertically,
+//                horizontalArrangement = Arrangement.End
+//            ) {
+//                Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
+//                Spacer(modifier = Modifier.width(8.dp))
+//                Text(text = "$totalGold")
+//            }
+//        }
+//
+//        PhaseUI(
+//            phase = 1,
+//            difficulty = phaseOneLevel,
+//            clearCheck = phaseOneCC,
+//            moreCheck = phaseOneSMC,
+//            onLevelClicked = { onOnePhaseLevelClicked() },
+//            onClearClicked = { onOnePhaseClearCheckBoxChecked(it) },
+//            onMoreClicked = { onOnePhaseSeeMoreCheckBoxChecked(it) }
+//        )
+//
+//        PhaseUI(
+//            phase = 2,
+//            difficulty = phaseTwoLevel,
+//            clearCheck = phaseTwoCC,
+//            moreCheck = phaseTwoSMC,
+//            onLevelClicked = { onTwoPhaseLevelClicked() },
+//            onClearClicked = { onTwoPhaseClearCheckBoxChecked(it) },
+//            onMoreClicked = { onTwoPhaseSeeMoreCheckBoxChecked(it) }
+//        )
+//
+//    }
+//}
+//
+//@Composable
+//fun ThreePhaseBoss(
+//    name: String,
+//    totalGold: Int,
+//
+//    phaseOneLevel: String,
+//    phaseOneSMC: Boolean,
+//    phaseOneCC: Boolean,
+//    onOnePhaseLevelClicked: () -> Unit,
+//    onOnePhaseClearCheckBoxChecked: (Boolean) -> Unit,
+//    onOnePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+//
+//    phaseTwoLevel: String,
+//    phaseTwoSMC: Boolean,
+//    phaseTwoCC: Boolean,
+//    onTwoPhaseLevelClicked: () -> Unit,
+//    onTwoPhaseClearCheckBoxChecked: (Boolean) -> Unit,
+//    onTwoPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+//
+//    phaseThreeLevel: String,
+//    phaseThreeSMC: Boolean,
+//    phaseThreeCC: Boolean,
+//    onThreePhaseLevelClicked: () -> Unit,
+//    onThreePhaseClearCheckBoxChecked: (Boolean) -> Unit,
+//    onThreePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+//) {
+//    Column(
+//        modifier = Modifier.padding(16.dp)
+//    ) {
+//        Row(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(16.dp)
+//        ) {
+//            Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "보스 이미지")
+//            Text(
+//                modifier = Modifier.weight(2f),
+//                text = name
+//            )
+//            Row(
+//                modifier = Modifier.weight(1f),
+//                verticalAlignment = Alignment.CenterVertically,
+//                horizontalArrangement = Arrangement.End
+//            ) {
+//                Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
+//                Spacer(modifier = Modifier.width(8.dp))
+//                Text(text = "$totalGold")
+//            }
+//        }
+//
+//        PhaseUI(
+//            phase = 1,
+//            difficulty = phaseOneLevel,
+//            clearCheck = phaseOneCC,
+//            moreCheck = phaseOneSMC,
+//            onLevelClicked = { onOnePhaseLevelClicked() },
+//            onClearClicked = { onOnePhaseClearCheckBoxChecked(it) },
+//            onMoreClicked = { onOnePhaseSeeMoreCheckBoxChecked(it) }
+//        )
+//
+//        PhaseUI(
+//            phase = 2,
+//            difficulty = phaseTwoLevel,
+//            clearCheck = phaseTwoCC,
+//            moreCheck = phaseTwoSMC,
+//            onLevelClicked = { onTwoPhaseLevelClicked() },
+//            onClearClicked = { onTwoPhaseClearCheckBoxChecked(it) },
+//            onMoreClicked = { onTwoPhaseSeeMoreCheckBoxChecked(it) }
+//        )
+//
+//        PhaseUI(
+//            phase = 3,
+//            difficulty = phaseThreeLevel,
+//            clearCheck = phaseThreeCC,
+//            moreCheck = phaseThreeSMC,
+//            onLevelClicked = { onThreePhaseLevelClicked() },
+//            onClearClicked = { onThreePhaseClearCheckBoxChecked(it) },
+//            onMoreClicked = { onThreePhaseSeeMoreCheckBoxChecked(it) }
+//        )
+//
+//    }
+//}
+//
+//@Composable
+//fun FourPhaseBoss(
+//    name: String,
+//    totalGold: Int,
+//
+//    phaseOneLevel: String,
+//    phaseOneSMC: Boolean,
+//    phaseOneCC: Boolean,
+//    onOnePhaseLevelClicked: () -> Unit,
+//    onOnePhaseClearCheckBoxChecked: (Boolean) -> Unit,
+//    onOnePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+//
+//    phaseTwoLevel: String,
+//    phaseTwoSMC: Boolean,
+//    phaseTwoCC: Boolean,
+//    onTwoPhaseLevelClicked: () -> Unit,
+//    onTwoPhaseClearCheckBoxChecked: (Boolean) -> Unit,
+//    onTwoPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+//
+//    phaseThreeLevel: String,
+//    phaseThreeSMC: Boolean,
+//    phaseThreeCC: Boolean,
+//    onThreePhaseLevelClicked: () -> Unit,
+//    onThreePhaseClearCheckBoxChecked: (Boolean) -> Unit,
+//    onThreePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+//
+//    phaseFourLevel: String,
+//    phaseFourSMC: Boolean,
+//    phaseFourCC: Boolean,
+//    onFourPhaseLevelClicked: () -> Unit,
+//    onFourPhaseClearCheckBoxChecked: (Boolean) -> Unit,
+//    onFourPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+//) {
+//    Column(
+//        modifier = Modifier.padding(16.dp)
+//    ) {
+//        Row(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(16.dp)
+//        ) {
+//            Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "보스 이미지")
+//            Text(
+//                modifier = Modifier.weight(2f),
+//                text = name
+//            )
+//            Row(
+//                modifier = Modifier.weight(1f),
+//                verticalAlignment = Alignment.CenterVertically,
+//                horizontalArrangement = Arrangement.End
+//            ) {
+//                Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
+//                Spacer(modifier = Modifier.width(8.dp))
+//                Text(text = "$totalGold")
+//            }
+//        }
+//
+//        PhaseUI(
+//            phase = 1,
+//            difficulty = phaseOneLevel,
+//            clearCheck = phaseOneCC,
+//            moreCheck = phaseOneSMC,
+//            onLevelClicked = { onOnePhaseLevelClicked() },
+//            onClearClicked = { onOnePhaseClearCheckBoxChecked(it) },
+//            onMoreClicked = { onOnePhaseSeeMoreCheckBoxChecked(it) }
+//        )
+//
+//        PhaseUI(
+//            phase = 2,
+//            difficulty = phaseTwoLevel,
+//            clearCheck = phaseTwoCC,
+//            moreCheck = phaseTwoSMC,
+//            onLevelClicked = { onTwoPhaseLevelClicked() },
+//            onClearClicked = { onTwoPhaseClearCheckBoxChecked(it) },
+//            onMoreClicked = { onTwoPhaseSeeMoreCheckBoxChecked(it) }
+//        )
+//
+//        PhaseUI(
+//            phase = 3,
+//            difficulty = phaseThreeLevel,
+//            clearCheck = phaseThreeCC,
+//            moreCheck = phaseThreeSMC,
+//            onLevelClicked = { onThreePhaseLevelClicked() },
+//            onClearClicked = { onThreePhaseClearCheckBoxChecked(it) },
+//            onMoreClicked = { onThreePhaseSeeMoreCheckBoxChecked(it) }
+//        )
+//
+//        PhaseUI(
+//            phase = 4,
+//            difficulty = phaseFourLevel,
+//            clearCheck = phaseFourCC,
+//            moreCheck = phaseFourSMC,
+//            onLevelClicked = { onFourPhaseLevelClicked() },
+//            onClearClicked = { onFourPhaseClearCheckBoxChecked(it) },
+//            onMoreClicked = { onFourPhaseSeeMoreCheckBoxChecked(it) }
+//        )
+//    }
+//}
