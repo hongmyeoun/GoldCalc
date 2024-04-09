@@ -157,6 +157,7 @@ fun CommandRaid(
                     rotaR = valtanRotaR,
 
                     name = viewModel.valtan.name,
+                    raidBossImg = R.drawable.logo_valtan,
                     totalGold = viewModel.valtan.totalGold,
 
                     phaseOneLevel = viewModel.valtan.onePhase.level,
@@ -224,6 +225,7 @@ fun CommandRaid(
                     rotaR = biackissRotaR,
 
                     name = viewModel.biackiss.name,
+                    raidBossImg = R.drawable.logo_biackiss,
                     totalGold = viewModel.biackiss.totalGold,
 
                     phaseOneLevel = viewModel.biackiss.onePhase.level,
@@ -292,6 +294,7 @@ fun CommandRaid(
                     rotaR = koukuSatonRotaR,
 
                     name = viewModel.koukuSaton.name,
+                    raidBossImg = R.drawable.logo_saton,
                     totalGold = viewModel.koukuSaton.totalGold,
 
                     phaseOneLevel = viewModel.koukuSaton.onePhase.level,
@@ -376,6 +379,7 @@ fun CommandRaid(
                     rotaR = abrelshudRotaR,
 
                     name = viewModel.abrelshud.name,
+                    raidBossImg = R.drawable.logo_abrelshud,
                     totalGold = viewModel.abrelshud.totalGold,
 
                     phaseOneLevel = viewModel.abrelshud.onePhase.level,
@@ -476,6 +480,7 @@ fun CommandRaid(
                     rotaR = illiakanRotaR,
 
                     name = viewModel.illiakan.name,
+                    raidBossImg = R.drawable.logo_illiakan,
                     totalGold = viewModel.illiakan.totalGold,
 
                     phaseOneLevel = viewModel.illiakan.onePhase.level,
@@ -558,6 +563,7 @@ fun CommandRaid(
                     rotaR = kamenRotaR,
 
                     name = viewModel.kamen.name,
+                    raidBossImg = R.drawable.logo_kamen,
                     totalGold = viewModel.kamen.totalGold,
 
                     phaseOneLevel = viewModel.kamen.onePhase.level,

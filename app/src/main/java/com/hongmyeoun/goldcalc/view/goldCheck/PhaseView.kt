@@ -1,5 +1,6 @@
 package com.hongmyeoun.goldcalc.view.goldCheck
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,18 +8,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.hongmyeoun.goldcalc.R
 
 @Composable
 fun PhaseUI(
@@ -84,6 +83,7 @@ fun TwoPhaseBoss(
     rotaR: Float,
 
     name: String,
+    raidBossImg: Int,
     totalGold: Int,
 
     phaseOneLevel: String,
@@ -113,7 +113,10 @@ fun TwoPhaseBoss(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "보스 이미지")
+            Image(
+                painter = painterResource(id = raidBossImg),
+                contentDescription = "골드 아이콘"
+            )
             Text(
                 modifier = Modifier.weight(2f),
                 text = name
@@ -123,7 +126,10 @@ fun TwoPhaseBoss(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End
             ) {
-                Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
+                Image(
+                    painter = painterResource(id = R.drawable.gold_coin),
+                    contentDescription = "골드 아이콘"
+                )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(text = "$totalGold")
             }
@@ -157,6 +163,7 @@ fun ThreePhaseBoss(
     rotaR: Float,
 
     name: String,
+    raidBossImg: Int,
     totalGold: Int,
 
     phaseOneLevel: String,
@@ -193,7 +200,10 @@ fun ThreePhaseBoss(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "보스 이미지")
+            Image(
+                painter = painterResource(id = raidBossImg),
+                contentDescription = "골드 아이콘"
+            )
             Text(
                 modifier = Modifier.weight(2f),
                 text = name
@@ -203,7 +213,10 @@ fun ThreePhaseBoss(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End
             ) {
-                Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
+                Image(
+                    painter = painterResource(id = R.drawable.gold_coin),
+                    contentDescription = "골드 아이콘"
+                )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(text = "$totalGold")
             }
@@ -247,6 +260,7 @@ fun FourPhaseBoss(
     rotaR: Float,
 
     name: String,
+    raidBossImg: Int,
     totalGold: Int,
 
     phaseOneLevel: String,
@@ -290,7 +304,10 @@ fun FourPhaseBoss(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "보스 이미지")
+            Image(
+                painter = painterResource(id = raidBossImg),
+                contentDescription = "골드 아이콘"
+            )
             Text(
                 modifier = Modifier.weight(2f),
                 text = name
@@ -300,7 +317,10 @@ fun FourPhaseBoss(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End
             ) {
-                Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
+                Image(
+                    painter = painterResource(id = R.drawable.gold_coin),
+                    contentDescription = "골드 아이콘"
+                )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(text = "$totalGold")
             }

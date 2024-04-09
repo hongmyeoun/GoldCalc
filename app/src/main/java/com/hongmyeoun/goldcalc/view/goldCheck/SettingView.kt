@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.view.goldCheck
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -20,9 +21,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
@@ -41,10 +40,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.AbyssDungeon
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.CommandRaid
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.EpicRaid
@@ -283,7 +284,10 @@ fun Setting(
                             Column {
                                 Text(text = "변경 전")
                                 Row {
-                                    Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
+                                    Image(
+                                        painter = painterResource(id = R.drawable.gold_coins),
+                                        contentDescription = "골드 이미지"
+                                    )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(text = "${character?.weeklyGold}")
                                 }
@@ -292,7 +296,10 @@ fun Setting(
                             Column {
                                 Text(text = "변경 후")
                                 Row {
-                                    Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
+                                    Image(
+                                        painter = painterResource(id = R.drawable.gold_coins),
+                                        contentDescription = "골드 이미지"
+                                    )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(text = "${viewModel.totalGold}")
                                 }
@@ -336,7 +343,7 @@ fun Setting(
                 "군단장" -> {
                     RaidCard(
                         raidType = "군단장 레이드",
-                        raidImg = Icons.Default.AccountBox,
+                        raidImg = R.drawable.command_icon,
                         totalGold = cbVM.totalGold
                     ) {
                         CommandRaid(viewModel = cbVM)
@@ -346,7 +353,7 @@ fun Setting(
                 "어비스 던전" -> {
                     RaidCard(
                         raidType = "어비스 던전",
-                        raidImg = Icons.Default.AccountBox,
+                        raidImg = R.drawable.abyss_dungeon_icon,
                         totalGold = adVM.totalGold,
                     ) {
                         AbyssDungeon(viewModel = adVM)
@@ -356,7 +363,7 @@ fun Setting(
                 "카제로스" -> {
                     RaidCard(
                         raidType = "카제로스 레이드",
-                        raidImg = Icons.Default.AccountBox,
+                        raidImg = R.drawable.kazeroth_icon,
                         totalGold = kzVM.totalGold
                     ) {
                         KazerothRaid(viewModel = kzVM)
@@ -366,7 +373,7 @@ fun Setting(
                 "에픽" -> {
                     RaidCard(
                         raidType = "에픽 레이드",
-                        raidImg = Icons.Default.AccountBox,
+                        raidImg = R.drawable.epic_icon,
                         totalGold = epVM.totalGold
                     ) {
                         EpicRaid(viewModel = epVM)

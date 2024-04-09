@@ -72,6 +72,7 @@ fun EpicRaid(viewModel: EpicRaidVM) {
                     rotaR = behemothRotaR,
 
                     name = viewModel.behemoth.name,
+                    raidBossImg = R.drawable.logo_behemoth,
                     totalGold = viewModel.behemoth.totalGold,
 
                     phaseOneLevel = viewModel.behemoth.onePhase.level,

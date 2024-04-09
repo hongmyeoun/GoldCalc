@@ -93,6 +93,7 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
                     rotaR = kayangelRotaR,
 
                     name = viewModel.kayangel.name,
+                    raidBossImg = R.drawable.logo_kayangel,
                     totalGold = viewModel.kayangel.totalGold,
 
                     phaseOneLevel = viewModel.kayangel.onePhase.level,
@@ -174,6 +175,7 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
                     rotaR = ivoryTowerRotaR,
 
                     name = viewModel.ivoryTower.name,
+                    raidBossImg = R.drawable.logo_ivory_tower,
                     totalGold = viewModel.ivoryTower.totalGold,
 
                     phaseOneLevel = viewModel.ivoryTower.onePhase.level,

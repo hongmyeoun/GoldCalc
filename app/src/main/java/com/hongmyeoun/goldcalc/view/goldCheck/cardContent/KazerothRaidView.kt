@@ -74,6 +74,7 @@ fun KazerothRaid(viewModel: KazerothRaidVM) {
                     rotaR = rotaR,
 
                     name = viewModel.echidna.name,
+                    raidBossImg = R.drawable.logo_ecchidna,
                     totalGold = viewModel.echidna.totalGold,
 
                     phaseOneLevel = viewModel.echidna.onePhase.level,
