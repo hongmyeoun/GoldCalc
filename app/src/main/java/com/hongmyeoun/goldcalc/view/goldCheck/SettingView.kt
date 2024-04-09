@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.view.goldCheck
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -101,7 +102,7 @@ fun Setting(
                 TopBarBox(
                     title = "에픽",
                     modifier = Modifier.weight(1f),
-                    onClick = { viewModel.moveEpicRaid()  }
+                    onClick = { viewModel.moveEpicRaid() }
                 )
                 TopBarBox(
                     title = "기타",
@@ -116,10 +117,13 @@ fun Setting(
                     .animateContentSize()
                     .then(height)
                     .fillMaxWidth()
+                    .background(Color.LightGray)
                     .clickable { viewModel.expand() },
                 contentAlignment = Alignment.BottomCenter
             ) {
-                Column {
+                Column(
+                    modifier = Modifier.verticalScroll(rememberScrollState())
+                ) {
                     Icon(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -128,7 +132,10 @@ fun Setting(
                         contentDescription = "펼치기, 접기"
                     )
 
+
                     if (viewModel.expanded) {
+                        Text(text = "${character?.name}(${character?.itemLevel})")
+
                         Row {
                             if (cbVM.valtanCheck || cbVM.biaCheck || cbVM.koukuCheck || cbVM.abreCheck || cbVM.illiCheck || cbVM.kamenCheck) {
                                 Text(text = "군단장 레이드")
@@ -257,7 +264,7 @@ fun Setting(
                             Text(text = "2관 ${epVM.behemoth.twoPhase.level} : ${epVM.behemoth.twoPhase.totalGold}")
                         }
                         Spacer(modifier = Modifier.height(8.dp))
-                        
+
                         if ((viewModel.plusGold.toIntOrNull() ?: 0) > 0) {
                             Row {
                                 Text(text = "추가골드 : ${viewModel.plusGold}")
@@ -312,7 +319,9 @@ fun Setting(
                         }
                     }
                 }
+
             }
+
         }
 
     ) { paddingValues ->
@@ -333,6 +342,7 @@ fun Setting(
                         CommandRaid(viewModel = cbVM)
                     }
                 }
+
                 "어비스 던전" -> {
                     RaidCard(
                         raidType = "어비스 던전",
@@ -342,6 +352,7 @@ fun Setting(
                         AbyssDungeon(viewModel = adVM)
                     }
                 }
+
                 "카제로스" -> {
                     RaidCard(
                         raidType = "카제로스 레이드",
@@ -351,6 +362,7 @@ fun Setting(
                         KazerothRaid(viewModel = kzVM)
                     }
                 }
+
                 "에픽" -> {
                     RaidCard(
                         raidType = "에픽 레이드",
@@ -360,6 +372,7 @@ fun Setting(
                         EpicRaid(viewModel = epVM)
                     }
                 }
+
                 "기타" -> {
                     Row(modifier = Modifier.fillMaxWidth()) {
                         OutlinedTextField(
@@ -408,8 +421,8 @@ fun Setting(
 fun TopBarBox(
     title: String,
     modifier: Modifier,
-    onClick: ()->Unit
-){
+    onClick: () -> Unit
+) {
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -418,10 +431,9 @@ fun TopBarBox(
                 shape = RectangleShape,
                 color = Color.LightGray
             )
-            .clickable { onClick() }
-        ,
+            .clickable { onClick() },
         contentAlignment = Alignment.Center
-    ){
+    ) {
         Text(text = title)
     }
 
