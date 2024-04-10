@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Checkbox
@@ -19,7 +21,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.hongmyeoun.goldcalc.R
 
 @Composable
@@ -116,8 +121,7 @@ fun TwoPhaseBoss(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 4.dp)
-            ,
+                .padding(vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
@@ -126,34 +130,59 @@ fun TwoPhaseBoss(
             ) {
                 Image(
                     painter = painterResource(id = raidBossImg),
-                    contentDescription = "골드 아이콘",
+                    contentDescription = "보스 아이콘",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.clip(RoundedCornerShape(16.dp))
-                )
-                Text(
-                    text = name
                 )
             }
             Column(
                 modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.End
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Text(
+                    text = name,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "1관문 : $phaseOneGold")
+                    Text(text = "① : ")
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = "$phaseOneGold",
+                        textAlign = TextAlign.End
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
                     Image(
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .size(16.dp),
+                        alignment = Alignment.Center,
                         painter = painterResource(id = R.drawable.gold_coin),
                         contentDescription = "골드 아이콘"
                     )
                 }
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "2관문 : $phaseTwoGold")
+                    Text(text = "② : ")
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = "$phaseTwoGold",
+                        textAlign = TextAlign.End
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
                     Image(
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .size(16.dp),
+                        alignment = Alignment.Center,
                         painter = painterResource(id = R.drawable.gold_coin),
                         contentDescription = "골드 아이콘"
                     )
@@ -162,12 +191,24 @@ fun TwoPhaseBoss(
                 Divider()
 
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ){
-                    Text(text = "합계 : $totalGold")
+                    Text(
+                        text = "합 : "
+                    )
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = "$totalGold",
+                        textAlign = TextAlign.End
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
                     Image(
-                        painter = painterResource(id = R.drawable.gold_coins),
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .size(16.dp),
+                        painter = painterResource(id = R.drawable.gold_coin),
+                        alignment = Alignment.Center,
                         contentDescription = "골드 아이콘"
                     )
                 }
@@ -241,8 +282,7 @@ fun ThreePhaseBoss(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 4.dp)
-            ,
+                .padding(vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
@@ -251,44 +291,79 @@ fun ThreePhaseBoss(
             ) {
                 Image(
                     painter = painterResource(id = raidBossImg),
-                    contentDescription = "보스 이미지",
+                    contentDescription = "보스 아이콘",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.clip(RoundedCornerShape(16.dp))
-                )
-                Text(
-                    text = name
                 )
             }
             Column(
                 modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.End
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Text(
+                    text = name,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "1관문 : $phaseOneGold")
+                    Text(text = "① : ")
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = "$phaseOneGold",
+                        textAlign = TextAlign.End
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
                     Image(
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .size(16.dp),
+                        alignment = Alignment.Center,
                         painter = painterResource(id = R.drawable.gold_coin),
                         contentDescription = "골드 아이콘"
                     )
                 }
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "2관문 : $phaseTwoGold")
+                    Text(text = "② : ")
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = "$phaseTwoGold",
+                        textAlign = TextAlign.End
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
                     Image(
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .size(16.dp),
+                        alignment = Alignment.Center,
                         painter = painterResource(id = R.drawable.gold_coin),
                         contentDescription = "골드 아이콘"
                     )
                 }
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "3관문 : $phaseThreeGold")
+                    Text(text = "③ : ")
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = "$phaseThreeGold",
+                        textAlign = TextAlign.End
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
                     Image(
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .size(16.dp),
+                        alignment = Alignment.Center,
                         painter = painterResource(id = R.drawable.gold_coin),
                         contentDescription = "골드 아이콘"
                     )
@@ -297,12 +372,24 @@ fun ThreePhaseBoss(
                 Divider()
 
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ){
-                    Text(text = "합계 : $totalGold")
+                    Text(
+                        text = "합 : "
+                    )
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = "$totalGold",
+                        textAlign = TextAlign.End
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
                     Image(
-                        painter = painterResource(id = R.drawable.gold_coins),
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .size(16.dp),
+                        painter = painterResource(id = R.drawable.gold_coin),
+                        alignment = Alignment.Center,
                         contentDescription = "골드 아이콘"
                     )
                 }
@@ -394,8 +481,7 @@ fun FourPhaseBoss(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 4.dp)
-            ,
+                .padding(vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
@@ -404,54 +490,99 @@ fun FourPhaseBoss(
             ) {
                 Image(
                     painter = painterResource(id = raidBossImg),
-                    contentDescription = "골드 아이콘",
+                    contentDescription = "보스 아이콘",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.clip(RoundedCornerShape(16.dp))
-                )
-                Text(
-                    text = name
                 )
             }
             Column(
                 modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.End
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Text(
+                    text = name,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "1관문 : $phaseOneGold")
+                    Text(text = "① : ")
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = "$phaseOneGold",
+                        textAlign = TextAlign.End
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
                     Image(
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .size(16.dp),
+                        alignment = Alignment.Center,
                         painter = painterResource(id = R.drawable.gold_coin),
                         contentDescription = "골드 아이콘"
                     )
                 }
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "2관문 : $phaseTwoGold")
+                    Text(text = "② : ")
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = "$phaseTwoGold",
+                        textAlign = TextAlign.End
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
                     Image(
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .size(16.dp),
+                        alignment = Alignment.Center,
                         painter = painterResource(id = R.drawable.gold_coin),
                         contentDescription = "골드 아이콘"
                     )
                 }
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "3관문 : $phaseThreeGold")
+                    Text(text = "③ : ")
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = "$phaseThreeGold",
+                        textAlign = TextAlign.End
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
                     Image(
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .size(16.dp),
+                        alignment = Alignment.Center,
                         painter = painterResource(id = R.drawable.gold_coin),
                         contentDescription = "골드 아이콘"
                     )
                 }
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "4관문 : $phaseFourGold")
+                    Text(text = "④ : ")
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = "$phaseFourGold",
+                        textAlign = TextAlign.End
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
                     Image(
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .size(16.dp),
+                        alignment = Alignment.Center,
                         painter = painterResource(id = R.drawable.gold_coin),
                         contentDescription = "골드 아이콘"
                     )
@@ -460,12 +591,24 @@ fun FourPhaseBoss(
                 Divider()
 
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ){
-                    Text(text = "합계 : $totalGold")
+                    Text(
+                        text = "합 : "
+                    )
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = "$totalGold",
+                        textAlign = TextAlign.End
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
                     Image(
-                        painter = painterResource(id = R.drawable.gold_coins),
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .size(16.dp),
+                        painter = painterResource(id = R.drawable.gold_coin),
+                        alignment = Alignment.Center,
                         contentDescription = "골드 아이콘"
                     )
                 }
@@ -514,254 +657,3 @@ fun FourPhaseBoss(
         )
     }
 }
-
-
-
-
-//@Composable
-//fun twoPhaseBoss(
-//    name: String,
-//    totalGold: Int,
-//
-//    phaseOneLevel: String,
-//    phaseOneSMC: Boolean,
-//    phaseOneCC: Boolean,
-//    onOnePhaseLevelClicked: () -> Unit,
-//    onOnePhaseClearCheckBoxChecked: (Boolean) -> Unit,
-//    onOnePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
-//
-//    phaseTwoLevel: String,
-//    phaseTwoSMC: Boolean,
-//    phaseTwoCC: Boolean,
-//    onTwoPhaseLevelClicked: () -> Unit,
-//    onTwoPhaseClearCheckBoxChecked: (Boolean) -> Unit,
-//    onTwoPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
-//) {
-//    Column(
-//        modifier = Modifier.padding(16.dp)
-//    ) {
-//        Row(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(16.dp)
-//        ) {
-//            Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "보스 이미지")
-//            Text(
-//                modifier = Modifier.weight(2f),
-//                text = name
-//            )
-//            Row(
-//                modifier = Modifier.weight(1f),
-//                verticalAlignment = Alignment.CenterVertically,
-//                horizontalArrangement = Arrangement.End
-//            ) {
-//                Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
-//                Spacer(modifier = Modifier.width(8.dp))
-//                Text(text = "$totalGold")
-//            }
-//        }
-//
-//        PhaseUI(
-//            phase = 1,
-//            difficulty = phaseOneLevel,
-//            clearCheck = phaseOneCC,
-//            moreCheck = phaseOneSMC,
-//            onLevelClicked = { onOnePhaseLevelClicked() },
-//            onClearClicked = { onOnePhaseClearCheckBoxChecked(it) },
-//            onMoreClicked = { onOnePhaseSeeMoreCheckBoxChecked(it) }
-//        )
-//
-//        PhaseUI(
-//            phase = 2,
-//            difficulty = phaseTwoLevel,
-//            clearCheck = phaseTwoCC,
-//            moreCheck = phaseTwoSMC,
-//            onLevelClicked = { onTwoPhaseLevelClicked() },
-//            onClearClicked = { onTwoPhaseClearCheckBoxChecked(it) },
-//            onMoreClicked = { onTwoPhaseSeeMoreCheckBoxChecked(it) }
-//        )
-//
-//    }
-//}
-//
-//@Composable
-//fun ThreePhaseBoss(
-//    name: String,
-//    totalGold: Int,
-//
-//    phaseOneLevel: String,
-//    phaseOneSMC: Boolean,
-//    phaseOneCC: Boolean,
-//    onOnePhaseLevelClicked: () -> Unit,
-//    onOnePhaseClearCheckBoxChecked: (Boolean) -> Unit,
-//    onOnePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
-//
-//    phaseTwoLevel: String,
-//    phaseTwoSMC: Boolean,
-//    phaseTwoCC: Boolean,
-//    onTwoPhaseLevelClicked: () -> Unit,
-//    onTwoPhaseClearCheckBoxChecked: (Boolean) -> Unit,
-//    onTwoPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
-//
-//    phaseThreeLevel: String,
-//    phaseThreeSMC: Boolean,
-//    phaseThreeCC: Boolean,
-//    onThreePhaseLevelClicked: () -> Unit,
-//    onThreePhaseClearCheckBoxChecked: (Boolean) -> Unit,
-//    onThreePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
-//) {
-//    Column(
-//        modifier = Modifier.padding(16.dp)
-//    ) {
-//        Row(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(16.dp)
-//        ) {
-//            Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "보스 이미지")
-//            Text(
-//                modifier = Modifier.weight(2f),
-//                text = name
-//            )
-//            Row(
-//                modifier = Modifier.weight(1f),
-//                verticalAlignment = Alignment.CenterVertically,
-//                horizontalArrangement = Arrangement.End
-//            ) {
-//                Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
-//                Spacer(modifier = Modifier.width(8.dp))
-//                Text(text = "$totalGold")
-//            }
-//        }
-//
-//        PhaseUI(
-//            phase = 1,
-//            difficulty = phaseOneLevel,
-//            clearCheck = phaseOneCC,
-//            moreCheck = phaseOneSMC,
-//            onLevelClicked = { onOnePhaseLevelClicked() },
-//            onClearClicked = { onOnePhaseClearCheckBoxChecked(it) },
-//            onMoreClicked = { onOnePhaseSeeMoreCheckBoxChecked(it) }
-//        )
-//
-//        PhaseUI(
-//            phase = 2,
-//            difficulty = phaseTwoLevel,
-//            clearCheck = phaseTwoCC,
-//            moreCheck = phaseTwoSMC,
-//            onLevelClicked = { onTwoPhaseLevelClicked() },
-//            onClearClicked = { onTwoPhaseClearCheckBoxChecked(it) },
-//            onMoreClicked = { onTwoPhaseSeeMoreCheckBoxChecked(it) }
-//        )
-//
-//        PhaseUI(
-//            phase = 3,
-//            difficulty = phaseThreeLevel,
-//            clearCheck = phaseThreeCC,
-//            moreCheck = phaseThreeSMC,
-//            onLevelClicked = { onThreePhaseLevelClicked() },
-//            onClearClicked = { onThreePhaseClearCheckBoxChecked(it) },
-//            onMoreClicked = { onThreePhaseSeeMoreCheckBoxChecked(it) }
-//        )
-//
-//    }
-//}
-//
-//@Composable
-//fun FourPhaseBoss(
-//    name: String,
-//    totalGold: Int,
-//
-//    phaseOneLevel: String,
-//    phaseOneSMC: Boolean,
-//    phaseOneCC: Boolean,
-//    onOnePhaseLevelClicked: () -> Unit,
-//    onOnePhaseClearCheckBoxChecked: (Boolean) -> Unit,
-//    onOnePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
-//
-//    phaseTwoLevel: String,
-//    phaseTwoSMC: Boolean,
-//    phaseTwoCC: Boolean,
-//    onTwoPhaseLevelClicked: () -> Unit,
-//    onTwoPhaseClearCheckBoxChecked: (Boolean) -> Unit,
-//    onTwoPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
-//
-//    phaseThreeLevel: String,
-//    phaseThreeSMC: Boolean,
-//    phaseThreeCC: Boolean,
-//    onThreePhaseLevelClicked: () -> Unit,
-//    onThreePhaseClearCheckBoxChecked: (Boolean) -> Unit,
-//    onThreePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
-//
-//    phaseFourLevel: String,
-//    phaseFourSMC: Boolean,
-//    phaseFourCC: Boolean,
-//    onFourPhaseLevelClicked: () -> Unit,
-//    onFourPhaseClearCheckBoxChecked: (Boolean) -> Unit,
-//    onFourPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
-//) {
-//    Column(
-//        modifier = Modifier.padding(16.dp)
-//    ) {
-//        Row(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(16.dp)
-//        ) {
-//            Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "보스 이미지")
-//            Text(
-//                modifier = Modifier.weight(2f),
-//                text = name
-//            )
-//            Row(
-//                modifier = Modifier.weight(1f),
-//                verticalAlignment = Alignment.CenterVertically,
-//                horizontalArrangement = Arrangement.End
-//            ) {
-//                Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
-//                Spacer(modifier = Modifier.width(8.dp))
-//                Text(text = "$totalGold")
-//            }
-//        }
-//
-//        PhaseUI(
-//            phase = 1,
-//            difficulty = phaseOneLevel,
-//            clearCheck = phaseOneCC,
-//            moreCheck = phaseOneSMC,
-//            onLevelClicked = { onOnePhaseLevelClicked() },
-//            onClearClicked = { onOnePhaseClearCheckBoxChecked(it) },
-//            onMoreClicked = { onOnePhaseSeeMoreCheckBoxChecked(it) }
-//        )
-//
-//        PhaseUI(
-//            phase = 2,
-//            difficulty = phaseTwoLevel,
-//            clearCheck = phaseTwoCC,
-//            moreCheck = phaseTwoSMC,
-//            onLevelClicked = { onTwoPhaseLevelClicked() },
-//            onClearClicked = { onTwoPhaseClearCheckBoxChecked(it) },
-//            onMoreClicked = { onTwoPhaseSeeMoreCheckBoxChecked(it) }
-//        )
-//
-//        PhaseUI(
-//            phase = 3,
-//            difficulty = phaseThreeLevel,
-//            clearCheck = phaseThreeCC,
-//            moreCheck = phaseThreeSMC,
-//            onLevelClicked = { onThreePhaseLevelClicked() },
-//            onClearClicked = { onThreePhaseClearCheckBoxChecked(it) },
-//            onMoreClicked = { onThreePhaseSeeMoreCheckBoxChecked(it) }
-//        )
-//
-//        PhaseUI(
-//            phase = 4,
-//            difficulty = phaseFourLevel,
-//            clearCheck = phaseFourCC,
-//            moreCheck = phaseFourSMC,
-//            onLevelClicked = { onFourPhaseLevelClicked() },
-//            onClearClicked = { onFourPhaseClearCheckBoxChecked(it) },
-//            onMoreClicked = { onFourPhaseSeeMoreCheckBoxChecked(it) }
-//        )
-//    }
-//}

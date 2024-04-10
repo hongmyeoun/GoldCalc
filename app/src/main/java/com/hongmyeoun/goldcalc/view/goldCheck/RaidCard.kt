@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,6 +44,7 @@ fun RaidCard(
             horizontalArrangement = Arrangement.End
         ) {
             Image(
+                modifier = Modifier.size(25.dp),
                 painter = painterResource(id = R.drawable.gold_coins),
                 contentDescription = "골드 아이콘"
             )
