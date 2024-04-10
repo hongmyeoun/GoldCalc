@@ -74,10 +74,11 @@ fun KazerothRaid(viewModel: KazerothRaidVM) {
                     rotaR = rotaR,
 
                     name = viewModel.echidna.name,
-                    raidBossImg = R.drawable.logo_ecchidna,
+                    raidBossImg = R.drawable.logo_echidna,
                     totalGold = viewModel.echidna.totalGold,
 
                     phaseOneLevel = viewModel.echidna.onePhase.level,
+                    phaseOneGold = viewModel.echidna.onePhase.totalGold,
                     phaseOneSMC = viewModel.echidna.onePhase.seeMoreCheck,
                     phaseOneCC = viewModel.echidna.onePhase.clearCheck,
                     onOnePhaseLevelClicked = {
@@ -94,6 +95,7 @@ fun KazerothRaid(viewModel: KazerothRaidVM) {
                     },
 
                     phaseTwoLevel = viewModel.echidna.twoPhase.level,
+                    phaseTwoGold = viewModel.echidna.twoPhase.totalGold,
                     phaseTwoSMC = viewModel.echidna.twoPhase.seeMoreCheck,
                     phaseTwoCC = viewModel.echidna.twoPhase.clearCheck,
                     onTwoPhaseLevelClicked = {

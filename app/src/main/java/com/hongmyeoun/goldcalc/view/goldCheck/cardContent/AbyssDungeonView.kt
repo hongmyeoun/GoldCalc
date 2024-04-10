@@ -97,6 +97,7 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
                     totalGold = viewModel.kayangel.totalGold,
 
                     phaseOneLevel = viewModel.kayangel.onePhase.level,
+                    phaseOneGold = viewModel.kayangel.onePhase.totalGold,
                     phaseOneSMC = viewModel.kayangel.onePhase.seeMoreCheck,
                     phaseOneCC = viewModel.kayangel.onePhase.clearCheck,
                     onOnePhaseLevelClicked = {
@@ -113,6 +114,7 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
                     },
 
                     phaseTwoLevel = viewModel.kayangel.twoPhase.level,
+                    phaseTwoGold = viewModel.kayangel.twoPhase.totalGold,
                     phaseTwoSMC = viewModel.kayangel.twoPhase.seeMoreCheck,
                     phaseTwoCC = viewModel.kayangel.twoPhase.clearCheck,
                     onTwoPhaseLevelClicked = {
@@ -129,6 +131,7 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
                     },
 
                     phaseThreeLevel = viewModel.kayangel.threePhase.level,
+                    phaseThreeGold = viewModel.kayangel.threePhase.totalGold,
                     phaseThreeSMC = viewModel.kayangel.threePhase.seeMoreCheck,
                     phaseThreeCC = viewModel.kayangel.threePhase.clearCheck,
                     onThreePhaseLevelClicked = {
@@ -179,6 +182,7 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
                     totalGold = viewModel.ivoryTower.totalGold,
 
                     phaseOneLevel = viewModel.ivoryTower.onePhase.level,
+                    phaseOneGold = viewModel.ivoryTower.onePhase.totalGold,
                     phaseOneSMC = viewModel.ivoryTower.onePhase.seeMoreCheck,
                     phaseOneCC = viewModel.ivoryTower.onePhase.clearCheck,
                     onOnePhaseLevelClicked = {
@@ -195,6 +199,7 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
                     },
 
                     phaseTwoLevel = viewModel.ivoryTower.twoPhase.level,
+                    phaseTwoGold = viewModel.ivoryTower.twoPhase.totalGold,
                     phaseTwoSMC = viewModel.ivoryTower.twoPhase.seeMoreCheck,
                     phaseTwoCC = viewModel.ivoryTower.twoPhase.clearCheck,
                     onTwoPhaseLevelClicked = {
@@ -211,6 +216,7 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
                     },
 
                     phaseThreeLevel = viewModel.ivoryTower.threePhase.level,
+                    phaseThreeGold = viewModel.ivoryTower.threePhase.totalGold,
                     phaseThreeSMC = viewModel.ivoryTower.threePhase.seeMoreCheck,
                     phaseThreeCC = viewModel.ivoryTower.threePhase.clearCheck,
                     onThreePhaseLevelClicked = {
@@ -227,6 +233,7 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
                     },
 
                     phaseFourLevel = viewModel.ivoryTower.fourPhase.level,
+                    phaseFourGold = viewModel.ivoryTower.fourPhase.totalGold,
                     phaseFourSMC = viewModel.ivoryTower.fourPhase.seeMoreCheck,
                     phaseFourCC = viewModel.ivoryTower.fourPhase.clearCheck,
                     onFourPhaseLevelClicked = {

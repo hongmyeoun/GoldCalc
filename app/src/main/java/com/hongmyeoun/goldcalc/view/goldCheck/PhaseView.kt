@@ -1,20 +1,23 @@
 package com.hongmyeoun.goldcalc.view.goldCheck
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Divider
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.hongmyeoun.goldcalc.R
@@ -32,7 +35,7 @@ fun PhaseUI(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -87,6 +90,7 @@ fun TwoPhaseBoss(
     totalGold: Int,
 
     phaseOneLevel: String,
+    phaseOneGold: Int,
     phaseOneSMC: Boolean,
     phaseOneCC: Boolean,
     onOnePhaseLevelClicked: () -> Unit,
@@ -94,6 +98,7 @@ fun TwoPhaseBoss(
     onOnePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
 
     phaseTwoLevel: String,
+    phaseTwoGold: Int,
     phaseTwoSMC: Boolean,
     phaseTwoCC: Boolean,
     onTwoPhaseLevelClicked: () -> Unit,
@@ -102,7 +107,7 @@ fun TwoPhaseBoss(
 ) {
     Column(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(12.dp)
             .graphicsLayer {
                 rotationY = rotaR
                 cameraDistance = 8 * density
@@ -111,27 +116,62 @@ fun TwoPhaseBoss(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(vertical = 4.dp)
+            ,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = raidBossImg),
-                contentDescription = "골드 아이콘"
-            )
-            Text(
-                modifier = Modifier.weight(2f),
-                text = name
-            )
-            Row(
-                modifier = Modifier.weight(1f),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End
+            Column(
+                modifier = Modifier.weight(1.5f),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.gold_coin),
-                    contentDescription = "골드 아이콘"
+                    painter = painterResource(id = raidBossImg),
+                    contentDescription = "골드 아이콘",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.clip(RoundedCornerShape(16.dp))
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "$totalGold")
+                Text(
+                    text = name
+                )
+            }
+            Column(
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.End
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "1관문 : $phaseOneGold")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.gold_coin),
+                        contentDescription = "골드 아이콘"
+                    )
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "2관문 : $phaseTwoGold")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.gold_coin),
+                        contentDescription = "골드 아이콘"
+                    )
+                }
+
+                Divider()
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Text(text = "합계 : $totalGold")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.gold_coins),
+                        contentDescription = "골드 아이콘"
+                    )
+                }
+
             }
         }
 
@@ -167,6 +207,7 @@ fun ThreePhaseBoss(
     totalGold: Int,
 
     phaseOneLevel: String,
+    phaseOneGold: Int,
     phaseOneSMC: Boolean,
     phaseOneCC: Boolean,
     onOnePhaseLevelClicked: () -> Unit,
@@ -174,6 +215,7 @@ fun ThreePhaseBoss(
     onOnePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
 
     phaseTwoLevel: String,
+    phaseTwoGold: Int,
     phaseTwoSMC: Boolean,
     phaseTwoCC: Boolean,
     onTwoPhaseLevelClicked: () -> Unit,
@@ -181,6 +223,7 @@ fun ThreePhaseBoss(
     onTwoPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
 
     phaseThreeLevel: String,
+    phaseThreeGold: Int,
     phaseThreeSMC: Boolean,
     phaseThreeCC: Boolean,
     onThreePhaseLevelClicked: () -> Unit,
@@ -189,7 +232,7 @@ fun ThreePhaseBoss(
 ) {
     Column(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(12.dp)
             .graphicsLayer {
                 rotationY = rotaR
                 cameraDistance = 8 * density
@@ -198,27 +241,72 @@ fun ThreePhaseBoss(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(vertical = 4.dp)
+            ,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = raidBossImg),
-                contentDescription = "골드 아이콘"
-            )
-            Text(
-                modifier = Modifier.weight(2f),
-                text = name
-            )
-            Row(
-                modifier = Modifier.weight(1f),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End
+            Column(
+                modifier = Modifier.weight(1.5f),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.gold_coin),
-                    contentDescription = "골드 아이콘"
+                    painter = painterResource(id = raidBossImg),
+                    contentDescription = "보스 이미지",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.clip(RoundedCornerShape(16.dp))
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "$totalGold")
+                Text(
+                    text = name
+                )
+            }
+            Column(
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.End
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "1관문 : $phaseOneGold")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.gold_coin),
+                        contentDescription = "골드 아이콘"
+                    )
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "2관문 : $phaseTwoGold")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.gold_coin),
+                        contentDescription = "골드 아이콘"
+                    )
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "3관문 : $phaseThreeGold")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.gold_coin),
+                        contentDescription = "골드 아이콘"
+                    )
+                }
+
+                Divider()
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Text(text = "합계 : $totalGold")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.gold_coins),
+                        contentDescription = "골드 아이콘"
+                    )
+                }
+
             }
         }
 
@@ -264,6 +352,7 @@ fun FourPhaseBoss(
     totalGold: Int,
 
     phaseOneLevel: String,
+    phaseOneGold: Int,
     phaseOneSMC: Boolean,
     phaseOneCC: Boolean,
     onOnePhaseLevelClicked: () -> Unit,
@@ -271,6 +360,7 @@ fun FourPhaseBoss(
     onOnePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
 
     phaseTwoLevel: String,
+    phaseTwoGold: Int,
     phaseTwoSMC: Boolean,
     phaseTwoCC: Boolean,
     onTwoPhaseLevelClicked: () -> Unit,
@@ -278,6 +368,7 @@ fun FourPhaseBoss(
     onTwoPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
 
     phaseThreeLevel: String,
+    phaseThreeGold: Int,
     phaseThreeSMC: Boolean,
     phaseThreeCC: Boolean,
     onThreePhaseLevelClicked: () -> Unit,
@@ -285,6 +376,7 @@ fun FourPhaseBoss(
     onThreePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
 
     phaseFourLevel: String,
+    phaseFourGold: Int,
     phaseFourSMC: Boolean,
     phaseFourCC: Boolean,
     onFourPhaseLevelClicked: () -> Unit,
@@ -293,7 +385,7 @@ fun FourPhaseBoss(
 ) {
     Column(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(12.dp)
             .graphicsLayer {
                 rotationY = rotaR
                 cameraDistance = 8 * density
@@ -302,27 +394,82 @@ fun FourPhaseBoss(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(vertical = 4.dp)
+            ,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = raidBossImg),
-                contentDescription = "골드 아이콘"
-            )
-            Text(
-                modifier = Modifier.weight(2f),
-                text = name
-            )
-            Row(
-                modifier = Modifier.weight(1f),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End
+            Column(
+                modifier = Modifier.weight(1.5f),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.gold_coin),
-                    contentDescription = "골드 아이콘"
+                    painter = painterResource(id = raidBossImg),
+                    contentDescription = "골드 아이콘",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.clip(RoundedCornerShape(16.dp))
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "$totalGold")
+                Text(
+                    text = name
+                )
+            }
+            Column(
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.End
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "1관문 : $phaseOneGold")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.gold_coin),
+                        contentDescription = "골드 아이콘"
+                    )
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "2관문 : $phaseTwoGold")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.gold_coin),
+                        contentDescription = "골드 아이콘"
+                    )
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "3관문 : $phaseThreeGold")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.gold_coin),
+                        contentDescription = "골드 아이콘"
+                    )
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "4관문 : $phaseFourGold")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.gold_coin),
+                        contentDescription = "골드 아이콘"
+                    )
+                }
+
+                Divider()
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Text(text = "합계 : $totalGold")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Image(
+                        painter = painterResource(id = R.drawable.gold_coins),
+                        contentDescription = "골드 아이콘"
+                    )
+                }
+
             }
         }
 

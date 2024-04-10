@@ -161,6 +161,7 @@ fun CommandRaid(
                     totalGold = viewModel.valtan.totalGold,
 
                     phaseOneLevel = viewModel.valtan.onePhase.level,
+                    phaseOneGold = viewModel.valtan.onePhase.totalGold,
                     phaseOneSMC = viewModel.valtan.onePhase.seeMoreCheck,
                     phaseOneCC = viewModel.valtan.onePhase.clearCheck,
                     onOnePhaseLevelClicked = {
@@ -177,6 +178,7 @@ fun CommandRaid(
                     },
 
                     phaseTwoLevel = viewModel.valtan.twoPhase.level,
+                    phaseTwoGold = viewModel.valtan.twoPhase.totalGold,
                     phaseTwoSMC = viewModel.valtan.twoPhase.seeMoreCheck,
                     phaseTwoCC = viewModel.valtan.twoPhase.clearCheck,
                     onTwoPhaseLevelClicked = {
@@ -229,6 +231,7 @@ fun CommandRaid(
                     totalGold = viewModel.biackiss.totalGold,
 
                     phaseOneLevel = viewModel.biackiss.onePhase.level,
+                    phaseOneGold = viewModel.biackiss.onePhase.totalGold,
                     phaseOneSMC = viewModel.biackiss.onePhase.seeMoreCheck,
                     phaseOneCC = viewModel.biackiss.onePhase.clearCheck,
                     onOnePhaseLevelClicked = {
@@ -245,6 +248,7 @@ fun CommandRaid(
                     },
 
                     phaseTwoLevel = viewModel.biackiss.twoPhase.level,
+                    phaseTwoGold = viewModel.biackiss.twoPhase.totalGold,
                     phaseTwoSMC = viewModel.biackiss.twoPhase.seeMoreCheck,
                     phaseTwoCC = viewModel.biackiss.twoPhase.clearCheck,
                     onTwoPhaseLevelClicked = {
@@ -298,6 +302,7 @@ fun CommandRaid(
                     totalGold = viewModel.koukuSaton.totalGold,
 
                     phaseOneLevel = viewModel.koukuSaton.onePhase.level,
+                    phaseOneGold = viewModel.koukuSaton.onePhase.totalGold,
                     phaseOneSMC = viewModel.koukuSaton.onePhase.seeMoreCheck,
                     phaseOneCC = viewModel.koukuSaton.onePhase.clearCheck,
                     onOnePhaseLevelClicked = {
@@ -314,6 +319,7 @@ fun CommandRaid(
                     },
 
                     phaseTwoLevel = viewModel.koukuSaton.twoPhase.level,
+                    phaseTwoGold = viewModel.koukuSaton.twoPhase.totalGold,
                     phaseTwoSMC = viewModel.koukuSaton.twoPhase.seeMoreCheck,
                     phaseTwoCC = viewModel.koukuSaton.twoPhase.clearCheck,
                     onTwoPhaseLevelClicked = {
@@ -330,6 +336,7 @@ fun CommandRaid(
                     },
 
                     phaseThreeLevel = viewModel.koukuSaton.threePhase.level,
+                    phaseThreeGold = viewModel.koukuSaton.threePhase.totalGold,
                     phaseThreeSMC = viewModel.koukuSaton.threePhase.seeMoreCheck,
                     phaseThreeCC = viewModel.koukuSaton.threePhase.clearCheck,
                     onThreePhaseLevelClicked = {
@@ -383,6 +390,7 @@ fun CommandRaid(
                     totalGold = viewModel.abrelshud.totalGold,
 
                     phaseOneLevel = viewModel.abrelshud.onePhase.level,
+                    phaseOneGold = viewModel.abrelshud.onePhase.totalGold,
                     phaseOneSMC = viewModel.abrelshud.onePhase.seeMoreCheck,
                     phaseOneCC = viewModel.abrelshud.onePhase.clearCheck,
                     onOnePhaseLevelClicked = {
@@ -399,6 +407,7 @@ fun CommandRaid(
                     },
 
                     phaseTwoLevel = viewModel.abrelshud.twoPhase.level,
+                    phaseTwoGold = viewModel.abrelshud.twoPhase.totalGold,
                     phaseTwoSMC = viewModel.abrelshud.twoPhase.seeMoreCheck,
                     phaseTwoCC = viewModel.abrelshud.twoPhase.clearCheck,
                     onTwoPhaseLevelClicked = {
@@ -415,6 +424,7 @@ fun CommandRaid(
                     },
 
                     phaseThreeLevel = viewModel.abrelshud.threePhase.level,
+                    phaseThreeGold = viewModel.abrelshud.threePhase.totalGold,
                     phaseThreeSMC = viewModel.abrelshud.threePhase.seeMoreCheck,
                     phaseThreeCC = viewModel.abrelshud.threePhase.clearCheck,
                     onThreePhaseLevelClicked = {
@@ -431,6 +441,7 @@ fun CommandRaid(
                     },
 
                     phaseFourLevel = viewModel.abrelshud.fourPhase.level,
+                    phaseFourGold = viewModel.abrelshud.fourPhase.totalGold,
                     phaseFourSMC = viewModel.abrelshud.fourPhase.seeMoreCheck,
                     phaseFourCC = viewModel.abrelshud.fourPhase.clearCheck,
                     onFourPhaseLevelClicked = {
@@ -484,6 +495,7 @@ fun CommandRaid(
                     totalGold = viewModel.illiakan.totalGold,
 
                     phaseOneLevel = viewModel.illiakan.onePhase.level,
+                    phaseOneGold = viewModel.illiakan.onePhase.totalGold,
                     phaseOneSMC = viewModel.illiakan.onePhase.seeMoreCheck,
                     phaseOneCC = viewModel.illiakan.onePhase.clearCheck,
                     onOnePhaseLevelClicked = {
@@ -500,6 +512,7 @@ fun CommandRaid(
                     },
 
                     phaseTwoLevel = viewModel.illiakan.twoPhase.level,
+                    phaseTwoGold = viewModel.illiakan.twoPhase.totalGold,
                     phaseTwoSMC = viewModel.illiakan.twoPhase.seeMoreCheck,
                     phaseTwoCC = viewModel.illiakan.twoPhase.clearCheck,
                     onTwoPhaseLevelClicked = {
@@ -516,6 +529,7 @@ fun CommandRaid(
                     },
 
                     phaseThreeLevel = viewModel.illiakan.threePhase.level,
+                    phaseThreeGold = viewModel.illiakan.threePhase.totalGold,
                     phaseThreeSMC = viewModel.illiakan.threePhase.seeMoreCheck,
                     phaseThreeCC = viewModel.illiakan.threePhase.clearCheck,
                     onThreePhaseLevelClicked = {
@@ -567,6 +581,7 @@ fun CommandRaid(
                     totalGold = viewModel.kamen.totalGold,
 
                     phaseOneLevel = viewModel.kamen.onePhase.level,
+                    phaseOneGold = viewModel.kamen.onePhase.totalGold,
                     phaseOneSMC = viewModel.kamen.onePhase.seeMoreCheck,
                     phaseOneCC = viewModel.kamen.onePhase.clearCheck,
                     onOnePhaseLevelClicked = {
@@ -583,6 +598,7 @@ fun CommandRaid(
                     },
 
                     phaseTwoLevel = viewModel.kamen.twoPhase.level,
+                    phaseTwoGold = viewModel.kamen.twoPhase.totalGold,
                     phaseTwoSMC = viewModel.kamen.twoPhase.seeMoreCheck,
                     phaseTwoCC = viewModel.kamen.twoPhase.clearCheck,
                     onTwoPhaseLevelClicked = {
@@ -599,6 +615,7 @@ fun CommandRaid(
                     },
 
                     phaseThreeLevel = viewModel.kamen.threePhase.level,
+                    phaseThreeGold = viewModel.kamen.threePhase.totalGold,
                     phaseThreeSMC = viewModel.kamen.threePhase.seeMoreCheck,
                     phaseThreeCC = viewModel.kamen.threePhase.clearCheck,
                     onThreePhaseLevelClicked = {
@@ -615,6 +632,7 @@ fun CommandRaid(
                     },
 
                     phaseFourLevel = viewModel.kamen.fourPhase.level,
+                    phaseFourGold = viewModel.kamen.fourPhase.totalGold,
                     phaseFourSMC = viewModel.kamen.fourPhase.seeMoreCheck,
                     phaseFourCC = viewModel.kamen.fourPhase.clearCheck,
                     onFourPhaseLevelClicked = {

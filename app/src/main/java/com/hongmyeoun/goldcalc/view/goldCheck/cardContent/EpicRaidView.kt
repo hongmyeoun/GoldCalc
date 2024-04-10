@@ -76,6 +76,7 @@ fun EpicRaid(viewModel: EpicRaidVM) {
                     totalGold = viewModel.behemoth.totalGold,
 
                     phaseOneLevel = viewModel.behemoth.onePhase.level,
+                    phaseOneGold = viewModel.behemoth.onePhase.totalGold,
                     phaseOneSMC = viewModel.behemoth.onePhase.seeMoreCheck,
                     phaseOneCC = viewModel.behemoth.onePhase.clearCheck,
                     onOnePhaseLevelClicked = {
@@ -92,6 +93,7 @@ fun EpicRaid(viewModel: EpicRaidVM) {
                     },
 
                     phaseTwoLevel = viewModel.behemoth.twoPhase.level,
+                    phaseTwoGold = viewModel.behemoth.twoPhase.totalGold,
                     phaseTwoSMC = viewModel.behemoth.twoPhase.seeMoreCheck,
                     phaseTwoCC = viewModel.behemoth.twoPhase.clearCheck,
                     onTwoPhaseLevelClicked = {
