@@ -346,7 +346,6 @@ fun Setting(
             when (viewModel.selectedTab) {
                 "군단장" -> {
                     RaidCard(
-                        raidType = "군단장 레이드",
                         raidImg = R.drawable.command_icon,
                         totalGold = cbVM.totalGold
                     ) {
@@ -356,7 +355,6 @@ fun Setting(
 
                 "어비스 던전" -> {
                     RaidCard(
-                        raidType = "어비스 던전",
                         raidImg = R.drawable.abyss_dungeon_icon,
                         totalGold = adVM.totalGold,
                     ) {
@@ -366,7 +364,6 @@ fun Setting(
 
                 "카제로스" -> {
                     RaidCard(
-                        raidType = "카제로스 레이드",
                         raidImg = R.drawable.kazeroth_icon,
                         totalGold = kzVM.totalGold
                     ) {
@@ -376,7 +373,6 @@ fun Setting(
 
                 "에픽" -> {
                     RaidCard(
-                        raidType = "에픽 레이드",
                         raidImg = R.drawable.epic_icon,
                         totalGold = epVM.totalGold
                     ) {
