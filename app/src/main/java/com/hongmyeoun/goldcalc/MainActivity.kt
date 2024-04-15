@@ -21,12 +21,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -77,7 +82,11 @@ class MainActivity : ComponentActivity() {
 
                 NavHost(navController = navController, startDestination = "Main") {
                     composable("Main"){
-                        MainScreen(navController)
+                        MainScreen(
+                            navController = navController
+                        ) {
+                            CharacterContents(it, navController)
+                        }
                     }
                     composable("Check/{charName}"){
                         val charName = it.arguments?.getString("charName")?: "ERROR"
@@ -116,6 +125,71 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
+fun MainScreen(
+    navController: NavHostController,
+    content: @Composable (Modifier) -> Unit
+) {
+    var progressPercentage by remember { mutableStateOf(0.0f) }
+
+    Scaffold(
+        topBar = {
+            Column {
+                Row {
+                    Text(text = "로골기")
+                    IconButton(onClick = { navController.navigate("Search") }) {
+                        Icon(imageVector = Icons.Default.Search, contentDescription = "검색/추가")
+                    }
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(imageVector = Icons.Default.Refresh, contentDescription = "새로고침")
+                    }
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(imageVector = Icons.Default.Settings, contentDescription = "설정")
+                    }
+                }
+                Column {
+                    Row {
+                        Text(text = "숙제 진행도")
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(imageVector = Icons.Default.Info, contentDescription = "전체 진행사항 한눈에 보기")
+                        }
+                        Text(text = "퍼센트")
+                    }
+                    LinearProgressIndicator(
+                        progress = progressPercentage,
+                        color = Color.Green
+                    )
+                }
+                Row {
+                    Column {
+                        Text(text = "주간 총 골드")
+                        Row {
+                            Image(painter = painterResource(id = R.drawable.gold_coins), contentDescription = "골드")
+                            Text(text = "1,000")
+                        }
+                    }
+                    Column {
+                        Text(text = "얻은 골드")
+                        Row {
+                            Image(painter = painterResource(id = R.drawable.gold_coins), contentDescription = "골드")
+                            Text(text = "1,000")
+                        }
+                    }
+                    Column {
+                        Text(text = "남은 골드")
+                        Row {
+                            Image(painter = painterResource(id = R.drawable.gold_coins), contentDescription = "골드")
+                            Text(text = "1,000")
+                        }
+                    }
+                }
+            }
+        }
+    ) {
+        content(Modifier.fillMaxSize().padding(it))
+    }
+}
+
+@Composable
 fun LoadingScreen() {
     Box(
         modifier = Modifier
@@ -128,14 +202,15 @@ fun LoadingScreen() {
 }
 
 @Composable
-fun MainScreen(
+fun CharacterContents(
+    modifier: Modifier,
     navController: NavHostController,
     viewModel: CharacterCardVM = hiltViewModel()
 ) {
     val characterList by viewModel.characters.collectAsState()
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier
     ) {
         items(characterList, key = { item -> item.name }){
             CharacterCard(navController, it) {
