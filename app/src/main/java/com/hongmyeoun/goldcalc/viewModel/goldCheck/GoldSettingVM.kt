@@ -11,8 +11,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class GoldSettingVM(private val repository: CharacterRepository, charName: String) : ViewModel() {
+class GoldSettingVM @Inject constructor(
+    private val repository: CharacterRepository,
+    charName: String
+) : ViewModel() {
     private val _character = MutableStateFlow<Character?>(null)
     val character: StateFlow<Character?> = _character
 

@@ -41,6 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.getString
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.google.gson.GsonBuilder
@@ -50,7 +51,7 @@ import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterInfo
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.lostArkApi.LostArkApiService
 import com.hongmyeoun.goldcalc.model.roomDB.Character
-import com.hongmyeoun.goldcalc.model.roomDB.CharacterDB
+import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -145,20 +146,13 @@ fun CharacterScreen(navController: NavHostController) {
 }
 
 @Composable
-fun CharacterDetailScreen(charName: String){
+fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewModel()){
     val context = LocalContext.current
     var characterDetail by remember { mutableStateOf<CharacterDetail?>(null)}
-    var isSaved by remember { mutableStateOf(false) }
-
-    val db = remember { CharacterDB.getDB(context) }
-
-    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit){
         characterDetail = getCharDetail(context, charName)
-
-        val savedNames = withContext(Dispatchers.IO) { db.characterDao().getNames() }
-        isSaved = savedNames.contains(characterDetail?.characterName)
+        viewModel.isSavedName(charName)
     }
 
     Column(
@@ -179,11 +173,9 @@ fun CharacterDetailScreen(charName: String){
                     serverName = characterDetail!!.serverName,
                     className = characterDetail!!.characterClassName
                 )
-                scope.launch(Dispatchers.IO) {
-                    db.characterDao().insertAll(character)
-                }
+                viewModel.saveCharacter(character)
             },
-            enabled = !isSaved
+            enabled = !viewModel.isSaved
         ) {
             
         }
