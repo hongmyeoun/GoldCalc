@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -54,7 +55,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.CharacterRepository
-import com.hongmyeoun.goldcalc.model.roomDB.Phase
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.view.goldCheck.Setting
 import com.hongmyeoun.goldcalc.view.search.CharacterDetailScreen
@@ -65,6 +65,8 @@ import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
 import com.hongmyeoun.goldcalc.viewModel.main.CharacterCardVM
+import com.hongmyeoun.goldcalc.viewModel.main.CharacterListVM
+import com.hongmyeoun.goldcalc.viewModel.main.GoldContentStateVM
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import javax.inject.Inject
@@ -209,7 +211,7 @@ fun LoadingScreen() {
 fun CharacterContents(
     modifier: Modifier,
     navController: NavHostController,
-    viewModel: CharacterCardVM = hiltViewModel()
+    viewModel: CharacterListVM = hiltViewModel()
 ) {
     val characterList by viewModel.characters.collectAsState()
 
@@ -217,7 +219,8 @@ fun CharacterContents(
         modifier = modifier
     ) {
         items(characterList, key = { item -> item.name }){
-            CharacterCard(navController, it) {
+            val characterCardVM = remember { CharacterCardVM(it) }
+            CharacterCard(navController, characterCardVM) {
                 viewModel.delete(it)
             }
         }
@@ -227,7 +230,7 @@ fun CharacterContents(
 @Composable
 fun CharacterCard(
     navController: NavHostController,
-    character: com.hongmyeoun.goldcalc.model.roomDB.Character,
+    viewModel: CharacterCardVM,
     onDelete: () -> Unit
 ) {
     val isDark = isSystemInDarkTheme()
@@ -242,15 +245,15 @@ fun CharacterCard(
             Image(
                 modifier = Modifier.weight(0.5f),
                 contentScale = ContentScale.Crop,
-                painter = painterResource(id = CharacterResourceMapper.getClassImage(isDark, character.className)),
+                painter = painterResource(id = CharacterResourceMapper.getClassImage(isDark, viewModel.character.className)),
                 contentDescription = "직업군"
             )
             Column(
                 modifier = Modifier.weight(2f)
             ) {
-                Text(text = character.serverName)
+                Text(text = viewModel.character.serverName)
                 Row {
-                    Text(text = character.name)
+                    Text(text = viewModel.character.name)
                     Icon(
                         imageVector = Icons.Default.Notifications,
                         contentDescription = "골드체크",
@@ -261,12 +264,12 @@ fun CharacterCard(
                         imageVector = Icons.Default.Settings,
                         contentDescription = "설정",
                         modifier = Modifier
-                            .clickable { navController.navigate("Check/${character.name}") })
+                            .clickable { navController.navigate("Check/${viewModel.character.name}") })
                 }
                 Row {
-                    Text(text = character.itemLevel)
+                    Text(text = viewModel.character.itemLevel)
                     Spacer(modifier = Modifier.width(10.dp))
-                    Text(text = character.className)
+                    Text(text = viewModel.character.className)
                 }
             }
             Column(
@@ -282,11 +285,12 @@ fun CharacterCard(
                         Row {
                             Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = "${character.weeklyGold}")
+                            Text(text = "${viewModel.character.weeklyGold}")
                         }
                         Text(text = "진행도")
                         Spacer(modifier = Modifier.width(10.dp))
                         Text(text = "${(progressPercentage * 100).toInt()}%")
+                        Text(text = "${viewModel.totalGold}")
                     }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
@@ -297,55 +301,126 @@ fun CharacterCard(
             }
         }
         Column {
+            val behemothVM = remember { GoldContentStateVM() }
+            val echidnaVM = remember { GoldContentStateVM() }
+            val kamenVM = remember { GoldContentStateVM() }
+            val ivoryTowerVM = remember { GoldContentStateVM() }
+            val illiakanVM = remember { GoldContentStateVM() }
+            val kayangelVM = remember { GoldContentStateVM() }
+            val abrelshudVM = remember { GoldContentStateVM() }
+            val koukuSatonVM = remember { GoldContentStateVM() }
+            val biackissVM = remember { GoldContentStateVM() }
+            val valtanVM = remember { GoldContentStateVM() }
+
             GoldContentStateUI(
-                phases = character.checkList.epic[0].phases,
+                phase = viewModel.phaseCalc(viewModel.behemoth),
+                isCheck = viewModel.beheCheck,
                 raidImg = R.drawable.epic_behemoth,
-                raidName = "베히모스"
+                raidName = "베히모스",
+                viewModel = behemothVM,
+                onClicked = {
+                    viewModel.beheGoldCalc(it)
+                    viewModel.calcTotalGold()
+                }
             )
             GoldContentStateUI(
-                phases = character.checkList.kazeroth[0].phases,
+                phase = viewModel.phaseCalc(viewModel.echidna),
+                isCheck = viewModel.echiCheck,
                 raidImg = R.drawable.kazeroth_echidna,
-                raidName = "에키드나"
+                raidName = "에키드나",
+                viewModel = echidnaVM,
+                onClicked = {
+                    viewModel.echiGoldCalc(it)
+                    viewModel.calcTotalGold()
+                }
             )
             GoldContentStateUI(
-                phases = character.checkList.command[5].phases,
+                phase = viewModel.phaseCalc(viewModel.kamen),
+                isCheck = viewModel.kamenCehck,
                 raidImg = R.drawable.command_kamen,
-                raidName = "카멘"
+                raidName = "카멘",
+                viewModel = kamenVM,
+                onClicked = {
+                    viewModel.kamenGoldCalc(it)
+                    viewModel.calcTotalGold()
+                }
             )
             GoldContentStateUI(
-                phases = character.checkList.abyssDungeon[1].phases,
+                phase = viewModel.phaseCalc(viewModel.ivoryTower),
+                isCheck = viewModel.ivoryCheck,
                 raidImg = R.drawable.abyss_dungeon_ivory_tower,
-                raidName = "혼돈의 상아탑"
+                raidName = "혼돈의 상아탑",
+                viewModel = ivoryTowerVM,
+                onClicked = {
+                    viewModel.iTGoldCalc(it)
+                    viewModel.calcTotalGold()
+                }
             )
             GoldContentStateUI(
-                phases = character.checkList.command[4].phases,
+                phase = viewModel.phaseCalc(viewModel.illiakan),
+                isCheck = viewModel.illiCheck,
                 raidImg = R.drawable.command_illiakan,
-                raidName = "일리아칸"
+                raidName = "일리아칸",
+                viewModel = illiakanVM,
+                onClicked = {
+                    viewModel.illiGoldCalc(it)
+                    viewModel.calcTotalGold()
+                }
             )
             GoldContentStateUI(
-                phases = character.checkList.abyssDungeon[0].phases,
+                phase = viewModel.phaseCalc(viewModel.kayangel),
+                isCheck = viewModel.kayanCheck,
                 raidImg = R.drawable.abyss_dungeon_kayangel,
-                raidName = "카양겔"
+                raidName = "카양겔",
+                viewModel = kayangelVM,
+                onClicked = {
+                    viewModel.kayanGoldCalc(it)
+                    viewModel.calcTotalGold()
+                }
             )
             GoldContentStateUI(
-                phases = character.checkList.command[3].phases,
+                phase = viewModel.phaseCalc(viewModel.abrelshud),
+                isCheck = viewModel.abrelCheck,
                 raidImg = R.drawable.command_abrelshud,
-                raidName = "아브렐슈드"
+                raidName = "아브렐슈드",
+                viewModel = abrelshudVM,
+                onClicked = {
+                    viewModel.abrelGoldCalc(it)
+                    viewModel.calcTotalGold()
+                }
             )
             GoldContentStateUI(
-                phases = character.checkList.command[2].phases,
+                phase = viewModel.phaseCalc(viewModel.koukuSaton),
+                isCheck = viewModel.koukuCheck,
                 raidImg = R.drawable.command_kouku,
-                raidName = "쿠크세이튼"
+                raidName = "쿠크세이튼",
+                viewModel = koukuSatonVM,
+                onClicked = {
+                    viewModel.kokuGoldCalc(it)
+                    viewModel.calcTotalGold()
+                }
             )
             GoldContentStateUI(
-                phases = character.checkList.command[1].phases,
+                phase = viewModel.phaseCalc(viewModel.biackiss),
+                isCheck = viewModel.biaCheck,
                 raidImg = R.drawable.command_biackiss,
-                raidName = "비아키스"
+                raidName = "비아키스",
+                viewModel = biackissVM,
+                onClicked = {
+                    viewModel.biaGoldCalc(it)
+                    viewModel.calcTotalGold()
+                }
             )
             GoldContentStateUI(
-                phases = character.checkList.command[0].phases,
+                phase = viewModel.phaseCalc(viewModel.valtan),
+                isCheck = viewModel.valtanCheck,
                 raidImg = R.drawable.command_valtan,
-                raidName = "발탄"
+                raidName = "발탄",
+                viewModel = valtanVM,
+                onClicked = {
+                    viewModel.valGoldCalc(it)
+                    viewModel.calcTotalGold()
+                }
             )
         }
 //        Row {
@@ -369,29 +444,25 @@ fun CharacterCard(
 
 @Composable
 fun GoldContentStateUI(
-    phases: List<Phase>,
+    phase: Int,
+    isCheck: Boolean,
     raidImg: Int,
     raidName: String,
+    viewModel: GoldContentStateVM,
+    onClicked: (Int) -> Unit
 ) {
-    if (phases[0].isClear) {
-        var phase = 1
+    if (isCheck) {
 
-        for (index in phases.indices) {
-            if (phases[index].isClear) {
-                phase = index + 1
-            } else {
-                break
-            }
-        }
         val textColor = if (raidName == "카양겔") Color.Black else Color.White
-
-        var nowPhase by remember { mutableStateOf(0) }
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp)
-                .clickable(enabled = nowPhase <= phase - 1) { nowPhase += 1 }
+                .clickable {
+                        onClicked(viewModel.onClicked(phase))
+                        Log.d("GoldContent NowPhase :", "${viewModel.nowPhase}")
+                }
         ) {
             Image(
                 modifier = Modifier
@@ -414,7 +485,7 @@ fun GoldContentStateUI(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "${nowPhase}/${phase} 관문",
+                    text = "${viewModel.nowPhase}/${phase} 관문",
                     color = textColor
                 )
             }
