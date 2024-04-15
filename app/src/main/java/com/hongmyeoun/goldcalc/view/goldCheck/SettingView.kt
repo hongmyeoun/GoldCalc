@@ -322,7 +322,11 @@ fun Setting(
                                         kazerothRaid = kzVM,
                                         epicRaid = epVM
                                     )
-                                    navController.popBackStack()
+                                    navController.navigate("Main") {
+                                        popUpTo("Check/{charName}") {
+                                            inclusive = true
+                                        }
+                                    }
                                 }
                             ) {
                                 Text(text = "완료")
