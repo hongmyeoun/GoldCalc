@@ -285,9 +285,9 @@ class GoldSettingVM @Inject constructor(
                             mCheck = epicRaid.behemoth.onePhase.seeMoreCheck,
                         ),
                         originalCheckList.epic[0].phases[1].copy( // 2페
-                            difficulty = epicRaid.behemoth.onePhase.level,
-                            isClear = epicRaid.behemoth.onePhase.clearCheck,
-                            mCheck = epicRaid.behemoth.onePhase.seeMoreCheck,
+                            difficulty = epicRaid.behemoth.twoPhase.level,
+                            isClear = epicRaid.behemoth.twoPhase.clearCheck,
+                            mCheck = epicRaid.behemoth.twoPhase.seeMoreCheck,
                         ),
                     ),
                     isCheck = epicRaid.beheCheck
