@@ -61,12 +61,14 @@ import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
