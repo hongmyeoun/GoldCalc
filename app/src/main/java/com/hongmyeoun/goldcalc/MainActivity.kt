@@ -81,7 +81,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("Check/{charName}"){
                         val charName = it.arguments?.getString("charName")?: "ERROR"
-                        val gSVM = GoldSettingVM(characterRepository, charName)
+                        val gSVM = remember { GoldSettingVM(characterRepository, charName) }
                         val character by gSVM.character.collectAsState()
 
                         var isLoading by remember { mutableStateOf(true) }
