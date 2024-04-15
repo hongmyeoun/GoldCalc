@@ -89,10 +89,10 @@ class MainActivity : ComponentActivity() {
                         if (isLoading) {
                             LoadingScreen()
                         } else {
-                            val cbVM = CommandBossVM(character)
-                            val adVM = AbyssDungeonVM(character)
-                            val kzVM = KazerothRaidVM(character)
-                            val epVM = EpicRaidVM(character)
+                            val cbVM = remember { CommandBossVM(character) }
+                            val adVM = remember { AbyssDungeonVM(character) }
+                            val kzVM = remember { KazerothRaidVM(character) }
+                            val epVM = remember { EpicRaidVM(character) }
                             Setting(navController, gSVM, cbVM, adVM, kzVM, epVM)
                         }
 
@@ -128,7 +128,10 @@ fun LoadingScreen() {
 }
 
 @Composable
-fun MainScreen(navController: NavHostController, viewModel: CharacterCardVM = hiltViewModel()) {
+fun MainScreen(
+    navController: NavHostController,
+    viewModel: CharacterCardVM = hiltViewModel()
+) {
     val characterList by viewModel.characters.collectAsState()
 
     LazyColumn(
