@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Refresh
@@ -234,7 +233,6 @@ fun CharacterCard(
     onDelete: () -> Unit
 ) {
     val isDark = isSystemInDarkTheme()
-    var progressPercentage by remember { mutableStateOf(0.0f) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -283,19 +281,23 @@ fun CharacterCard(
                 ) {
                     Column {
                         Row {
-                            Icon(imageVector = Icons.Default.Favorite, contentDescription = "골드 이미지")
+                            Image(painter = painterResource(id = R.drawable.gold_coins), contentDescription = "골드 이미지")
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(text = "${viewModel.character.weeklyGold}")
                         }
+                        Row {
+                            Image(painter = painterResource(id = R.drawable.gold_coin), contentDescription = "골드 이미지")
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = "${viewModel.totalGold}")
+                        }
                         Text(text = "진행도")
                         Spacer(modifier = Modifier.width(10.dp))
-                        Text(text = "${(progressPercentage * 100).toInt()}%")
-                        Text(text = "${viewModel.totalGold}")
+                        Text(text = "${(viewModel.progressPersentage * 100).toInt()}%")
                     }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 LinearProgressIndicator(
-                    progress = progressPercentage,
+                    progress = viewModel.progressPersentage,
                     color = Color.Green
                 )
             }
@@ -460,8 +462,8 @@ fun GoldContentStateUI(
                 .fillMaxWidth()
                 .padding(vertical = 16.dp)
                 .clickable {
-                        onClicked(viewModel.onClicked(phase))
-                        Log.d("GoldContent NowPhase :", "${viewModel.nowPhase}")
+                    onClicked(viewModel.onClicked(phase))
+                    Log.d("GoldContent NowPhase :", "${viewModel.nowPhase}")
                 }
         ) {
             Image(

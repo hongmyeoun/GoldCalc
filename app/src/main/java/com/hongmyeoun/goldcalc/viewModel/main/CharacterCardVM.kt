@@ -11,15 +11,29 @@ import com.hongmyeoun.goldcalc.model.goldCheck.KazerothRaidModel
 import com.hongmyeoun.goldcalc.model.roomDB.Character
 import com.hongmyeoun.goldcalc.model.roomDB.Phase
 
-class CharacterCardVM(val character: Character): ViewModel() {
+class CharacterCardVM(val character: Character) : ViewModel() {
     private val epModel = EpicRaidModel(character)
     private val kzModel = KazerothRaidModel(character)
     private val cmModel = CommandBossModel(character)
     private val abModel = AbyssDungeonModel(character)
 
     var totalGold by mutableStateOf(0)
+    private val maxGold =
+        epModel.behemoth.totalGold + kzModel.echidna.totalGold + abModel.ivoryTower.totalGold + abModel.kayangel.totalGold + cmModel.kamen.totalGold + cmModel.illiakan.totalGold + cmModel.abrelshud.totalGold + cmModel.koukuSaton.totalGold + cmModel.biackiss.totalGold + cmModel.valtan.totalGold
+    var progressPersentage by mutableStateOf(0.0f)
+        private set
+
+    init {
+        updateProgressPercentage()
+    }
+
+    fun updateProgressPercentage() {
+        progressPersentage = if (maxGold != 0) totalGold.toFloat() / maxGold else 0.0f
+    }
+
     fun calcTotalGold() {
         totalGold = behemothTG + echidnaTG + kamenTG + ivoryTowerTG + illiakanTG + kayangelTG + abrelshudTG + koukuSatonTG + biackissTG + valtanTG
+        updateProgressPercentage()
     }
 
     private val raidList = character.checkList
@@ -30,9 +44,17 @@ class CharacterCardVM(val character: Character): ViewModel() {
 
     fun beheGoldCalc(nowPhase: Int) {
         behemothTG = when (nowPhase) {
-            1 -> { epModel.behemoth.onePhase.totalGold }
-            2 -> { epModel.behemoth.totalGold }
-            else -> { 0 }
+            1 -> {
+                epModel.behemoth.onePhase.totalGold
+            }
+
+            2 -> {
+                epModel.behemoth.totalGold
+            }
+
+            else -> {
+                0
+            }
         }
     }
 
@@ -42,9 +64,17 @@ class CharacterCardVM(val character: Character): ViewModel() {
 
     fun echiGoldCalc(nowPhase: Int) {
         echidnaTG = when (nowPhase) {
-            1 -> { kzModel.echidna.onePhase.totalGold }
-            2 -> { kzModel.echidna.totalGold }
-            else -> { 0 }
+            1 -> {
+                kzModel.echidna.onePhase.totalGold
+            }
+
+            2 -> {
+                kzModel.echidna.totalGold
+            }
+
+            else -> {
+                0
+            }
         }
     }
 
@@ -54,11 +84,25 @@ class CharacterCardVM(val character: Character): ViewModel() {
 
     fun kamenGoldCalc(nowPhase: Int) {
         kamenTG = when (nowPhase) {
-            1 -> { cmModel.kamen.onePhase.totalGold }
-            2 -> { cmModel.kamen.onePhase.totalGold + cmModel.kamen.twoPhase.totalGold }
-            3 -> { cmModel.kamen.onePhase.totalGold + cmModel.kamen.twoPhase.totalGold + cmModel.kamen.threePhase.totalGold }
-            4 -> { cmModel.kamen.totalGold }
-            else -> { 0 }
+            1 -> {
+                cmModel.kamen.onePhase.totalGold
+            }
+
+            2 -> {
+                cmModel.kamen.onePhase.totalGold + cmModel.kamen.twoPhase.totalGold
+            }
+
+            3 -> {
+                cmModel.kamen.onePhase.totalGold + cmModel.kamen.twoPhase.totalGold + cmModel.kamen.threePhase.totalGold
+            }
+
+            4 -> {
+                cmModel.kamen.totalGold
+            }
+
+            else -> {
+                0
+            }
         }
     }
 
@@ -68,11 +112,25 @@ class CharacterCardVM(val character: Character): ViewModel() {
 
     fun iTGoldCalc(nowPhase: Int) {
         ivoryTowerTG = when (nowPhase) {
-            1 -> { abModel.ivoryTower.onePhase.totalGold }
-            2 -> { abModel.ivoryTower.onePhase.totalGold + abModel.ivoryTower.twoPhase.totalGold }
-            3 -> { abModel.ivoryTower.onePhase.totalGold + abModel.ivoryTower.twoPhase.totalGold + abModel.ivoryTower.threePhase.totalGold }
-            4 -> { abModel.ivoryTower.totalGold }
-            else -> { 0 }
+            1 -> {
+                abModel.ivoryTower.onePhase.totalGold
+            }
+
+            2 -> {
+                abModel.ivoryTower.onePhase.totalGold + abModel.ivoryTower.twoPhase.totalGold
+            }
+
+            3 -> {
+                abModel.ivoryTower.onePhase.totalGold + abModel.ivoryTower.twoPhase.totalGold + abModel.ivoryTower.threePhase.totalGold
+            }
+
+            4 -> {
+                abModel.ivoryTower.totalGold
+            }
+
+            else -> {
+                0
+            }
         }
     }
 
@@ -82,10 +140,21 @@ class CharacterCardVM(val character: Character): ViewModel() {
 
     fun illiGoldCalc(nowPhase: Int) {
         illiakanTG = when (nowPhase) {
-            1 -> { cmModel.illiakan.onePhase.totalGold }
-            2 -> { cmModel.illiakan.onePhase.totalGold + cmModel.illiakan.twoPhase.totalGold }
-            3 -> { cmModel.illiakan.totalGold }
-            else -> { 0 }
+            1 -> {
+                cmModel.illiakan.onePhase.totalGold
+            }
+
+            2 -> {
+                cmModel.illiakan.onePhase.totalGold + cmModel.illiakan.twoPhase.totalGold
+            }
+
+            3 -> {
+                cmModel.illiakan.totalGold
+            }
+
+            else -> {
+                0
+            }
         }
     }
 
@@ -95,10 +164,21 @@ class CharacterCardVM(val character: Character): ViewModel() {
 
     fun kayanGoldCalc(nowPhase: Int) {
         kayangelTG = when (nowPhase) {
-            1 -> { abModel.kayangel.onePhase.totalGold }
-            2 -> { abModel.kayangel.onePhase.totalGold + abModel.kayangel.twoPhase.totalGold }
-            3 -> { abModel.kayangel.totalGold }
-            else -> { 0 }
+            1 -> {
+                abModel.kayangel.onePhase.totalGold
+            }
+
+            2 -> {
+                abModel.kayangel.onePhase.totalGold + abModel.kayangel.twoPhase.totalGold
+            }
+
+            3 -> {
+                abModel.kayangel.totalGold
+            }
+
+            else -> {
+                0
+            }
         }
     }
 
@@ -108,11 +188,25 @@ class CharacterCardVM(val character: Character): ViewModel() {
 
     fun abrelGoldCalc(nowPhase: Int) {
         abrelshudTG = when (nowPhase) {
-            1 -> { cmModel.abrelshud.onePhase.totalGold }
-            2 -> { cmModel.abrelshud.onePhase.totalGold + cmModel.abrelshud.twoPhase.totalGold }
-            3 -> { cmModel.abrelshud.onePhase.totalGold + cmModel.abrelshud.twoPhase.totalGold + cmModel.abrelshud.threePhase.totalGold }
-            4 -> { cmModel.abrelshud.totalGold }
-            else -> { 0 }
+            1 -> {
+                cmModel.abrelshud.onePhase.totalGold
+            }
+
+            2 -> {
+                cmModel.abrelshud.onePhase.totalGold + cmModel.abrelshud.twoPhase.totalGold
+            }
+
+            3 -> {
+                cmModel.abrelshud.onePhase.totalGold + cmModel.abrelshud.twoPhase.totalGold + cmModel.abrelshud.threePhase.totalGold
+            }
+
+            4 -> {
+                cmModel.abrelshud.totalGold
+            }
+
+            else -> {
+                0
+            }
         }
     }
 
@@ -122,10 +216,21 @@ class CharacterCardVM(val character: Character): ViewModel() {
 
     fun kokuGoldCalc(nowPhase: Int) {
         koukuSatonTG = when (nowPhase) {
-            1 -> { cmModel.koukuSaton.onePhase.totalGold }
-            2 -> { cmModel.koukuSaton.onePhase.totalGold + cmModel.koukuSaton.twoPhase.totalGold }
-            3 -> { cmModel.koukuSaton.totalGold }
-            else -> { 0 }
+            1 -> {
+                cmModel.koukuSaton.onePhase.totalGold
+            }
+
+            2 -> {
+                cmModel.koukuSaton.onePhase.totalGold + cmModel.koukuSaton.twoPhase.totalGold
+            }
+
+            3 -> {
+                cmModel.koukuSaton.totalGold
+            }
+
+            else -> {
+                0
+            }
         }
     }
 
@@ -135,9 +240,17 @@ class CharacterCardVM(val character: Character): ViewModel() {
 
     fun biaGoldCalc(nowPhase: Int) {
         biackissTG = when (nowPhase) {
-            1 -> { cmModel.biackiss.onePhase.totalGold }
-            2 -> { cmModel.biackiss.totalGold }
-            else -> { 0 }
+            1 -> {
+                cmModel.biackiss.onePhase.totalGold
+            }
+
+            2 -> {
+                cmModel.biackiss.totalGold
+            }
+
+            else -> {
+                0
+            }
         }
     }
 
@@ -147,9 +260,17 @@ class CharacterCardVM(val character: Character): ViewModel() {
 
     fun valGoldCalc(nowPhase: Int) {
         valtanTG = when (nowPhase) {
-            1 -> { cmModel.valtan.onePhase.totalGold }
-            2 -> { cmModel.valtan.totalGold }
-            else -> { 0 }
+            1 -> {
+                cmModel.valtan.onePhase.totalGold
+            }
+
+            2 -> {
+                cmModel.valtan.totalGold
+            }
+
+            else -> {
+                0
+            }
         }
     }
 
@@ -166,7 +287,7 @@ class CharacterCardVM(val character: Character): ViewModel() {
     }
 }
 
-class GoldContentStateVM: ViewModel() {
+class GoldContentStateVM : ViewModel() {
     var nowPhase by mutableStateOf(0)
 
     fun onClicked(phase: Int): Int {
