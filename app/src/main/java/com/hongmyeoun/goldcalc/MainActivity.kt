@@ -34,23 +34,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
-import com.hongmyeoun.goldcalc.model.roomDB.CharacterDB
-import com.hongmyeoun.goldcalc.model.roomDB.CharacterDao
 import com.hongmyeoun.goldcalc.model.roomDB.CharacterRepository
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.view.goldCheck.Setting
@@ -61,36 +58,22 @@ import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
+import com.hongmyeoun.goldcalc.viewModel.main.CharacterCardVM
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var characterRepository: CharacterRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             GoldCalcTheme {
                 val navController = rememberNavController()
-
-                val context = this
-                val db = remember { mutableStateOf<CharacterDB?>(null) }
-                val dao = remember { mutableStateOf<CharacterDao?>(null) }
-                val repository = remember { mutableStateOf<CharacterRepository?>(null) }
-
-                LaunchedEffect(Unit) {
-                    val asyncDb = CoroutineScope(Dispatchers.IO).async {
-                        CharacterDB.getDB(context)
-                    }
-                    val dbInstance = asyncDb.await()
-                    db.value = dbInstance
-                    dao.value = dbInstance.characterDao()
-                    repository.value = CharacterRepository(dao.value!!)
-                }
-
 
                 NavHost(navController = navController, startDestination = "Main") {
                     composable("Main"){
@@ -98,7 +81,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("Check/{charName}"){
                         val charName = it.arguments?.getString("charName")?: "ERROR"
-                        val gSVM = GoldSettingVM(repository.value!!, charName)
+                        val gSVM = GoldSettingVM(characterRepository, charName)
                         val character by gSVM.character.collectAsState()
 
                         var isLoading by remember { mutableStateOf(true) }
@@ -145,21 +128,15 @@ fun LoadingScreen() {
 }
 
 @Composable
-fun MainScreen(navController: NavHostController) {
-    val context = LocalContext.current
-    val db = remember { CharacterDB.getDB(context) }
-    val dao = db.characterDao()
-    val characterList by dao.getAll().collectAsState(initial = emptyList())
+fun MainScreen(navController: NavHostController, viewModel: CharacterCardVM = hiltViewModel()) {
+    val characterList by viewModel.characters.collectAsState()
 
-    val scope = rememberCoroutineScope()
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
         items(characterList, key = { item -> item.name }){
             CharacterCard(navController, it) {
-                scope.launch(Dispatchers.IO) {
-                    dao.delete(it)
-                }
+                viewModel.delete(it)
             }
         }
         item {
