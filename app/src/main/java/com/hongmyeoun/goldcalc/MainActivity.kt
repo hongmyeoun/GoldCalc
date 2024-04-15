@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,7 +31,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -54,6 +54,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.CharacterRepository
+import com.hongmyeoun.goldcalc.model.roomDB.Phase
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.view.goldCheck.Setting
 import com.hongmyeoun.goldcalc.view.search.CharacterDetailScreen
@@ -185,7 +186,10 @@ fun MainScreen(
             }
         }
     ) {
-        content(Modifier.fillMaxSize().padding(it))
+        content(
+            Modifier
+                .fillMaxSize()
+                .padding(it))
     }
 }
 
@@ -215,11 +219,6 @@ fun CharacterContents(
         items(characterList, key = { item -> item.name }){
             CharacterCard(navController, it) {
                 viewModel.delete(it)
-            }
-        }
-        item {
-            OutlinedButton(onClick = { navController.navigate("Search") }) {
-                Text(text = "검색")
             }
         }
     }
@@ -297,23 +296,131 @@ fun CharacterCard(
                 )
             }
         }
-        Row {
-            OutlinedButton(onClick = { progressPercentage += 0.1f }, enabled = progressPercentage < 1f) {
-                Text(text = "군단장 레이드")
-            }
-            OutlinedButton(onClick = { progressPercentage += 0.1f }, enabled = progressPercentage < 1f) {
-                Text(text = "어비스 던전")
+        Column {
+            GoldContentStateUI(
+                phases = character.checkList.epic[0].phases,
+                raidImg = R.drawable.epic_behemoth,
+                raidName = "베히모스"
+            )
+            GoldContentStateUI(
+                phases = character.checkList.kazeroth[0].phases,
+                raidImg = R.drawable.kazeroth_echidna,
+                raidName = "에키드나"
+            )
+            GoldContentStateUI(
+                phases = character.checkList.command[5].phases,
+                raidImg = R.drawable.command_kamen,
+                raidName = "카멘"
+            )
+            GoldContentStateUI(
+                phases = character.checkList.abyssDungeon[1].phases,
+                raidImg = R.drawable.abyss_dungeon_ivory_tower,
+                raidName = "혼돈의 상아탑"
+            )
+            GoldContentStateUI(
+                phases = character.checkList.command[4].phases,
+                raidImg = R.drawable.command_illiakan,
+                raidName = "일리아칸"
+            )
+            GoldContentStateUI(
+                phases = character.checkList.abyssDungeon[0].phases,
+                raidImg = R.drawable.abyss_dungeon_kayangel,
+                raidName = "카양겔"
+            )
+            GoldContentStateUI(
+                phases = character.checkList.command[3].phases,
+                raidImg = R.drawable.command_abrelshud,
+                raidName = "아브렐슈드"
+            )
+            GoldContentStateUI(
+                phases = character.checkList.command[2].phases,
+                raidImg = R.drawable.command_kouku,
+                raidName = "쿠크세이튼"
+            )
+            GoldContentStateUI(
+                phases = character.checkList.command[1].phases,
+                raidImg = R.drawable.command_biackiss,
+                raidName = "비아키스"
+            )
+            GoldContentStateUI(
+                phases = character.checkList.command[0].phases,
+                raidImg = R.drawable.command_valtan,
+                raidName = "발탄"
+            )
+        }
+//        Row {
+//            OutlinedButton(onClick = { progressPercentage += 0.1f }, enabled = progressPercentage < 1f) {
+//                Text(text = "군단장 레이드")
+//            }
+//            OutlinedButton(onClick = { progressPercentage += 0.1f }, enabled = progressPercentage < 1f) {
+//                Text(text = "어비스 던전")
+//            }
+//        }
+//        Row {
+//            OutlinedButton(onClick = { progressPercentage += 0.1f }, enabled = progressPercentage < 1f) {
+//                Text(text = "어비스 레이드")
+//            }
+//            OutlinedButton(onClick = { progressPercentage = 0.0f }) {
+//                Text(text = "0%")
+//            }
+//        }
+    }
+}
+
+@Composable
+fun GoldContentStateUI(
+    phases: List<Phase>,
+    raidImg: Int,
+    raidName: String,
+) {
+    if (phases[0].isClear) {
+        var phase = 1
+
+        for (index in phases.indices) {
+            if (phases[index].isClear) {
+                phase = index + 1
+            } else {
+                break
             }
         }
-        Row {
-            OutlinedButton(onClick = { progressPercentage += 0.1f }, enabled = progressPercentage < 1f) {
-                Text(text = "어비스 레이드")
-            }
-            OutlinedButton(onClick = { progressPercentage = 0.0f }) {
-                Text(text = "0%")
+        val textColor = if (raidName == "카양겔") Color.Black else Color.White
+
+        var nowPhase by remember { mutableStateOf(0) }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp)
+                .clickable(enabled = nowPhase <= phase - 1) { nowPhase += 1 }
+        ) {
+            Image(
+                modifier = Modifier
+                    .aspectRatio(21f / 9f)
+                    .fillMaxWidth(),
+                contentScale = ContentScale.FillWidth,
+                painter = painterResource(id = raidImg),
+                contentDescription = "보스 이미지"
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(vertical = 32.dp, horizontal = 16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = raidName,
+                    color = textColor
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "${nowPhase}/${phase} 관문",
+                    color = textColor
+                )
             }
         }
     }
+
 }
 
 
