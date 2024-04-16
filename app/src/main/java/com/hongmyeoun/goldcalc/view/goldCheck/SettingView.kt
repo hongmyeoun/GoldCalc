@@ -310,7 +310,13 @@ fun Setting(
                             }
                         }
                         Row(horizontalArrangement = Arrangement.End) {
-                            OutlinedButton(onClick = { navController.popBackStack() }) {
+                            OutlinedButton(onClick = {
+                                navController.navigate("Main") {
+                                    popUpTo("Check/{charName}") {
+                                        inclusive = true
+                                    }
+                                }
+                            }) {
                                 Text("취소")
                             }
                             Spacer(modifier = Modifier.width(8.dp))

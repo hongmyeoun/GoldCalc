@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.hongmyeoun.goldcalc.model.goldCheck.CommandBossModel
-import com.hongmyeoun.goldcalc.model.roomDB.Character
+import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 
 class CommandBossVM(val character: Character?): ViewModel() {
     private val cbModel = CommandBossModel(character)

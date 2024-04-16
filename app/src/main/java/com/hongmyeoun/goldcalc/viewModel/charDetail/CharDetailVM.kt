@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hongmyeoun.goldcalc.model.roomDB.Character
-import com.hongmyeoun.goldcalc.model.roomDB.CharacterRepository
+import com.hongmyeoun.goldcalc.model.roomDB.character.Character
+import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
