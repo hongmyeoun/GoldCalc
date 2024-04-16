@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hongmyeoun.goldcalc.model.roomDB.Character
-import com.hongmyeoun.goldcalc.model.roomDB.CharacterRepository
+import com.hongmyeoun.goldcalc.model.roomDB.character.Character
+import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class GoldSettingVM @Inject constructor(
-    private val repository: CharacterRepository,
+    private val characterRepository: CharacterRepository,
     charName: String
 ) : ViewModel() {
     private val _character = MutableStateFlow<Character?>(null)
@@ -25,7 +25,7 @@ class GoldSettingVM @Inject constructor(
 
     private fun getCharacter(charName: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getCharacterByName(charName).collect { character ->
+            characterRepository.getCharacterByName(charName).collect { character ->
                 _character.value = character
             }
         }
@@ -303,7 +303,7 @@ class GoldSettingVM @Inject constructor(
         }
         update?.let {
             viewModelScope.launch(Dispatchers.IO) {
-                repository.update(update)
+                characterRepository.update(update)
             }
         }
     }
