@@ -15,8 +15,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Notifications
@@ -31,16 +31,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
@@ -50,10 +47,11 @@ import com.hongmyeoun.goldcalc.viewModel.main.GoldContentStateVM
 
 @Composable
 fun MainScreen(
+    characterListVM: CharacterListVM,
     navController: NavHostController,
     content: @Composable (Modifier) -> Unit
 ) {
-    var progressPercentage by remember { mutableStateOf(0.0f) }
+    val characterList by characterListVM.characters.collectAsState()
 
     Scaffold(
         topBar = {
@@ -76,10 +74,10 @@ fun MainScreen(
                         IconButton(onClick = { /*TODO*/ }) {
                             Icon(imageVector = Icons.Default.Info, contentDescription = "전체 진행사항 한눈에 보기")
                         }
-                        Text(text = "퍼센트")
+                        Text(text = "${(characterListVM.calcProgressPercentage(characterList) * 100).toInt()}%")
                     }
                     LinearProgressIndicator(
-                        progress = progressPercentage,
+                        progress = characterListVM.calcProgressPercentage(characterList),
                         color = Color.Green
                     )
                 }
@@ -88,21 +86,21 @@ fun MainScreen(
                         Text(text = "주간 총 골드")
                         Row {
                             Image(painter = painterResource(id = R.drawable.gold_coins), contentDescription = "골드")
-                            Text(text = "1,000")
+                            Text(text = "${characterListVM.calcWeeklyGold(characterList)}")
                         }
                     }
                     Column {
                         Text(text = "얻은 골드")
                         Row {
                             Image(painter = painterResource(id = R.drawable.gold_coins), contentDescription = "골드")
-                            Text(text = "1,000")
+                            Text(text = "${characterListVM.calcEarnGold(characterList)}")
                         }
                     }
                     Column {
                         Text(text = "남은 골드")
                         Row {
                             Image(painter = painterResource(id = R.drawable.gold_coins), contentDescription = "골드")
-                            Text(text = "1,000")
+                            Text(text = "${characterListVM.calcRemainGold(characterList)}")
                         }
                     }
                 }
@@ -112,7 +110,8 @@ fun MainScreen(
         content(
             Modifier
                 .fillMaxSize()
-                .padding(it))
+                .padding(it)
+        )
     }
 }
 
@@ -120,20 +119,22 @@ fun MainScreen(
 fun CharacterContents(
     modifier: Modifier,
     navController: NavHostController,
-    viewModel: CharacterListVM = hiltViewModel()
+    viewModel: CharacterListVM
 ) {
     val characterList by viewModel.characters.collectAsState()
 
-    LazyColumn(
-        modifier = modifier
+    Column(
+        modifier = modifier.verticalScroll(rememberScrollState())
     ) {
-        items(characterList, key = { item -> item.name }){
-            val characterCardVM = remember { CharacterCardVM(it) }
+        characterList.forEach { character ->
+            val characterCardVM = remember { CharacterCardVM(character, viewModel.characterRepository) }
+
             CharacterCard(navController, characterCardVM) {
-                viewModel.delete(it)
+                viewModel.delete(character)
             }
         }
     }
+
 }
 
 @Composable
@@ -213,16 +214,16 @@ fun CharacterCard(
             }
         }
         Column {
-            val behemothVM = remember { GoldContentStateVM() }
-            val echidnaVM = remember { GoldContentStateVM() }
-            val kamenVM = remember { GoldContentStateVM() }
-            val ivoryTowerVM = remember { GoldContentStateVM() }
-            val illiakanVM = remember { GoldContentStateVM() }
-            val kayangelVM = remember { GoldContentStateVM() }
-            val abrelshudVM = remember { GoldContentStateVM() }
-            val koukuSatonVM = remember { GoldContentStateVM() }
-            val biackissVM = remember { GoldContentStateVM() }
-            val valtanVM = remember { GoldContentStateVM() }
+            val behemothVM = remember { GoldContentStateVM(viewModel.behemothPhase) }
+            val echidnaVM = remember { GoldContentStateVM(viewModel.echidnaPhase) }
+            val kamenVM = remember { GoldContentStateVM(viewModel.kamenPhase) }
+            val ivoryTowerVM = remember { GoldContentStateVM(viewModel.ivoryPhase) }
+            val illiakanVM = remember { GoldContentStateVM(viewModel.illiakanPhase) }
+            val kayangelVM = remember { GoldContentStateVM(viewModel.kayangelPhase) }
+            val abrelshudVM = remember { GoldContentStateVM(viewModel.abrelPhase) }
+            val koukuSatonVM = remember { GoldContentStateVM(viewModel.koukuPhase) }
+            val biackissVM = remember { GoldContentStateVM(viewModel.biackissPhase) }
+            val valtanVM = remember { GoldContentStateVM(viewModel.valtanPhase) }
 
             GoldContentStateUI(
                 phase = viewModel.phaseCalc(viewModel.behemoth),

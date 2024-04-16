@@ -4,14 +4,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.hongmyeoun.goldcalc.model.goldCheck.AbyssDungeonModel
 import com.hongmyeoun.goldcalc.model.goldCheck.CommandBossModel
 import com.hongmyeoun.goldcalc.model.goldCheck.EpicRaidModel
 import com.hongmyeoun.goldcalc.model.goldCheck.KazerothRaidModel
-import com.hongmyeoun.goldcalc.model.roomDB.Character
-import com.hongmyeoun.goldcalc.model.roomDB.Phase
+import com.hongmyeoun.goldcalc.model.roomDB.character.Character
+import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
+import com.hongmyeoun.goldcalc.model.roomDB.character.Phase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class CharacterCardVM(val character: Character) : ViewModel() {
+class CharacterCardVM(val character: Character, val characterRepository: CharacterRepository) : ViewModel() {
     private val epModel = EpicRaidModel(character)
     private val kzModel = KazerothRaidModel(character)
     private val cmModel = CommandBossModel(character)
@@ -23,16 +27,20 @@ class CharacterCardVM(val character: Character) : ViewModel() {
     var progressPersentage by mutableStateOf(0.0f)
         private set
 
-    init {
-        updateProgressPercentage()
-    }
-
     fun updateProgressPercentage() {
         progressPersentage = if (maxGold != 0) totalGold.toFloat() / maxGold else 0.0f
     }
 
+    fun updateEarnGold(earnGold: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val newEarnGold = character.copy(earnGold = earnGold)
+            characterRepository.update(newEarnGold)
+        }
+    }
+
     fun calcTotalGold() {
         totalGold = behemothTG + echidnaTG + kamenTG + ivoryTowerTG + illiakanTG + kayangelTG + abrelshudTG + koukuSatonTG + biackissTG + valtanTG
+        updateEarnGold(totalGold)
         updateProgressPercentage()
     }
 
@@ -40,7 +48,8 @@ class CharacterCardVM(val character: Character) : ViewModel() {
 
     val behemoth = raidList.epic[0].phases
     val beheCheck = behemoth[0].isClear
-    private var behemothTG by mutableStateOf(0)
+    private var behemothTG by mutableStateOf(character.raidPhaseInfo.behemothTotalGold)
+    val behemothPhase = character.raidPhaseInfo.behemothPhase
 
     fun beheGoldCalc(nowPhase: Int) {
         behemothTG = when (nowPhase) {
@@ -56,11 +65,16 @@ class CharacterCardVM(val character: Character) : ViewModel() {
                 0
             }
         }
+        viewModelScope.launch(Dispatchers.IO) {
+            val update = character.copy(raidPhaseInfo = character.raidPhaseInfo.copy(behemothPhase = nowPhase, behemothTotalGold = behemothTG))
+            characterRepository.update(update)
+        }
     }
 
     val echidna = raidList.kazeroth[0].phases
     val echiCheck = echidna[0].isClear
-    private var echidnaTG by mutableStateOf(0)
+    private var echidnaTG by mutableStateOf(character.raidPhaseInfo.echidnaTotalGold)
+    val echidnaPhase = character.raidPhaseInfo.echidnaPhase
 
     fun echiGoldCalc(nowPhase: Int) {
         echidnaTG = when (nowPhase) {
@@ -71,16 +85,20 @@ class CharacterCardVM(val character: Character) : ViewModel() {
             2 -> {
                 kzModel.echidna.totalGold
             }
-
             else -> {
                 0
             }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            val update = character.copy(raidPhaseInfo = character.raidPhaseInfo.copy(echidnaPhase = nowPhase, echidnaTotalGold = echidnaTG))
+            characterRepository.update(update)
         }
     }
 
     val kamen = raidList.command[5].phases
     val kamenCehck = kamen[0].isClear
-    private var kamenTG by mutableStateOf(0)
+    private var kamenTG by mutableStateOf(character.raidPhaseInfo.kamenTotalGold)
+    val kamenPhase = character.raidPhaseInfo.kamenPhase
 
     fun kamenGoldCalc(nowPhase: Int) {
         kamenTG = when (nowPhase) {
@@ -104,11 +122,17 @@ class CharacterCardVM(val character: Character) : ViewModel() {
                 0
             }
         }
+        viewModelScope.launch(Dispatchers.IO) {
+            val update = character.copy(raidPhaseInfo = character.raidPhaseInfo.copy(kamenPhase = nowPhase, kamenTotalGold = kamenTG))
+            characterRepository.update(update)
+        }
     }
 
     val ivoryTower = raidList.abyssDungeon[1].phases
     val ivoryCheck = ivoryTower[0].isClear
-    private var ivoryTowerTG by mutableStateOf(0)
+    private var ivoryTowerTG by mutableStateOf(character.raidPhaseInfo.ivoryTotalGold)
+    val ivoryPhase = character.raidPhaseInfo.ivoryPhase
+
 
     fun iTGoldCalc(nowPhase: Int) {
         ivoryTowerTG = when (nowPhase) {
@@ -132,11 +156,19 @@ class CharacterCardVM(val character: Character) : ViewModel() {
                 0
             }
         }
+        viewModelScope.launch(Dispatchers.IO) {
+            val update = character.copy(raidPhaseInfo = character.raidPhaseInfo.copy(ivoryPhase = nowPhase, ivoryTotalGold = ivoryTowerTG))
+            characterRepository.update(update)
+        }
     }
+
+
 
     val illiakan = raidList.command[4].phases
     val illiCheck = illiakan[0].isClear
-    private var illiakanTG by mutableStateOf(0)
+    private var illiakanTG by mutableStateOf(character.raidPhaseInfo.illiakanTotalGold)
+    val illiakanPhase = character.raidPhaseInfo.illiakanPhase
+
 
     fun illiGoldCalc(nowPhase: Int) {
         illiakanTG = when (nowPhase) {
@@ -156,11 +188,18 @@ class CharacterCardVM(val character: Character) : ViewModel() {
                 0
             }
         }
+        viewModelScope.launch(Dispatchers.IO) {
+            val update = character.copy(raidPhaseInfo = character.raidPhaseInfo.copy(illiakanPhase = nowPhase, illiakanTotalGold = illiakanTG))
+            characterRepository.update(update)
+        }
+
     }
 
     val kayangel = raidList.abyssDungeon[0].phases
     val kayanCheck = kayangel[0].isClear
-    private var kayangelTG by mutableStateOf(0)
+    private var kayangelTG by mutableStateOf(character.raidPhaseInfo.kayangelTotalGold)
+    val kayangelPhase = character.raidPhaseInfo.kayangelPhase
+
 
     fun kayanGoldCalc(nowPhase: Int) {
         kayangelTG = when (nowPhase) {
@@ -180,11 +219,17 @@ class CharacterCardVM(val character: Character) : ViewModel() {
                 0
             }
         }
+        viewModelScope.launch(Dispatchers.IO) {
+            val update = character.copy(raidPhaseInfo = character.raidPhaseInfo.copy(kayangelPhase = nowPhase, kayangelTotalGold = kayangelTG))
+            characterRepository.update(update)
+        }
     }
 
     val abrelshud = raidList.command[3].phases
     val abrelCheck = abrelshud[0].isClear
-    private var abrelshudTG by mutableStateOf(0)
+    private var abrelshudTG by mutableStateOf(character.raidPhaseInfo.abrelTotalGold)
+    val abrelPhase = character.raidPhaseInfo.abrelPhase
+
 
     fun abrelGoldCalc(nowPhase: Int) {
         abrelshudTG = when (nowPhase) {
@@ -208,11 +253,18 @@ class CharacterCardVM(val character: Character) : ViewModel() {
                 0
             }
         }
+        viewModelScope.launch(Dispatchers.IO) {
+            val update = character.copy(raidPhaseInfo = character.raidPhaseInfo.copy(abrelPhase = nowPhase, abrelTotalGold = abrelshudTG))
+            characterRepository.update(update)
+        }
+
     }
 
     val koukuSaton = raidList.command[2].phases
     val koukuCheck = koukuSaton[0].isClear
-    private var koukuSatonTG by mutableStateOf(0)
+    private var koukuSatonTG by mutableStateOf(character.raidPhaseInfo.koukuTotalGold)
+    val koukuPhase = character.raidPhaseInfo.koukuPhase
+
 
     fun kokuGoldCalc(nowPhase: Int) {
         koukuSatonTG = when (nowPhase) {
@@ -232,11 +284,17 @@ class CharacterCardVM(val character: Character) : ViewModel() {
                 0
             }
         }
+        viewModelScope.launch(Dispatchers.IO) {
+            val update = character.copy(raidPhaseInfo = character.raidPhaseInfo.copy(koukuPhase = nowPhase, koukuTotalGold = koukuSatonTG))
+            characterRepository.update(update)
+        }
     }
 
     val biackiss = raidList.command[1].phases
     val biaCheck = biackiss[0].isClear
-    private var biackissTG by mutableStateOf(0)
+    private var biackissTG by mutableStateOf(character.raidPhaseInfo.biackissTotalGold)
+    val biackissPhase = character.raidPhaseInfo.biackissPhase
+
 
     fun biaGoldCalc(nowPhase: Int) {
         biackissTG = when (nowPhase) {
@@ -252,11 +310,17 @@ class CharacterCardVM(val character: Character) : ViewModel() {
                 0
             }
         }
+        viewModelScope.launch(Dispatchers.IO) {
+            val update = character.copy(raidPhaseInfo = character.raidPhaseInfo.copy(biackissPhase = nowPhase, biackissTotalGold = biackissTG))
+            characterRepository.update(update)
+        }
+
     }
 
     val valtan = raidList.command[0].phases
     val valtanCheck = valtan[0].isClear
-    private var valtanTG by mutableStateOf(0)
+    private var valtanTG by mutableStateOf(character.raidPhaseInfo.valtanTotalGold)
+    val valtanPhase = character.raidPhaseInfo.valtanPhase
 
     fun valGoldCalc(nowPhase: Int) {
         valtanTG = when (nowPhase) {
@@ -272,6 +336,15 @@ class CharacterCardVM(val character: Character) : ViewModel() {
                 0
             }
         }
+        viewModelScope.launch(Dispatchers.IO) {
+            val update = character.copy(raidPhaseInfo = character.raidPhaseInfo.copy(valtanPhase = nowPhase, valtanTotalGold = valtanTG))
+            characterRepository.update(update)
+        }
+    }
+
+    init {
+        calcTotalGold()
+        updateProgressPercentage()
     }
 
     fun phaseCalc(phases: List<Phase>): Int {
@@ -287,8 +360,8 @@ class CharacterCardVM(val character: Character) : ViewModel() {
     }
 }
 
-class GoldContentStateVM : ViewModel() {
-    var nowPhase by mutableStateOf(0)
+class GoldContentStateVM(initPhase: Int) : ViewModel() {
+    var nowPhase by mutableStateOf(initPhase)
 
     fun onClicked(phase: Int): Int {
         if (nowPhase == phase) {

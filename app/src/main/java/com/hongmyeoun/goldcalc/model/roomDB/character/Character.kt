@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.model.roomDB
+package com.hongmyeoun.goldcalc.model.roomDB.character
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -14,9 +14,42 @@ data class Character(
     @ColumnInfo("plusGold") val plusGold: String = "0",
     @ColumnInfo("minusGold") val minusGold: String = "0",
     @ColumnInfo("goldCheck") val goldCheck: Boolean = false,
-    @ColumnInfo("checkList") val checkList: CheckList = CheckList()
+    @ColumnInfo("checkList") val checkList: CheckList = CheckList(),
+    @ColumnInfo("earnGold") val earnGold: Int = 0,
+    @ColumnInfo("raidPhaseInfo") val raidPhaseInfo: RaidPhaseInfo = RaidPhaseInfo(),
 )
 
+data class RaidPhaseInfo(
+    @ColumnInfo("behemothPhase") val behemothPhase: Int = 0,
+    @ColumnInfo("behemothTotalGold") val behemothTotalGold: Int = 0,
+
+    @ColumnInfo("echidnaPhase") val echidnaPhase: Int = 0,
+    @ColumnInfo("echidnaTotalGold") val echidnaTotalGold: Int = 0,
+
+    @ColumnInfo("kamenPhase") val kamenPhase: Int = 0,
+    @ColumnInfo("kamenTotalGold") val kamenTotalGold: Int = 0,
+
+    @ColumnInfo("ivoryPhase") val ivoryPhase: Int = 0,
+    @ColumnInfo("ivoryTotalGold") val ivoryTotalGold: Int = 0,
+
+    @ColumnInfo("illiakanPhase") val illiakanPhase: Int = 0,
+    @ColumnInfo("illiakanTotalGold") val illiakanTotalGold: Int = 0,
+
+    @ColumnInfo("kayangelPhase") val kayangelPhase: Int = 0,
+    @ColumnInfo("kayangelTotalGold") val kayangelTotalGold: Int = 0,
+
+    @ColumnInfo("abrelPhase") val abrelPhase: Int = 0,
+    @ColumnInfo("abrelTotalGold") val abrelTotalGold: Int = 0,
+
+    @ColumnInfo("koukuPhase") val koukuPhase: Int = 0,
+    @ColumnInfo("koukuTotalGold") val koukuTotalGold: Int = 0,
+
+    @ColumnInfo("biackissPhase") val biackissPhase: Int = 0,
+    @ColumnInfo("biackissTotalGold") val biackissTotalGold: Int = 0,
+
+    @ColumnInfo("valtanPhase") val valtanPhase: Int = 0,
+    @ColumnInfo("valtanTotalGold") val valtanTotalGold: Int = 0,
+)
 
 
 data class CheckList(
