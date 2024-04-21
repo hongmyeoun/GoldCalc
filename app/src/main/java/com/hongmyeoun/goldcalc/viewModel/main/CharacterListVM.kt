@@ -7,9 +7,8 @@ import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,9 +16,20 @@ import javax.inject.Inject
 class CharacterListVM @Inject constructor(
     val characterRepository: CharacterRepository,
 ): ViewModel() {
-    val characters: StateFlow<List<Character>> = characterRepository.getAll().stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+    private val _characters = MutableStateFlow<List<Character>>(emptyList())
+    val characters: StateFlow<List<Character>> = _characters
 
+    fun getCharacters() {
+        viewModelScope.launch(Dispatchers.IO) {
+            characterRepository.getAll().collect {
+                _characters.value = it
+            }
+        }
+    }
 
+    init {
+        getCharacters()
+    }
 
     fun calcProgressPercentage(characterList: List<Character>): Float {
         return if (calcWeeklyGold(characterList) != 0) calcEarnGold(characterList).toFloat() / calcWeeklyGold(characterList) else 0.0f
