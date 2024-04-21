@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.model.roomDB
+package com.hongmyeoun.goldcalc.model.roomDB.character
 
 import androidx.room.Dao
 import androidx.room.Delete

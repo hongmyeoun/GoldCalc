@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.hongmyeoun.goldcalc.model.goldCheck.EpicRaidModel
-import com.hongmyeoun.goldcalc.model.roomDB.Character
+import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 
 class EpicRaidVM(val character: Character?): ViewModel() {
     private val epModel = EpicRaidModel(character)

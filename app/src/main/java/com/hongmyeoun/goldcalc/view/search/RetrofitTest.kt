@@ -50,7 +50,7 @@ import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterInfo
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.lostArkApi.LostArkApiService
-import com.hongmyeoun.goldcalc.model.roomDB.Character
+import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

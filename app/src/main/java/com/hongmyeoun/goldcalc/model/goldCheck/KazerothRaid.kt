@@ -1,6 +1,6 @@
 package com.hongmyeoun.goldcalc.model.goldCheck
 
-import com.hongmyeoun.goldcalc.model.roomDB.Character
+import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 
 enum class KazerothRaid(
     val boss: String,

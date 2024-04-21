@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.model.roomDB
+package com.hongmyeoun.goldcalc.model.roomDB.character
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.model.roomDB
+package com.hongmyeoun.goldcalc.model.roomDB.character
 
 import kotlinx.coroutines.flow.Flow
 

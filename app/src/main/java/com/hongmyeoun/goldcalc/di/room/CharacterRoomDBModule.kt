@@ -2,9 +2,9 @@ package com.hongmyeoun.goldcalc.di.room
 
 import android.content.Context
 import androidx.room.Room
-import com.hongmyeoun.goldcalc.model.roomDB.CharacterDB
-import com.hongmyeoun.goldcalc.model.roomDB.CharacterDao
-import com.hongmyeoun.goldcalc.model.roomDB.CharacterRepository
+import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterDB
+import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterDao
+import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
