@@ -51,8 +51,6 @@ fun MainScreen(
     navController: NavHostController,
     content: @Composable (Modifier) -> Unit
 ) {
-    val characterList by characterListVM.characters.collectAsState()
-
     Scaffold(
         topBar = {
             Column {
@@ -80,10 +78,10 @@ fun MainScreen(
                         IconButton(onClick = { /*TODO*/ }) {
                             Icon(imageVector = Icons.Default.Info, contentDescription = "전체 진행사항 한눈에 보기")
                         }
-                        Text(text = "${(characterListVM.calcProgressPercentage(characterList) * 100).toInt()}%")
+                        Text(text = "${(characterListVM.progressPercentage * 100).toInt()}%")
                     }
                     LinearProgressIndicator(
-                        progress = characterListVM.calcProgressPercentage(characterList),
+                        progress = characterListVM.progressPercentage,
                         color = Color.Green
                     )
                 }
@@ -92,21 +90,21 @@ fun MainScreen(
                         Text(text = "주간 총 골드")
                         Row {
                             Image(painter = painterResource(id = R.drawable.gold_coins), contentDescription = "골드")
-                            Text(text = "${characterListVM.calcWeeklyGold(characterList)}")
+                            Text(text = "${characterListVM.maxGold}")
                         }
                     }
                     Column {
                         Text(text = "얻은 골드")
                         Row {
                             Image(painter = painterResource(id = R.drawable.gold_coins), contentDescription = "골드")
-                            Text(text = "${characterListVM.calcEarnGold(characterList)}")
+                            Text(text = "${characterListVM.earnGold}")
                         }
                     }
                     Column {
                         Text(text = "남은 골드")
                         Row {
                             Image(painter = painterResource(id = R.drawable.gold_coins), contentDescription = "골드")
-                            Text(text = "${characterListVM.calcRemainGold(characterList)}")
+                            Text(text = "${characterListVM.remainGold}")
                         }
                     }
                 }
