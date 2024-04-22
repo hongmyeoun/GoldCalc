@@ -9,8 +9,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -78,24 +82,13 @@ class MainActivity : ComponentActivity() {
                             if (isLoading) {
                                 LoadingScreen()
                             } else {
-                                HorizontalPager(state = pagerState) { page ->
-                                    val characterName = characterList[page].name
-                                    val characterCardVM = remember { CharacterCardVM(characterRepository, characterName) }
-                                    Column(
-                                        modifier
-                                            .padding(16.dp)
-                                            .graphicsLayer {
-                                                val pageOffset = (
-                                                        (pagerState.currentPage - page) + pagerState
-                                                            .currentPageOffsetFraction
-                                                        ).absoluteValue
-                                                alpha = lerp(
-                                                    start = 0.5f,
-                                                    stop = 1f,
-                                                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                                                )
-                                            }
-                                    ) {
+                                LazyColumn(
+                                    modifier.padding(16.dp)
+                                ) {
+                                    items(characterList, key = { item -> item.name }) {
+                                        val characterName = it.name
+                                        val characterCardVM = remember { CharacterCardVM(characterRepository, characterName) }
+
                                         val character by characterCardVM.character.collectAsState()
 
                                         CharacterCard(
@@ -104,11 +97,45 @@ class MainActivity : ComponentActivity() {
                                             onDelete = {
                                                 characterListVM.delete(character)
                                                 isLoading = true
-                                            }
-                                        ) { characterCardVM.enableDelay() }
-
+                                            },
+                                            onClick = { characterCardVM.enableDelay() }
+                                        )
                                     }
                                 }
+
+
+
+//                                HorizontalPager(state = pagerState) { page ->
+//                                    val characterName = characterList[page].name
+//                                    val characterCardVM = remember { CharacterCardVM(characterRepository, characterName) }
+//                                    Column(
+//                                        modifier
+//                                            .padding(16.dp)
+//                                            .graphicsLayer {
+//                                                val pageOffset = (
+//                                                        (pagerState.currentPage - page) + pagerState
+//                                                            .currentPageOffsetFraction
+//                                                        ).absoluteValue
+//                                                alpha = lerp(
+//                                                    start = 0.5f,
+//                                                    stop = 1f,
+//                                                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
+//                                                )
+//                                            }
+//                                    ) {
+//                                        val character by characterCardVM.character.collectAsState()
+//
+//                                        CharacterCard(
+//                                            navController = navController,
+//                                            viewModel = characterCardVM,
+//                                            onDelete = {
+//                                                characterListVM.delete(character)
+//                                                isLoading = true
+//                                            }
+//                                        ) { characterCardVM.enableDelay() }
+//
+//                                    }
+//                                }
                             }
 
                             LaunchedEffect(isLoading) {
