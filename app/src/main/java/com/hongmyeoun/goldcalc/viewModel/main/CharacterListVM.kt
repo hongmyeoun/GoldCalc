@@ -1,5 +1,8 @@
 package com.hongmyeoun.goldcalc.viewModel.main
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.util.fastSumBy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,32 +22,32 @@ class CharacterListVM @Inject constructor(
     private val _characters = MutableStateFlow<List<Character>>(emptyList())
     val characters: StateFlow<List<Character>> = _characters
 
-    fun getCharacters() {
+    private fun getCharacters() {
         viewModelScope.launch(Dispatchers.IO) {
             characterRepository.getAll().collect {
                 _characters.value = it
+                earnGold = it.fastSumBy { character -> character.earnGold }
+                initProgressBar(it)
+                remainGold = maxGold - earnGold
             }
         }
     }
 
+    private fun initProgressBar(characterList: List<Character>) {
+        maxGold = characterList.fastSumBy { it.weeklyGold }
+        progressPercentage = if (maxGold != 0) earnGold.toFloat() / maxGold else 0.0f
+    }
+
+    var maxGold = _characters.value.fastSumBy { it.weeklyGold }
+    var progressPercentage by mutableStateOf(0.0f)
+        private set
+
+    var earnGold by mutableStateOf(0)
+    var remainGold by mutableStateOf(0)
+
+
     init {
         getCharacters()
-    }
-
-    fun calcProgressPercentage(characterList: List<Character>): Float {
-        return if (calcWeeklyGold(characterList) != 0) calcEarnGold(characterList).toFloat() / calcWeeklyGold(characterList) else 0.0f
-    }
-
-    fun calcWeeklyGold(characterList: List<Character>): Int {
-        return characterList.fastSumBy { it.weeklyGold }
-    }
-
-    fun calcEarnGold(characterList: List<Character>): Int {
-        return characterList.fastSumBy { it.earnGold }
-    }
-
-    fun calcRemainGold(characterList: List<Character>): Int {
-        return calcWeeklyGold(characterList) - calcEarnGold(characterList)
     }
 
     fun delete(character: Character) {

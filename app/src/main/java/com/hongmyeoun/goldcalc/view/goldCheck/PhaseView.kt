@@ -1,6 +1,5 @@
 package com.hongmyeoun.goldcalc.view.goldCheck
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,11 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
 
 @Composable
@@ -321,6 +321,7 @@ fun FourPhaseBoss(
     )
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun RaidCardUI(
     rotaR: Float,
@@ -347,11 +348,11 @@ fun RaidCardUI(
                 modifier = Modifier.weight(1.5f),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
-                    painter = painterResource(id = raidBossImg),
-                    contentDescription = "보스 아이콘",
+                GlideImage(
+                    modifier = Modifier.clip(RoundedCornerShape(16.dp)),
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.clip(RoundedCornerShape(16.dp))
+                    model = raidBossImg,
+                    contentDescription =  "보스 아이콘"
                 )
             }
             Column(
@@ -369,6 +370,7 @@ fun RaidCardUI(
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun TotalGoldText(totalGold: Int) {
     Divider()
@@ -386,12 +388,12 @@ fun TotalGoldText(totalGold: Int) {
             textAlign = TextAlign.End
         )
         Spacer(modifier = Modifier.width(8.dp))
-        Image(
+        GlideImage(
             modifier = Modifier
                 .weight(0.5f)
                 .size(16.dp),
-            painter = painterResource(id = R.drawable.gold_coin),
             alignment = Alignment.Center,
+            model = R.drawable.gold_coin,
             contentDescription = "골드 아이콘"
         )
     }
@@ -408,6 +410,7 @@ fun RaidNameText(name: String) {
     Spacer(modifier = Modifier.height(64.dp))
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun PhaseGoldText(
     phase: String,
@@ -424,12 +427,12 @@ fun PhaseGoldText(
             textAlign = TextAlign.End
         )
         Spacer(modifier = Modifier.width(8.dp))
-        Image(
+        GlideImage(
             modifier = Modifier
                 .weight(0.5f)
                 .size(16.dp),
             alignment = Alignment.Center,
-            painter = painterResource(id = R.drawable.gold_coin),
+            model = R.drawable.gold_coin,
             contentDescription = "골드 아이콘"
         )
     }

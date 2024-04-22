@@ -1,7 +1,6 @@
 package com.hongmyeoun.goldcalc.view.goldCheck
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -41,11 +40,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.AbyssDungeon
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.CommandRaid
@@ -57,6 +57,7 @@ import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun Setting(
     navController: NavHostController,
@@ -286,9 +287,9 @@ fun Setting(
                             Column {
                                 Text(text = "변경 전")
                                 Row {
-                                    Image(
+                                    GlideImage(
                                         modifier = Modifier.size(25.dp),
-                                        painter = painterResource(id = R.drawable.gold_coins),
+                                        model = R.drawable.gold_coins,
                                         contentDescription = "골드 이미지"
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
@@ -299,9 +300,9 @@ fun Setting(
                             Column {
                                 Text(text = "변경 후")
                                 Row {
-                                    Image(
+                                    GlideImage(
                                         modifier = Modifier.size(25.dp),
-                                        painter = painterResource(id = R.drawable.gold_coins),
+                                        model = R.drawable.gold_coins,
                                         contentDescription = "골드 이미지"
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
