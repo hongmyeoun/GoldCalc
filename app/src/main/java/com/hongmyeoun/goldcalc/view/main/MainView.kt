@@ -47,6 +47,7 @@ import com.hongmyeoun.goldcalc.viewModel.main.CharacterCardVM
 import com.hongmyeoun.goldcalc.viewModel.main.CharacterListVM
 import com.hongmyeoun.goldcalc.viewModel.main.GoldContentStateVM
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun MainScreen(
     characterListVM: CharacterListVM,
@@ -87,21 +88,21 @@ fun MainScreen(
                     Column {
                         Text(text = "주간 총 골드")
                         Row {
-                            Image(painter = painterResource(id = R.drawable.gold_coins), contentDescription = "골드")
+                            GlideImage(model = R.drawable.gold_coins, contentDescription = "골드")
                             Text(text = "${characterListVM.maxGold}")
                         }
                     }
                     Column {
                         Text(text = "얻은 골드")
                         Row {
-                            Image(painter = painterResource(id = R.drawable.gold_coins), contentDescription = "골드")
+                            GlideImage(model = R.drawable.gold_coins, contentDescription = "골드")
                             Text(text = "${characterListVM.earnGold}")
                         }
                     }
                     Column {
                         Text(text = "남은 골드")
                         Row {
-                            Image(painter = painterResource(id = R.drawable.gold_coins), contentDescription = "골드")
+                            GlideImage(model = R.drawable.gold_coins, contentDescription = "골드")
                             Text(text = "${characterListVM.remainGold}")
                         }
                     }
@@ -117,6 +118,7 @@ fun MainScreen(
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun CharacterCard(
     navController: NavHostController,
@@ -136,10 +138,10 @@ fun CharacterCard(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
+                GlideImage(
                     modifier = Modifier.weight(0.5f),
                     contentScale = ContentScale.Crop,
-                    painter = painterResource(id = CharacterResourceMapper.getClassImage(isDark, character.className)),
+                    model = CharacterResourceMapper.getClassImage(isDark, character.className),
                     contentDescription = "직업군"
                 )
                 Column(
@@ -177,12 +179,12 @@ fun CharacterCard(
                     ) {
                         Column {
                             Row {
-                                Image(painter = painterResource(id = R.drawable.gold_coins), contentDescription = "골드 이미지")
+                                GlideImage(model = R.drawable.gold_coins, contentDescription = "골드")
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(text = "${character.weeklyGold}")
                             }
                             Row {
-                                Image(painter = painterResource(id = R.drawable.gold_coin), contentDescription = "골드 이미지")
+                                GlideImage(model = R.drawable.gold_coin, contentDescription = "골드")
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(text = "${viewModel.totalGold}")
                             }
@@ -382,14 +384,6 @@ fun GoldContentStateUI(
                 onClicked(viewModel.onClicked(phase))
             }
     ) {
-//        Image(
-//            modifier = Modifier
-//                .aspectRatio(21f / 9f)
-//                .fillMaxWidth(),
-//            contentScale = ContentScale.FillWidth,
-//            painter = painterResource(id = raidImg),
-//            contentDescription = "보스 이미지"
-//        )
         GlideImage(
             modifier = Modifier
                 .aspectRatio(21f / 9f)

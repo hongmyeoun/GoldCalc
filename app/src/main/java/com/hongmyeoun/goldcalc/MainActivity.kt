@@ -69,6 +69,7 @@ class MainActivity : ComponentActivity() {
                 NavHost(navController = navController, startDestination = "Main") {
                     composable("Main") {
                         val characterListVM: CharacterListVM = hiltViewModel()
+
                         MainScreen(
                             characterListVM = characterListVM,
                             navController = navController

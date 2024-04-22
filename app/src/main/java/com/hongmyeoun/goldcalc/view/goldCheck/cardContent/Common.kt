@@ -1,6 +1,5 @@
 package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -15,9 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun RaidCardUI(
     bossImg: Int,
@@ -44,10 +45,10 @@ fun RaidCardUI(
             )
         ) {
             if (!isRotated) {
-                Image(
+                GlideImage(
                     modifier = Modifier.aspectRatio(21f/9f),
                     contentScale = ContentScale.FillWidth,
-                    painter = painterResource(id = bossImg),
+                    model = bossImg,
                     contentDescription = "보스 이미지"
                 )
             } else {

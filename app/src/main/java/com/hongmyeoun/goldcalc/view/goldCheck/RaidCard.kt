@@ -1,6 +1,5 @@
 package com.hongmyeoun.goldcalc.view.goldCheck
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -15,10 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun RaidCard(
     raidImg: Int,
@@ -30,19 +32,22 @@ fun RaidCard(
             .fillMaxWidth()
             .padding(vertical = 16.dp)
     ) {
-        Image(
+        GlideImage(
             modifier = Modifier.fillMaxWidth(),
-            painter = painterResource(id = raidImg),
+            contentScale = ContentScale.FillWidth,
+            model = raidImg,
             contentDescription = "던전 아이콘"
         )
         Row(
-            modifier = Modifier.fillMaxSize().padding(vertical = 32.dp, horizontal = 16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(vertical = 32.dp, horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {
-            Image(
+            GlideImage(
                 modifier = Modifier.size(25.dp),
-                painter = painterResource(id = R.drawable.gold_coins),
+                model = R.drawable.gold_coins,
                 contentDescription = "골드 아이콘"
             )
             Spacer(modifier = Modifier.width(8.dp))
