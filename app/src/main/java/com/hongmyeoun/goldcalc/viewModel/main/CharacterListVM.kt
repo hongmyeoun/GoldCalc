@@ -38,7 +38,7 @@ class CharacterListVM @Inject constructor(
         progressPercentage = if (maxGold != 0) earnGold.toFloat() / maxGold else 0.0f
     }
 
-    var maxGold = _characters.value.fastSumBy { it.weeklyGold }
+    var maxGold by mutableStateOf(0)
     var progressPercentage by mutableStateOf(0.0f)
         private set
 
