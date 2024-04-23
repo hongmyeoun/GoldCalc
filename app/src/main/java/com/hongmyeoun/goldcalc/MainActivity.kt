@@ -94,15 +94,24 @@ class MainActivity : ComponentActivity() {
 
                                         val character by characterCardVM.character.collectAsState()
 
-                                        CharacterCard(
-                                            navController = navController,
-                                            viewModel = characterCardVM,
-                                            onDelete = {
-                                                characterListVM.delete(character)
-                                                isLoading = true
-                                            },
-                                            onClick = { characterCardVM.enableDelay() }
-                                        )
+
+                                        LaunchedEffect(character) {
+                                            characterCardVM.initTG(character)
+                                        }
+
+                                        if (character.name.isEmpty()) {
+                                            LoadingScreen()
+                                        } else {
+                                            CharacterCard(
+                                                navController = navController,
+                                                viewModel = characterCardVM,
+                                                onDelete = {
+                                                    characterListVM.delete(character)
+                                                    isLoading = true
+                                                },
+                                                onClick = { characterCardVM.enableDelay() }
+                                            )
+                                        }
                                     }
                                 }
                             }

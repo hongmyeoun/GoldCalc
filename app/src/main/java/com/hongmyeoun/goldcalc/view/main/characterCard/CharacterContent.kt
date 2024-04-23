@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -31,7 +30,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.LoadingScreen
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.viewModel.main.CharacterCardVM
 import com.hongmyeoun.goldcalc.viewModel.main.GoldContentStateVM
@@ -44,28 +42,18 @@ fun CharacterCard(
     onDelete: () -> Unit,
     onClick: () -> Unit
 ) {
-    val character by viewModel.character.collectAsState()
-
-    LaunchedEffect(character) {
-        viewModel.initTG(character)
-    }
-
-    if (character.name.isEmpty()) {
-        LoadingScreen()
-    } else {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            CharacterCardTop(
-                navController = navController,
-                viewModel = viewModel,
-                onDelete = onDelete
-            )
-            GoldContents(
-                viewModel = viewModel,
-                onClick = { onClick() }
-            )
-        }
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CharacterCardTop(
+            navController = navController,
+            viewModel = viewModel,
+            onDelete = onDelete
+        )
+        GoldContents(
+            viewModel = viewModel,
+            onClick = { onClick() }
+        )
     }
 }
 

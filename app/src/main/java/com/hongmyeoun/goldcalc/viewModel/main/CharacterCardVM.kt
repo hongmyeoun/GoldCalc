@@ -31,7 +31,9 @@ class CharacterCardVM @Inject constructor(
     private val _kzModel = MutableStateFlow(KazerothRaidModel(null))
     private val _epModel = MutableStateFlow(EpicRaidModel(null))
 
-    var totalGold by mutableStateOf(0)
+    private val _totalGold = MutableStateFlow(0)
+    val totalGold: StateFlow<Int> = _totalGold
+//    var totalGold by mutableStateOf(0)
 
     private var kamenTG by mutableStateOf(0)
     private var illiakanTG by mutableStateOf(0)
@@ -51,7 +53,7 @@ class CharacterCardVM @Inject constructor(
         private set
 
     private fun updateProgressPercentage() {
-        progressPercentage = if (maxGold != 0) totalGold.toFloat() / maxGold else 0.0f
+        progressPercentage = if (maxGold != 0) _totalGold.value.toFloat() / maxGold else 0.0f
     }
 
     var enabled by mutableStateOf(true)
@@ -73,24 +75,24 @@ class CharacterCardVM @Inject constructor(
         val abyssDungeonTG = ivoryTowerTG + kayangelTG
         val kazerothTG = echidnaTG
         val epicTG = behemothTG
-        totalGold = commandTG + abyssDungeonTG + kazerothTG + epicTG
+        _totalGold.value = commandTG + abyssDungeonTG + kazerothTG + epicTG
         updateProgressPercentage()
     }
 
     private fun getCharacter() {
         viewModelScope.launch(Dispatchers.IO) {
-            characterRepository.getCharacterByName(charName).collect {
-                it?.let { // 이걸 안하면 삭제시 없는 페이지에 없는 character(null)값이 들어와서 객체들을 불러오지 못해 튕김
+            characterRepository.getCharacterByName(charName).collect { character ->
+                character?.let { // 이걸 안하면 삭제시 없는 페이지에 없는 character(null)값이 들어와서 객체들을 불러오지 못해 튕김
                     _character.value = it
-                    initTG(it)
                     getModel(it)
                 }
+                initTG(_character.value)
             }
         }
     }
 
-    private fun initTG(character: Character) {
-        totalGold = character.earnGold + character.plusGold.toInt() - character.minusGold.toInt()
+    fun initTG(character: Character) {
+        _totalGold.value = character.earnGold + character.plusGold.toInt() - character.minusGold.toInt()
         kamenTG = character.raidPhaseInfo.kamenTotalGold
         illiakanTG = character.raidPhaseInfo.illiakanTotalGold
         abrelshudTG = character.raidPhaseInfo.abrelTotalGold
@@ -103,7 +105,7 @@ class CharacterCardVM @Inject constructor(
         behemothTG = character.raidPhaseInfo.behemothTotalGold
 
         maxGold = character.weeklyGold
-        progressPercentage = if (maxGold != 0) totalGold.toFloat() / maxGold else 0.0f
+        progressPercentage = if (maxGold != 0) _totalGold.value.toFloat() / maxGold else 0.0f
     }
 
     private fun getModel(character: Character) {
@@ -137,7 +139,7 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = totalGold, raidPhaseInfo = _character.value.raidPhaseInfo.copy(kamenPhase = nowPhase, kamenTotalGold = kamenTG))
+            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(kamenPhase = nowPhase, kamenTotalGold = kamenTG))
             characterRepository.update(update)
         }
     }
@@ -153,7 +155,7 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = totalGold, raidPhaseInfo = _character.value.raidPhaseInfo.copy(illiakanPhase = nowPhase, illiakanTotalGold = illiakanTG))
+            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(illiakanPhase = nowPhase, illiakanTotalGold = illiakanTG))
             characterRepository.update(update)
         }
     }
@@ -170,7 +172,7 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = totalGold, raidPhaseInfo = _character.value.raidPhaseInfo.copy(abrelPhase = nowPhase, abrelTotalGold = abrelshudTG))
+            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(abrelPhase = nowPhase, abrelTotalGold = abrelshudTG))
             characterRepository.update(update)
         }
     }
@@ -186,7 +188,7 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = totalGold, raidPhaseInfo = _character.value.raidPhaseInfo.copy(koukuPhase = nowPhase, koukuTotalGold = koukuSatonTG))
+            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(koukuPhase = nowPhase, koukuTotalGold = koukuSatonTG))
             characterRepository.update(update)
         }
     }
@@ -201,7 +203,7 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = totalGold, raidPhaseInfo = _character.value.raidPhaseInfo.copy(biackissPhase = nowPhase, biackissTotalGold = biackissTG))
+            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(biackissPhase = nowPhase, biackissTotalGold = biackissTG))
             characterRepository.update(update)
         }
     }
@@ -216,7 +218,7 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = totalGold, raidPhaseInfo = _character.value.raidPhaseInfo.copy(valtanPhase = nowPhase, valtanTotalGold = valtanTG))
+            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(valtanPhase = nowPhase, valtanTotalGold = valtanTG))
             characterRepository.update(update)
         }
     }
@@ -232,7 +234,7 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = totalGold,raidPhaseInfo = _character.value.raidPhaseInfo.copy(kayangelPhase = nowPhase, kayangelTotalGold = kayangelTG))
+            val update = _character.value.copy(earnGold = _totalGold.value,raidPhaseInfo = _character.value.raidPhaseInfo.copy(kayangelPhase = nowPhase, kayangelTotalGold = kayangelTG))
             characterRepository.update(update)
         }
     }
@@ -249,7 +251,7 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = totalGold,raidPhaseInfo = _character.value.raidPhaseInfo.copy(ivoryPhase = nowPhase, ivoryTotalGold = ivoryTowerTG))
+            val update = _character.value.copy(earnGold = _totalGold.value,raidPhaseInfo = _character.value.raidPhaseInfo.copy(ivoryPhase = nowPhase, ivoryTotalGold = ivoryTowerTG))
             characterRepository.update(update)
         }
     }
@@ -264,7 +266,7 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = totalGold,raidPhaseInfo = _character.value.raidPhaseInfo.copy(echidnaPhase = nowPhase, echidnaTotalGold = echidnaTG))
+            val update = _character.value.copy(earnGold = _totalGold.value,raidPhaseInfo = _character.value.raidPhaseInfo.copy(echidnaPhase = nowPhase, echidnaTotalGold = echidnaTG))
             characterRepository.update(update)
         }
     }
@@ -279,7 +281,7 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = totalGold, raidPhaseInfo = _character.value.raidPhaseInfo.copy(behemothPhase = nowPhase, behemothTotalGold = behemothTG))
+            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(behemothPhase = nowPhase, behemothTotalGold = behemothTG))
             characterRepository.update(update)
         }
     }
@@ -298,4 +300,3 @@ class GoldContentStateVM(initPhase: Int) : ViewModel() {
         return nowPhase
     }
 }
-

@@ -183,7 +183,7 @@ private fun ProgressGold(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.End,
-                    text = viewModel.totalGold.formatWithCommas(),
+                    text = viewModel.totalGold.value.formatWithCommas(),
                     fontSize = 16.sp
                 )
             }
