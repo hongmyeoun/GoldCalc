@@ -36,6 +36,7 @@ import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.ui.theme.MokokoGreen
 import com.hongmyeoun.goldcalc.viewModel.main.CharacterListVM
 import java.text.NumberFormat
 
@@ -127,9 +128,9 @@ private fun MainAppProgressBar(characterListVM: CharacterListVM) {
             modifier = Modifier
                 .height(24.dp)
                 .fillMaxWidth()
-                .border(1.dp, Color(0xffA6FF4D)),
+                .border(1.dp, MokokoGreen),
             progress = animatedProgress,
-            color = Color(0xffA6FF4D),
+            color = MokokoGreen,
             trackColor = Color.Transparent
         )
 
