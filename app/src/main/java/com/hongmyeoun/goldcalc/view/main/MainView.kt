@@ -1,23 +1,15 @@
 package com.hongmyeoun.goldcalc.view.main
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,7 +26,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.LoadingScreen
 import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
+import com.hongmyeoun.goldcalc.view.main.characterCard.CharacterCardTop
 import com.hongmyeoun.goldcalc.viewModel.main.CharacterCardVM
 import com.hongmyeoun.goldcalc.viewModel.main.CharacterListVM
 import com.hongmyeoun.goldcalc.viewModel.main.GoldContentStateVM
@@ -56,8 +48,6 @@ fun MainScreen(
     }
 }
 
-
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun CharacterCard(
     navController: NavHostController,
@@ -65,7 +55,6 @@ fun CharacterCard(
     onDelete: () -> Unit,
     onClick: () -> Unit
 ) {
-    val isDark = isSystemInDarkTheme()
     val character by viewModel.character.collectAsState()
 
     if (character.name.isEmpty()) {
@@ -74,230 +63,233 @@ fun CharacterCard(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                GlideImage(
-                    modifier = Modifier.weight(0.5f),
-                    contentScale = ContentScale.Crop,
-                    model = CharacterResourceMapper.getClassImage(isDark, character.className),
-                    contentDescription = "직업군"
-                )
-                Column(
-                    modifier = Modifier.weight(2f)
-                ) {
-                    Text(text = character.serverName)
-                    Row {
-                        Text(text = character.name)
-                        Icon(
-                            imageVector = Icons.Default.Notifications,
-                            contentDescription = "골드체크",
-                            modifier = Modifier
-                                .clickable { onDelete() }
-                        )
-                        Icon(
-                            imageVector = Icons.Default.Settings,
-                            contentDescription = "설정",
-                            modifier = Modifier
-                                .clickable { navController.navigate("Check/${character.name}") })
-                    }
-                    Row {
-                        Text(text = character.itemLevel)
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(text = character.className)
-                    }
-                }
-                Column(
-                    modifier = Modifier
-                        .weight(1.5f)
-                        .padding(8.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        Column {
-                            Row {
-                                GlideImage(model = R.drawable.gold_coins, contentDescription = "골드")
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = "${character.weeklyGold}")
-                            }
-                            Row {
-                                GlideImage(model = R.drawable.gold_coin, contentDescription = "골드")
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = "${viewModel.totalGold}")
-                            }
-                            Text(text = "진행도")
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Text(text = "${(viewModel.progressPersentage * 100).toInt()}%")
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(10.dp))
-                    LinearProgressIndicator(
-                        progress = viewModel.progressPersentage,
-                        color = Color.Green
-                    )
-                }
+            CharacterCardTop(
+                navController = navController,
+                viewModel = viewModel,
+                onDelete = onDelete
+            )
+            GoldContents(
+                viewModel = viewModel,
+                onClick = { onClick() }
+            )
+        }
+    }
+}
+
+@Composable
+fun GoldContents(
+    viewModel: CharacterCardVM,
+    onClick: () -> Unit
+) {
+    val character by viewModel.character.collectAsState()
+
+    if (character.checkList.epic[0].phases[0].isClear) {
+        val behemothVM = remember { GoldContentStateVM(character.raidPhaseInfo.behemothPhase) }
+
+        GoldContentStateUI(
+            enabled = viewModel.enabled,
+            phase = viewModel.phaseCalc(character.checkList.epic[0].phases),
+            raidImg = R.drawable.epic_behemoth,
+            raidName = "베히모스",
+            viewModel = behemothVM,
+            onClicked = {
+                viewModel.beheGoldCalc(it)
+                onClick()
             }
+        )
+    }
+    if (character.checkList.kazeroth[0].phases[0].isClear) {
+        val echidnaVM = remember { GoldContentStateVM(character.raidPhaseInfo.echidnaPhase) }
 
-            if (character.checkList.epic[0].phases[0].isClear) {
-                val behemothVM = remember { GoldContentStateVM(character.raidPhaseInfo.behemothPhase) }
-
-                GoldContentStateUI(
-                    enabled = viewModel.enabled,
-                    phase = viewModel.phaseCalc(character.checkList.epic[0].phases),
-                    raidImg = R.drawable.epic_behemoth,
-                    raidName = "베히모스",
-                    viewModel = behemothVM,
-                    onClicked = {
-                        viewModel.beheGoldCalc(it)
-                        onClick()
-                    }
-                )
+        GoldContentStateUI(
+            enabled = viewModel.enabled,
+            phase = viewModel.phaseCalc(character.checkList.kazeroth[0].phases),
+            raidImg = R.drawable.kazeroth_echidna,
+            raidName = "에키드나",
+            viewModel = echidnaVM,
+            onClicked = {
+                viewModel.echiGoldCalc(it)
+                onClick()
             }
-            if (character.checkList.kazeroth[0].phases[0].isClear) {
-                val echidnaVM = remember { GoldContentStateVM(character.raidPhaseInfo.echidnaPhase) }
+        )
+    }
+    if (character.checkList.command[5].phases[0].isClear) {
+        val kamenVM = remember { GoldContentStateVM(character.raidPhaseInfo.kamenPhase) }
 
-                GoldContentStateUI(
-                    enabled = viewModel.enabled,
-                    phase = viewModel.phaseCalc(character.checkList.kazeroth[0].phases),
-                    raidImg = R.drawable.kazeroth_echidna,
-                    raidName = "에키드나",
-                    viewModel = echidnaVM,
-                    onClicked = {
-                        viewModel.echiGoldCalc(it)
-                        onClick()
-                    }
-                )
+        GoldContentStateUI(
+            enabled = viewModel.enabled,
+            phase = viewModel.phaseCalc(character.checkList.command[5].phases),
+            raidImg = R.drawable.command_kamen,
+            raidName = "카멘",
+            viewModel = kamenVM,
+            onClicked = {
+                viewModel.kamenGoldCalc(it)
+                onClick()
             }
-            if (character.checkList.command[5].phases[0].isClear) {
-                val kamenVM = remember { GoldContentStateVM(character.raidPhaseInfo.kamenPhase) }
+        )
 
-                GoldContentStateUI(
-                    enabled = viewModel.enabled,
-                    phase = viewModel.phaseCalc(character.checkList.command[5].phases),
-                    raidImg = R.drawable.command_kamen,
-                    raidName = "카멘",
-                    viewModel = kamenVM,
-                    onClicked = {
-                        viewModel.kamenGoldCalc(it)
-                        onClick()
-                    }
-                )
+    }
+    if (character.checkList.abyssDungeon[1].phases[0].isClear) {
+        val ivoryTowerVM = remember { GoldContentStateVM(character.raidPhaseInfo.ivoryPhase) }
 
+        GoldContentStateUI(
+            enabled = viewModel.enabled,
+            phase = viewModel.phaseCalc(character.checkList.abyssDungeon[1].phases),
+            raidImg = R.drawable.abyss_dungeon_ivory_tower,
+            raidName = "혼돈의 상아탑",
+            viewModel = ivoryTowerVM,
+            onClicked = {
+                viewModel.iTGoldCalc(it)
+                onClick()
             }
-            if (character.checkList.abyssDungeon[1].phases[0].isClear) {
-                val ivoryTowerVM = remember { GoldContentStateVM(character.raidPhaseInfo.ivoryPhase) }
+        )
 
-                GoldContentStateUI(
-                    enabled = viewModel.enabled,
-                    phase = viewModel.phaseCalc(character.checkList.abyssDungeon[1].phases),
-                    raidImg = R.drawable.abyss_dungeon_ivory_tower,
-                    raidName = "혼돈의 상아탑",
-                    viewModel = ivoryTowerVM,
-                    onClicked = {
-                        viewModel.iTGoldCalc(it)
-                        onClick()
-                    }
-                )
+    }
+    if (character.checkList.command[4].phases[0].isClear) {
+        val illiakanVM = remember { GoldContentStateVM(character.raidPhaseInfo.illiakanPhase) }
 
+        GoldContentStateUI(
+            enabled = viewModel.enabled,
+            phase = viewModel.phaseCalc(character.checkList.command[4].phases),
+            raidImg = R.drawable.command_illiakan,
+            raidName = "일리아칸",
+            viewModel = illiakanVM,
+            onClicked = {
+                viewModel.illiGoldCalc(it)
+                onClick()
             }
-            if (character.checkList.command[4].phases[0].isClear) {
-                val illiakanVM = remember { GoldContentStateVM(character.raidPhaseInfo.illiakanPhase) }
+        )
 
-                GoldContentStateUI(
-                    enabled = viewModel.enabled,
-                    phase = viewModel.phaseCalc(character.checkList.command[4].phases),
-                    raidImg = R.drawable.command_illiakan,
-                    raidName = "일리아칸",
-                    viewModel = illiakanVM,
-                    onClicked = {
-                        viewModel.illiGoldCalc(it)
-                        onClick()
-                    }
-                )
+    }
+    if (character.checkList.abyssDungeon[0].phases[0].isClear) {
+        val kayangelVM = remember { GoldContentStateVM(character.raidPhaseInfo.kayangelPhase) }
 
+        GoldContentStateUI(
+            enabled = viewModel.enabled,
+            phase = viewModel.phaseCalc(character.checkList.abyssDungeon[0].phases),
+            raidImg = R.drawable.abyss_dungeon_kayangel,
+            raidName = "카양겔",
+            viewModel = kayangelVM,
+            onClicked = {
+                viewModel.kayanGoldCalc(it)
+                onClick()
             }
-            if (character.checkList.abyssDungeon[0].phases[0].isClear) {
-                val kayangelVM = remember { GoldContentStateVM(character.raidPhaseInfo.kayangelPhase) }
+        )
 
-                GoldContentStateUI(
-                    enabled = viewModel.enabled,
-                    phase = viewModel.phaseCalc(character.checkList.abyssDungeon[0].phases),
-                    raidImg = R.drawable.abyss_dungeon_kayangel,
-                    raidName = "카양겔",
-                    viewModel = kayangelVM,
-                    onClicked = {
-                        viewModel.kayanGoldCalc(it)
-                        onClick()
-                    }
-                )
+    }
+    if (character.checkList.command[3].phases[0].isClear) {
+        val abrelshudVM = remember { GoldContentStateVM(character.raidPhaseInfo.abrelPhase) }
 
+        GoldContentStateUI(
+            enabled = viewModel.enabled,
+            phase = viewModel.phaseCalc(character.checkList.command[3].phases),
+            raidImg = R.drawable.command_abrelshud,
+            raidName = "아브렐슈드",
+            viewModel = abrelshudVM,
+            onClicked = {
+                viewModel.abrelGoldCalc(it)
+                onClick()
             }
-            if (character.checkList.command[3].phases[0].isClear) {
-                val abrelshudVM = remember { GoldContentStateVM(character.raidPhaseInfo.abrelPhase) }
+        )
 
-                GoldContentStateUI(
-                    enabled = viewModel.enabled,
-                    phase = viewModel.phaseCalc(character.checkList.command[3].phases),
-                    raidImg = R.drawable.command_abrelshud,
-                    raidName = "아브렐슈드",
-                    viewModel = abrelshudVM,
-                    onClicked = {
-                        viewModel.abrelGoldCalc(it)
-                        onClick()
-                    }
-                )
+    }
+    if (character.checkList.command[2].phases[0].isClear) {
+        val koukuSatonVM = remember { GoldContentStateVM(character.raidPhaseInfo.koukuPhase) }
 
+        GoldContentStateUI(
+            enabled = viewModel.enabled,
+            phase = viewModel.phaseCalc(character.checkList.command[2].phases),
+            raidImg = R.drawable.command_kouku,
+            raidName = "쿠크세이튼",
+            viewModel = koukuSatonVM,
+            onClicked = {
+                viewModel.kokuGoldCalc(it)
+                onClick()
             }
-            if (character.checkList.command[2].phases[0].isClear) {
-                val koukuSatonVM = remember { GoldContentStateVM(character.raidPhaseInfo.koukuPhase) }
+        )
 
-                GoldContentStateUI(
-                    enabled = viewModel.enabled,
-                    phase = viewModel.phaseCalc(character.checkList.command[2].phases),
-                    raidImg = R.drawable.command_kouku,
-                    raidName = "쿠크세이튼",
-                    viewModel = koukuSatonVM,
-                    onClicked = {
-                        viewModel.kokuGoldCalc(it)
-                        onClick()
-                    }
-                )
+    }
+    if (character.checkList.command[1].phases[0].isClear) {
+        val biackissVM = remember { GoldContentStateVM(character.raidPhaseInfo.biackissPhase) }
 
+        GoldContentStateUI(
+            enabled = viewModel.enabled,
+            phase = viewModel.phaseCalc(character.checkList.command[1].phases),
+            raidImg = R.drawable.command_biackiss,
+            raidName = "비아키스",
+            viewModel = biackissVM,
+            onClicked = {
+                viewModel.biaGoldCalc(it)
+                onClick()
             }
-            if (character.checkList.command[1].phases[0].isClear) {
-                val biackissVM = remember { GoldContentStateVM(character.raidPhaseInfo.biackissPhase) }
+        )
 
-                GoldContentStateUI(
-                    enabled = viewModel.enabled,
-                    phase = viewModel.phaseCalc(character.checkList.command[1].phases),
-                    raidImg = R.drawable.command_biackiss,
-                    raidName = "비아키스",
-                    viewModel = biackissVM,
-                    onClicked = {
-                        viewModel.biaGoldCalc(it)
-                        onClick()
-                    }
-                )
+    }
+    if (character.checkList.command[0].phases[0].isClear) {
+        val valtanVM = remember { GoldContentStateVM(character.raidPhaseInfo.valtanPhase) }
 
+        GoldContentStateUI(
+            enabled = viewModel.enabled,
+            phase = viewModel.phaseCalc(character.checkList.command[0].phases),
+            raidImg = R.drawable.command_valtan,
+            raidName = "발탄",
+            viewModel = valtanVM,
+            onClicked = {
+                viewModel.valGoldCalc(it)
+                onClick()
             }
-            if (character.checkList.command[0].phases[0].isClear) {
-                val valtanVM = remember { GoldContentStateVM(character.raidPhaseInfo.valtanPhase) }
+        )
 
-                GoldContentStateUI(
-                    enabled = viewModel.enabled,
-                    phase = viewModel.phaseCalc(character.checkList.command[0].phases),
-                    raidImg = R.drawable.command_valtan,
-                    raidName = "발탄",
-                    viewModel = valtanVM,
-                    onClicked = {
-                        viewModel.valGoldCalc(it)
-                        onClick()
-                    }
-                )
+    }
+}
 
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun GoldContentStateUI(
+    enabled: Boolean,
+    phase: Int,
+    raidImg: Int,
+    raidName: String,
+    viewModel: GoldContentStateVM,
+    onClicked: (Int) -> Unit
+) {
+    val textColor = if (raidName == "카양겔") Color.Black else Color.White
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp)
+            .clickable(enabled = enabled) {
+                onClicked(viewModel.onClicked(phase))
             }
+    ) {
+        GlideImage(
+            modifier = Modifier
+                .aspectRatio(21f / 9f)
+                .fillMaxWidth(),
+            contentScale = ContentScale.FillWidth,
+            model = raidImg,
+            contentDescription = "보스이미지"
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(vertical = 32.dp, horizontal = 16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                text = raidName,
+                color = textColor
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "${viewModel.nowPhase}/${phase} 관문",
+                color = textColor
+            )
+        }
+    }
+}
 
 //            LazyVerticalGrid(
 //                columns = GridCells.Fixed(2), // 열당 2개의 아이템을 보여주도록 설정
@@ -474,56 +466,3 @@ fun CharacterCard(
 //                    }
 //                }
 //            }
-        }
-
-    }
-}
-
-@OptIn(ExperimentalGlideComposeApi::class)
-@Composable
-fun GoldContentStateUI(
-    enabled: Boolean,
-    phase: Int,
-    raidImg: Int,
-    raidName: String,
-    viewModel: GoldContentStateVM,
-    onClicked: (Int) -> Unit
-) {
-    val textColor = if (raidName == "카양겔") Color.Black else Color.White
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp)
-            .clickable(enabled = enabled) {
-                onClicked(viewModel.onClicked(phase))
-            }
-    ) {
-        GlideImage(
-            modifier = Modifier
-                .aspectRatio(21f / 9f)
-                .fillMaxWidth(),
-            contentScale = ContentScale.FillWidth,
-            model = raidImg,
-            contentDescription = "보스이미지"
-        )
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(vertical = 32.dp, horizontal = 16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.Start
-        ) {
-            Text(
-                text = raidName,
-                color = textColor
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = "${viewModel.nowPhase}/${phase} 관문",
-                color = textColor
-            )
-        }
-    }
-}
-
