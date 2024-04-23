@@ -47,11 +47,11 @@ class CharacterCardVM @Inject constructor(
     private var behemothTG by mutableStateOf(0)
 
     var maxGold = _character.value.weeklyGold
-    var progressPersentage by mutableStateOf(0.0f)
+    var progressPercentage by mutableStateOf(0.0f)
         private set
 
     private fun updateProgressPercentage() {
-        progressPersentage = if (maxGold != 0) totalGold.toFloat() / maxGold else 0.0f
+        progressPercentage = if (maxGold != 0) totalGold.toFloat() / maxGold else 0.0f
     }
 
     var enabled by mutableStateOf(true)
@@ -103,7 +103,7 @@ class CharacterCardVM @Inject constructor(
         behemothTG = character.raidPhaseInfo.behemothTotalGold
 
         maxGold = character.weeklyGold
-        progressPersentage = if (maxGold != 0) totalGold.toFloat() / maxGold else 0.0f
+        progressPercentage = if (maxGold != 0) totalGold.toFloat() / maxGold else 0.0f
     }
 
     private fun getModel(character: Character) {
