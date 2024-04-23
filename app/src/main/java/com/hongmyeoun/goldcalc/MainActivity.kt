@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -85,9 +86,7 @@ class MainActivity : ComponentActivity() {
                             if (isLoading) {
                                 LoadingScreen()
                             } else {
-                                LazyColumn(
-                                    modifier.padding(16.dp)
-                                ) {
+                                LazyColumn(modifier = modifier) {
                                     items(characterList, key = { item -> item.name }) {
                                         val characterName = it.name
                                         val characterCardVM = remember { CharacterCardVM(characterRepository, characterName) }
@@ -112,6 +111,7 @@ class MainActivity : ComponentActivity() {
                                                 onClick = { characterCardVM.enableDelay() }
                                             )
                                         }
+                                        Divider(modifier = Modifier.height(8.dp))
                                     }
                                 }
                             }

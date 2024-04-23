@@ -2,7 +2,6 @@ package com.hongmyeoun.goldcalc.view.main.characterCard
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
@@ -111,18 +111,18 @@ fun SimpleCharacterInfo(
             }
         }
 
-        Icon(
-            imageVector = Icons.Default.Notifications,
-            contentDescription = "골드체크",
-            modifier = Modifier
-                .clickable { onDelete() }
-        )
-        Icon(
-            imageVector = Icons.Default.Settings,
-            contentDescription = "설정",
-            modifier = Modifier
-                .clickable { navController.navigate("Check/${character.name}") }
-        )
+        IconButton(onClick = { onDelete() }) {
+            Icon(
+                imageVector = Icons.Default.Notifications,
+                contentDescription = "골드체크",
+            )
+        }
+        IconButton(onClick = { navController.navigate("Check/${character.name}") }) {
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription = "설정",
+            )
+        }
     }
 }
 

@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -42,13 +43,16 @@ import java.text.NumberFormat
 
 @Composable
 fun MainAppTopBar(navController: NavHostController, characterListVM: CharacterListVM) {
-    Column(
-        modifier = Modifier.padding(16.dp)
-    ) {
-        MainAppTop(navController)
-        MainAppProgressText(characterListVM)
-        MainAppProgressBar(characterListVM)
-        MainAppGoldCurrent(characterListVM)
+    Column {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            MainAppTop(navController)
+            MainAppProgressText(characterListVM)
+            MainAppProgressBar(characterListVM)
+            MainAppGoldCurrent(characterListVM)
+        }
+        Divider()
     }
 }
 
