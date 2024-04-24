@@ -195,7 +195,7 @@ private fun ProgressGold(
 @Composable
 fun SimpleProgressBar(viewModel: CharacterCardVM) {
     val animatedProgress = animateFloatAsState(
-        targetValue = viewModel.progressPercentage,
+        targetValue = viewModel.progressPercentage.value,
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
     ).value
 
@@ -224,7 +224,7 @@ fun SimpleProgressBar(viewModel: CharacterCardVM) {
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .padding(end = 2.dp),
-            text = "${(viewModel.progressPercentage * 100).toInt()}%",
+            text = "${(viewModel.progressPercentage.value * 100).toInt()}%",
             fontSize = 8.sp
         )
     }

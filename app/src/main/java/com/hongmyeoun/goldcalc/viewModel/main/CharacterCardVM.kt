@@ -35,25 +35,27 @@ class CharacterCardVM @Inject constructor(
     val totalGold: StateFlow<Int> = _totalGold
 //    var totalGold by mutableStateOf(0)
 
-    private var kamenTG by mutableStateOf(0)
-    private var illiakanTG by mutableStateOf(0)
-    private var abrelshudTG by mutableStateOf(0)
-    private var koukuSatonTG by mutableStateOf(0)
-    private var biackissTG by mutableStateOf(0)
-    private var valtanTG by mutableStateOf(0)
+    private val _kamenTG = MutableStateFlow(0)
+    private val _illiakanTG = MutableStateFlow(0)
+    private val _abrelshudTG = MutableStateFlow(0)
+    private val _koukuSatonTG = MutableStateFlow(0)
+    private val _biackissTG = MutableStateFlow(0)
+    private val _valtanTG = MutableStateFlow(0)
 
-    private var kayangelTG by mutableStateOf(0)
-    private var ivoryTowerTG by mutableStateOf(0)
+    private val _kayangelTG = MutableStateFlow(0)
+    private val _ivoryTowerTG = MutableStateFlow(0)
 
-    private var echidnaTG by mutableStateOf(0)
-    private var behemothTG by mutableStateOf(0)
+    private val _echidnaTG = MutableStateFlow(0)
 
-    var maxGold = _character.value.weeklyGold
-    var progressPercentage by mutableStateOf(0.0f)
-        private set
+    private val _behemothTG = MutableStateFlow(0)
+
+    private val _maxGold = MutableStateFlow(0)
+
+    private val _progressPercentage = MutableStateFlow(0f)
+    val progressPercentage: StateFlow<Float> = _progressPercentage
 
     private fun updateProgressPercentage() {
-        progressPercentage = if (maxGold != 0) _totalGold.value.toFloat() / maxGold else 0.0f
+        _progressPercentage.value = if (_maxGold.value != 0) _totalGold.value.toFloat() / _maxGold.value else 0.0f
     }
 
     var enabled by mutableStateOf(true)
@@ -71,10 +73,10 @@ class CharacterCardVM @Inject constructor(
     }
 
     private fun calcTotalGold() {
-        val commandTG = kamenTG + illiakanTG + abrelshudTG + koukuSatonTG + biackissTG + valtanTG
-        val abyssDungeonTG = ivoryTowerTG + kayangelTG
-        val kazerothTG = echidnaTG
-        val epicTG = behemothTG
+        val commandTG = _kamenTG.value + _illiakanTG.value + _abrelshudTG.value + _koukuSatonTG.value + _biackissTG.value + _valtanTG.value
+        val abyssDungeonTG = _ivoryTowerTG.value + _kayangelTG.value
+        val kazerothTG = _echidnaTG.value
+        val epicTG = _behemothTG.value
         _totalGold.value = commandTG + abyssDungeonTG + kazerothTG + epicTG
         updateProgressPercentage()
     }
@@ -93,19 +95,19 @@ class CharacterCardVM @Inject constructor(
 
     fun initTG(character: Character) {
         _totalGold.value = character.earnGold + character.plusGold.toInt() - character.minusGold.toInt()
-        kamenTG = character.raidPhaseInfo.kamenTotalGold
-        illiakanTG = character.raidPhaseInfo.illiakanTotalGold
-        abrelshudTG = character.raidPhaseInfo.abrelTotalGold
-        koukuSatonTG = character.raidPhaseInfo.koukuTotalGold
-        biackissTG = character.raidPhaseInfo.biackissTotalGold
-        valtanTG = character.raidPhaseInfo.valtanTotalGold
-        kayangelTG = character.raidPhaseInfo.kayangelTotalGold
-        ivoryTowerTG = character.raidPhaseInfo.ivoryTotalGold
-        echidnaTG = character.raidPhaseInfo.echidnaTotalGold
-        behemothTG = character.raidPhaseInfo.behemothTotalGold
+        _kamenTG.value = character.raidPhaseInfo.kamenTotalGold
+        _illiakanTG.value = character.raidPhaseInfo.illiakanTotalGold
+        _abrelshudTG.value = character.raidPhaseInfo.abrelTotalGold
+        _koukuSatonTG.value = character.raidPhaseInfo.koukuTotalGold
+        _biackissTG.value = character.raidPhaseInfo.biackissTotalGold
+        _valtanTG.value = character.raidPhaseInfo.valtanTotalGold
+        _kayangelTG.value = character.raidPhaseInfo.kayangelTotalGold
+        _ivoryTowerTG.value = character.raidPhaseInfo.ivoryTotalGold
+        _echidnaTG.value = character.raidPhaseInfo.echidnaTotalGold
+        _behemothTG.value = character.raidPhaseInfo.behemothTotalGold
 
-        maxGold = character.weeklyGold
-        progressPercentage = if (maxGold != 0) _totalGold.value.toFloat() / maxGold else 0.0f
+        _maxGold.value = character.weeklyGold
+        _progressPercentage.value = if (_maxGold.value != 0) _totalGold.value.toFloat() / _maxGold.value else 0.0f
     }
 
     private fun getModel(character: Character) {
@@ -128,7 +130,7 @@ class CharacterCardVM @Inject constructor(
     }
 
     fun kamenGoldCalc(nowPhase: Int) {
-        kamenTG = when (nowPhase) {
+        _kamenTG.value = when (nowPhase) {
             1 -> { _cmModel.value.kamen.onePhase.totalGold }
             2 -> { _cmModel.value.kamen.onePhase.totalGold + _cmModel.value.kamen.twoPhase.totalGold }
             3 -> { _cmModel.value.kamen.onePhase.totalGold + _cmModel.value.kamen.twoPhase.totalGold + _cmModel.value.kamen.threePhase.totalGold }
@@ -139,13 +141,13 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(kamenPhase = nowPhase, kamenTotalGold = kamenTG))
+            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(kamenPhase = nowPhase, kamenTotalGold = _kamenTG.value))
             characterRepository.update(update)
         }
     }
 
     fun illiGoldCalc(nowPhase: Int) {
-        illiakanTG = when (nowPhase) {
+        _illiakanTG.value = when (nowPhase) {
             1 -> { _cmModel.value.illiakan.onePhase.totalGold }
             2 -> { _cmModel.value.illiakan.onePhase.totalGold + _cmModel.value.illiakan.twoPhase.totalGold }
             3 -> { _cmModel.value.illiakan.totalGold }
@@ -155,13 +157,13 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(illiakanPhase = nowPhase, illiakanTotalGold = illiakanTG))
+            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(illiakanPhase = nowPhase, illiakanTotalGold = _illiakanTG.value))
             characterRepository.update(update)
         }
     }
 
     fun abrelGoldCalc(nowPhase: Int) {
-        abrelshudTG = when (nowPhase) {
+        _abrelshudTG.value = when (nowPhase) {
             1 -> { _cmModel.value.abrelshud.onePhase.totalGold }
             2 -> { _cmModel.value.abrelshud.onePhase.totalGold + _cmModel.value.abrelshud.twoPhase.totalGold }
             3 -> { _cmModel.value.abrelshud.onePhase.totalGold + _cmModel.value.abrelshud.twoPhase.totalGold + _cmModel.value.abrelshud.threePhase.totalGold }
@@ -172,13 +174,13 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(abrelPhase = nowPhase, abrelTotalGold = abrelshudTG))
+            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(abrelPhase = nowPhase, abrelTotalGold = _abrelshudTG.value))
             characterRepository.update(update)
         }
     }
 
     fun kokuGoldCalc(nowPhase: Int) {
-        koukuSatonTG = when (nowPhase) {
+        _koukuSatonTG.value = when (nowPhase) {
             1 -> { _cmModel.value.koukuSaton.onePhase.totalGold }
             2 -> { _cmModel.value.koukuSaton.onePhase.totalGold + _cmModel.value.koukuSaton.twoPhase.totalGold }
             3 -> { _cmModel.value.koukuSaton.totalGold }
@@ -188,13 +190,13 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(koukuPhase = nowPhase, koukuTotalGold = koukuSatonTG))
+            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(koukuPhase = nowPhase, koukuTotalGold = _koukuSatonTG.value))
             characterRepository.update(update)
         }
     }
 
     fun biaGoldCalc(nowPhase: Int) {
-        biackissTG = when (nowPhase) {
+        _biackissTG.value = when (nowPhase) {
             1 -> { _cmModel.value.biackiss.onePhase.totalGold }
             2 -> { _cmModel.value.biackiss.totalGold }
             else -> { 0 }
@@ -203,13 +205,13 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(biackissPhase = nowPhase, biackissTotalGold = biackissTG))
+            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(biackissPhase = nowPhase, biackissTotalGold = _biackissTG.value))
             characterRepository.update(update)
         }
     }
 
     fun valGoldCalc(nowPhase: Int) {
-        valtanTG = when (nowPhase) {
+        _valtanTG.value = when (nowPhase) {
             1 -> { _cmModel.value.valtan.onePhase.totalGold }
             2 -> { _cmModel.value.valtan.totalGold }
             else -> { 0 }
@@ -218,13 +220,13 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(valtanPhase = nowPhase, valtanTotalGold = valtanTG))
+            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(valtanPhase = nowPhase, valtanTotalGold = _valtanTG.value))
             characterRepository.update(update)
         }
     }
 
     fun kayanGoldCalc(nowPhase: Int) {
-        kayangelTG = when (nowPhase) {
+        _kayangelTG.value = when (nowPhase) {
             1 -> { _abModel.value.kayangel.onePhase.totalGold }
             2 -> { _abModel.value.kayangel.onePhase.totalGold + _abModel.value.kayangel.twoPhase.totalGold }
             3 -> { _abModel.value.kayangel.totalGold }
@@ -234,13 +236,13 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = _totalGold.value,raidPhaseInfo = _character.value.raidPhaseInfo.copy(kayangelPhase = nowPhase, kayangelTotalGold = kayangelTG))
+            val update = _character.value.copy(earnGold = _totalGold.value,raidPhaseInfo = _character.value.raidPhaseInfo.copy(kayangelPhase = nowPhase, kayangelTotalGold = _kayangelTG.value))
             characterRepository.update(update)
         }
     }
 
     fun iTGoldCalc(nowPhase: Int) {
-        ivoryTowerTG = when (nowPhase) {
+        _ivoryTowerTG.value = when (nowPhase) {
             1 -> { _abModel.value.ivoryTower.onePhase.totalGold }
             2 -> { _abModel.value.ivoryTower.onePhase.totalGold + _abModel.value.ivoryTower.twoPhase.totalGold }
             3 -> { _abModel.value.ivoryTower.onePhase.totalGold + _abModel.value.ivoryTower.twoPhase.totalGold + _abModel.value.ivoryTower.threePhase.totalGold }
@@ -251,13 +253,13 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = _totalGold.value,raidPhaseInfo = _character.value.raidPhaseInfo.copy(ivoryPhase = nowPhase, ivoryTotalGold = ivoryTowerTG))
+            val update = _character.value.copy(earnGold = _totalGold.value,raidPhaseInfo = _character.value.raidPhaseInfo.copy(ivoryPhase = nowPhase, ivoryTotalGold = _ivoryTowerTG.value))
             characterRepository.update(update)
         }
     }
 
     fun echiGoldCalc(nowPhase: Int) {
-        echidnaTG = when (nowPhase) {
+        _echidnaTG.value = when (nowPhase) {
             1 -> { _kzModel.value.echidna.onePhase.totalGold }
             2 -> { _kzModel.value.echidna.totalGold }
             else -> { 0 }
@@ -266,13 +268,13 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = _totalGold.value,raidPhaseInfo = _character.value.raidPhaseInfo.copy(echidnaPhase = nowPhase, echidnaTotalGold = echidnaTG))
+            val update = _character.value.copy(earnGold = _totalGold.value,raidPhaseInfo = _character.value.raidPhaseInfo.copy(echidnaPhase = nowPhase, echidnaTotalGold = _echidnaTG.value))
             characterRepository.update(update)
         }
     }
 
     fun beheGoldCalc(nowPhase: Int) {
-        behemothTG = when (nowPhase) {
+        _behemothTG.value = when (nowPhase) {
             1 -> { _epModel.value.behemoth.onePhase.totalGold }
             2 -> { _epModel.value.behemoth.totalGold }
             else -> { 0 }
@@ -281,7 +283,7 @@ class CharacterCardVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(behemothPhase = nowPhase, behemothTotalGold = behemothTG))
+            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(behemothPhase = nowPhase, behemothTotalGold = _behemothTG.value))
             characterRepository.update(update)
         }
     }
