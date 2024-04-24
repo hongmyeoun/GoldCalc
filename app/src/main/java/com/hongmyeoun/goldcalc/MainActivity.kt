@@ -18,7 +18,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
@@ -86,34 +88,47 @@ class MainActivity : ComponentActivity() {
                             if (isLoading) {
                                 LoadingScreen()
                             } else {
-                                LazyColumn(modifier = modifier) {
-                                    items(characterList, key = { item -> item.name }) {
+                                Column(
+                                    modifier = modifier.verticalScroll(rememberScrollState()),
+                                ) {
+                                    characterList.forEach {
                                         val characterName = it.name
                                         val characterCardVM = remember { CharacterCardVM(characterRepository, characterName) }
 
                                         val character by characterCardVM.character.collectAsState()
 
-
-                                        LaunchedEffect(character) {
-                                            characterCardVM.initTG(character)
-                                        }
-
-                                        if (character.name.isEmpty()) {
-                                            LoadingScreen()
-                                        } else {
-                                            CharacterCard(
-                                                navController = navController,
-                                                viewModel = characterCardVM,
-                                                onDelete = {
-                                                    characterListVM.delete(character)
-                                                    isLoading = true
-                                                },
-                                                onClick = { characterCardVM.enableDelay() }
-                                            )
-                                        }
+                                        CharacterCard(
+                                            navController = navController,
+                                            viewModel = characterCardVM,
+                                            onDelete = {
+                                                characterListVM.delete(character)
+                                                isLoading = true
+                                            },
+                                            onClick = { characterCardVM.enableDelay() }
+                                        )
                                         Divider(modifier = Modifier.height(8.dp))
                                     }
                                 }
+
+//                                LazyColumn(modifier = modifier) {
+//                                    items(characterList, key = { item -> item.name }) {
+//                                        val characterName = it.name
+//                                        val characterCardVM = remember { CharacterCardVM(characterRepository, characterName) }
+//
+//                                        val character by characterCardVM.character.collectAsState()
+//
+//                                        CharacterCard(
+//                                            navController = navController,
+//                                            viewModel = characterCardVM,
+//                                            onDelete = {
+//                                                characterListVM.delete(character)
+//                                                isLoading = true
+//                                            },
+//                                            onClick = { characterCardVM.enableDelay() }
+//                                        )
+//                                        Divider(modifier = Modifier.height(8.dp))
+//                                    }
+//                                }
                             }
 
                             LaunchedEffect(isLoading) {
