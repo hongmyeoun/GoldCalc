@@ -118,7 +118,7 @@ data class RaidList(
     val phases: List<Phase> = listOf(
         Phase(difficulty = "노말", isClear = false, mCheck = false)
     ),
-    @ColumnInfo("isCheck") val isCheck: Boolean = false,
+    @ColumnInfo("isCheck") val isCheck: Boolean = true,
 
 )
 
