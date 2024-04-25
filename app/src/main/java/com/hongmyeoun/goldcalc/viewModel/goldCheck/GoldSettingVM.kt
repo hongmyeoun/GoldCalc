@@ -20,6 +20,16 @@ class GoldSettingVM @Inject constructor(
     private val _character = MutableStateFlow<Character?>(null)
     val character: StateFlow<Character?> = _character
 
+    private val _showDialog = MutableStateFlow(false)
+    val showDialog: StateFlow<Boolean> = _showDialog
+    fun onDissmissRequest() {
+        _showDialog.value = false
+    }
+
+    fun onClicked() {
+        _showDialog.value = true
+    }
+
     var plusGold by mutableStateOf("0")
     var minusGold by mutableStateOf("0")
 
@@ -36,6 +46,14 @@ class GoldSettingVM @Inject constructor(
         viewModelScope.launch(Dispatchers.Main) {
             plusGold = _character.value?.plusGold ?: "0"
             minusGold = _character.value?.minusGold ?: "0"
+        }
+    }
+
+    fun onDelete() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _character.value?.let {
+                characterRepository.delete(_character.value!!)
+            }
         }
     }
 
