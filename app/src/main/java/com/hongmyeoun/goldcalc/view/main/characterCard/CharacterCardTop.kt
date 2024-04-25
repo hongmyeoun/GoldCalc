@@ -38,6 +38,7 @@ import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.ui.theme.MokokoGreen
 import com.hongmyeoun.goldcalc.view.main.formatWithCommas
+import com.hongmyeoun.goldcalc.view.main.toPercentage
 import com.hongmyeoun.goldcalc.viewModel.main.CharacterCardVM
 
 @Composable
@@ -224,7 +225,7 @@ fun SimpleProgressBar(viewModel: CharacterCardVM) {
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .padding(end = 2.dp),
-            text = "${(viewModel.progressPercentage.value * 100).toInt()}%",
+            text = viewModel.progressPercentage.value.toPercentage(),
             fontSize = 8.sp
         )
     }
