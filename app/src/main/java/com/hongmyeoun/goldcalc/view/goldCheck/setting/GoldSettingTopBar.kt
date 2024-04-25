@@ -46,31 +46,34 @@ fun GoldSettingTopBar(viewModel: GoldSettingVM, navController: NavHostController
         DeleteCharacterDialog(viewModel, navController)
     }
 
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconButton(
-            modifier = Modifier.weight(0.5f),
-            onClick = { navController.popBackStack() }
+    Column {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "뒤로")
+            IconButton(
+                modifier = Modifier.weight(0.5f),
+                onClick = { navController.popBackStack() }
+            ) {
+                Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "뒤로")
+            }
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(2f),
+                text = viewModel.character.value?.name ?: "정보없음",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+            IconButton(
+                modifier = Modifier.weight(0.5f),
+                onClick = { viewModel.onClicked() }
+            ) {
+                Icon(imageVector = Icons.Default.Delete, contentDescription = "삭제")
+            }
         }
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(2f),
-            text = viewModel.character.value?.name ?: "정보없음",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
-        )
-        IconButton(
-            modifier = Modifier.weight(0.5f),
-            onClick = { viewModel.onClicked() }
-        ) {
-            Icon(imageVector = Icons.Default.Delete, contentDescription = "삭제")
-        }
+        Divider()
     }
 }
 

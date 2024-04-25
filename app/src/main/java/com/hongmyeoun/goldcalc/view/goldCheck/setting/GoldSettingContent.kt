@@ -2,7 +2,6 @@ package com.hongmyeoun.goldcalc.view.goldCheck.setting
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Divider
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,12 +28,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
@@ -128,38 +129,50 @@ private fun DetailInfomation(detailMenu: String, detail: String) {
 @Composable
 private fun RaidHeader(viewModel: GoldSettingVM, isDark: Boolean = isSystemInDarkTheme()) {
     val bgColor = if (isDark) ImageBG else Color.White
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(bgColor)
-            .height(50.dp)
-    ) {
-        TopBarBox(
-            title = "군단장",
-            modifier = Modifier.weight(1f),
-            onClick = { viewModel.moveCommandRaid() }
-        )
-        TopBarBox(
-            title = "어비스 던전",
-            modifier = Modifier.weight(1f),
-            onClick = { viewModel.moveAbyssDungeon() }
-        )
-        TopBarBox(
-            title = "카제로스",
-            modifier = Modifier.weight(1f),
-            onClick = { viewModel.moveKazeRaid() }
-        )
-        TopBarBox(
-            title = "에픽",
-            modifier = Modifier.weight(1f),
-            onClick = { viewModel.moveEpicRaid() }
-        )
-        TopBarBox(
-            title = "기타",
-            modifier = Modifier.weight(1f),
-            onClick = { viewModel.moveETC() }
-        )
+    Column {
+        Divider()
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(bgColor)
+                .height(50.dp)
+        ) {
+            TopBarBox(
+                title = "군단장",
+                modifier = Modifier.weight(1f),
+                onClick = { viewModel.moveCommandRaid() }
+            )
+            Divider(modifier = Modifier.fillMaxHeight().width(1.dp))
+
+            TopBarBox(
+                title = "어비스 던전",
+                modifier = Modifier.weight(1f),
+                onClick = { viewModel.moveAbyssDungeon() }
+            )
+            Divider(modifier = Modifier.fillMaxHeight().width(1.dp))
+
+            TopBarBox(
+                title = "카제로스",
+                modifier = Modifier.weight(1f),
+                onClick = { viewModel.moveKazeRaid() }
+            )
+            Divider(modifier = Modifier.fillMaxHeight().width(1.dp))
+
+            TopBarBox(
+                title = "에픽",
+                modifier = Modifier.weight(1f),
+                onClick = { viewModel.moveEpicRaid() }
+            )
+            Divider(modifier = Modifier.fillMaxHeight().width(1.dp))
+
+            TopBarBox(
+                title = "기타",
+                modifier = Modifier.weight(1f),
+                onClick = { viewModel.moveETC() }
+            )
+        }
     }
+    Divider()
 }
 
 @Composable
@@ -171,15 +184,22 @@ private fun TopBarBox(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .border(
-                width = 1.dp,
-                shape = RectangleShape,
-                color = Color.LightGray
-            )
+//            .border(
+//                width = 1.dp,
+//                shape = RectangleShape,
+//                color = Color.LightGray
+//            )
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
-        Text(text = title)
+        if (title == "어비스 던전") {
+            Text(
+                text = title,
+                fontSize = 12.sp
+            )
+        } else {
+            Text(text = title)
+        }
     }
 }
 
