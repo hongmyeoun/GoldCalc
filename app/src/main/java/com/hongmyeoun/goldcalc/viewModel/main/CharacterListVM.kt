@@ -10,6 +10,7 @@ import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -21,6 +22,32 @@ class CharacterListVM @Inject constructor(
 ): ViewModel() {
     private val _characters = MutableStateFlow<List<Character>>(emptyList())
     val characters: StateFlow<List<Character>> = _characters
+
+    private val _showDialog = MutableStateFlow(false)
+    val showDialog: StateFlow<Boolean> = _showDialog
+    fun onDissmissRequest() {
+        _showDialog.value = false
+    }
+
+    fun onClicked() {
+        _showDialog.value = true
+    }
+
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
+    private fun mainScreenloading() {
+        viewModelScope.launch {
+            delay(1000)
+            _isLoading.value = false
+        }
+    }
+
+    fun onDeleteLoading() {
+        _isLoading.value = true
+        mainScreenloading()
+    }
+
 
     private fun getCharacters() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -48,6 +75,7 @@ class CharacterListVM @Inject constructor(
 
     init {
         getCharacters()
+        mainScreenloading()
     }
 
     fun delete(character: Character) {
