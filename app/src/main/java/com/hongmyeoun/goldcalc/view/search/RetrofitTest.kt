@@ -165,19 +165,28 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
             contentDescription = null,
         )
         Text(text = "${characterDetail?.characterClassName?:"ERROR"} ${characterDetail?.characterName?:"ERROR"} : Lv. ${characterDetail?.itemMaxLevel?:0}")
-        OutlinedButton(
+        Button(
             onClick = {
                 val character = Character(
                     name = characterDetail!!.characterName,
                     itemLevel = characterDetail!!.itemMaxLevel,
                     serverName = characterDetail!!.serverName,
-                    className = characterDetail!!.characterClassName
+                    className = characterDetail!!.characterClassName,
+
+                    guildName = characterDetail!!.guildName,
+                    title = characterDetail!!.title,
+                    characterLevel = characterDetail!!.characterLevel,
+                    expeditionLevel = characterDetail!!.expeditionLevel,
+                    pvpGradeName = characterDetail!!.pvpGradeName,
+                    townLevel = characterDetail!!.townLevel,
+                    townName = characterDetail!!.townName,
+                    characterImage = characterDetail!!.characterImage,
                 )
                 viewModel.saveCharacter(character)
             },
             enabled = !viewModel.isSaved
         ) {
-            
+            Text(text = "가져오기")
         }
     }
     

@@ -14,8 +14,18 @@ data class Character(
     @ColumnInfo("plusGold") val plusGold: String = "0",
     @ColumnInfo("minusGold") val minusGold: String = "0",
     @ColumnInfo("goldCheck") val goldCheck: Boolean = false,
-    @ColumnInfo("checkList") val checkList: CheckList = CheckList(),
     @ColumnInfo("earnGold") val earnGold: Int = 0,
+
+    @ColumnInfo("guildName") val guildName: String? = null,
+    @ColumnInfo("title") val title: String = "",
+    @ColumnInfo("characterLevel") val characterLevel: Int = 0,
+    @ColumnInfo("expeditionLevel") val expeditionLevel: Int = 0,
+    @ColumnInfo("pvpGradeName") val pvpGradeName: String = "",
+    @ColumnInfo("townLevel") val townLevel: Int? = null ,
+    @ColumnInfo("townName") val townName: String = "",
+    @ColumnInfo("characterImage") val characterImage: String? = null,
+
+    @ColumnInfo("checkList") val checkList: CheckList = CheckList(),
     @ColumnInfo("raidPhaseInfo") val raidPhaseInfo: RaidPhaseInfo = RaidPhaseInfo(),
 )
 
