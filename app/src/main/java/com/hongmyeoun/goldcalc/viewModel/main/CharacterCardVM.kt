@@ -33,7 +33,6 @@ class CharacterCardVM @Inject constructor(
 
     private val _totalGold = MutableStateFlow(0)
     val totalGold: StateFlow<Int> = _totalGold
-//    var totalGold by mutableStateOf(0)
 
     private val _kamenTG = MutableStateFlow(0)
     private val _illiakanTG = MutableStateFlow(0)

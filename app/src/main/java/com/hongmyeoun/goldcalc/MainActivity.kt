@@ -98,15 +98,9 @@ class MainActivity : ComponentActivity() {
                                         val characterName = it.name
                                         val characterCardVM = remember { CharacterCardVM(characterRepository, characterName) }
 
-                                        val character by characterCardVM.character.collectAsState()
-
                                         CharacterCard(
                                             navController = navController,
                                             viewModel = characterCardVM,
-                                            onDelete = {
-                                                characterListVM.delete(character)
-                                                characterListVM.onDeleteLoading()
-                                            },
                                             onClick = { characterCardVM.enableDelay() }
                                         )
                                         Divider(modifier = Modifier.height(8.dp))

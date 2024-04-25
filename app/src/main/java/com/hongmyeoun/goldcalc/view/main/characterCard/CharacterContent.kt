@@ -40,7 +40,6 @@ import com.hongmyeoun.goldcalc.viewModel.main.GoldContentStateVM
 fun CharacterCard(
     navController: NavHostController,
     viewModel: CharacterCardVM,
-    onDelete: () -> Unit,
     onClick: () -> Unit,
 ) {
     Column(
@@ -49,8 +48,7 @@ fun CharacterCard(
     ) {
         CharacterCardTop(
             navController = navController,
-            viewModel = viewModel,
-            onDelete = onDelete
+            viewModel = viewModel
         )
         GoldContents(
             viewModel = viewModel,
