@@ -3,23 +3,14 @@ package com.hongmyeoun.goldcalc
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -30,20 +21,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
-import com.hongmyeoun.goldcalc.ui.theme.MokokoGreen
-import com.hongmyeoun.goldcalc.view.goldCheck.Setting
+import com.hongmyeoun.goldcalc.view.goldCheck.setting.GoldSetting
 import com.hongmyeoun.goldcalc.view.main.MainScreen
 import com.hongmyeoun.goldcalc.view.main.characterCard.CharacterCard
 import com.hongmyeoun.goldcalc.view.search.CharacterDetailScreen
@@ -144,7 +130,7 @@ class MainActivity : ComponentActivity() {
                             val adVM = remember { AbyssDungeonVM(character) }
                             val kzVM = remember { KazerothRaidVM(character) }
                             val epVM = remember { EpicRaidVM(character) }
-                            Setting(navController, gSVM, cbVM, adVM, kzVM, epVM)
+                            GoldSetting(navController, gSVM, cbVM, adVM, kzVM, epVM)
                         }
 
                         LaunchedEffect(Unit) {
@@ -183,93 +169,7 @@ fun LoadingScreen() {
 @Preview(showBackground = true)
 @Composable
 fun CharacterPreview() {
-//    val animatedProgress = animateFloatAsState(
-//        targetValue = 0.3f,
-//        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
-//    ).value
 
-    Column(
-        modifier = Modifier.padding(16.dp)
-    ){
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Row(
-                modifier = Modifier.weight(2f),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    modifier = Modifier.size(25.dp),
-                    contentScale = ContentScale.Crop,
-                    painter = painterResource(id = R.drawable.emblem_bard_dark),
-                    contentDescription = "직업군"
-                )
-
-                Spacer(modifier = Modifier.width(5.dp))
-
-                Column(
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    Text(
-                        text = "character.serverName",
-                        fontSize = 10.sp
-                    )
-
-                    Text(text = "character.name")
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "character.className",
-                            fontSize = 10.sp
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(
-                            text = "character.itemLevel",
-                            fontSize = 10.sp
-                        )
-                    }
-                }
-            }
-
-            Column(
-                modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.End
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(
-                        modifier = Modifier.size(10.dp),
-                        painter = painterResource(id = R.drawable.gold_coins), contentDescription = "")
-                    Text(text = "진행률 : ", fontSize = 4.sp)
-                    Text(text = "percentage", fontSize = 5.sp)
-                }
-                Box(contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(40.dp),
-                        progress = 0.3f,
-                        strokeCap = StrokeCap.Round,
-                        color = MokokoGreen,
-                        trackColor = Color.LightGray
-                    )
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = "earnGold",
-                            fontSize = 6.sp
-                        )
-                        Text(
-                            text = "/totalGold",
-                            fontSize = 6.sp
-                        )
-                    }
-                }
-            }
-        }
-        Spacer(modifier = Modifier.height(4.dp))
-        Divider()
-
-    }
 }
 
 
