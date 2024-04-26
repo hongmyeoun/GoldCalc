@@ -86,7 +86,7 @@ data class CheckList(
         ),
         RaidList(
             name = "카멘",
-            phases = listOf(Phase(), Phase(), Phase(), Phase())
+            phases = listOf(Phase(), Phase(), Phase(), Phase(difficulty = "하드"))
         ),
     ),
     @ColumnInfo("AbyssDungeon") val abyssDungeon: List<RaidList> = listOf(

@@ -3,7 +3,6 @@ package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,13 +12,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.view.goldCheck.FourPhaseBoss
+import com.hongmyeoun.goldcalc.view.goldCheck.FourPhaseBossLastHard
 import com.hongmyeoun.goldcalc.view.goldCheck.ThreePhaseBoss
+import com.hongmyeoun.goldcalc.view.goldCheck.ThreePhaseBossNoHard
 import com.hongmyeoun.goldcalc.view.goldCheck.TwoPhaseBoss
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
 
@@ -184,20 +184,16 @@ fun CommandRaid(
         rotaR = koukuSatonRotaR,
         onClick = { koukuSatonRotated = !koukuSatonRotated },
         phaseCard = {
-            ThreePhaseBoss(rotaR = koukuSatonRotaR,
+            ThreePhaseBossNoHard(
+                rotaR = koukuSatonRotaR,
 
                 name = viewModel.koukuSaton.name,
                 raidBossImg = R.drawable.logo_saton,
                 totalGold = viewModel.koukuSaton.totalGold,
 
-                phaseOneLevel = viewModel.koukuSaton.onePhase.level,
                 phaseOneGold = viewModel.koukuSaton.onePhase.totalGold,
                 phaseOneSMC = viewModel.koukuSaton.onePhase.seeMoreCheck,
                 phaseOneCC = viewModel.koukuSaton.onePhase.clearCheck,
-                onOnePhaseLevelClicked = {
-                    viewModel.koukuSaton.onePhase.onLevelClicked()
-                    viewModel.sumGold()
-                },
                 onOnePhaseClearCheckBoxChecked = {
                     viewModel.koukuSaton.onePhase.onClearCheckBoxClicked(it)
                     viewModel.sumGold()
@@ -207,14 +203,9 @@ fun CommandRaid(
                     viewModel.sumGold()
                 },
 
-                phaseTwoLevel = viewModel.koukuSaton.twoPhase.level,
                 phaseTwoGold = viewModel.koukuSaton.twoPhase.totalGold,
                 phaseTwoSMC = viewModel.koukuSaton.twoPhase.seeMoreCheck,
                 phaseTwoCC = viewModel.koukuSaton.twoPhase.clearCheck,
-                onTwoPhaseLevelClicked = {
-                    viewModel.koukuSaton.twoPhase.onLevelClicked()
-                    viewModel.sumGold()
-                },
                 onTwoPhaseClearCheckBoxChecked = {
                     viewModel.koukuSaton.twoPhase.onClearCheckBoxClicked(it)
                     viewModel.sumGold()
@@ -224,14 +215,9 @@ fun CommandRaid(
                     viewModel.sumGold()
                 },
 
-                phaseThreeLevel = viewModel.koukuSaton.threePhase.level,
                 phaseThreeGold = viewModel.koukuSaton.threePhase.totalGold,
                 phaseThreeSMC = viewModel.koukuSaton.threePhase.seeMoreCheck,
                 phaseThreeCC = viewModel.koukuSaton.threePhase.clearCheck,
-                onThreePhaseLevelClicked = {
-                    viewModel.koukuSaton.threePhase.onLevelClicked()
-                    viewModel.sumGold()
-                },
                 onThreePhaseClearCheckBoxChecked = {
                     viewModel.koukuSaton.threePhase.onClearCheckBoxClicked(it)
                     viewModel.sumGold()
@@ -396,7 +382,7 @@ fun CommandRaid(
         rotaR = kamenRotaR,
         onClick = { kamenRotated = !kamenRotated },
         phaseCard = {
-            FourPhaseBoss(rotaR = kamenRotaR,
+            FourPhaseBossLastHard(rotaR = kamenRotaR,
 
                 name = viewModel.kamen.name,
                 raidBossImg = R.drawable.logo_kamen,
@@ -453,14 +439,9 @@ fun CommandRaid(
                     viewModel.sumGold()
                 },
 
-                phaseFourLevel = viewModel.kamen.fourPhase.level,
                 phaseFourGold = viewModel.kamen.fourPhase.totalGold,
                 phaseFourSMC = viewModel.kamen.fourPhase.seeMoreCheck,
                 phaseFourCC = viewModel.kamen.fourPhase.clearCheck,
-                onFourPhaseLevelClicked = {
-                    viewModel.kamen.fourPhase.onLevelClicked()
-                    viewModel.sumGold()
-                },
                 onFourPhaseClearCheckBoxChecked = {
                     viewModel.kamen.fourPhase.onClearCheckBoxClicked(it)
                     viewModel.sumGold()
