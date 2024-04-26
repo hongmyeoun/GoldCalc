@@ -30,7 +30,6 @@ fun RaidCard(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 16.dp)
     ) {
         GlideImage(
             modifier = Modifier.fillMaxWidth(),

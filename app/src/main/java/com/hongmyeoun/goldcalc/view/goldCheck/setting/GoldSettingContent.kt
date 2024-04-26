@@ -184,11 +184,6 @@ private fun TopBarBox(
     Box(
         modifier = modifier
             .fillMaxSize()
-//            .border(
-//                width = 1.dp,
-//                shape = RectangleShape,
-//                color = Color.LightGray
-//            )
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
@@ -217,7 +212,6 @@ private fun GoldSetting(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
     ) {
         when (viewModel.selectedTab) {
             "군단장" -> {
