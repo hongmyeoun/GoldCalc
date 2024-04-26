@@ -9,14 +9,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -37,6 +40,8 @@ fun PhaseUI(
     onClearClicked: (Boolean) -> Unit,
     onMoreClicked: (Boolean) -> Unit
 ) {
+    val difficultyColor = if (difficulty == "하드") Color.Red else MaterialTheme.colorScheme.primary
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -53,7 +58,11 @@ fun PhaseUI(
         )
         OutlinedButton(
             onClick = { onLevelClicked() },
-            enabled = clearCheck || moreCheck
+            enabled = clearCheck || moreCheck,
+            colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = difficultyColor,
+                disabledContentColor = Color.Gray
+            )
         ) {
             Text(text = difficulty)
         }
@@ -347,13 +356,17 @@ fun RaidCardUI(
             verticalAlignment = Alignment.Top
         ) {
             GlideImage(
-                modifier = Modifier.clip(RoundedCornerShape(16.dp)).weight(1f),
+                modifier = Modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .weight(1f),
                 contentScale = ContentScale.Crop,
                 model = raidBossImg,
                 contentDescription =  "보스 아이콘"
             )
             Column(
-                modifier = Modifier.weight(1f).padding(start = 16.dp, end = 8.dp, top = 8.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 16.dp, end = 8.dp, top = 8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -500,6 +513,8 @@ fun PhaseUIOneDifficulty(
     onClearClicked: (Boolean) -> Unit,
     onMoreClicked: (Boolean) -> Unit
 ) {
+    val difficultyColor = if (difficulty == "하드") Color.Red else MaterialTheme.colorScheme.primary
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -516,7 +531,11 @@ fun PhaseUIOneDifficulty(
         )
         OutlinedButton(
             onClick = {  },
-            enabled = clearCheck || moreCheck
+            enabled = clearCheck || moreCheck,
+            colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = difficultyColor,
+                disabledContentColor = Color.Gray
+            )
         ) {
             Text(text = difficulty)
         }
