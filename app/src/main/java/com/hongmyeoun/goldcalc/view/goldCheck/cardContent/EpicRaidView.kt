@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.view.goldCheck.TwoPhaseBoss
+import com.hongmyeoun.goldcalc.view.goldCheck.TwoPhaseBossNoHard
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
 
 @Composable
@@ -48,21 +48,16 @@ fun EpicRaid(viewModel: EpicRaidVM) {
         rotaR = behemothRotaR,
         onClick = { behemothRotated = !behemothRotated },
         phaseCard = {
-            TwoPhaseBoss(
+            TwoPhaseBossNoHard(
                 rotaR = behemothRotaR,
 
                 name = viewModel.behemoth.name,
                 raidBossImg = R.drawable.logo_behemoth,
                 totalGold = viewModel.behemoth.totalGold,
 
-                phaseOneLevel = viewModel.behemoth.onePhase.level,
                 phaseOneGold = viewModel.behemoth.onePhase.totalGold,
                 phaseOneSMC = viewModel.behemoth.onePhase.seeMoreCheck,
                 phaseOneCC = viewModel.behemoth.onePhase.clearCheck,
-                onOnePhaseLevelClicked = {
-                    viewModel.behemoth.onePhase.onLevelClicked()
-                    viewModel.sumGold()
-                },
                 onOnePhaseClearCheckBoxChecked = {
                     viewModel.behemoth.onePhase.onClearCheckBoxClicked(it)
                     viewModel.sumGold()
@@ -72,14 +67,9 @@ fun EpicRaid(viewModel: EpicRaidVM) {
                     viewModel.sumGold()
                 },
 
-                phaseTwoLevel = viewModel.behemoth.twoPhase.level,
                 phaseTwoGold = viewModel.behemoth.twoPhase.totalGold,
                 phaseTwoSMC = viewModel.behemoth.twoPhase.seeMoreCheck,
                 phaseTwoCC = viewModel.behemoth.twoPhase.clearCheck,
-                onTwoPhaseLevelClicked = {
-                    viewModel.behemoth.twoPhase.onLevelClicked()
-                    viewModel.sumGold()
-                },
                 onTwoPhaseClearCheckBoxChecked = {
                     viewModel.behemoth.twoPhase.onClearCheckBoxClicked(it)
                     viewModel.sumGold()
