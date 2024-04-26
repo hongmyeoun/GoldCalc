@@ -1,5 +1,6 @@
 package com.hongmyeoun.goldcalc.view.goldCheck
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -60,8 +62,7 @@ fun PhaseUI(
             onClick = { onLevelClicked() },
             enabled = clearCheck || moreCheck,
             colors = ButtonDefaults.outlinedButtonColors(
-                contentColor = difficultyColor,
-                disabledContentColor = Color.Gray
+                contentColor = difficultyColor
             )
         ) {
             Text(text = difficulty)
@@ -382,8 +383,8 @@ fun RaidCardUI(
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun TotalGoldText(totalGold: Int) {
-    Divider()
+fun TotalGoldText(totalGold: Int, isDark: Boolean = isSystemInDarkTheme()) {
+    Divider(color = if (isDark) Color.White else DividerDefaults.color)
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -534,7 +535,6 @@ fun PhaseUIOneDifficulty(
             enabled = clearCheck || moreCheck,
             colors = ButtonDefaults.outlinedButtonColors(
                 contentColor = difficultyColor,
-                disabledContentColor = Color.Gray
             )
         ) {
             Text(text = difficulty)
