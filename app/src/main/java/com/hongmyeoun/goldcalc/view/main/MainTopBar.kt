@@ -480,6 +480,12 @@ fun Int.formatWithCommas(): String {
     return numberFormat.format(this)
 }
 
+fun String.formatWithCommas(): String {
+    val number = this.toIntOrNull() ?: return this
+    val numberFormat = NumberFormat.getNumberInstance()
+    return numberFormat.format(number)
+}
+
 fun Float.toPercentage(): String {
     return "${(this * 100).toInt()}%"
 }

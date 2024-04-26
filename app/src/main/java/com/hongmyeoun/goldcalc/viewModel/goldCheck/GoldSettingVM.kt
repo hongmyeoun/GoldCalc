@@ -66,11 +66,17 @@ class GoldSettingVM @Inject constructor(
         minusGold = newValue.filter { it.isDigit() }
     }
 
-    var totalGold by mutableStateOf(0)
-    private fun calcTotalGold(cb: Int, ad: Int, kz: Int, ep: Int) {
+    var etcGold by mutableStateOf(0)
+    fun calcETCGold() {
         val plusGoldInt = plusGold.toIntOrNull() ?: 0
         val minusGoldInt = minusGold.toIntOrNull() ?: 0
-        totalGold = cb + ad + kz + ep + plusGoldInt - minusGoldInt
+        etcGold = plusGoldInt - minusGoldInt
+    }
+
+    var totalGold by mutableStateOf(0)
+    private fun calcTotalGold(cb: Int, ad: Int, kz: Int, ep: Int) {
+        calcETCGold()
+        totalGold = cb + ad + kz + ep + etcGold
     }
 
     fun updateTotalGold(cb: Int, ad: Int, kz: Int, ep: Int) {
