@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -142,28 +143,36 @@ private fun RaidHeader(viewModel: GoldSettingVM, isDark: Boolean = isSystemInDar
                 modifier = Modifier.weight(1f),
                 onClick = { viewModel.moveCommandRaid() }
             )
-            Divider(modifier = Modifier.fillMaxHeight().width(1.dp))
+            Divider(modifier = Modifier
+                .fillMaxHeight()
+                .width(1.dp))
 
             TopBarBox(
                 title = "어비스 던전",
                 modifier = Modifier.weight(1f),
                 onClick = { viewModel.moveAbyssDungeon() }
             )
-            Divider(modifier = Modifier.fillMaxHeight().width(1.dp))
+            Divider(modifier = Modifier
+                .fillMaxHeight()
+                .width(1.dp))
 
             TopBarBox(
                 title = "카제로스",
                 modifier = Modifier.weight(1f),
                 onClick = { viewModel.moveKazeRaid() }
             )
-            Divider(modifier = Modifier.fillMaxHeight().width(1.dp))
+            Divider(modifier = Modifier
+                .fillMaxHeight()
+                .width(1.dp))
 
             TopBarBox(
                 title = "에픽",
                 modifier = Modifier.weight(1f),
                 onClick = { viewModel.moveEpicRaid() }
             )
-            Divider(modifier = Modifier.fillMaxHeight().width(1.dp))
+            Divider(modifier = Modifier
+                .fillMaxHeight()
+                .width(1.dp))
 
             TopBarBox(
                 title = "기타",
@@ -207,8 +216,6 @@ private fun GoldSetting(
     kzVM: KazerothRaidVM,
     epVM: EpicRaidVM,
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val focusState = LocalFocusManager.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -251,44 +258,65 @@ private fun GoldSetting(
             }
 
             "기타" -> {
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    OutlinedTextField(
-                        modifier = Modifier.weight(1f),
-                        value = viewModel.plusGold,
-                        onValueChange = { viewModel.plusGoldValue(it) },
-                        label = { Text(text = "추가 골드") },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number,
-                            imeAction = ImeAction.Done
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                viewModel.updateTotalGold(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold)
-                                keyboardController?.hide()
-                                focusState.clearFocus()
-                            }
-                        )
-                    )
-
-                    OutlinedTextField(
-                        modifier = Modifier.weight(1f),
-                        value = viewModel.minusGold,
-                        onValueChange = { viewModel.minusGoldValue(it) },
-                        label = { Text(text = "사용 골드") },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number,
-                            imeAction = ImeAction.Done
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onDone = {
-                                viewModel.updateTotalGold(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold)
-                                keyboardController?.hide()
-                                focusState.clearFocus()
-                            }
-                        )
-                    )
-                }
+                ETCGold(
+                    viewModel = viewModel,
+                    onDone = { viewModel.updateTotalGold(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold) },
+                )
             }
         }
     }
+}
+
+@Composable
+fun ETCGold(
+    viewModel: GoldSettingVM,
+    onDone: () -> Unit,
+) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusState = LocalFocusManager.current
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(vertical = 64.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        OutlinedTextField(
+            value = viewModel.plusGold,
+            onValueChange = { viewModel.plusGoldValue(it) },
+            label = { Text(text = "추가 골드") },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    onDone()
+                    keyboardController?.hide()
+                    focusState.clearFocus()
+                }
+            )
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        OutlinedTextField(
+            value = viewModel.minusGold,
+            onValueChange = { viewModel.minusGoldValue(it) },
+            label = { Text(text = "사용 골드") },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    onDone()
+                    keyboardController?.hide()
+                    focusState.clearFocus()
+                }
+            )
+        )
+    }
+
 }
