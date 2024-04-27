@@ -21,11 +21,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -85,7 +86,8 @@ fun GoldSettingContent(
             item {
                 GoldSettingCharacterDetails(
                     character = character,
-                    onReloadClick = { viewModel.onReloadClick(context, character?.name) }
+                    onReloadClick = { viewModel.onReloadClick(context, character?.name) },
+                    onAvatarClick = { viewModel.onAvatarClick(character) }
                 )
             }
             stickyHeader { RaidHeader(viewModel) }
@@ -97,24 +99,26 @@ fun GoldSettingContent(
 
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
-private fun GoldSettingCharacterDetails(character: Character?, onReloadClick: () -> Unit) {
+private fun GoldSettingCharacterDetails(character: Character?, onReloadClick: () -> Unit, onAvatarClick: () -> Unit) {
     Box(
         modifier = Modifier
             .background(ImageBG)
             .fillMaxWidth()
     ) {
         character?.let {
-            if (it.characterImage.isNullOrEmpty()) {
+            if (it.avatarImage) {
                 GlideImage(
                     modifier = Modifier.align(Alignment.CenterEnd).height(320.dp),
-                    contentScale = ContentScale.FillHeight,
-                    model = CharacterResourceMapper.getClassDefaultImg(character.className),
+                    model = it.characterImage,
                     contentDescription = "캐릭터 이미지"
                 )
             } else {
                 GlideImage(
-                    modifier = Modifier.align(Alignment.CenterEnd),
-                    model = it.characterImage,
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .height(320.dp),
+                    contentScale = ContentScale.FillHeight,
+                    model = CharacterResourceMapper.getClassDefaultImg(character.className),
                     contentDescription = "캐릭터 이미지"
                 )
             }
@@ -134,17 +138,29 @@ private fun GoldSettingCharacterDetails(character: Character?, onReloadClick: ()
                 DetailInfomation(detailMenu = "P  V  P", detail = it.pvpGradeName)
                 DetailInfomation(detailMenu = "영    지", detail = "Lv.${it.townLevel} ${it.townName}")
             }
-            IconButton(
+            Column(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(8.dp),
-                onClick = onReloadClick
+                    .padding(8.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Default.Refresh,
-                    contentDescription = "새로고침",
-                    tint = Color.White
-                )
+                SmallFloatingActionButton(
+                    onClick = onAvatarClick
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = "아바타 이미지",
+                        tint = Color.White
+                    )
+                }
+                SmallFloatingActionButton(
+                    onClick = onReloadClick
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Refresh,
+                        contentDescription = "새로고침",
+                        tint = Color.White
+                    )
+                }
             }
         }
     }
@@ -154,7 +170,9 @@ private fun GoldSettingCharacterDetails(character: Character?, onReloadClick: ()
 private fun DetailInfomation(detailMenu: String, detail: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
-            modifier = Modifier.background(DarkModeGray, RoundedCornerShape(16.dp)).width(80.dp),
+            modifier = Modifier
+                .background(DarkModeGray, RoundedCornerShape(16.dp))
+                .width(80.dp),
             text = "  $detailMenu  ",
             color = Color.White,
             textAlign = TextAlign.Center

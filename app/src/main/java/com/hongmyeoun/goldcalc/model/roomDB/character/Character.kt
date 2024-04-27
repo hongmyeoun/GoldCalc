@@ -21,9 +21,11 @@ data class Character(
     @ColumnInfo("characterLevel") val characterLevel: Int = 0,
     @ColumnInfo("expeditionLevel") val expeditionLevel: Int = 0,
     @ColumnInfo("pvpGradeName") val pvpGradeName: String = "",
-    @ColumnInfo("townLevel") val townLevel: Int? = null ,
+    @ColumnInfo("townLevel") val townLevel: Int? = null,
     @ColumnInfo("townName") val townName: String = "",
     @ColumnInfo("characterImage") val characterImage: String? = null,
+
+    @ColumnInfo("avatarImage") var avatarImage: Boolean = true,
 
     @ColumnInfo("checkList") val checkList: CheckList = CheckList(),
     @ColumnInfo("raidPhaseInfo") val raidPhaseInfo: RaidPhaseInfo = RaidPhaseInfo(),

@@ -166,6 +166,8 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
         Text(text = "${characterDetail?.characterClassName?:"ERROR"} ${characterDetail?.characterName?:"ERROR"} : Lv. ${characterDetail?.itemMaxLevel?:0}")
         Button(
             onClick = {
+                val avatarImage = !characterDetail?.characterImage.isNullOrEmpty()
+
                 val character = Character(
                     name = characterDetail!!.characterName,
                     itemLevel = characterDetail!!.itemMaxLevel,
@@ -179,7 +181,8 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
                     pvpGradeName = characterDetail!!.pvpGradeName,
                     townLevel = characterDetail!!.townLevel,
                     townName = characterDetail!!.townName,
-                    characterImage = characterDetail!!.characterImage,
+                    characterImage = characterDetail?.characterImage,
+                    avatarImage = avatarImage
                 )
                 viewModel.saveCharacter(character)
             },
