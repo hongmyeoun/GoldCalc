@@ -491,37 +491,39 @@ private fun BottomBar(
             modifier = Modifier.weight(3f),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
-                Text(text = "변경 전")
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    GlideImage(
-                        modifier = Modifier.size(25.dp),
-                        model = R.drawable.gold_coins,
-                        contentDescription = "골드 이미지",
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "${character?.weeklyGold?.formatWithCommas()}")
-                }
-            }
+            BottomGoldText(beforeOrAfter = "전", gold = character?.weeklyGold?.formatWithCommas())
+//            Column {
+//                Text(text = "변경 전")
+//                Row(
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+//                    GlideImage(
+//                        modifier = Modifier.size(18.dp),
+//                        model = R.drawable.gold_coins,
+//                        contentDescription = "골드 이미지",
+//                    )
+//                    Spacer(modifier = Modifier.width(8.dp))
+//                    Text(text = "${character?.weeklyGold?.formatWithCommas()}")
+//                }
+//            }
             Spacer(modifier = Modifier.width(8.dp))
             Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "화살표")
             Spacer(modifier = Modifier.width(12.dp))
-            Column {
-                Text(text = "변경 후")
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    GlideImage(
-                        modifier = Modifier.size(25.dp),
-                        model = R.drawable.gold_coins,
-                        contentDescription = "골드 이미지",
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = viewModel.totalGold.formatWithCommas())
-                }
-            }
+            BottomGoldText(beforeOrAfter = "후", gold = viewModel.totalGold.formatWithCommas())
+//            Column {
+//                Text(text = "변경 후")
+//                Row(
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+//                    GlideImage(
+//                        modifier = Modifier.size(18.dp),
+//                        model = R.drawable.gold_coins,
+//                        contentDescription = "골드 이미지",
+//                    )
+//                    Spacer(modifier = Modifier.width(8.dp))
+//                    Text(text = viewModel.totalGold.formatWithCommas())
+//                }
+//            }
         }
         Row(horizontalArrangement = Arrangement.End) {
             OutlinedButton(
@@ -548,6 +550,28 @@ private fun BottomBar(
             ) {
                 Text(text = "완료")
             }
+        }
+    }
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun BottomGoldText(beforeOrAfter: String, gold: String?) {
+    Column {
+        Text(text = "변경 $beforeOrAfter")
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            GlideImage(
+                modifier = Modifier.size(18.dp),
+                model = R.drawable.gold_coins,
+                contentDescription = "골드 이미지",
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = gold?:"0",
+                fontSize = 14.sp
+            )
         }
     }
 }
