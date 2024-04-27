@@ -33,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -45,6 +46,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.LoadingScreen
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.DarkModeGray
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
@@ -102,11 +104,20 @@ private fun GoldSettingCharacterDetails(character: Character?, onReloadClick: ()
             .fillMaxWidth()
     ) {
         character?.let {
-            GlideImage(
-                modifier = Modifier.align(Alignment.CenterEnd),
-                model = it.characterImage,
-                contentDescription = "캐릭터 이미지"
-            )
+            if (it.characterImage.isNullOrEmpty()) {
+                GlideImage(
+                    modifier = Modifier.align(Alignment.CenterEnd).height(320.dp),
+                    contentScale = ContentScale.FillHeight,
+                    model = CharacterResourceMapper.getClassDefaultImg(character.className),
+                    contentDescription = "캐릭터 이미지"
+                )
+            } else {
+                GlideImage(
+                    modifier = Modifier.align(Alignment.CenterEnd),
+                    model = it.characterImage,
+                    contentDescription = "캐릭터 이미지"
+                )
+            }
             Column(
                 modifier = Modifier
                     .align(Alignment.CenterStart)

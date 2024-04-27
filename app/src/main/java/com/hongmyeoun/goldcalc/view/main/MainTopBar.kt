@@ -197,7 +197,7 @@ private fun SimpleTotal(character: Character, isDark: Boolean = isSystemInDarkTh
             GlideImage(
                 modifier = Modifier.size(25.dp),
                 contentScale = ContentScale.Crop,
-                model = CharacterResourceMapper.getClassImage(isDark, character.className),
+                model = CharacterResourceMapper.getClassEmblem(isDark, character.className),
                 contentDescription = "직업군"
             )
 

@@ -22,7 +22,6 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -117,7 +116,7 @@ fun CharacterScreen(navController: NavHostController) {
                         Image(
                             modifier = Modifier.size(32.dp),
                             contentScale = ContentScale.Crop,
-                            painter = painterResource(id = CharacterResourceMapper.getClassImage(isDark, it.characterClassName)),
+                            painter = painterResource(id = CharacterResourceMapper.getClassEmblem(isDark, it.characterClassName)),
                             contentDescription = "직업군"
                         )
                         Spacer(modifier = Modifier.width(8.dp))

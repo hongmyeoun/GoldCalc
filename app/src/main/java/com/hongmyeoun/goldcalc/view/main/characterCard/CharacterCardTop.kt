@@ -77,7 +77,7 @@ fun SimpleCharacterInfo(
         GlideImage(
             modifier = Modifier.size(50.dp),
             contentScale = ContentScale.Crop,
-            model = CharacterResourceMapper.getClassImage(isDark, character.className),
+            model = CharacterResourceMapper.getClassEmblem(isDark, character.className),
             contentDescription = "직업군"
         )
 
