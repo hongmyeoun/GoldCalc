@@ -273,7 +273,7 @@ fun GoldContentStateUI(
         GlideImage(
             modifier = Modifier
                 .fillMaxSize(),
-            contentScale = ContentScale.FillWidth,
+            contentScale = ContentScale.Crop,
             model = raidImg,
             contentDescription = "보스이미지"
         )

@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.R
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -52,7 +53,7 @@ fun RaidCardUI(
             if (!isRotated) {
                 GlideImage(
                     modifier = Modifier.aspectRatio(21f/9f),
-                    contentScale = ContentScale.FillWidth,
+                    contentScale = ContentScale.Crop,
                     model = bossImg,
                     contentDescription = "보스 이미지"
                 )
