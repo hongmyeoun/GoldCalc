@@ -30,10 +30,14 @@ class AbyssDungeonVM(val character: Character?): ViewModel() {
 
     fun onKayangelCheck() {
         kayangelCheck = !kayangelCheck
+        kayangel.onShowChecked()
+        sumGold()
     }
 
     fun onIvoryCheck() {
         ivoryCheck = !ivoryCheck
+        ivoryTower.onShowChecked()
+        sumGold()
     }
 
 }

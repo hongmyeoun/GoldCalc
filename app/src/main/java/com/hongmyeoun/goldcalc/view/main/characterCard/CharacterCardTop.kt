@@ -185,8 +185,9 @@ private fun ProgressGold(
 
 @Composable
 fun SimpleProgressBar(viewModel: CharacterCardVM) {
+    val progressPercentage by viewModel.progressPercentage.collectAsState()
     val animatedProgress = animateFloatAsState(
-        targetValue = viewModel.progressPercentage.value,
+        targetValue = progressPercentage,
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
     ).value
 

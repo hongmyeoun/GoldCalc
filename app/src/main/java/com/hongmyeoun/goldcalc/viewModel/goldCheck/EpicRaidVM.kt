@@ -27,6 +27,8 @@ class EpicRaidVM(val character: Character?): ViewModel() {
 
     fun onBeheCheck() {
         beheCheck = !beheCheck
+        behemoth.onShowChecked()
+        sumGold()
     }
 
 }

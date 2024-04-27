@@ -4,6 +4,7 @@ class PhaseInfo(
     difficulty: String,
     isClearCheck: Boolean,
     moreCheck: Boolean,
+    isChecked: Boolean,
     private val seeMoreGoldN: Int,
     private val seeMoreGoldH: Int,
     private val clearGoldN: Int,
@@ -12,6 +13,7 @@ class PhaseInfo(
     var level = difficulty
     var seeMoreCheck = moreCheck
     var clearCheck = isClearCheck
+    var showCheck = isChecked
     private var seeMoreGold = 0
     private var clearGold = 0
     var totalGold = 0
@@ -31,16 +33,27 @@ class PhaseInfo(
         totalClearGoldCalculate()
     }
 
-    fun onClearCheckBoxClicked(isChecked: Boolean) {
-        updateClearCheck(isChecked)
+    fun onClearCheckBoxClicked(phaseChecked: Boolean) {
+        updateClearCheck(phaseChecked)
         clearGoldCalculate(clearGoldN, clearGoldH)
         totalClearGoldCalculate()
     }
 
-    fun onSeeMoreCheckBoxClicked(isChecked: Boolean) {
-        updateSeeMoreCheck(isChecked)
+    fun onSeeMoreCheckBoxClicked(phaseChecked: Boolean) {
+        updateSeeMoreCheck(phaseChecked)
         seeMoreGoldCalculate(seeMoreGoldN, seeMoreGoldH)
         totalClearGoldCalculate()
+    }
+
+    fun onShowChecked() {
+        showCheck = !showCheck
+        if (!showCheck) {
+            clearCheck = false
+            seeMoreCheck = false
+            seeMoreGoldCalculate(seeMoreGoldN, seeMoreGoldH)
+            clearGoldCalculate(clearGoldN, clearGoldH)
+            totalClearGoldCalculate()
+        }
     }
 
     private fun levelClicked() {
@@ -60,11 +73,11 @@ class PhaseInfo(
     }
 
     private fun updateClearCheck(isChecked: Boolean) {
-        clearCheck = GoldCalcFunction.checked(isChecked)
+        clearCheck = GoldCalcFunction.phaseChecked(isChecked)
     }
 
     private fun updateSeeMoreCheck(isChecked: Boolean) {
-        seeMoreCheck = GoldCalcFunction.checked(isChecked)
+        seeMoreCheck = GoldCalcFunction.phaseChecked(isChecked)
     }
 }
 
@@ -85,8 +98,8 @@ object GoldCalcFunction {
         return cg - smg
     }
 
-    fun checked(isChecked: Boolean): Boolean {
-        return isChecked
+    fun phaseChecked(phaseCheck: Boolean): Boolean {
+        return phaseCheck
     }
 
 }
