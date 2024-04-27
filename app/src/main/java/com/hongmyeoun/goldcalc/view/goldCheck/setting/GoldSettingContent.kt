@@ -1,5 +1,10 @@
 package com.hongmyeoun.goldcalc.view.goldCheck.setting
 
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,6 +36,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -61,6 +70,8 @@ import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
@@ -100,6 +111,10 @@ fun GoldSettingContent(
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
 private fun GoldSettingCharacterDetails(character: Character?, onReloadClick: () -> Unit, onAvatarClick: () -> Unit) {
+    var isBlinking by remember { mutableStateOf(false) }
+    val characterImgText = if (character?.avatarImage == true) "아바타" else "기본"
+    val coroutineScope = rememberCoroutineScope()
+
     Box(
         modifier = Modifier
             .background(ImageBG)
@@ -108,7 +123,9 @@ private fun GoldSettingCharacterDetails(character: Character?, onReloadClick: ()
         character?.let {
             if (it.avatarImage) {
                 GlideImage(
-                    modifier = Modifier.align(Alignment.CenterEnd).height(320.dp),
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .height(320.dp),
                     model = it.characterImage,
                     contentDescription = "캐릭터 이미지"
                 )
@@ -141,10 +158,18 @@ private fun GoldSettingCharacterDetails(character: Character?, onReloadClick: ()
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(8.dp)
+                    .padding(end = 8.dp, bottom = 16.dp)
             ) {
                 SmallFloatingActionButton(
-                    onClick = onAvatarClick
+                    onClick = {
+                        onAvatarClick()
+                        isBlinking = true
+                        coroutineScope.launch {
+                            delay(2250)
+                            isBlinking = false
+                        }
+                    },
+                    containerColor = DarkModeGray
                 ) {
                     Icon(
                         imageVector = Icons.Default.Person,
@@ -153,7 +178,8 @@ private fun GoldSettingCharacterDetails(character: Character?, onReloadClick: ()
                     )
                 }
                 SmallFloatingActionButton(
-                    onClick = onReloadClick
+                    onClick = onReloadClick,
+                    containerColor = DarkModeGray
                 ) {
                     Icon(
                         imageVector = Icons.Default.Refresh,
@@ -162,10 +188,36 @@ private fun GoldSettingCharacterDetails(character: Character?, onReloadClick: ()
                     )
                 }
             }
+            BlinkingText(isBlinking, characterImgText, Modifier.align(Alignment.TopEnd))
         }
     }
 }
 
+@Composable
+fun BlinkingText(isBlinking: Boolean, text: String, modifier: Modifier) {
+    Column(
+        modifier = modifier.padding(top = 24.dp, end = 16.dp)
+    ) {
+        if (isBlinking) {
+            val infiniteTransition = rememberInfiniteTransition()
+
+            val alpha by infiniteTransition.animateFloat(
+                initialValue = 1f,
+                targetValue = 0f,
+                animationSpec = infiniteRepeatable(
+                    animation = keyframes {
+                        durationMillis = 750 // 1초 동안 깜빡이도록 수정
+                    },
+                    repeatMode = RepeatMode.Reverse
+                )
+            )
+            Text(
+                text = text,
+                color = Color.White.copy(alpha = alpha)
+            )
+        }
+    }
+}
 @Composable
 private fun DetailInfomation(detailMenu: String, detail: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
