@@ -20,7 +20,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -37,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.LoadingScreen
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.DarkModeGray
@@ -63,21 +69,32 @@ fun GoldSettingContent(
     epVM: EpicRaidVM
 ) {
     val character by viewModel.character.collectAsState()
+    val context = LocalContext.current
+    val isLoading by viewModel.isLoading.collectAsState()
 
-    LazyColumn(
-        modifier = Modifier
-            .padding(paddingValues)
-    ) {
-        item { GoldSettingCharacterDetails(character) }
-        stickyHeader { RaidHeader(viewModel) }
-        item { GoldSetting(viewModel, cbVM, adVM, kzVM, epVM) }
+    if (isLoading) {
+        LoadingScreen()
+    } else {
+        LazyColumn(
+            modifier = Modifier
+                .padding(paddingValues)
+        ) {
+            item {
+                GoldSettingCharacterDetails(
+                    character = character,
+                    onReloadClick = { viewModel.onReloadClick(context, character?.name) }
+                )
+            }
+            stickyHeader { RaidHeader(viewModel) }
+            item { GoldSetting(viewModel, cbVM, adVM, kzVM, epVM) }
+        }
     }
 }
 
 
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
-private fun GoldSettingCharacterDetails(character: Character?) {
+private fun GoldSettingCharacterDetails(character: Character?, onReloadClick: () -> Unit) {
     Box(
         modifier = Modifier
             .background(ImageBG)
@@ -104,6 +121,18 @@ private fun GoldSettingCharacterDetails(character: Character?) {
                 DetailInfomation(detailMenu = "길    드", detail = it.guildName ?: "-")
                 DetailInfomation(detailMenu = "P  V  P", detail = it.pvpGradeName)
                 DetailInfomation(detailMenu = "영    지", detail = "Lv.${it.townLevel} ${it.townName}")
+            }
+            IconButton(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(8.dp),
+                onClick = onReloadClick
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = "새로고침",
+                    tint = Color.White
+                )
             }
         }
     }
@@ -143,36 +172,44 @@ private fun RaidHeader(viewModel: GoldSettingVM, isDark: Boolean = isSystemInDar
                 modifier = Modifier.weight(1f),
                 onClick = { viewModel.moveCommandRaid() }
             )
-            Divider(modifier = Modifier
-                .fillMaxHeight()
-                .width(1.dp))
+            Divider(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(1.dp)
+            )
 
             TopBarBox(
                 title = "어비스 던전",
                 modifier = Modifier.weight(1f),
                 onClick = { viewModel.moveAbyssDungeon() }
             )
-            Divider(modifier = Modifier
-                .fillMaxHeight()
-                .width(1.dp))
+            Divider(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(1.dp)
+            )
 
             TopBarBox(
                 title = "카제로스",
                 modifier = Modifier.weight(1f),
                 onClick = { viewModel.moveKazeRaid() }
             )
-            Divider(modifier = Modifier
-                .fillMaxHeight()
-                .width(1.dp))
+            Divider(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(1.dp)
+            )
 
             TopBarBox(
                 title = "에픽",
                 modifier = Modifier.weight(1f),
                 onClick = { viewModel.moveEpicRaid() }
             )
-            Divider(modifier = Modifier
-                .fillMaxHeight()
-                .width(1.dp))
+            Divider(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(1.dp)
+            )
 
             TopBarBox(
                 title = "기타",
