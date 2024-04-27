@@ -54,6 +54,7 @@ class GoldSettingVM @Inject constructor(
         viewModelScope.launch(Dispatchers.Main) {
             plusGold = _character.value?.plusGold ?: "0"
             minusGold = _character.value?.minusGold ?: "0"
+            calcETCGold()
         }
     }
 
