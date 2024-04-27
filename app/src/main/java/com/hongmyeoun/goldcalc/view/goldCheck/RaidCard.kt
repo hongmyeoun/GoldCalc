@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.view.main.formatWithCommas
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -51,7 +52,7 @@ fun RaidCard(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = "$totalGold",
+                text = totalGold.formatWithCommas(),
                 color = Color.White
             )
         }

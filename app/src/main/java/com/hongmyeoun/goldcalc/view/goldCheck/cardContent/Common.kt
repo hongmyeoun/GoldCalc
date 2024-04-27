@@ -78,15 +78,5 @@ fun RaidBossCheck(
         Text(text = name, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.width(8.dp))
         Checkbox(checked = checked, onCheckedChange = { onCheckedChange() })
-
-//        TextButton(
-//            onClick = { onCheckedChange() },
-//            colors = ButtonDefaults.buttonColors(
-//                containerColor = if (checked) MokokoGreen else Color.LightGray,
-//                contentColor = if (checked) DarkModeGray else Color.White
-//            )
-//        ) {
-//            Text(text = name, fontWeight = FontWeight.Bold)
-//        }
     }
 }

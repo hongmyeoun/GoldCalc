@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
@@ -31,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.view.main.formatWithCommas
 
 @Composable
 fun PhaseUI(
@@ -394,14 +394,13 @@ fun TotalGoldText(totalGold: Int, isDark: Boolean = isSystemInDarkTheme()) {
             text = "합 : "
         )
         Text(
-            modifier = Modifier.weight(1f),
-            text = "$totalGold",
+            modifier = Modifier.weight(0.7f),
+            text = totalGold.formatWithCommas(),
             textAlign = TextAlign.End
         )
-        Spacer(modifier = Modifier.width(8.dp))
         GlideImage(
             modifier = Modifier
-                .weight(0.5f)
+                .weight(0.3f)
                 .size(16.dp),
             alignment = Alignment.Center,
             model = R.drawable.gold_coin,
@@ -433,14 +432,13 @@ fun PhaseGoldText(
     ) {
         Text(text = "$phase : ")
         Text(
-            modifier = Modifier.weight(1f),
-            text = "$phaseGold",
+            modifier = Modifier.weight(0.7f),
+            text = phaseGold.formatWithCommas(),
             textAlign = TextAlign.End
         )
-        Spacer(modifier = Modifier.width(8.dp))
         GlideImage(
             modifier = Modifier
-                .weight(0.5f)
+                .weight(0.3f)
                 .size(16.dp),
             alignment = Alignment.Center,
             model = R.drawable.gold_coin,
