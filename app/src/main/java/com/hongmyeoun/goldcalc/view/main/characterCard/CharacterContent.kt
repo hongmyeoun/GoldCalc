@@ -40,7 +40,6 @@ import com.hongmyeoun.goldcalc.viewModel.main.GoldContentStateVM
 fun CharacterCard(
     navController: NavHostController,
     viewModel: CharacterCardVM,
-    onClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier.padding(16.dp),
@@ -52,7 +51,6 @@ fun CharacterCard(
         )
         GoldContents(
             viewModel = viewModel,
-            onClick = { onClick() }
         )
     }
     Spacer(modifier = Modifier.height(16.dp))
@@ -62,7 +60,6 @@ fun CharacterCard(
 @Composable
 fun GoldContents(
     viewModel: CharacterCardVM,
-    onClick: () -> Unit
 ) {
     val character by viewModel.character.collectAsState()
 
@@ -86,10 +83,7 @@ fun GoldContents(
                     raidImg = R.drawable.epic_behemoth,
                     raidName = "베히모스",
                     viewModel = behemothVM,
-                    onClicked = {
-                        viewModel.beheGoldCalc(it)
-                        onClick()
-                    }
+                    onClicked = { viewModel.beheGoldCalc(it) }
                 )
             }
         }
@@ -103,10 +97,7 @@ fun GoldContents(
                     raidImg = R.drawable.kazeroth_echidna,
                     raidName = "에키드나",
                     viewModel = echidnaVM,
-                    onClicked = {
-                        viewModel.echiGoldCalc(it)
-                        onClick()
-                    }
+                    onClicked = { viewModel.echiGoldCalc(it) }
                 )
             }
         }
@@ -120,10 +111,7 @@ fun GoldContents(
                     raidImg = R.drawable.command_kamen,
                     raidName = "카멘",
                     viewModel = kamenVM,
-                    onClicked = {
-                        viewModel.kamenGoldCalc(it)
-                        onClick()
-                    }
+                    onClicked = { viewModel.kamenGoldCalc(it) }
                 )
             }
         }
@@ -137,10 +125,7 @@ fun GoldContents(
                     raidImg = R.drawable.abyss_dungeon_ivory_tower,
                     raidName = "혼돈의 상아탑",
                     viewModel = ivoryTowerVM,
-                    onClicked = {
-                        viewModel.iTGoldCalc(it)
-                        onClick()
-                    }
+                    onClicked = { viewModel.iTGoldCalc(it) }
                 )
             }
         }
@@ -154,10 +139,7 @@ fun GoldContents(
                     raidImg = R.drawable.command_illiakan,
                     raidName = "일리아칸",
                     viewModel = illiakanVM,
-                    onClicked = {
-                        viewModel.illiGoldCalc(it)
-                        onClick()
-                    }
+                    onClicked = { viewModel.illiGoldCalc(it) }
                 )
             }
         }
@@ -171,10 +153,7 @@ fun GoldContents(
                     raidImg = R.drawable.abyss_dungeon_kayangel,
                     raidName = "카양겔",
                     viewModel = kayangelVM,
-                    onClicked = {
-                        viewModel.kayanGoldCalc(it)
-                        onClick()
-                    }
+                    onClicked = { viewModel.kayanGoldCalc(it) }
                 )
             }
         }
@@ -188,10 +167,7 @@ fun GoldContents(
                     raidImg = R.drawable.command_abrelshud,
                     raidName = "아브렐슈드",
                     viewModel = abrelshudVM,
-                    onClicked = {
-                        viewModel.abrelGoldCalc(it)
-                        onClick()
-                    }
+                    onClicked = { viewModel.abrelGoldCalc(it) }
                 )
             }
         }
@@ -205,10 +181,7 @@ fun GoldContents(
                     raidImg = R.drawable.command_kouku,
                     raidName = "쿠크세이튼",
                     viewModel = koukuSatonVM,
-                    onClicked = {
-                        viewModel.kokuGoldCalc(it)
-                        onClick()
-                    }
+                    onClicked = { viewModel.kokuGoldCalc(it) }
                 )
             }
         }
@@ -222,10 +195,7 @@ fun GoldContents(
                     raidImg = R.drawable.command_biackiss,
                     raidName = "비아키스",
                     viewModel = biackissVM,
-                    onClicked = {
-                        viewModel.biaGoldCalc(it)
-                        onClick()
-                    }
+                    onClicked = { viewModel.biaGoldCalc(it) }
                 )
             }
         }
@@ -239,10 +209,7 @@ fun GoldContents(
                     raidImg = R.drawable.command_valtan,
                     raidName = "발탄",
                     viewModel = valtanVM,
-                    onClicked = {
-                        viewModel.valGoldCalc(it)
-                        onClick()
-                    }
+                    onClicked = { viewModel.valGoldCalc(it) }
                 )
             }
         }
