@@ -47,7 +47,7 @@ class CharacterListVM @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             characterRepository.getAll().collect {
                 _characters.value = it
-                earnGold = it.fastSumBy { character -> character.earnGold }
+                earnGold = it.fastSumBy { character -> character.earnGold } + it.fastSumBy { character -> character.plusGold.toInt() } - it.fastSumBy { character -> character.minusGold.toInt() }
                 initProgressBar(it)
                 remainGold = maxGold - earnGold
             }
