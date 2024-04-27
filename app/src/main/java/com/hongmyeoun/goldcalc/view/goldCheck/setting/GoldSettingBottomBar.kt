@@ -12,10 +12,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,10 +36,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -69,23 +69,26 @@ fun GoldSettingBottomBar(
 ) {
     val arrowIcon = if (viewModel.expanded) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp
 
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+    val maxColumnHeight = (screenHeight * 0.8f) // 화면 높이의 80%
+
     val character by viewModel.character.collectAsState()
 
     val scrollState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
 
     LazyColumn(
         modifier = Modifier
+            .heightIn(max = maxColumnHeight)
             .animateContentSize()
-            .wrapContentHeight()
-            .background(MaterialTheme.colorScheme.background)
+            .border(1.dp, Color.LightGray)
             .clickable {
                 viewModel.expand()
-                coroutineScope.launch {
-                    scrollState.animateScrollToItem(index = 1)
+                scope.launch {
+                    scrollState.animateScrollToItem(index = 2)
                 }
             },
-        verticalArrangement = Arrangement.Top, // 상단부터 아이템을 배치
         reverseLayout = true,
         state = scrollState
     ) {
@@ -97,64 +100,61 @@ fun GoldSettingBottomBar(
                 onDoneClicked = { viewModel.onDoneClick(cbVM, adVM, kzVM, epVM) }
             )
         }
+        if (viewModel.expanded) {
+            item {
+                SimpleSummary(cbVM, adVM, kzVM, epVM, viewModel)
+            }
+        }
         item {
             Box(
-                contentAlignment = Alignment.BottomCenter
+                modifier = Modifier
+                    .fillMaxWidth()
             ) {
-                Column {
-                    Icon(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(20.dp),
-                        imageVector = arrowIcon,
-                        contentDescription = "펼치기, 접기"
-                    )
-
-                    if (viewModel.expanded) {
-                        SimpleCharacter(character)
-
-                        if (cbVM.valtanCheck || cbVM.biaCheck || cbVM.koukuCheck || cbVM.abreCheck || cbVM.illiCheck || cbVM.kamenCheck) {
-                            SimpleCommandRaidInfo(cbVM)
-                        }
-
-                        if (adVM.kayangelCheck || adVM.ivoryCheck) {
-                            SimpleAbyssDungeonInfo(adVM)
-                        }
-
-                        if (kzVM.echiCheck) {
-                            SimpleKazerothRaidInfo(kzVM)
-                        }
-
-                        if (epVM.beheCheck) {
-                            SimpleEpicRaidInfo(epVM)
-                        }
-
-                        if ((viewModel.plusGold.toIntOrNull() ?: 0) > 0) {
-                            SimpleETCInfo(viewModel)
-                        }
-
-                    }
-
-                }
-
+                Icon(
+                    modifier = Modifier
+                        .height(20.dp).align(Alignment.Center),
+                    imageVector = arrowIcon,
+                    contentDescription = "펼치기, 접기"
+                )
             }
-
         }
     }
 }
 
 @Composable
-private fun SimpleCharacter(character: Character?) {
+private fun SimpleSummary(
+    cbVM: CommandBossVM,
+    adVM: AbyssDungeonVM,
+    kzVM: KazerothRaidVM,
+    epVM: EpicRaidVM,
+    viewModel: GoldSettingVM
+) {
     Box(
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp)
+        contentAlignment = Alignment.BottomCenter
     ) {
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = "${character?.name} (${character?.itemLevel})",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
-        )
+        Column {
+            if (cbVM.valtanCheck || cbVM.biaCheck || cbVM.koukuCheck || cbVM.abreCheck || cbVM.illiCheck || cbVM.kamenCheck) {
+                SimpleCommandRaidInfo(cbVM)
+            }
+
+            if (adVM.kayangelCheck || adVM.ivoryCheck) {
+                SimpleAbyssDungeonInfo(adVM)
+            }
+
+            if (kzVM.echiCheck) {
+                SimpleKazerothRaidInfo(kzVM)
+            }
+
+            if (epVM.beheCheck) {
+                SimpleEpicRaidInfo(epVM)
+            }
+
+            if ((viewModel.plusGold.toIntOrNull() ?: 0) > 0) {
+                SimpleETCInfo(viewModel)
+            }
+
+        }
+
     }
 }
 
@@ -473,18 +473,19 @@ private fun SimpleETCInfo(viewModel: GoldSettingVM) {
 }
 
 @Composable
-@OptIn(ExperimentalGlideComposeApi::class)
 private fun BottomBar(
     viewModel: GoldSettingVM,
     navController: NavHostController,
     character: Character?,
     onDoneClicked: () -> Unit
 ) {
+    val borderPadding = if (viewModel.expanded) Modifier.border(1.dp, Color.LightGray).padding(start = 16.dp, end = 8.dp, bottom = 16.dp, top = 16.dp) else Modifier.padding(start = 16.dp, end = 8.dp, bottom = 16.dp)
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background)
-            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+            .then(borderPadding),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(
@@ -492,38 +493,10 @@ private fun BottomBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             BottomGoldText(beforeOrAfter = "전", gold = character?.weeklyGold?.formatWithCommas())
-//            Column {
-//                Text(text = "변경 전")
-//                Row(
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//                    GlideImage(
-//                        modifier = Modifier.size(18.dp),
-//                        model = R.drawable.gold_coins,
-//                        contentDescription = "골드 이미지",
-//                    )
-//                    Spacer(modifier = Modifier.width(8.dp))
-//                    Text(text = "${character?.weeklyGold?.formatWithCommas()}")
-//                }
-//            }
             Spacer(modifier = Modifier.width(8.dp))
             Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "화살표")
             Spacer(modifier = Modifier.width(12.dp))
             BottomGoldText(beforeOrAfter = "후", gold = viewModel.totalGold.formatWithCommas())
-//            Column {
-//                Text(text = "변경 후")
-//                Row(
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//                    GlideImage(
-//                        modifier = Modifier.size(18.dp),
-//                        model = R.drawable.gold_coins,
-//                        contentDescription = "골드 이미지",
-//                    )
-//                    Spacer(modifier = Modifier.width(8.dp))
-//                    Text(text = viewModel.totalGold.formatWithCommas())
-//                }
-//            }
         }
         Row(horizontalArrangement = Arrangement.End) {
             OutlinedButton(
