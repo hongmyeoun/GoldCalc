@@ -22,46 +22,42 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.R
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun RaidCardUI(
     bossImg: Int,
-    isCheck: Boolean,
     isRotated: Boolean,
     rotaR: Float,
     onClick: () -> Unit,
     phaseCard: @Composable () -> Unit
 ) {
-    if (isCheck) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .graphicsLayer {
-                    rotationY = rotaR
-                    cameraDistance = 8 * density
-                }
-                .clickable { onClick() }
-            ,
-            shape = RoundedCornerShape(16.dp),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 6.dp
-            )
-        ) {
-            if (!isRotated) {
-                GlideImage(
-                    modifier = Modifier.aspectRatio(21f/9f),
-                    contentScale = ContentScale.Crop,
-                    model = bossImg,
-                    contentDescription = "보스 이미지"
-                )
-            } else {
-                phaseCard()
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .graphicsLayer {
+                rotationY = rotaR
+                cameraDistance = 8 * density
             }
+            .clickable { onClick() },
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
+        )
+    ) {
+        if (!isRotated) {
+            GlideImage(
+                modifier = Modifier.aspectRatio(21f / 9f),
+                contentScale = ContentScale.Crop,
+                model = bossImg,
+                contentDescription = "보스 이미지"
+            )
+        } else {
+            phaseCard()
         }
     }
+
 }
 
 @Composable

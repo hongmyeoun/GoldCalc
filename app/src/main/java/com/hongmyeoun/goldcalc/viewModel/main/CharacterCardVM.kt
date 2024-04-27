@@ -13,7 +13,6 @@ import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.model.roomDB.character.Phase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -58,13 +57,6 @@ class CharacterCardVM @Inject constructor(
     }
 
     var enabled by mutableStateOf(true)
-    fun enableDelay() {
-        viewModelScope.launch {
-            enabled = false
-            delay(500)
-            enabled = true
-        }
-    }
 
     init {
         getCharacter()

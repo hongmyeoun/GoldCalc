@@ -66,6 +66,18 @@ class GoldSettingVM @Inject constructor(
         }
     }
 
+    fun onAvatarClick(character: Character?) {
+        character?.let {
+            if (!character.characterImage.isNullOrEmpty()) {
+                viewModelScope.launch(Dispatchers.IO) {
+                    val newValue = !character.avatarImage
+                    val avatarImgUpdate = _character.value!!.copy(avatarImage = newValue)
+                    characterRepository.update(avatarImgUpdate)
+                }
+            }
+        }
+    }
+
 
     fun plusGoldValue(newValue: String) {
         plusGold = newValue.filter { it.isDigit() }

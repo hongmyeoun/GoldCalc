@@ -42,46 +42,47 @@ fun EpicRaid(viewModel: EpicRaidVM) {
         }
     }
 
-    RaidCardUI(
-        bossImg = R.drawable.epic_behemoth,
-        isCheck = viewModel.beheCheck,
-        isRotated = behemothRotated,
-        rotaR = behemothRotaR,
-        onClick = { behemothRotated = !behemothRotated },
-        phaseCard = {
-            TwoPhaseBossNoHard(
-                rotaR = behemothRotaR,
+    if (viewModel.beheCheck) {
+        RaidCardUI(
+            bossImg = R.drawable.epic_behemoth,
+            isRotated = behemothRotated,
+            rotaR = behemothRotaR,
+            onClick = { behemothRotated = !behemothRotated },
+            phaseCard = {
+                TwoPhaseBossNoHard(
+                    rotaR = behemothRotaR,
 
-                name = viewModel.behemoth.name,
-                raidBossImg = R.drawable.logo_behemoth,
-                totalGold = viewModel.behemoth.totalGold,
+                    name = viewModel.behemoth.name,
+                    raidBossImg = R.drawable.logo_behemoth,
+                    totalGold = viewModel.behemoth.totalGold,
 
-                phaseOneGold = viewModel.behemoth.onePhase.totalGold,
-                phaseOneSMC = viewModel.behemoth.onePhase.seeMoreCheck,
-                phaseOneCC = viewModel.behemoth.onePhase.clearCheck,
-                onOnePhaseClearCheckBoxChecked = {
-                    viewModel.behemoth.onePhase.onClearCheckBoxClicked(it)
-                    viewModel.sumGold()
-                },
-                onOnePhaseSeeMoreCheckBoxChecked = {
-                    viewModel.behemoth.onePhase.onSeeMoreCheckBoxClicked(it)
-                    viewModel.sumGold()
-                },
+                    phaseOneGold = viewModel.behemoth.onePhase.totalGold,
+                    phaseOneSMC = viewModel.behemoth.onePhase.seeMoreCheck,
+                    phaseOneCC = viewModel.behemoth.onePhase.clearCheck,
+                    onOnePhaseClearCheckBoxChecked = {
+                        viewModel.behemoth.onePhase.onClearCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                    onOnePhaseSeeMoreCheckBoxChecked = {
+                        viewModel.behemoth.onePhase.onSeeMoreCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
 
-                phaseTwoGold = viewModel.behemoth.twoPhase.totalGold,
-                phaseTwoSMC = viewModel.behemoth.twoPhase.seeMoreCheck,
-                phaseTwoCC = viewModel.behemoth.twoPhase.clearCheck,
-                onTwoPhaseClearCheckBoxChecked = {
-                    viewModel.behemoth.twoPhase.onClearCheckBoxClicked(it)
-                    viewModel.sumGold()
-                },
-                onTwoPhaseSeeMoreCheckBoxChecked = {
-                    viewModel.behemoth.twoPhase.onSeeMoreCheckBoxClicked(it)
-                    viewModel.sumGold()
-                },
-            )
+                    phaseTwoGold = viewModel.behemoth.twoPhase.totalGold,
+                    phaseTwoSMC = viewModel.behemoth.twoPhase.seeMoreCheck,
+                    phaseTwoCC = viewModel.behemoth.twoPhase.clearCheck,
+                    onTwoPhaseClearCheckBoxChecked = {
+                        viewModel.behemoth.twoPhase.onClearCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                    onTwoPhaseSeeMoreCheckBoxChecked = {
+                        viewModel.behemoth.twoPhase.onSeeMoreCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                )
 
-        }
-    )
+            }
+        )
+    }
 
 }

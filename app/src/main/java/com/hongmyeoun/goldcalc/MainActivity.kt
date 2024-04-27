@@ -83,7 +83,6 @@ class MainActivity : ComponentActivity() {
                                         CharacterCard(
                                             navController = navController,
                                             viewModel = characterCardVM,
-                                            onClick = { characterCardVM.enableDelay() }
                                         )
                                         Divider(modifier = Modifier.height(8.dp))
                                     }
