@@ -38,6 +38,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -142,9 +143,10 @@ private fun GoldSettingCharacterDetails(character: Character?, onReloadClick: ()
 private fun DetailInfomation(detailMenu: String, detail: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
-            modifier = Modifier.background(DarkModeGray, RoundedCornerShape(8.dp)),
+            modifier = Modifier.background(DarkModeGray, RoundedCornerShape(16.dp)).width(80.dp),
             text = "  $detailMenu  ",
-            color = Color.White
+            color = Color.White,
+            textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.width(10.dp))
         Text(
