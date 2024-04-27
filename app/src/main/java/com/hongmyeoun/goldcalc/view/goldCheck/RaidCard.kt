@@ -41,7 +41,8 @@ fun RaidCard(
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(vertical = 32.dp, horizontal = 16.dp),
+                .align(Alignment.CenterEnd)
+                .padding(end = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {
