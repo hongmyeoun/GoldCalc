@@ -43,12 +43,6 @@ class CharacterListVM @Inject constructor(
         }
     }
 
-    fun onDeleteLoading() {
-        _isLoading.value = true
-        mainScreenloading()
-    }
-
-
     private fun getCharacters() {
         viewModelScope.launch(Dispatchers.IO) {
             characterRepository.getAll().collect {
@@ -77,11 +71,4 @@ class CharacterListVM @Inject constructor(
         getCharacters()
         mainScreenloading()
     }
-
-    fun delete(character: Character) {
-        viewModelScope.launch(Dispatchers.IO) {
-            characterRepository.delete(character)
-        }
-    }
-
 }

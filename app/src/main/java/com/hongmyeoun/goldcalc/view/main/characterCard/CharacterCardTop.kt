@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,8 +43,7 @@ import com.hongmyeoun.goldcalc.viewModel.main.CharacterCardVM
 @Composable
 fun CharacterCardTop(
     navController: NavHostController,
-    viewModel: CharacterCardVM,
-    onDelete: () -> Unit
+    viewModel: CharacterCardVM
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -53,8 +51,7 @@ fun CharacterCardTop(
         SimpleCharacterInfo(
             navController = navController,
             modifier = Modifier.weight(2.5f),
-            viewModel = viewModel,
-            onDelete = { onDelete() }
+            viewModel = viewModel
         )
         SimpleProgressInfo(
             modifier = Modifier.weight(1.3f),
@@ -68,8 +65,7 @@ fun CharacterCardTop(
 fun SimpleCharacterInfo(
     navController: NavHostController,
     modifier: Modifier,
-    viewModel: CharacterCardVM,
-    onDelete: () -> Unit
+    viewModel: CharacterCardVM
 ) {
     val isDark = isSystemInDarkTheme()
     val character by viewModel.character.collectAsState()
@@ -112,12 +108,6 @@ fun SimpleCharacterInfo(
             }
         }
 
-        IconButton(onClick = { onDelete() }) {
-            Icon(
-                imageVector = Icons.Default.Notifications,
-                contentDescription = "골드체크",
-            )
-        }
         IconButton(onClick = { navController.navigate("Check/${character.name}") }) {
             Icon(
                 imageVector = Icons.Default.Settings,

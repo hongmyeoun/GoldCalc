@@ -1,12 +1,15 @@
 package com.hongmyeoun.goldcalc.viewModel.goldCheck
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
+import com.hongmyeoun.goldcalc.view.search.getCharDetail
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,15 +23,30 @@ class GoldSettingVM @Inject constructor(
     private val _character = MutableStateFlow<Character?>(null)
     val character: StateFlow<Character?> = _character
 
+    private val _showDialog = MutableStateFlow(false)
+    val showDialog: StateFlow<Boolean> = _showDialog
+    fun onDissmissRequest() {
+        _showDialog.value = false
+    }
+
+    fun onClicked() {
+        _showDialog.value = true
+    }
+
     var plusGold by mutableStateOf("0")
     var minusGold by mutableStateOf("0")
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
     private fun getCharacter(charName: String) {
+        _isLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
             characterRepository.getCharacterByName(charName).collect { character ->
                 _character.value = character
             }
         }
+        _isLoading.value = false
     }
 
     init {
@@ -36,6 +54,15 @@ class GoldSettingVM @Inject constructor(
         viewModelScope.launch(Dispatchers.Main) {
             plusGold = _character.value?.plusGold ?: "0"
             minusGold = _character.value?.minusGold ?: "0"
+            calcETCGold()
+        }
+    }
+
+    fun onDelete() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _character.value?.let {
+                characterRepository.delete(_character.value!!)
+            }
         }
     }
 
@@ -48,11 +75,17 @@ class GoldSettingVM @Inject constructor(
         minusGold = newValue.filter { it.isDigit() }
     }
 
-    var totalGold by mutableStateOf(0)
-    private fun calcTotalGold(cb: Int, ad: Int, kz: Int, ep: Int) {
+    var etcGold by mutableStateOf(0)
+    fun calcETCGold() {
         val plusGoldInt = plusGold.toIntOrNull() ?: 0
         val minusGoldInt = minusGold.toIntOrNull() ?: 0
-        totalGold = cb + ad + kz + ep + plusGoldInt - minusGoldInt
+        etcGold = plusGoldInt - minusGoldInt
+    }
+
+    var totalGold by mutableStateOf(0)
+    private fun calcTotalGold(cb: Int, ad: Int, kz: Int, ep: Int) {
+        calcETCGold()
+        totalGold = cb + ad + kz + ep + etcGold
     }
 
     fun updateTotalGold(cb: Int, ad: Int, kz: Int, ep: Int) {
@@ -83,6 +116,35 @@ class GoldSettingVM @Inject constructor(
 
     fun moveETC() {
         selectedTab = "기타"
+    }
+
+    private fun updateCharacterDetail(characterDetail: CharacterDetail) {
+        _character.value?.let {
+            val newDetail = _character.value!!.copy(
+                itemLevel = characterDetail.itemMaxLevel,
+                guildName = characterDetail.guildName,
+                title = characterDetail.title,
+                characterLevel = characterDetail.characterLevel,
+                expeditionLevel = characterDetail.expeditionLevel,
+                pvpGradeName = characterDetail.pvpGradeName,
+                townLevel = characterDetail.townLevel,
+                townName = characterDetail.townName,
+                characterImage = characterDetail.characterImage,
+            )
+            characterRepository.update(newDetail)
+        }
+    }
+
+    fun onReloadClick(context: Context, characterName: String?) {
+        characterName?.let {
+            viewModelScope.launch(Dispatchers.IO) {
+                val characterDetail = getCharDetail(context, characterName)
+                characterDetail?.let {
+                    updateCharacterDetail(characterDetail)
+                }
+            }
+            getCharacter(characterName)
+        }
     }
 
     fun onDoneClick(commandRaid: CommandBossVM, abyssDungeon: AbyssDungeonVM, kazerothRaid: KazerothRaidVM, epicRaid: EpicRaidVM) {

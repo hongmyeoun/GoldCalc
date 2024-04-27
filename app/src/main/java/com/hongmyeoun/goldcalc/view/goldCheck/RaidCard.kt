@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.view.main.formatWithCommas
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -30,7 +31,6 @@ fun RaidCard(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 16.dp)
     ) {
         GlideImage(
             modifier = Modifier.fillMaxWidth(),
@@ -41,7 +41,8 @@ fun RaidCard(
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(vertical = 32.dp, horizontal = 16.dp),
+                .align(Alignment.CenterEnd)
+                .padding(end = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {
@@ -52,7 +53,7 @@ fun RaidCard(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = "$totalGold",
+                text = totalGold.formatWithCommas(),
                 color = Color.White
             )
         }
