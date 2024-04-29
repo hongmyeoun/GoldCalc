@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.view.main.characterCard
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
@@ -25,7 +27,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -35,6 +39,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
+import com.hongmyeoun.goldcalc.ui.theme.DarkModeGray
 import com.hongmyeoun.goldcalc.ui.theme.MokokoGreen
 import com.hongmyeoun.goldcalc.view.main.formatWithCommas
 import com.hongmyeoun.goldcalc.view.main.toPercentage
@@ -74,22 +79,41 @@ fun SimpleCharacterInfo(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        GlideImage(
-            modifier = Modifier.size(50.dp),
-            contentScale = ContentScale.Crop,
-            model = CharacterResourceMapper.getClassEmblem(isDark, character.className),
-            contentDescription = "직업군"
-        )
+        Box(
+            modifier = Modifier
+                .size(50.dp)
+                .clip(RoundedCornerShape(36.dp))
+                .background(DarkModeGray),
+        ) {
+            GlideImage(
+                modifier = Modifier.padding(6.dp),
+                contentScale = ContentScale.Crop,
+                model = CharacterResourceMapper.getClassEmblem(!isDark, character.className),
+                contentDescription = "직업군"
+            )
+        }
 
         Spacer(modifier = Modifier.width(10.dp))
 
         Column(
             horizontalAlignment = Alignment.Start
         ) {
-            Text(
-                text = character.serverName,
-                fontSize = 10.sp
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = character.serverName,
+                    fontSize = 10.sp
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                IconButton(
+                    modifier = Modifier.size(15.dp),
+                    onClick = { navController.navigate("Check/${character.name}") }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = "설정",
+                    )
+                }
+            }
 
             Text(text = character.name)
 
@@ -106,13 +130,6 @@ fun SimpleCharacterInfo(
                     fontSize = 10.sp
                 )
             }
-        }
-
-        IconButton(onClick = { navController.navigate("Check/${character.name}") }) {
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = "설정",
-            )
         }
     }
 }
@@ -199,10 +216,11 @@ fun SimpleProgressBar(viewModel: CharacterCardVM) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(12.dp)
-                .border(1.dp, MokokoGreen),
+                .border(0.3f.dp, Color.Gray, RoundedCornerShape(8.dp)),
             progress = animatedProgress,
             color = MokokoGreen,
-            trackColor = Color.Transparent
+            trackColor = Color.Transparent,
+            strokeCap = StrokeCap.Round
         )
 
         Text(
