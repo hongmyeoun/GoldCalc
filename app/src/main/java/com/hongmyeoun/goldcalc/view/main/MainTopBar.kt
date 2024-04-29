@@ -33,6 +33,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -50,6 +51,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
+import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
 import com.hongmyeoun.goldcalc.ui.theme.DarkModeGray
 import com.hongmyeoun.goldcalc.ui.theme.MokokoGreen
 import com.hongmyeoun.goldcalc.viewModel.main.CharacterListVM
@@ -59,7 +61,9 @@ import java.text.NumberFormat
 fun MainAppTopBar(navController: NavHostController, characterListVM: CharacterListVM) {
     Column {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+//                .background(Color(0XFFDDEEAA))
+                .padding(16.dp)
         ) {
             MainAppTop(navController)
             MainAppProgressText(characterListVM)
@@ -185,7 +189,7 @@ private fun ShowSimpleCurrentContents(characterListVM: CharacterListVM) {
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-private fun SimpleTotal(character: Character, isDark: Boolean = isSystemInDarkTheme()) {
+private fun SimpleTotal(character: Character) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -194,12 +198,20 @@ private fun SimpleTotal(character: Character, isDark: Boolean = isSystemInDarkTh
             modifier = Modifier.weight(2f),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            GlideImage(
-                modifier = Modifier.size(25.dp),
-                contentScale = ContentScale.Crop,
-                model = CharacterResourceMapper.getClassEmblem(isDark, character.className),
-                contentDescription = "직업군"
-            )
+            Box(
+                modifier = Modifier
+                    .size(38.dp)
+                    .clip(RoundedCornerShape(36.dp))
+                    .background(CharacterEmblemBG),
+                contentAlignment = Alignment.Center
+            ) {
+                GlideImage(
+                    modifier = Modifier.size(35.dp).padding(3.dp),
+                    contentScale = ContentScale.Crop,
+                    model = CharacterResourceMapper.getClassEmblem(character.className),
+                    contentDescription = "직업군"
+                )
+            }
 
             Spacer(modifier = Modifier.width(5.dp))
 
@@ -320,10 +332,10 @@ private fun MainAppProgressBar(characterListVM: CharacterListVM) {
             modifier = Modifier
                 .height(24.dp)
                 .fillMaxWidth()
-                .border(1.dp, MokokoGreen),
+                .border(0.5f.dp, Color.Gray),
             progress = animatedProgress,
             color = MokokoGreen,
-            trackColor = Color.Transparent
+            trackColor = Color.Transparent,
         )
 
         Text(
@@ -426,7 +438,7 @@ fun MainAppNameText(modifier: Modifier) {
         buildAnnotatedString {
             withStyle(
                 style = SpanStyle(
-                    color = Color.Red,
+//                    color = Color.Red,
                     fontSize = 30.sp
                 )
             ) {
@@ -444,7 +456,7 @@ fun MainAppNameText(modifier: Modifier) {
 
             withStyle(
                 style = SpanStyle(
-                    color = Color(0xffA6FF4D),
+//                    color = Color(0xffA6FF4D),
                     fontSize = 30.sp
                 )
             ) {
@@ -462,7 +474,7 @@ fun MainAppNameText(modifier: Modifier) {
 
             withStyle(
                 style = SpanStyle(
-                    color = Color.Blue,
+//                    color = Color.Blue,
                     fontSize = 30.sp
                 )
             ) {

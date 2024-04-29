@@ -38,7 +38,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
-import com.hongmyeoun.goldcalc.ui.theme.DarkModeGray
+import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
 import com.hongmyeoun.goldcalc.ui.theme.MokokoGreen
 import com.hongmyeoun.goldcalc.view.main.formatWithCommas
 import com.hongmyeoun.goldcalc.view.main.toPercentage
@@ -81,7 +81,7 @@ fun SimpleCharacterInfo(
             modifier = Modifier
                 .size(50.dp)
                 .clip(RoundedCornerShape(36.dp))
-                .background(DarkModeGray),
+                .background(CharacterEmblemBG),
             contentAlignment = Alignment.Center
         ) {
             GlideImage(
