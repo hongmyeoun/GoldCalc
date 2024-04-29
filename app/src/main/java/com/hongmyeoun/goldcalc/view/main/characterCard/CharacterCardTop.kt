@@ -3,7 +3,6 @@ package com.hongmyeoun.goldcalc.view.main.characterCard
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -72,7 +71,6 @@ fun SimpleCharacterInfo(
     modifier: Modifier,
     viewModel: CharacterCardVM
 ) {
-    val isDark = isSystemInDarkTheme()
     val character by viewModel.character.collectAsState()
 
     Row(
@@ -84,11 +82,12 @@ fun SimpleCharacterInfo(
                 .size(50.dp)
                 .clip(RoundedCornerShape(36.dp))
                 .background(DarkModeGray),
+            contentAlignment = Alignment.Center
         ) {
             GlideImage(
-                modifier = Modifier.padding(6.dp),
+                modifier = Modifier.size(46.dp).padding(6.dp),
                 contentScale = ContentScale.Crop,
-                model = CharacterResourceMapper.getClassEmblem(!isDark, character.className),
+                model = CharacterResourceMapper.getClassEmblem(character.className),
                 contentDescription = "직업군"
             )
         }
