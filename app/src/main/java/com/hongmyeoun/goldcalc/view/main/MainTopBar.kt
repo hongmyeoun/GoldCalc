@@ -76,12 +76,11 @@ fun MainAppTopBar(navController: NavHostController, characterListVM: CharacterLi
 
 @Composable
 private fun MainAppTop(navController: NavHostController) {
-    Row(
+    Box(
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
     ) {
-        MainAppNameText(modifier = Modifier.weight(2f))
-        MainMenuButtons(navController)
+        MainAppNameText(modifier = Modifier.align(Alignment.CenterStart))
+        MainMenuButtons(modifier = Modifier.align(Alignment.CenterEnd), navController)
     }
     Spacer(modifier = Modifier.height(16.dp))
 }
@@ -206,7 +205,9 @@ private fun SimpleTotal(character: Character) {
                 contentAlignment = Alignment.Center
             ) {
                 GlideImage(
-                    modifier = Modifier.size(35.dp).padding(3.dp),
+                    modifier = Modifier
+                        .size(35.dp)
+                        .padding(3.dp),
                     contentScale = ContentScale.Crop,
                     model = CharacterResourceMapper.getClassEmblem(character.className),
                     contentDescription = "직업군"
@@ -402,32 +403,40 @@ private fun MainAppGoldCurrent(characterListVM: CharacterListVM) {
 }
 
 @Composable
-private fun MainMenuButtons(navController: NavHostController) {
-    IconButton(
-        onClick = { navController.navigate("Search") }
+private fun MainMenuButtons(modifier: Modifier, navController: NavHostController) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            imageVector = Icons.Default.Search,
-            contentDescription = "검색/추가"
-        )
-    }
+        IconButton(
+            modifier = Modifier.size(35.dp),
+            onClick = { navController.navigate("Search") }
+        ) {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = "검색/추가"
+            )
+        }
 
-    IconButton(
-        onClick = { navController.navigate("Main") { popUpTo("Main") { inclusive = true } } }
-    ) {
-        Icon(
-            imageVector = Icons.Default.Refresh,
-            contentDescription = "새로고침"
-        )
-    }
+        IconButton(
+            modifier = Modifier.size(35.dp),
+            onClick = { navController.navigate("Main") { popUpTo("Main") { inclusive = true } } }
+        ) {
+            Icon(
+                imageVector = Icons.Default.Refresh,
+                contentDescription = "새로고침"
+            )
+        }
 
-    IconButton(
-        onClick = { /*TODO*/ }
-    ) {
-        Icon(
-            imageVector = Icons.Default.Settings,
-            contentDescription = "설정"
-        )
+        IconButton(
+            modifier = Modifier.size(35.dp),
+            onClick = { /*TODO*/ }
+        ) {
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription = "설정"
+            )
+        }
     }
 }
 
