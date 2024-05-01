@@ -3,7 +3,49 @@ package com.hongmyeoun.goldcalc.model.lostArkApi
 import com.hongmyeoun.goldcalc.R
 
 object CharacterResourceMapper {
-    fun getClassImage(isDark: Boolean, characterClassName: String): Int {
+    fun getClassEmblem(characterClassName: String): Int {
+        val classImageMap = mapOf(
+            "전사(남)" to R.drawable.emblem_warrior,
+            "디스트로이어" to R.drawable.emblem_destroyer,
+            "워로드" to R.drawable.emblem_warlord,
+            "버서커" to R.drawable.emblem_berserker,
+            "홀리나이트" to R.drawable.emblem_holyknight,
+            "전사(여)" to R.drawable.emblem_warrior_female,
+            "슬레이어" to R.drawable.emblem_berserker_female,
+            "무도가(남)" to R.drawable.emblem_fighter_male,
+            "스트라이커" to R.drawable.emblem_battle_master_male,
+            "브레이커" to R.drawable.emblem_infighter_male,
+            "무도가(여)" to R.drawable.emblem_fighter,
+            "배틀마스터" to R.drawable.emblem_battle_master,
+            "인파이터" to R.drawable.emblem_infighter,
+            "기공사" to R.drawable.emblem_force_master,
+            "창술사" to R.drawable.emblem_lance_master,
+            "헌터(남)" to R.drawable.emblem_hunter,
+            "데빌헌터" to R.drawable.emblem_devil_hunter,
+            "블래스터" to R.drawable.emblem_blaster,
+            "호크아이" to R.drawable.emblem_hawk_eye,
+            "스카우터" to R.drawable.emblem_scouter,
+            "헌터(여)" to R.drawable.emblem_hunter_female,
+            "건슬링어" to R.drawable.emblem_devil_hunter_female,
+            "마법사" to R.drawable.emblem_magician,
+            "바드" to R.drawable.emblem_bard,
+            "서머너" to R.drawable.emblem_summoner,
+            "아르카나" to R.drawable.emblem_arcana,
+            "소서리스" to R.drawable.emblem_elemental_master,
+            "암살자" to R.drawable.emblem_delain,
+            "블레이드" to R.drawable.emblem_blade,
+            "데모닉" to R.drawable.emblem_demonic,
+            "리퍼" to R.drawable.emblem_reaper,
+            "소울이터" to R.drawable.emblem_soul_eater,
+            "스페셜리스트" to R.drawable.emblem_specialist,
+            "도화가" to R.drawable.emblem_yinyangshi,
+            "기상술사" to R.drawable.emblem_weather_artist,
+        )
+
+        return classImageMap[characterClassName] ?: R.drawable.emblem_specialist
+    }
+
+    fun getClassEmblem(isDark: Boolean, characterClassName: String): Int {
         val classImageMap = mapOf(
             "전사(남)" to if(isDark) R.drawable.emblem_warrior else R.drawable.emblem_warrior_dark,
             "디스트로이어" to if(isDark) R.drawable.emblem_destroyer else R.drawable.emblem_destroyer_dark,
@@ -44,4 +86,47 @@ object CharacterResourceMapper {
 
         return classImageMap[characterClassName] ?: R.drawable.emblem_specialist
     }
+
+    fun getClassDefaultImg(characterClassName: String): Int {
+        val classImageMap = mapOf(
+            "전사(남)" to R.drawable.img_detail_warlord,
+            "디스트로이어" to R.drawable.img_detail_destroyer,
+            "워로드" to R.drawable.img_detail_warlord,
+            "버서커" to R.drawable.img_detail_berserker,
+            "홀리나이트" to R.drawable.img_detail_holyknight,
+            "전사(여)" to R.drawable.img_detail_slayer,
+            "슬레이어" to R.drawable.img_detail_slayer,
+            "무도가(남)" to R.drawable.img_detail_striker,
+            "스트라이커" to R.drawable.img_detail_striker,
+            "브레이커" to R.drawable.img_detail_berserker,
+            "무도가(여)" to R.drawable.img_detail_battlemaster,
+            "배틀마스터" to R.drawable.img_detail_battlemaster,
+            "인파이터" to R.drawable.img_detail_infighter,
+            "기공사" to R.drawable.img_detail_soulmaster,
+            "창술사" to R.drawable.img_detail_lancemaster,
+            "헌터(남)" to R.drawable.img_detail_devilhunter,
+            "데빌헌터" to R.drawable.img_detail_devilhunter,
+            "블래스터" to R.drawable.img_detail_blaster,
+            "호크아이" to R.drawable.img_detail_hawkeye,
+            "스카우터" to R.drawable.img_detail_scouter,
+            "헌터(여)" to R.drawable.img_detail_gunslinger,
+            "건슬링어" to R.drawable.img_detail_gunslinger,
+            "마법사" to R.drawable.img_detail_summoner,
+            "바드" to R.drawable.img_detail_bard,
+            "서머너" to R.drawable.img_detail_summoner,
+            "아르카나" to R.drawable.img_detail_arcana,
+            "소서리스" to R.drawable.img_detail_sorceress,
+            "암살자" to R.drawable.img_detail_reaper,
+            "블레이드" to R.drawable.img_detail_blade,
+            "데모닉" to R.drawable.img_detail_demonic,
+            "리퍼" to R.drawable.img_detail_reaper,
+            "소울이터" to R.drawable.img_detail_souleater,
+            "스페셜리스트" to R.drawable.img_detail_artist,
+            "도화가" to R.drawable.img_detail_artist,
+            "기상술사" to R.drawable.img_detail_aeromancer,
+        )
+
+        return classImageMap[characterClassName] ?: R.drawable.img_detail_breaker
+    }
+
 }

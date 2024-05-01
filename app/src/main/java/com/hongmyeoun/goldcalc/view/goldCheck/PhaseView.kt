@@ -1,5 +1,6 @@
 package com.hongmyeoun.goldcalc.view.goldCheck
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -7,16 +8,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -26,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.view.main.formatWithCommas
 
 @Composable
 fun PhaseUI(
@@ -37,6 +42,8 @@ fun PhaseUI(
     onClearClicked: (Boolean) -> Unit,
     onMoreClicked: (Boolean) -> Unit
 ) {
+    val difficultyColor = if (difficulty == "하드") Color.Red else MaterialTheme.colorScheme.primary
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -47,11 +54,16 @@ fun PhaseUI(
             modifier = Modifier
                 .weight(3f)
                 .padding(start = 16.dp),
-            text = "$phase 관문"
+            text = "$phase 관문",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
         )
         OutlinedButton(
             onClick = { onLevelClicked() },
-            enabled = clearCheck || moreCheck
+            enabled = clearCheck || moreCheck,
+            colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = difficultyColor
+            )
         ) {
             Text(text = difficulty)
         }
@@ -344,19 +356,18 @@ fun RaidCardUI(
                 .padding(vertical = 4.dp),
             verticalAlignment = Alignment.Top
         ) {
+            GlideImage(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .weight(1f),
+                contentScale = ContentScale.Crop,
+                model = raidBossImg,
+                contentDescription =  "보스 아이콘"
+            )
             Column(
-                modifier = Modifier.weight(1.5f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                GlideImage(
-                    modifier = Modifier.clip(RoundedCornerShape(16.dp)),
-                    contentScale = ContentScale.Crop,
-                    model = raidBossImg,
-                    contentDescription =  "보스 아이콘"
-                )
-            }
-            Column(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 16.dp, end = 8.dp, top = 8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -372,8 +383,8 @@ fun RaidCardUI(
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun TotalGoldText(totalGold: Int) {
-    Divider()
+fun TotalGoldText(totalGold: Int, isDark: Boolean = isSystemInDarkTheme()) {
+    Divider(color = if (isDark) Color.White else DividerDefaults.color)
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -383,14 +394,13 @@ fun TotalGoldText(totalGold: Int) {
             text = "합 : "
         )
         Text(
-            modifier = Modifier.weight(1f),
-            text = "$totalGold",
+            modifier = Modifier.weight(0.7f),
+            text = totalGold.formatWithCommas(),
             textAlign = TextAlign.End
         )
-        Spacer(modifier = Modifier.width(8.dp))
         GlideImage(
             modifier = Modifier
-                .weight(0.5f)
+                .weight(0.3f)
                 .size(16.dp),
             alignment = Alignment.Center,
             model = R.drawable.gold_coin,
@@ -422,14 +432,13 @@ fun PhaseGoldText(
     ) {
         Text(text = "$phase : ")
         Text(
-            modifier = Modifier.weight(1f),
-            text = "$phaseGold",
+            modifier = Modifier.weight(0.7f),
+            text = phaseGold.formatWithCommas(),
             textAlign = TextAlign.End
         )
-        Spacer(modifier = Modifier.width(8.dp))
         GlideImage(
             modifier = Modifier
-                .weight(0.5f)
+                .weight(0.3f)
                 .size(16.dp),
             alignment = Alignment.Center,
             model = R.drawable.gold_coin,
@@ -491,5 +500,287 @@ fun FourPhaseGoldText(
     PhaseGoldText(
         phase = "④",
         phaseGold = phaseFourGold
+    )
+}
+
+@Composable
+fun PhaseUIOneDifficulty(
+    phase: Int,
+    difficulty: String,
+    clearCheck: Boolean,
+    moreCheck: Boolean,
+    onClearClicked: (Boolean) -> Unit,
+    onMoreClicked: (Boolean) -> Unit
+) {
+    val difficultyColor = if (difficulty == "하드") Color.Red else MaterialTheme.colorScheme.primary
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier
+                .weight(3f)
+                .padding(start = 16.dp),
+            text = "$phase 관문",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
+        OutlinedButton(
+            onClick = {  },
+            enabled = clearCheck || moreCheck,
+            colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = difficultyColor,
+            )
+        ) {
+            Text(text = difficulty)
+        }
+    }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(
+            modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(
+                checked = clearCheck,
+                onCheckedChange = { onClearClicked(it) }
+            )
+            Text(text = "클리어")
+        }
+        Row(
+            modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(
+                checked = moreCheck,
+                onCheckedChange = { onMoreClicked(it) }
+            )
+            Text(text = "더보기")
+        }
+    }
+
+}
+
+
+@Composable
+fun TwoPhaseBossNoHard(
+    rotaR: Float,
+
+    name: String,
+    raidBossImg: Int,
+    totalGold: Int,
+
+    phaseOneGold: Int,
+    phaseOneSMC: Boolean,
+    phaseOneCC: Boolean,
+    onOnePhaseClearCheckBoxChecked: (Boolean) -> Unit,
+    onOnePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+
+    phaseTwoGold: Int,
+    phaseTwoSMC: Boolean,
+    phaseTwoCC: Boolean,
+    onTwoPhaseClearCheckBoxChecked: (Boolean) -> Unit,
+    onTwoPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+) {
+    RaidCardUI(
+        rotaR = rotaR,
+        raidBossImg = raidBossImg,
+        totalGold = totalGold,
+        phaseGoldTextUI = {
+            TwoPhaseGoldText(
+                name = name,
+                phaseOneGold = phaseOneGold,
+                phaseTwoGold = phaseTwoGold
+            )
+        },
+        phaseCheckUI = {
+            PhaseUIOneDifficulty(
+                phase = 1,
+                difficulty = "노말",
+                clearCheck = phaseOneCC,
+                moreCheck = phaseOneSMC,
+                onClearClicked = { onOnePhaseClearCheckBoxChecked(it) },
+                onMoreClicked = { onOnePhaseSeeMoreCheckBoxChecked(it) }
+            )
+
+            PhaseUIOneDifficulty(
+                phase = 2,
+                difficulty = "노말",
+                clearCheck = phaseTwoCC,
+                moreCheck = phaseTwoSMC,
+                onClearClicked = { onTwoPhaseClearCheckBoxChecked(it) },
+                onMoreClicked = { onTwoPhaseSeeMoreCheckBoxChecked(it) }
+            )
+        }
+    )
+}
+
+@Composable
+fun ThreePhaseBossNoHard(
+    rotaR: Float,
+
+    name: String,
+    raidBossImg: Int,
+    totalGold: Int,
+
+    phaseOneGold: Int,
+    phaseOneSMC: Boolean,
+    phaseOneCC: Boolean,
+    onOnePhaseClearCheckBoxChecked: (Boolean) -> Unit,
+    onOnePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+
+    phaseTwoGold: Int,
+    phaseTwoSMC: Boolean,
+    phaseTwoCC: Boolean,
+    onTwoPhaseClearCheckBoxChecked: (Boolean) -> Unit,
+    onTwoPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+
+    phaseThreeGold: Int,
+    phaseThreeSMC: Boolean,
+    phaseThreeCC: Boolean,
+    onThreePhaseClearCheckBoxChecked: (Boolean) -> Unit,
+    onThreePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+) {
+    RaidCardUI(
+        rotaR = rotaR,
+        raidBossImg = raidBossImg,
+        totalGold = totalGold,
+        phaseGoldTextUI = {
+            ThreePhaseGoldText(
+                name = name,
+                phaseOneGold = phaseOneGold,
+                phaseTwoGold = phaseTwoGold,
+                phaseThreeGold = phaseThreeGold
+            )
+        },
+        phaseCheckUI = {
+            PhaseUIOneDifficulty(
+                phase = 1,
+                difficulty = "노말",
+                clearCheck = phaseOneCC,
+                moreCheck = phaseOneSMC,
+                onClearClicked = { onOnePhaseClearCheckBoxChecked(it) },
+                onMoreClicked = { onOnePhaseSeeMoreCheckBoxChecked(it) }
+            )
+
+            PhaseUIOneDifficulty(
+                phase = 2,
+                difficulty = "노말",
+                clearCheck = phaseTwoCC,
+                moreCheck = phaseTwoSMC,
+                onClearClicked = { onTwoPhaseClearCheckBoxChecked(it) },
+                onMoreClicked = { onTwoPhaseSeeMoreCheckBoxChecked(it) }
+            )
+
+            PhaseUIOneDifficulty(
+                phase = 3,
+                difficulty = "노말",
+                clearCheck = phaseThreeCC,
+                moreCheck = phaseThreeSMC,
+                onClearClicked = { onThreePhaseClearCheckBoxChecked(it) },
+                onMoreClicked = { onThreePhaseSeeMoreCheckBoxChecked(it) }
+            )
+        }
+    )
+}
+
+@Composable
+fun FourPhaseBossLastHard(
+    rotaR: Float,
+
+    name: String,
+    raidBossImg: Int,
+    totalGold: Int,
+
+    phaseOneLevel: String,
+    phaseOneGold: Int,
+    phaseOneSMC: Boolean,
+    phaseOneCC: Boolean,
+    onOnePhaseLevelClicked: () -> Unit,
+    onOnePhaseClearCheckBoxChecked: (Boolean) -> Unit,
+    onOnePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+
+    phaseTwoLevel: String,
+    phaseTwoGold: Int,
+    phaseTwoSMC: Boolean,
+    phaseTwoCC: Boolean,
+    onTwoPhaseLevelClicked: () -> Unit,
+    onTwoPhaseClearCheckBoxChecked: (Boolean) -> Unit,
+    onTwoPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+
+    phaseThreeLevel: String,
+    phaseThreeGold: Int,
+    phaseThreeSMC: Boolean,
+    phaseThreeCC: Boolean,
+    onThreePhaseLevelClicked: () -> Unit,
+    onThreePhaseClearCheckBoxChecked: (Boolean) -> Unit,
+    onThreePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+
+    phaseFourGold: Int,
+    phaseFourSMC: Boolean,
+    phaseFourCC: Boolean,
+    onFourPhaseClearCheckBoxChecked: (Boolean) -> Unit,
+    onFourPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+) {
+    RaidCardUI(
+        rotaR = rotaR,
+        raidBossImg = raidBossImg,
+        totalGold = totalGold,
+        phaseGoldTextUI = {
+            FourPhaseGoldText(
+                name = name,
+                phaseOneGold = phaseOneGold,
+                phaseTwoGold = phaseTwoGold,
+                phaseThreeGold = phaseThreeGold,
+                phaseFourGold = phaseFourGold
+            )
+        },
+        phaseCheckUI = {
+            PhaseUI(
+                phase = 1,
+                difficulty = phaseOneLevel,
+                clearCheck = phaseOneCC,
+                moreCheck = phaseOneSMC,
+                onLevelClicked = { onOnePhaseLevelClicked() },
+                onClearClicked = { onOnePhaseClearCheckBoxChecked(it) },
+                onMoreClicked = { onOnePhaseSeeMoreCheckBoxChecked(it) }
+            )
+
+            PhaseUI(
+                phase = 2,
+                difficulty = phaseTwoLevel,
+                clearCheck = phaseTwoCC,
+                moreCheck = phaseTwoSMC,
+                onLevelClicked = { onTwoPhaseLevelClicked() },
+                onClearClicked = { onTwoPhaseClearCheckBoxChecked(it) },
+                onMoreClicked = { onTwoPhaseSeeMoreCheckBoxChecked(it) }
+            )
+
+            PhaseUI(
+                phase = 3,
+                difficulty = phaseThreeLevel,
+                clearCheck = phaseThreeCC,
+                moreCheck = phaseThreeSMC,
+                onLevelClicked = { onThreePhaseLevelClicked() },
+                onClearClicked = { onThreePhaseClearCheckBoxChecked(it) },
+                onMoreClicked = { onThreePhaseSeeMoreCheckBoxChecked(it) }
+            )
+
+            PhaseUIOneDifficulty(
+                phase = 4,
+                difficulty = "하드",
+                clearCheck = phaseFourCC,
+                moreCheck = phaseFourSMC,
+                onClearClicked = { onFourPhaseClearCheckBoxChecked(it) },
+                onMoreClicked = { onFourPhaseSeeMoreCheckBoxChecked(it) }
+            )
+        }
     )
 }

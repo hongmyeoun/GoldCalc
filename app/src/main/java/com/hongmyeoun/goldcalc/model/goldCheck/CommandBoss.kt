@@ -136,6 +136,7 @@ class Valtan(character: Character?) {
         difficulty = onePhaseDifficulty,
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[2],
         clearGoldN = clearGold[0],
@@ -152,6 +153,7 @@ class Valtan(character: Character?) {
         difficulty = twoPhaseDifficulty,
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[3],
         clearGoldN = clearGold[1],
@@ -162,6 +164,11 @@ class Valtan(character: Character?) {
 
     fun totalGold() {
         totalGold = onePhase.totalGold + twoPhase.totalGold
+    }
+
+    fun onShowChecked() {
+        onePhase.onShowChecked()
+        twoPhase.onShowChecked()
     }
 
 }
@@ -183,6 +190,7 @@ class Biackiss(character: Character?) {
         difficulty = onePhaseDifficulty,
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[2],
         clearGoldN = clearGold[0],
@@ -199,6 +207,7 @@ class Biackiss(character: Character?) {
         difficulty = twoPhaseDifficulty,
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[3],
         clearGoldN = clearGold[1],
@@ -209,6 +218,11 @@ class Biackiss(character: Character?) {
 
     fun totalGold() {
         totalGold = onePhase.totalGold + twoPhase.totalGold
+    }
+
+    fun onShowChecked() {
+        onePhase.onShowChecked()
+        twoPhase.onShowChecked()
     }
 
 }
@@ -230,6 +244,7 @@ class KoukuSaton(character: Character?) {
         difficulty = onePhaseDifficulty,
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[3],
         clearGoldN = clearGold[0],
@@ -246,6 +261,7 @@ class KoukuSaton(character: Character?) {
         difficulty = twoPhaseDifficulty,
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[4],
         clearGoldN = clearGold[1],
@@ -261,6 +277,7 @@ class KoukuSaton(character: Character?) {
         difficulty = threePhaseDifficulty,
         isClearCheck = threePhaseIsClear,
         moreCheck = threePhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[2],
         seeMoreGoldH = seeMoreGold[5],
         clearGoldN = clearGold[2],
@@ -273,6 +290,11 @@ class KoukuSaton(character: Character?) {
         totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
     }
 
+    fun onShowChecked() {
+        onePhase.onShowChecked()
+        twoPhase.onShowChecked()
+        threePhase.onShowChecked()
+    }
 }
 
 class Abrelshud(character: Character?) {
@@ -292,6 +314,7 @@ class Abrelshud(character: Character?) {
         difficulty = onePhaseDifficulty,
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[4],
         clearGoldN = clearGold[0],
@@ -308,6 +331,7 @@ class Abrelshud(character: Character?) {
         difficulty = twoPhaseDifficulty,
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[5],
         clearGoldN = clearGold[1],
@@ -323,6 +347,7 @@ class Abrelshud(character: Character?) {
         difficulty = threePhaseDifficulty,
         isClearCheck = threePhaseIsClear,
         moreCheck = threePhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[2],
         seeMoreGoldH = seeMoreGold[6],
         clearGoldN = clearGold[2],
@@ -338,6 +363,7 @@ class Abrelshud(character: Character?) {
         difficulty = fourPhaseDifficulty,
         isClearCheck = fourPhaseIsClear,
         moreCheck = fourPhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[3],
         seeMoreGoldH = seeMoreGold[7],
         clearGoldN = clearGold[3],
@@ -350,6 +376,12 @@ class Abrelshud(character: Character?) {
         totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold + fourPhase.totalGold
     }
 
+    fun onShowChecked() {
+        onePhase.onShowChecked()
+        twoPhase.onShowChecked()
+        threePhase.onShowChecked()
+        fourPhase.onShowChecked()
+    }
 }
 
 class Illiakan(character: Character?) {
@@ -369,6 +401,7 @@ class Illiakan(character: Character?) {
         difficulty = onePhaseDifficulty,
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[3],
         clearGoldN = clearGold[0],
@@ -385,6 +418,7 @@ class Illiakan(character: Character?) {
         difficulty = twoPhaseDifficulty,
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[4],
         clearGoldN = clearGold[1],
@@ -400,6 +434,7 @@ class Illiakan(character: Character?) {
         difficulty = threePhaseDifficulty,
         isClearCheck = threePhaseIsClear,
         moreCheck = threePhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[2],
         seeMoreGoldH = seeMoreGold[5],
         clearGoldN = clearGold[2],
@@ -410,6 +445,12 @@ class Illiakan(character: Character?) {
 
     fun totalGold() {
         totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
+    }
+
+    fun onShowChecked() {
+        onePhase.onShowChecked()
+        twoPhase.onShowChecked()
+        threePhase.onShowChecked()
     }
 
 }
@@ -431,6 +472,7 @@ class Kamen(character: Character?) {
         difficulty = onePhaseDifficulty,
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[4],
         clearGoldN = clearGold[0],
@@ -447,6 +489,7 @@ class Kamen(character: Character?) {
         difficulty = twoPhaseDifficulty,
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[5],
         clearGoldN = clearGold[1],
@@ -462,6 +505,7 @@ class Kamen(character: Character?) {
         difficulty = threePhaseDifficulty,
         isClearCheck = threePhaseIsClear,
         moreCheck = threePhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[2],
         seeMoreGoldH = seeMoreGold[6],
         clearGoldN = clearGold[2],
@@ -477,6 +521,7 @@ class Kamen(character: Character?) {
         difficulty = fourPhaseDifficulty,
         isClearCheck = fourPhaseIsClear,
         moreCheck = fourPhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[3],
         seeMoreGoldH = seeMoreGold[7],
         clearGoldN = clearGold[3],
@@ -487,6 +532,13 @@ class Kamen(character: Character?) {
 
     fun totalGold() {
         totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold + fourPhase.totalGold
+    }
+
+    fun onShowChecked() {
+        onePhase.onShowChecked()
+        twoPhase.onShowChecked()
+        threePhase.onShowChecked()
+        fourPhase.onShowChecked()
     }
 
 }

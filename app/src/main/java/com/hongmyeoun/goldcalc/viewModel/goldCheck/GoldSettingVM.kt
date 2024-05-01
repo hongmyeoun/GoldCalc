@@ -1,12 +1,15 @@
 package com.hongmyeoun.goldcalc.viewModel.goldCheck
 
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
+import com.hongmyeoun.goldcalc.view.search.getCharDetail
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,15 +23,30 @@ class GoldSettingVM @Inject constructor(
     private val _character = MutableStateFlow<Character?>(null)
     val character: StateFlow<Character?> = _character
 
+    private val _showDialog = MutableStateFlow(false)
+    val showDialog: StateFlow<Boolean> = _showDialog
+    fun onDissmissRequest() {
+        _showDialog.value = false
+    }
+
+    fun onClicked() {
+        _showDialog.value = true
+    }
+
     var plusGold by mutableStateOf("0")
     var minusGold by mutableStateOf("0")
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
     private fun getCharacter(charName: String) {
+        _isLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
             characterRepository.getCharacterByName(charName).collect { character ->
                 _character.value = character
             }
         }
+        _isLoading.value = false
     }
 
     init {
@@ -36,6 +54,27 @@ class GoldSettingVM @Inject constructor(
         viewModelScope.launch(Dispatchers.Main) {
             plusGold = _character.value?.plusGold ?: "0"
             minusGold = _character.value?.minusGold ?: "0"
+            calcETCGold()
+        }
+    }
+
+    fun onDelete() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _character.value?.let {
+                characterRepository.delete(_character.value!!)
+            }
+        }
+    }
+
+    fun onAvatarClick(character: Character?) {
+        character?.let {
+            if (!character.characterImage.isNullOrEmpty()) {
+                viewModelScope.launch(Dispatchers.IO) {
+                    val newValue = !character.avatarImage
+                    val avatarImgUpdate = _character.value!!.copy(avatarImage = newValue)
+                    characterRepository.update(avatarImgUpdate)
+                }
+            }
         }
     }
 
@@ -48,11 +87,17 @@ class GoldSettingVM @Inject constructor(
         minusGold = newValue.filter { it.isDigit() }
     }
 
-    var totalGold by mutableStateOf(0)
-    private fun calcTotalGold(cb: Int, ad: Int, kz: Int, ep: Int) {
+    var etcGold by mutableStateOf(0)
+    fun calcETCGold() {
         val plusGoldInt = plusGold.toIntOrNull() ?: 0
         val minusGoldInt = minusGold.toIntOrNull() ?: 0
-        totalGold = cb + ad + kz + ep + plusGoldInt - minusGoldInt
+        etcGold = plusGoldInt - minusGoldInt
+    }
+
+    var totalGold by mutableStateOf(0)
+    private fun calcTotalGold(cb: Int, ad: Int, kz: Int, ep: Int) {
+        calcETCGold()
+        totalGold = cb + ad + kz + ep + etcGold
     }
 
     fun updateTotalGold(cb: Int, ad: Int, kz: Int, ep: Int) {
@@ -85,6 +130,35 @@ class GoldSettingVM @Inject constructor(
         selectedTab = "기타"
     }
 
+    private fun updateCharacterDetail(characterDetail: CharacterDetail) {
+        _character.value?.let {
+            val newDetail = _character.value!!.copy(
+                itemLevel = characterDetail.itemMaxLevel,
+                guildName = characterDetail.guildName,
+                title = characterDetail.title,
+                characterLevel = characterDetail.characterLevel,
+                expeditionLevel = characterDetail.expeditionLevel,
+                pvpGradeName = characterDetail.pvpGradeName,
+                townLevel = characterDetail.townLevel,
+                townName = characterDetail.townName,
+                characterImage = characterDetail.characterImage,
+            )
+            characterRepository.update(newDetail)
+        }
+    }
+
+    fun onReloadClick(context: Context, characterName: String?) {
+        characterName?.let {
+            viewModelScope.launch(Dispatchers.IO) {
+                val characterDetail = getCharDetail(context, characterName)
+                characterDetail?.let {
+                    updateCharacterDetail(characterDetail)
+                }
+            }
+            getCharacter(characterName)
+        }
+    }
+
     fun onDoneClick(commandRaid: CommandBossVM, abyssDungeon: AbyssDungeonVM, kazerothRaid: KazerothRaidVM, epicRaid: EpicRaidVM) {
         val originalCharacter = _character.value
         val originalCheckList = originalCharacter?.checkList
@@ -99,14 +173,14 @@ class GoldSettingVM @Inject constructor(
                             originalCheckList.command[0].phases[0].copy(
                                 // 1페
                                 difficulty = commandRaid.valtan.onePhase.level,
-                                isClear = commandRaid.valtan.onePhase.clearCheck,
-                                mCheck = commandRaid.valtan.onePhase.seeMoreCheck,
+                                isClear =  if (commandRaid.valtanCheck) commandRaid.valtan.onePhase.clearCheck else false,
+                                mCheck = if (commandRaid.valtanCheck) commandRaid.valtan.onePhase.seeMoreCheck else false,
                             ),
                             originalCheckList.command[0].phases[1].copy(
                                 // 2페
                                 difficulty = commandRaid.valtan.twoPhase.level,
-                                isClear = commandRaid.valtan.twoPhase.clearCheck,
-                                mCheck = commandRaid.valtan.twoPhase.seeMoreCheck,
+                                isClear =  if (commandRaid.valtanCheck) commandRaid.valtan.twoPhase.clearCheck else false,
+                                mCheck = if (commandRaid.valtanCheck) commandRaid.valtan.twoPhase.seeMoreCheck else false,
                             ),
                         ),
                         isCheck = commandRaid.valtanCheck,
@@ -117,14 +191,14 @@ class GoldSettingVM @Inject constructor(
                             originalCheckList.command[1].phases[0].copy(
                                 // 1페
                                 difficulty = commandRaid.biackiss.onePhase.level,
-                                isClear = commandRaid.biackiss.onePhase.clearCheck,
-                                mCheck = commandRaid.biackiss.onePhase.seeMoreCheck,
+                                isClear =  if (commandRaid.biaCheck) commandRaid.biackiss.onePhase.clearCheck else false,
+                                mCheck = if (commandRaid.biaCheck) commandRaid.biackiss.onePhase.seeMoreCheck else false,
                             ),
                             originalCheckList.command[1].phases[1].copy(
                                 // 2페
                                 difficulty = commandRaid.biackiss.twoPhase.level,
-                                isClear = commandRaid.biackiss.twoPhase.clearCheck,
-                                mCheck = commandRaid.biackiss.twoPhase.seeMoreCheck,
+                                isClear =  if (commandRaid.biaCheck) commandRaid.biackiss.twoPhase.clearCheck else false,
+                                mCheck = if (commandRaid.biaCheck) commandRaid.biackiss.twoPhase.seeMoreCheck else false,
                             ),
                         ),
                         isCheck = commandRaid.biaCheck,
@@ -135,19 +209,19 @@ class GoldSettingVM @Inject constructor(
                             originalCheckList.command[2].phases[0].copy(
                                 // 1페
                                 difficulty = commandRaid.koukuSaton.onePhase.level,
-                                isClear = commandRaid.koukuSaton.onePhase.clearCheck,
-                                mCheck = commandRaid.koukuSaton.onePhase.seeMoreCheck,
+                                isClear =  if (commandRaid.koukuCheck) commandRaid.koukuSaton.onePhase.clearCheck else false,
+                                mCheck = if (commandRaid.koukuCheck) commandRaid.koukuSaton.onePhase.seeMoreCheck else false,
                             ),
                             originalCheckList.command[2].phases[1].copy(
                                 // 2페
                                 difficulty = commandRaid.koukuSaton.twoPhase.level,
-                                isClear = commandRaid.koukuSaton.twoPhase.clearCheck,
-                                mCheck = commandRaid.koukuSaton.twoPhase.seeMoreCheck,
+                                isClear =  if (commandRaid.koukuCheck) commandRaid.koukuSaton.twoPhase.clearCheck else false,
+                                mCheck = if (commandRaid.koukuCheck) commandRaid.koukuSaton.twoPhase.seeMoreCheck else false,
                             ),
                             originalCheckList.command[2].phases[2].copy( // 3페
                                 difficulty = commandRaid.koukuSaton.threePhase.level,
-                                isClear = commandRaid.koukuSaton.threePhase.clearCheck,
-                                mCheck = commandRaid.koukuSaton.threePhase.seeMoreCheck
+                                isClear =  if (commandRaid.koukuCheck) commandRaid.koukuSaton.threePhase.clearCheck else false,
+                                mCheck = if (commandRaid.koukuCheck) commandRaid.koukuSaton.threePhase.seeMoreCheck else false,
                             ),
                         ),
                         isCheck = commandRaid.koukuCheck,
@@ -158,24 +232,24 @@ class GoldSettingVM @Inject constructor(
                             originalCheckList.command[3].phases[0].copy(
                                 // 1페
                                 difficulty = commandRaid.abrelshud.onePhase.level,
-                                isClear = commandRaid.abrelshud.onePhase.clearCheck,
-                                mCheck = commandRaid.abrelshud.onePhase.seeMoreCheck,
+                                isClear =  if (commandRaid.abreCheck) commandRaid.abrelshud.onePhase.clearCheck else false,
+                                mCheck = if (commandRaid.abreCheck) commandRaid.abrelshud.onePhase.seeMoreCheck else false,
                             ),
                             originalCheckList.command[3].phases[1].copy(
                                 // 2페
                                 difficulty = commandRaid.abrelshud.twoPhase.level,
-                                isClear = commandRaid.abrelshud.twoPhase.clearCheck,
-                                mCheck = commandRaid.abrelshud.twoPhase.seeMoreCheck,
+                                isClear =  if (commandRaid.abreCheck) commandRaid.abrelshud.twoPhase.clearCheck else false,
+                                mCheck = if (commandRaid.abreCheck) commandRaid.abrelshud.twoPhase.seeMoreCheck else false,
                             ),
                             originalCheckList.command[3].phases[2].copy( // 3페
                                 difficulty = commandRaid.abrelshud.threePhase.level,
-                                isClear = commandRaid.abrelshud.threePhase.clearCheck,
-                                mCheck = commandRaid.abrelshud.threePhase.seeMoreCheck
+                                isClear =  if (commandRaid.abreCheck) commandRaid.abrelshud.threePhase.clearCheck else false,
+                                mCheck = if (commandRaid.abreCheck) commandRaid.abrelshud.threePhase.seeMoreCheck else false,
                             ),
                             originalCheckList.command[3].phases[3].copy( // 4페
                                 difficulty = commandRaid.abrelshud.fourPhase.level,
-                                isClear = commandRaid.abrelshud.fourPhase.clearCheck,
-                                mCheck = commandRaid.abrelshud.fourPhase.seeMoreCheck
+                                isClear =  if (commandRaid.abreCheck) commandRaid.abrelshud.fourPhase.clearCheck else false,
+                                mCheck = if (commandRaid.abreCheck) commandRaid.abrelshud.fourPhase.seeMoreCheck else false,
                             ),
                         ),
                         isCheck = commandRaid.abreCheck,
@@ -186,19 +260,19 @@ class GoldSettingVM @Inject constructor(
                             originalCheckList.command[4].phases[0].copy(
                                 // 1페
                                 difficulty = commandRaid.illiakan.onePhase.level,
-                                isClear = commandRaid.illiakan.onePhase.clearCheck,
-                                mCheck = commandRaid.illiakan.onePhase.seeMoreCheck,
+                                isClear =  if (commandRaid.illiCheck) commandRaid.illiakan.onePhase.clearCheck else false,
+                                mCheck = if (commandRaid.illiCheck) commandRaid.illiakan.onePhase.seeMoreCheck else false,
                             ),
                             originalCheckList.command[4].phases[1].copy(
                                 // 2페
                                 difficulty = commandRaid.illiakan.twoPhase.level,
-                                isClear = commandRaid.illiakan.twoPhase.clearCheck,
-                                mCheck = commandRaid.illiakan.twoPhase.seeMoreCheck,
+                                isClear =  if (commandRaid.illiCheck) commandRaid.illiakan.twoPhase.clearCheck else false,
+                                mCheck = if (commandRaid.illiCheck) commandRaid.illiakan.twoPhase.seeMoreCheck else false,
                             ),
                             originalCheckList.command[4].phases[2].copy( // 3페
                                 difficulty = commandRaid.illiakan.threePhase.level,
-                                isClear = commandRaid.illiakan.threePhase.clearCheck,
-                                mCheck = commandRaid.illiakan.threePhase.seeMoreCheck
+                                isClear =  if (commandRaid.illiCheck) commandRaid.illiakan.threePhase.clearCheck else false,
+                                mCheck = if (commandRaid.illiCheck) commandRaid.illiakan.threePhase.seeMoreCheck else false,
                             ),
                         ),
                         isCheck = commandRaid.illiCheck,
@@ -209,24 +283,24 @@ class GoldSettingVM @Inject constructor(
                             originalCheckList.command[5].phases[0].copy(
                                 // 1페
                                 difficulty = commandRaid.kamen.onePhase.level,
-                                isClear = commandRaid.kamen.onePhase.clearCheck,
-                                mCheck = commandRaid.kamen.onePhase.seeMoreCheck,
+                                isClear =  if (commandRaid.kamenCheck) commandRaid.kamen.onePhase.clearCheck else false,
+                                mCheck = if (commandRaid.kamenCheck) commandRaid.kamen.onePhase.seeMoreCheck else false,
                             ),
                             originalCheckList.command[5].phases[1].copy(
                                 // 2페
                                 difficulty = commandRaid.kamen.twoPhase.level,
-                                isClear = commandRaid.kamen.twoPhase.clearCheck,
-                                mCheck = commandRaid.kamen.twoPhase.seeMoreCheck,
+                                isClear =  if (commandRaid.kamenCheck) commandRaid.kamen.twoPhase.clearCheck else false,
+                                mCheck = if (commandRaid.kamenCheck) commandRaid.kamen.twoPhase.seeMoreCheck else false,
                             ),
                             originalCheckList.command[5].phases[2].copy( // 3페
                                 difficulty = commandRaid.kamen.threePhase.level,
-                                isClear = commandRaid.kamen.threePhase.clearCheck,
-                                mCheck = commandRaid.kamen.threePhase.seeMoreCheck
+                                isClear =  if (commandRaid.kamenCheck) commandRaid.kamen.threePhase.clearCheck else false,
+                                mCheck = if (commandRaid.kamenCheck) commandRaid.kamen.threePhase.seeMoreCheck else false,
                             ),
                             originalCheckList.command[5].phases[3].copy( // 4페
                                 difficulty = commandRaid.kamen.fourPhase.level,
-                                isClear = commandRaid.kamen.fourPhase.clearCheck,
-                                mCheck = commandRaid.kamen.fourPhase.seeMoreCheck
+                                isClear =  if (commandRaid.kamenCheck) commandRaid.kamen.fourPhase.clearCheck else false,
+                                mCheck = if (commandRaid.kamenCheck) commandRaid.kamen.fourPhase.seeMoreCheck else false,
                             ),
                         ),
                         isCheck = commandRaid.kamenCheck,
@@ -237,18 +311,18 @@ class GoldSettingVM @Inject constructor(
                         phases = listOf(
                             originalCheckList.abyssDungeon[0].phases[0].copy( // 1페
                                 difficulty = abyssDungeon.kayangel.onePhase.level,
-                                isClear = abyssDungeon.kayangel.onePhase.clearCheck,
-                                mCheck = abyssDungeon.kayangel.onePhase.seeMoreCheck
+                                isClear =  if (abyssDungeon.kayangelCheck) abyssDungeon.kayangel.onePhase.clearCheck else false,
+                                mCheck = if (abyssDungeon.kayangelCheck) abyssDungeon.kayangel.onePhase.seeMoreCheck else false,
                             ),
                             originalCheckList.abyssDungeon[0].phases[1].copy( // 2페
                                 difficulty = abyssDungeon.kayangel.twoPhase.level,
-                                isClear = abyssDungeon.kayangel.twoPhase.clearCheck,
-                                mCheck = abyssDungeon.kayangel.twoPhase.seeMoreCheck
+                                isClear =  if (abyssDungeon.kayangelCheck) abyssDungeon.kayangel.twoPhase.clearCheck else false,
+                                mCheck = if (abyssDungeon.kayangelCheck) abyssDungeon.kayangel.twoPhase.seeMoreCheck else false,
                             ),
                             originalCheckList.abyssDungeon[0].phases[2].copy( // 3페
                                 difficulty = abyssDungeon.kayangel.threePhase.level,
-                                isClear = abyssDungeon.kayangel.threePhase.clearCheck,
-                                mCheck = abyssDungeon.kayangel.threePhase.seeMoreCheck
+                                isClear =  if (abyssDungeon.kayangelCheck) abyssDungeon.kayangel.threePhase.clearCheck else false,
+                                mCheck = if (abyssDungeon.kayangelCheck) abyssDungeon.kayangel.threePhase.seeMoreCheck else false,
                             ),
                         ),
                         isCheck = abyssDungeon.kayangelCheck
@@ -257,23 +331,23 @@ class GoldSettingVM @Inject constructor(
                         phases = listOf(
                             originalCheckList.abyssDungeon[1].phases[0].copy( // 1페
                                 difficulty = abyssDungeon.ivoryTower.onePhase.level,
-                                isClear = abyssDungeon.ivoryTower.onePhase.clearCheck,
-                                mCheck = abyssDungeon.ivoryTower.onePhase.seeMoreCheck
+                                isClear =  if (abyssDungeon.ivoryCheck) abyssDungeon.ivoryTower.onePhase.clearCheck else false,
+                                mCheck = if (abyssDungeon.ivoryCheck) abyssDungeon.ivoryTower.onePhase.seeMoreCheck else false,
                             ),
                             originalCheckList.abyssDungeon[1].phases[1].copy( // 2페
                                 difficulty = abyssDungeon.ivoryTower.twoPhase.level,
-                                isClear = abyssDungeon.ivoryTower.twoPhase.clearCheck,
-                                mCheck = abyssDungeon.ivoryTower.twoPhase.seeMoreCheck
+                                isClear =  if (abyssDungeon.ivoryCheck) abyssDungeon.ivoryTower.twoPhase.clearCheck else false,
+                                mCheck = if (abyssDungeon.ivoryCheck) abyssDungeon.ivoryTower.twoPhase.seeMoreCheck else false,
                             ),
                             originalCheckList.abyssDungeon[1].phases[2].copy( // 3페
                                 difficulty = abyssDungeon.ivoryTower.threePhase.level,
-                                isClear = abyssDungeon.ivoryTower.threePhase.clearCheck,
-                                mCheck = abyssDungeon.ivoryTower.threePhase.seeMoreCheck
+                                isClear =  if (abyssDungeon.ivoryCheck) abyssDungeon.ivoryTower.threePhase.clearCheck else false,
+                                mCheck = if (abyssDungeon.ivoryCheck) abyssDungeon.ivoryTower.threePhase.seeMoreCheck else false,
                             ),
                             originalCheckList.abyssDungeon[1].phases[3].copy( // 4페
                                 difficulty = abyssDungeon.ivoryTower.fourPhase.level,
-                                isClear = abyssDungeon.ivoryTower.fourPhase.clearCheck,
-                                mCheck = abyssDungeon.ivoryTower.fourPhase.seeMoreCheck
+                                isClear =  if (abyssDungeon.ivoryCheck) abyssDungeon.ivoryTower.fourPhase.clearCheck else false,
+                                mCheck = if (abyssDungeon.ivoryCheck) abyssDungeon.ivoryTower.fourPhase.seeMoreCheck else false,
                             ),
                         ),
                         isCheck = abyssDungeon.ivoryCheck
@@ -285,14 +359,14 @@ class GoldSettingVM @Inject constructor(
                             originalCheckList.kazeroth[0].phases[0].copy(
                                 // 1페
                                 difficulty = kazerothRaid.echidna.onePhase.level,
-                                isClear = kazerothRaid.echidna.onePhase.clearCheck,
-                                mCheck = kazerothRaid.echidna.onePhase.seeMoreCheck,
+                                isClear =  if (kazerothRaid.echiCheck) kazerothRaid.echidna.onePhase.clearCheck else false,
+                                mCheck = if (kazerothRaid.echiCheck) kazerothRaid.echidna.onePhase.seeMoreCheck else false,
                             ),
                             originalCheckList.kazeroth[0].phases[1].copy(
                                 // 2페
                                 difficulty = kazerothRaid.echidna.twoPhase.level,
-                                isClear = kazerothRaid.echidna.twoPhase.clearCheck,
-                                mCheck = kazerothRaid.echidna.twoPhase.seeMoreCheck,
+                                isClear =  if (kazerothRaid.echiCheck) kazerothRaid.echidna.twoPhase.clearCheck else false,
+                                mCheck = if (kazerothRaid.echiCheck) kazerothRaid.echidna.twoPhase.seeMoreCheck else false,
                             ),
                         ),
                         isCheck = kazerothRaid.echiCheck
@@ -304,14 +378,14 @@ class GoldSettingVM @Inject constructor(
                             originalCheckList.epic[0].phases[0].copy(
                                 // 1페
                                 difficulty = epicRaid.behemoth.onePhase.level,
-                                isClear = epicRaid.behemoth.onePhase.clearCheck,
-                                mCheck = epicRaid.behemoth.onePhase.seeMoreCheck,
+                                isClear =  if (epicRaid.beheCheck) epicRaid.behemoth.onePhase.clearCheck else false,
+                                mCheck = if (epicRaid.beheCheck) epicRaid.behemoth.onePhase.seeMoreCheck else false,
                             ),
                             originalCheckList.epic[0].phases[1].copy(
                                 // 2페
                                 difficulty = epicRaid.behemoth.twoPhase.level,
-                                isClear = epicRaid.behemoth.twoPhase.clearCheck,
-                                mCheck = epicRaid.behemoth.twoPhase.seeMoreCheck,
+                                isClear =  if (epicRaid.beheCheck) epicRaid.behemoth.twoPhase.clearCheck else false,
+                                mCheck = if (epicRaid.beheCheck) epicRaid.behemoth.twoPhase.seeMoreCheck else false,
                             ),
                         ),
                         isCheck = epicRaid.beheCheck
@@ -342,10 +416,16 @@ class GoldSettingVM @Inject constructor(
                 valtanTotalGold = if (!commandRaid.valtanCheck) 0 else originalRaidInfo.valtanTotalGold,
             )
 
+            var updateEarnGold = original.earnGold
+            updatedRaidInfo?.let {
+                updateEarnGold = updatedRaidInfo.behemothTotalGold + updatedRaidInfo.echidnaTotalGold + updatedRaidInfo.kamenTotalGold + updatedRaidInfo.ivoryTotalGold + updatedRaidInfo.illiakanTotalGold + updatedRaidInfo.kayangelTotalGold + updatedRaidInfo.abrelTotalGold + updatedRaidInfo.koukuTotalGold + updatedRaidInfo.biackissTotalGold + updatedRaidInfo.valtanTotalGold
+            }
+
             original.copy(
                 weeklyGold = totalGold,
                 plusGold = plusGold,
                 minusGold = minusGold,
+                earnGold = updateEarnGold,
                 checkList = updatedCheckList?: original.checkList,
                 raidPhaseInfo = updatedRaidInfo?: original.raidPhaseInfo
             )

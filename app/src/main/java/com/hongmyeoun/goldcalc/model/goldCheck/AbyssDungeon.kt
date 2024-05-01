@@ -68,6 +68,7 @@ class Kayangel(character: Character?) {
         difficulty = onePhaseDifficulty,
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[3],
         clearGoldN = clearGold[0],
@@ -84,6 +85,7 @@ class Kayangel(character: Character?) {
         difficulty = twoPhaseDifficulty,
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[4],
         clearGoldN = clearGold[1],
@@ -99,6 +101,7 @@ class Kayangel(character: Character?) {
         difficulty = threePhaseDifficulty,
         isClearCheck = threePhaseIsClear,
         moreCheck = threePhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[2],
         seeMoreGoldH = seeMoreGold[5],
         clearGoldN = clearGold[2],
@@ -109,6 +112,12 @@ class Kayangel(character: Character?) {
 
     fun totalGold() {
         totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
+    }
+
+    fun onShowChecked() {
+        onePhase.onShowChecked()
+        twoPhase.onShowChecked()
+        threePhase.onShowChecked()
     }
 
 }
@@ -130,6 +139,7 @@ class IvoryTower(character: Character?) {
         difficulty = onePhaseDifficulty,
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[4],
         clearGoldN = clearGold[0],
@@ -146,6 +156,7 @@ class IvoryTower(character: Character?) {
         difficulty = twoPhaseDifficulty,
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[5],
         clearGoldN = clearGold[1],
@@ -161,6 +172,7 @@ class IvoryTower(character: Character?) {
         difficulty = threePhaseDifficulty,
         isClearCheck = threePhaseIsClear,
         moreCheck = threePhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[2],
         seeMoreGoldH = seeMoreGold[6],
         clearGoldN = clearGold[2],
@@ -176,6 +188,7 @@ class IvoryTower(character: Character?) {
         difficulty = fourPhaseDifficulty,
         isClearCheck = fourPhaseIsClear,
         moreCheck = fourPhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[3],
         seeMoreGoldH = seeMoreGold[7],
         clearGoldN = clearGold[3],
@@ -186,6 +199,13 @@ class IvoryTower(character: Character?) {
 
     fun totalGold() {
         totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold + fourPhase.totalGold
+    }
+
+    fun onShowChecked() {
+        onePhase.onShowChecked()
+        twoPhase.onShowChecked()
+        threePhase.onShowChecked()
+        fourPhase.onShowChecked()
     }
 
 }

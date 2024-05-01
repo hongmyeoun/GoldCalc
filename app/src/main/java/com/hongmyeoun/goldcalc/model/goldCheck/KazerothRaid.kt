@@ -51,6 +51,7 @@ class Echidna(character: Character?) {
         difficulty = onePhaseDifficulty,
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[2],
         clearGoldN = clearGold[0],
@@ -67,6 +68,7 @@ class Echidna(character: Character?) {
         difficulty = twoPhaseDifficulty,
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
+        isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[3],
         clearGoldN = clearGold[1],
@@ -77,6 +79,11 @@ class Echidna(character: Character?) {
 
     fun totalGold() {
         totalGold = onePhase.totalGold + twoPhase.totalGold
+    }
+
+    fun onShowChecked() {
+        onePhase.onShowChecked()
+        twoPhase.onShowChecked()
     }
 
 }

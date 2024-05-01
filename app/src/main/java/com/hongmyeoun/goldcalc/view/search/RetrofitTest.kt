@@ -22,7 +22,6 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -117,7 +116,7 @@ fun CharacterScreen(navController: NavHostController) {
                         Image(
                             modifier = Modifier.size(32.dp),
                             contentScale = ContentScale.Crop,
-                            painter = painterResource(id = CharacterResourceMapper.getClassImage(isDark, it.characterClassName)),
+                            painter = painterResource(id = CharacterResourceMapper.getClassEmblem(isDark, it.characterClassName)),
                             contentDescription = "직업군"
                         )
                         Spacer(modifier = Modifier.width(8.dp))
@@ -165,19 +164,31 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
             contentDescription = null,
         )
         Text(text = "${characterDetail?.characterClassName?:"ERROR"} ${characterDetail?.characterName?:"ERROR"} : Lv. ${characterDetail?.itemMaxLevel?:0}")
-        OutlinedButton(
+        Button(
             onClick = {
+                val avatarImage = !characterDetail?.characterImage.isNullOrEmpty()
+
                 val character = Character(
                     name = characterDetail!!.characterName,
                     itemLevel = characterDetail!!.itemMaxLevel,
                     serverName = characterDetail!!.serverName,
-                    className = characterDetail!!.characterClassName
+                    className = characterDetail!!.characterClassName,
+
+                    guildName = characterDetail!!.guildName,
+                    title = characterDetail!!.title,
+                    characterLevel = characterDetail!!.characterLevel,
+                    expeditionLevel = characterDetail!!.expeditionLevel,
+                    pvpGradeName = characterDetail!!.pvpGradeName,
+                    townLevel = characterDetail!!.townLevel,
+                    townName = characterDetail!!.townName,
+                    characterImage = characterDetail?.characterImage,
+                    avatarImage = avatarImage
                 )
                 viewModel.saveCharacter(character)
             },
             enabled = !viewModel.isSaved
         ) {
-            
+            Text(text = "가져오기")
         }
     }
     

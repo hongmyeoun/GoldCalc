@@ -43,20 +43,32 @@ class CommandBossVM(val character: Character?): ViewModel() {
 
     fun onValtanCheck() {
         valtanCheck = !valtanCheck
+        valtan.onShowChecked()
+        sumGold()
     }
     fun onBiaCheck() {
         biaCheck = !biaCheck
+        biackiss.onShowChecked()
+        sumGold()
     }
     fun onKoukuCheck() {
         koukuCheck = !koukuCheck
+        koukuSaton.onShowChecked()
+        sumGold()
     }
     fun onAbreCheck() {
         abreCheck = !abreCheck
+        abrelshud.onShowChecked()
+        sumGold()
     }
     fun onIlliCheck(){
         illiCheck = !illiCheck
+        illiakan.onShowChecked()
+        sumGold()
     }
     fun onKamenCheck() {
         kamenCheck = !kamenCheck
+        kamen.onShowChecked()
+        sumGold()
     }
 }
