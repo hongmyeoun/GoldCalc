@@ -106,7 +106,10 @@ class GoldSettingVM @Inject constructor(
 
     var expanded by mutableStateOf(false)
     fun expand() {
-        expanded = !expanded
+        expanded = true
+    }
+    fun close() {
+        expanded = false
     }
 
     var selectedTab by mutableStateOf("군단장")

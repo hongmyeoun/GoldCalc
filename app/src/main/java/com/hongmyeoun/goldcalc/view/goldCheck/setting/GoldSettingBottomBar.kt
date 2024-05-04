@@ -1,7 +1,5 @@
 package com.hongmyeoun.goldcalc.view.goldCheck.setting
 
-import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -12,13 +10,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -32,11 +29,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -48,16 +43,13 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.SimplephaseInfo
-import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.view.main.formatWithCommas
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun GoldSettingBottomBar(
     viewModel: GoldSettingVM,
@@ -67,62 +59,14 @@ fun GoldSettingBottomBar(
     epVM: EpicRaidVM,
     navController: NavHostController
 ) {
-    val arrowIcon = if (viewModel.expanded) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp
-
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
-    val maxColumnHeight = (screenHeight * 0.8f) // 화면 높이의 80%
-
-    val character by viewModel.character.collectAsState()
-
-    val scrollState = rememberLazyListState()
-    val scope = rememberCoroutineScope()
-
-    LazyColumn(
-        modifier = Modifier
-            .heightIn(max = maxColumnHeight)
-            .animateContentSize()
-            .border(1.dp, Color.LightGray)
-            .clickable {
-                viewModel.expand()
-                scope.launch {
-                    scrollState.animateScrollToItem(index = 2)
-                }
-            },
-        reverseLayout = true,
-        state = scrollState
-    ) {
-        stickyHeader {
-            BottomBar(
-                viewModel = viewModel,
-                navController = navController,
-                character = character,
-                onDoneClicked = { viewModel.onDoneClick(cbVM, adVM, kzVM, epVM) }
-            )
-        }
-        if (viewModel.expanded) {
-            item {
-                SimpleSummary(cbVM, adVM, kzVM, epVM, viewModel)
-            }
-        }
-        item {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .height(20.dp).align(Alignment.Center),
-                    imageVector = arrowIcon,
-                    contentDescription = "펼치기, 접기"
-                )
-            }
-        }
-    }
+    BottomBar(
+        viewModel = viewModel,
+        navController = navController
+    ) { viewModel.onDoneClick(cbVM, adVM, kzVM, epVM) }
 }
 
 @Composable
-private fun SimpleSummary(
+fun SimpleSummary(
     cbVM: CommandBossVM,
     adVM: AbyssDungeonVM,
     kzVM: KazerothRaidVM,
@@ -132,7 +76,7 @@ private fun SimpleSummary(
     Box(
         contentAlignment = Alignment.BottomCenter
     ) {
-        Column {
+        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
             if (cbVM.valtanCheck || cbVM.biaCheck || cbVM.koukuCheck || cbVM.abreCheck || cbVM.illiCheck || cbVM.kamenCheck) {
                 SimpleCommandRaidInfo(cbVM)
             }
@@ -476,52 +420,71 @@ private fun SimpleETCInfo(viewModel: GoldSettingVM) {
 private fun BottomBar(
     viewModel: GoldSettingVM,
     navController: NavHostController,
-    character: Character?,
     onDoneClicked: () -> Unit
 ) {
-    val borderPadding = if (viewModel.expanded) Modifier.border(1.dp, Color.LightGray).padding(start = 16.dp, end = 8.dp, bottom = 16.dp, top = 16.dp) else Modifier.padding(start = 16.dp, end = 8.dp, bottom = 16.dp)
+    val character by viewModel.character.collectAsState()
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.background)
-            .then(borderPadding),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Row(
-            modifier = Modifier.weight(3f),
-            verticalAlignment = Alignment.CenterVertically
+    val borderPadding = if (viewModel.expanded) Modifier
+        .border(1.dp, Color.LightGray)
+        .padding(start = 16.dp, end = 8.dp, bottom = 16.dp, top = 16.dp) else Modifier.padding(start = 16.dp, end = 8.dp, bottom = 16.dp)
+    val arrowIcon = if (viewModel.expanded) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp
+
+    Column {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
         ) {
-            BottomGoldText(beforeOrAfter = "전", gold = character?.weeklyGold?.formatWithCommas())
-            Spacer(modifier = Modifier.width(8.dp))
-            Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "화살표")
-            Spacer(modifier = Modifier.width(12.dp))
-            BottomGoldText(beforeOrAfter = "후", gold = viewModel.totalGold.formatWithCommas())
+            Icon(
+                modifier = Modifier
+                    .height(20.dp)
+                    .align(Alignment.Center),
+                imageVector = arrowIcon,
+                contentDescription = "펼치기, 접기"
+            )
         }
-        Row(horizontalArrangement = Arrangement.End) {
-            OutlinedButton(
-                onClick = {
-                    navController.navigate("Main") {
-                        popUpTo("Check/{charName}") {
-                            inclusive = true
-                        }
-                    }
-                }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.background)
+                .clickable { viewModel.expand() }
+                .then(borderPadding),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Row(
+                modifier = Modifier.weight(3f),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("취소")
+                BottomGoldText(beforeOrAfter = "전", gold = character?.weeklyGold?.formatWithCommas())
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "화살표")
+                Spacer(modifier = Modifier.width(12.dp))
+                BottomGoldText(beforeOrAfter = "후", gold = viewModel.totalGold.formatWithCommas())
             }
-            Spacer(modifier = Modifier.width(8.dp))
-            Button(
-                onClick = {
-                    onDoneClicked()
-                    navController.navigate("Main") {
-                        popUpTo("Check/{charName}") {
-                            inclusive = true
+            Row(horizontalArrangement = Arrangement.End) {
+                OutlinedButton(
+                    onClick = {
+                        navController.navigate("Main") {
+                            popUpTo("Check/{charName}") {
+                                inclusive = true
+                            }
                         }
                     }
+                ) {
+                    Text("취소")
                 }
-            ) {
-                Text(text = "완료")
+                Spacer(modifier = Modifier.width(8.dp))
+                Button(
+                    onClick = {
+                        onDoneClicked()
+                        navController.navigate("Main") {
+                            popUpTo("Check/{charName}") {
+                                inclusive = true
+                            }
+                        }
+                    }
+                ) {
+                    Text(text = "완료")
+                }
             }
         }
     }
