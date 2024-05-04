@@ -11,6 +11,7 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val MokokoGreen = Color(0xffA6FF4D)
+val MokokoBG = Color(0xffF0F9E8)
 
 val DarkModeGray = Color(0xFF646E6F)
 
