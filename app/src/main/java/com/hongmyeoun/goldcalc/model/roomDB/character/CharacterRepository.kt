@@ -26,4 +26,8 @@ class CharacterRepository(private val characterDao: CharacterDao) {
     fun update(character: Character) {
         characterDao.update(character)
     }
+
+    fun updateAll(characters: List<Character>) {
+        characterDao.updateAll(characters)
+    }
 }

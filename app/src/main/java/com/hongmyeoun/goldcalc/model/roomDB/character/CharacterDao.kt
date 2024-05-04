@@ -21,6 +21,9 @@ interface CharacterDao {
     @Update
     fun update(character: Character)
 
+    @Update
+    fun updateAll(characters: List<Character>)
+
     @Query("SELECT name FROM character")
     fun getNames(): List<String>
 
