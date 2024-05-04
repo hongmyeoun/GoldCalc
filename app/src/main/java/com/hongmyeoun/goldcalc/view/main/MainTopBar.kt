@@ -53,6 +53,7 @@ import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
 import com.hongmyeoun.goldcalc.ui.theme.DarkModeGray
+import com.hongmyeoun.goldcalc.ui.theme.MokokoBG
 import com.hongmyeoun.goldcalc.ui.theme.MokokoGreen
 import com.hongmyeoun.goldcalc.viewModel.main.CharacterListVM
 import java.text.NumberFormat
@@ -62,10 +63,10 @@ fun MainAppTopBar(navController: NavHostController, characterListVM: CharacterLi
     Column {
         Column(
             modifier = Modifier
-//                .background(Color(0XFFDDEEAA))
+                .background(MokokoBG)
                 .padding(16.dp)
         ) {
-            MainAppTop(navController)
+            MainAppTop(navController, characterListVM)
             MainAppProgressText(characterListVM)
             MainAppProgressBar(characterListVM)
             MainAppGoldCurrent(characterListVM)
@@ -75,12 +76,12 @@ fun MainAppTopBar(navController: NavHostController, characterListVM: CharacterLi
 }
 
 @Composable
-private fun MainAppTop(navController: NavHostController) {
+private fun MainAppTop(navController: NavHostController, characterListVM: CharacterListVM) {
     Box(
         modifier = Modifier.fillMaxWidth(),
     ) {
         MainAppNameText(modifier = Modifier.align(Alignment.CenterStart))
-        MainMenuButtons(modifier = Modifier.align(Alignment.CenterEnd), navController)
+        MainMenuButtons(modifier = Modifier.align(Alignment.CenterEnd), navController, characterListVM)
     }
     Spacer(modifier = Modifier.height(16.dp))
 }
@@ -403,7 +404,7 @@ private fun MainAppGoldCurrent(characterListVM: CharacterListVM) {
 }
 
 @Composable
-private fun MainMenuButtons(modifier: Modifier, navController: NavHostController) {
+private fun MainMenuButtons(modifier: Modifier, navController: NavHostController, characterListVM: CharacterListVM) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
@@ -420,7 +421,7 @@ private fun MainMenuButtons(modifier: Modifier, navController: NavHostController
 
         IconButton(
             modifier = Modifier.size(35.dp),
-            onClick = { navController.navigate("Main") { popUpTo("Main") { inclusive = true } } }
+            onClick = { characterListVM.onReset() }
         ) {
             Icon(
                 imageVector = Icons.Default.Refresh,

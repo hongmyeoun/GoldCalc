@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
+import com.hongmyeoun.goldcalc.model.roomDB.character.RaidPhaseInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -66,6 +67,19 @@ class CharacterListVM @Inject constructor(
     var earnGold by mutableStateOf(0)
     var remainGold by mutableStateOf(0)
 
+    fun onReset() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val resetData = _characters.value.map {
+                it.copy(
+                    earnGold = 0,
+                    raidPhaseInfo = RaidPhaseInfo()
+                )
+            }
+            characterRepository.updateAll(resetData)
+            _isLoading.value = true
+            mainScreenloading()
+        }
+    }
 
     init {
         getCharacters()
