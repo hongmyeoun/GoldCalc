@@ -5,6 +5,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -17,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import com.hongmyeoun.goldcalc.viewModel.main.CharacterListVM
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -44,18 +46,20 @@ fun MainScreen(
 @Composable
 fun BackOnPressed(snackbarHostState: SnackbarHostState) {
     val context = LocalContext.current
-    var backPressedState by remember { mutableStateOf(true) }
     var backPressedTime = 0L
     val scope = rememberCoroutineScope()
 
-    BackHandler(enabled = backPressedState) {
-        if(System.currentTimeMillis() - backPressedTime <= 1000L) {
+    BackHandler {
+        if(System.currentTimeMillis() - backPressedTime <= 2000L) {
             // 앱 종료
             (context as Activity).finish()
         } else {
-            backPressedState = true
             scope.launch {
-                snackbarHostState.showSnackbar("한 번 더 누르시면 앱이 종료됩니다.")
+                val job = launch {
+                    snackbarHostState.showSnackbar(message = "한 번 더 누르시면 앱이 종료됩니다.")
+                }
+                delay(2000L)
+                job.cancel()
             }
         }
         backPressedTime = System.currentTimeMillis()
