@@ -270,6 +270,7 @@ private fun RaidHeader(viewModel: GoldSettingVM, isDark: Boolean = isSystemInDar
             TopBarBox(
                 title = "군단장",
                 modifier = Modifier.weight(1f),
+                selectedHeader = viewModel.selectedTab,
                 onClick = { viewModel.moveCommandRaid() }
             )
             Divider(
@@ -281,7 +282,8 @@ private fun RaidHeader(viewModel: GoldSettingVM, isDark: Boolean = isSystemInDar
             TopBarBox(
                 title = "어비스 던전",
                 modifier = Modifier.weight(1f),
-                onClick = { viewModel.moveAbyssDungeon() }
+                onClick = { viewModel.moveAbyssDungeon() },
+                selectedHeader = viewModel.selectedTab
             )
             Divider(
                 modifier = Modifier
@@ -292,7 +294,8 @@ private fun RaidHeader(viewModel: GoldSettingVM, isDark: Boolean = isSystemInDar
             TopBarBox(
                 title = "카제로스",
                 modifier = Modifier.weight(1f),
-                onClick = { viewModel.moveKazeRaid() }
+                onClick = { viewModel.moveKazeRaid() },
+                selectedHeader = viewModel.selectedTab
             )
             Divider(
                 modifier = Modifier
@@ -303,7 +306,8 @@ private fun RaidHeader(viewModel: GoldSettingVM, isDark: Boolean = isSystemInDar
             TopBarBox(
                 title = "에픽",
                 modifier = Modifier.weight(1f),
-                onClick = { viewModel.moveEpicRaid() }
+                onClick = { viewModel.moveEpicRaid() },
+                selectedHeader = viewModel.selectedTab
             )
             Divider(
                 modifier = Modifier
@@ -314,7 +318,8 @@ private fun RaidHeader(viewModel: GoldSettingVM, isDark: Boolean = isSystemInDar
             TopBarBox(
                 title = "기타",
                 modifier = Modifier.weight(1f),
-                onClick = { viewModel.moveETC() }
+                onClick = { viewModel.moveETC() },
+                selectedHeader = viewModel.selectedTab
             )
         }
     }
@@ -325,21 +330,31 @@ private fun RaidHeader(viewModel: GoldSettingVM, isDark: Boolean = isSystemInDar
 private fun TopBarBox(
     title: String,
     modifier: Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    selectedHeader: String
 ) {
+    val selectedBGColor = if (selectedHeader == title) Color.White else ImageBG
+    val selectedTextColor = if (selectedHeader == title) Color.Black else Color.White
+
     Box(
         modifier = modifier
             .fillMaxSize()
-            .clickable { onClick() },
+            .clickable { onClick() }
+            .background(selectedBGColor)
+        ,
         contentAlignment = Alignment.Center
     ) {
         if (title == "어비스 던전") {
             Text(
                 text = title,
-                fontSize = 12.sp
+                fontSize = 12.sp,
+                color = selectedTextColor
             )
         } else {
-            Text(text = title)
+            Text(
+                text = title,
+                color = selectedTextColor
+            )
         }
     }
 }
