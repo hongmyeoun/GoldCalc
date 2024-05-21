@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,8 +21,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,11 +38,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.getString
@@ -61,43 +72,78 @@ import java.io.IOException
 
 @Composable
 fun CharacterScreen(navController: NavHostController) {
-    var characterName by remember { mutableStateOf("마일즈섬광") }
+    var characterName by remember { mutableStateOf("") }
     var characterInfo by remember { mutableStateOf<List<CharacterInfo>>(emptyList()) }
     var isLoading by remember { mutableStateOf(false) }
     val isDark = isSystemInDarkTheme()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
+    var isFocus by remember { mutableStateOf(false) }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusState = LocalFocusManager.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = {
+                        keyboardController?.hide()
+                        focusState.clearFocus()
+                    }
+                )
+            },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        BasicTextField(
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+                .onFocusChanged {
+                    isFocus = it.isFocused
+                },
             value = characterName,
             onValueChange = { characterName = it },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                isLoading = true
-                // Retrofit을 사용하여 서버에서 데이터 가져오기
-                scope.launch(Dispatchers.IO) {
-                    val info = getCharacter(context, characterName)
-                    characterInfo = info ?: emptyList()
-                    isLoading = false
+            placeholder = {
+                if (!isFocus) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = "캐릭터 검색")
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Icon(imageVector = Icons.Default.Search, contentDescription = "검색")
+                    }
+                } else {
+                    Text(text = "캐릭터 검색")
                 }
             },
-            enabled = !isLoading
-        ) {
-            Text("불러오기")
-        }
+            trailingIcon =
+            if (isFocus) {
+                {
+                    IconButton(
+                        onClick = {
+                            isLoading = true
+                            // Retrofit을 사용하여 서버에서 데이터 가져오기
+                            scope.launch(Dispatchers.IO) {
+                                val info = getCharacter(context, characterName)
+                                characterInfo = info ?: emptyList()
+                                isLoading = false
+                            }
+                            keyboardController?.hide()
+                            focusState.clearFocus()
+                        }
+                    ) {
+                        Icon(imageVector = Icons.Default.Search, contentDescription = "검색")
+                    }
+                }
+            } else {
+                null
+            }
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -145,11 +191,11 @@ fun CharacterScreen(navController: NavHostController) {
 }
 
 @Composable
-fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewModel()){
+fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewModel()) {
     val context = LocalContext.current
-    var characterDetail by remember { mutableStateOf<CharacterDetail?>(null)}
+    var characterDetail by remember { mutableStateOf<CharacterDetail?>(null) }
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         characterDetail = getCharDetail(context, charName)
         viewModel.isSavedName(charName)
     }
@@ -163,7 +209,7 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
             model = characterDetail?.characterImage,
             contentDescription = null,
         )
-        Text(text = "${characterDetail?.characterClassName?:"ERROR"} ${characterDetail?.characterName?:"ERROR"} : Lv. ${characterDetail?.itemMaxLevel?:0}")
+        Text(text = "${characterDetail?.characterClassName ?: "ERROR"} ${characterDetail?.characterName ?: "ERROR"} : Lv. ${characterDetail?.itemMaxLevel ?: 0}")
         Button(
             onClick = {
                 val avatarImage = !characterDetail?.characterImage.isNullOrEmpty()
@@ -191,7 +237,7 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
             Text(text = "가져오기")
         }
     }
-    
+
 }
 
 suspend fun getCharDetail(context: Context, characterName: String): CharacterDetail? {
@@ -207,13 +253,13 @@ suspend fun getCharDetail(context: Context, characterName: String): CharacterDet
 
         try {
             val response = lostArkApiService.getCharacterDetail(characterName).execute()
-            if (response.isSuccessful){
+            if (response.isSuccessful) {
                 response.body()
             } else {
                 Log.d("실패", "서버 응답 실패: ${response.code()}")
                 null
             }
-        } catch (e: IOException){
+        } catch (e: IOException) {
             Log.d("실패", "네트워크 오류: $e")
             null
         }
@@ -250,7 +296,7 @@ suspend fun getCharacter(context: Context, characterName: String): List<Characte
     }
 }
 
-fun authorizationHeader(context: Context): OkHttpClient{
+fun authorizationHeader(context: Context): OkHttpClient {
     val httpClient = OkHttpClient.Builder()
     httpClient.addInterceptor { chain ->
         val request = chain.request().newBuilder()
@@ -259,4 +305,55 @@ fun authorizationHeader(context: Context): OkHttpClient{
         chain.proceed(request)
     }
     return httpClient.build()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TestPreview() {
+    var characterName by remember { mutableStateOf("") }
+
+    var isFocus by remember { mutableStateOf(false) }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusState = LocalFocusManager.current
+
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .onFocusChanged {
+                isFocus = it.isFocused
+            },
+        value = characterName,
+        onValueChange = { characterName = it },
+        placeholder = {
+            if (!isFocus) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(text = "캐릭터 검색")
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Icon(imageVector = Icons.Default.Search, contentDescription = "검색")
+                }
+            } else {
+                Text(text = "캐릭터 검색")
+            }
+        },
+        trailingIcon =
+        if (isFocus) {
+            {
+                IconButton(
+                    onClick = {
+                        keyboardController?.hide()
+                        focusState.clearFocus()
+                    }
+                ) {
+                    Icon(imageVector = Icons.Default.Search, contentDescription = "검색")
+                }
+            }
+        } else {
+            null
+        }
+    )
+
 }
