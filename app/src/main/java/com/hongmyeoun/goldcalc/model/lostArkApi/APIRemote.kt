@@ -26,9 +26,19 @@ object APIRemote {
             try {
                 val response = lostArkApiService.getCharacters(characterName).execute()
                 if (response.isSuccessful) {
-                    var characterInfoList = response.body()
-                    characterInfoList = characterInfoList?.sortedByDescending { it.itemMaxLevel }
-                    Pair(characterInfoList, null)
+                    val characterInfoList = response.body()
+                    if (characterInfoList != null) {
+                        val primaryCharacter = characterInfoList.find { it.characterName == characterName }
+                        val sortedCharacterInfoList = characterInfoList
+                            .filter { it.characterName != characterName }
+                            .sortedByDescending { it.itemMaxLevel }
+                            .toMutableList()
+                        primaryCharacter?.let { sortedCharacterInfoList.add(0, it) }
+
+                        Pair(sortedCharacterInfoList, null)
+                    } else {
+                        Pair(null, "\"${characterName}\"(은)는 없는 결과입니다.")
+                    }
                 } else {
                     // 실패 처리
                     Pair(null, "서버 응답 실패: ${response.code()}")
