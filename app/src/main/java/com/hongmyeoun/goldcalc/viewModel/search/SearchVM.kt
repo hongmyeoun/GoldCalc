@@ -41,9 +41,21 @@ class SearchVM : ViewModel() {
 
     fun onDone(context: Context) {
         loadingTrue()
-        getCharacterList(context)
+        if (_characterName.value.isNotEmpty()) {
+            getCharacterList(context)
+        }
         loadingFalse()
+        searchedTrue()
     }
 
+    private val _isSearch = MutableStateFlow(false)
+    val isSearch: StateFlow<Boolean> = _isSearch
 
+    private val _tempCharName = MutableStateFlow("")
+    val tempCharName: StateFlow<String> = _tempCharName
+
+    private fun searchedTrue() {
+        _isSearch.value = true
+        _tempCharName.value = _characterName.value
+    }
 }

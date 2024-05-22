@@ -56,6 +56,7 @@ import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
 fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = viewModel()) {
     val characterName by viewModel.characterName.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+    val isSearch by viewModel.isSearch.collectAsState()
     val characterList by viewModel.characterList.collectAsState()
 
     val context = LocalContext.current
@@ -93,9 +94,7 @@ fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = view
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    if (characterName.isNotEmpty()) {
-                        viewModel.onDone(context)
-                    }
+                    viewModel.onDone(context)
                     keyboardController?.hide()
                     focusState.clearFocus()
                 }
@@ -125,9 +124,7 @@ fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = view
                 {
                     IconButton(
                         onClick = {
-                            if (characterName.isNotEmpty()) {
-                                viewModel.onDone(context)
-                            }
+                            viewModel.onDone(context)
                             keyboardController?.hide()
                             focusState.clearFocus()
                         }
@@ -149,38 +146,42 @@ fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = view
         if (isLoading) {
             CircularProgressIndicator()
         } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp)
-            ) {
-                items(characterList, key = { item -> item.characterName }) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { navController.navigate("CharDetail/${it.characterName}") },
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        GlideImage(
-                            modifier = Modifier.size(48.dp),
-                            contentScale = ContentScale.Crop,
-                            model = CharacterResourceMapper.getCharacterThumbURL(it.characterClassName),
-                            contentDescription = "직업 이미지"
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Column {
-                            Text(
-                                text = it.characterName,
-                                fontWeight = FontWeight(550)
+            if (isSearch && characterList.isEmpty()) {
+                Text(text = "\"${viewModel.tempCharName.value}\"(은)는 없는 결과입니다.")
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp)
+                ) {
+                    items(characterList, key = { item -> item.characterName }) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { navController.navigate("CharDetail/${it.characterName}") },
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            GlideImage(
+                                modifier = Modifier.size(48.dp),
+                                contentScale = ContentScale.Crop,
+                                model = CharacterResourceMapper.getCharacterThumbURL(it.characterClassName),
+                                contentDescription = "직업 이미지"
                             )
-                            Text(
-                                text = "${it.itemMaxLevel} ${it.characterClassName}",
-                                fontSize = 12.sp,
-                                color = Color.Gray
-                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Column {
+                                Text(
+                                    text = it.characterName,
+                                    fontWeight = FontWeight(550)
+                                )
+                                Text(
+                                    text = "${it.itemMaxLevel} ${it.characterClassName}",
+                                    fontSize = 12.sp,
+                                    color = Color.Gray
+                                )
+                            }
                         }
+                        Spacer(modifier = Modifier.height(16.dp))
                     }
-                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
         }
