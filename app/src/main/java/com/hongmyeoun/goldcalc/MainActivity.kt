@@ -39,10 +39,10 @@ import androidx.navigation.compose.rememberNavController
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.ui.theme.MokokoGreen
+import com.hongmyeoun.goldcalc.view.characterDetail.CharacterDetailScreen
 import com.hongmyeoun.goldcalc.view.goldCheck.setting.GoldSetting
 import com.hongmyeoun.goldcalc.view.main.MainScreen
 import com.hongmyeoun.goldcalc.view.main.characterCard.CharacterCard
-import com.hongmyeoun.goldcalc.view.search.CharacterDetailScreen
 import com.hongmyeoun.goldcalc.view.search.CharacterScreen
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM

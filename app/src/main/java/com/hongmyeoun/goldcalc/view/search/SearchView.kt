@@ -1,7 +1,5 @@
 package com.hongmyeoun.goldcalc.view.search
 
-import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -17,20 +15,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,27 +44,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.getString
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.google.gson.GsonBuilder
-import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
-import com.hongmyeoun.goldcalc.model.lostArkApi.LostArkApiService
-import com.hongmyeoun.goldcalc.model.roomDB.character.Character
-import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -206,93 +185,6 @@ fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = view
             }
         }
     }
-}
-
-@Composable
-fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewModel()) {
-    val context = LocalContext.current
-    var characterDetail by remember { mutableStateOf<CharacterDetail?>(null) }
-
-    LaunchedEffect(Unit) {
-        characterDetail = getCharDetail(context, charName)
-        viewModel.isSavedName(charName)
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-    ) {
-        AsyncImage(
-            model = characterDetail?.characterImage,
-            contentDescription = null,
-        )
-        Text(text = "${characterDetail?.characterClassName ?: "ERROR"} ${characterDetail?.characterName ?: "ERROR"} : Lv. ${characterDetail?.itemMaxLevel ?: 0}")
-        Button(
-            onClick = {
-                val avatarImage = !characterDetail?.characterImage.isNullOrEmpty()
-
-                val character = Character(
-                    name = characterDetail!!.characterName,
-                    itemLevel = characterDetail!!.itemMaxLevel,
-                    serverName = characterDetail!!.serverName,
-                    className = characterDetail!!.characterClassName,
-
-                    guildName = characterDetail!!.guildName,
-                    title = characterDetail!!.title,
-                    characterLevel = characterDetail!!.characterLevel,
-                    expeditionLevel = characterDetail!!.expeditionLevel,
-                    pvpGradeName = characterDetail!!.pvpGradeName,
-                    townLevel = characterDetail!!.townLevel,
-                    townName = characterDetail!!.townName,
-                    characterImage = characterDetail?.characterImage,
-                    avatarImage = avatarImage
-                )
-                viewModel.saveCharacter(character)
-            },
-            enabled = !viewModel.isSaved
-        ) {
-            Text(text = "가져오기")
-        }
-    }
-
-}
-
-suspend fun getCharDetail(context: Context, characterName: String): CharacterDetail? {
-    return withContext(Dispatchers.IO) {
-        val gson = GsonBuilder().setLenient().create()
-        val retrofit = Retrofit.Builder()
-            .baseUrl(getString(context, R.string.lost_ark_url))
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(authorizationHeader(context))
-            .build()
-
-        val lostArkApiService = retrofit.create(LostArkApiService::class.java)
-
-        try {
-            val response = lostArkApiService.getCharacterDetail(characterName).execute()
-            if (response.isSuccessful) {
-                response.body()
-            } else {
-                Log.d("실패", "서버 응답 실패: ${response.code()}")
-                null
-            }
-        } catch (e: IOException) {
-            Log.d("실패", "네트워크 오류: $e")
-            null
-        }
-    }
-}
-
-fun authorizationHeader(context: Context): OkHttpClient {
-    val httpClient = OkHttpClient.Builder()
-    httpClient.addInterceptor { chain ->
-        val request = chain.request().newBuilder()
-            .addHeader("Authorization", getString(context, R.string.lost_ark_api))
-            .build()
-        chain.proceed(request)
-    }
-    return httpClient.build()
 }
 
 @Preview(showBackground = true)
