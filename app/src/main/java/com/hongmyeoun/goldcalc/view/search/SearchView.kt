@@ -1,6 +1,8 @@
 package com.hongmyeoun.goldcalc.view.search
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -51,10 +53,11 @@ import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterInfo
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
 
-@OptIn(ExperimentalGlideComposeApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = viewModel()) {
     val characterName by viewModel.characterName.collectAsState()
@@ -163,51 +166,93 @@ fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = view
             isLoading -> {
                 CircularProgressIndicator()
             }
+
             errorMessage != null -> {
                 Text(text = errorMessage!!)
             }
+
             isSearch && characterList.isEmpty() -> {
                 Text(text = "\"${viewModel.tempCharName.value}\"(은)는 없는 결과입니다.")
             }
+
             else -> {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(8.dp)
                 ) {
-                    items(characterList, key = { item -> item.characterName }) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable { navController.navigate("CharDetail/${it.characterName}") },
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            GlideImage(
-                                modifier = Modifier.size(48.dp),
-                                contentScale = ContentScale.Crop,
-                                model = CharacterResourceMapper.getCharacterThumbURL(it.characterClassName),
-                                contentDescription = "직업 이미지"
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Column {
-                                Text(
-                                    text = it.characterName,
-                                    fontWeight = FontWeight(550)
-                                )
-                                Text(
-                                    text = "${it.itemMaxLevel} ${it.characterClassName}",
-                                    fontSize = 12.sp,
-                                    color = Color.Gray
-                                )
+                    if (characterList.isNotEmpty()) {
+                        stickyHeader {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(Color.White)
+                            ) {
+                                Text(text = "검색 결과")
                             }
                         }
-                        Spacer(modifier = Modifier.height(16.dp))
+                        item {
+                            val firstCharacter = characterList[0]
+                            CharacterListItem(
+                                character = firstCharacter,
+                                isFirstItem = true,
+                                navController = navController
+                            )
+                        }
+                    }
+                    if (characterList.size >= 2) {
+                        stickyHeader {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(Color.White)
+                            ) {
+                                Text(text = "원정대 캐릭터")
+                            }
+                        }
+                        items(characterList.drop(1), key = { item -> item.characterName }) {
+                            CharacterListItem(
+                                character = it,
+                                isFirstItem = false,
+                                navController = navController
+                            )
+                        }
                     }
                 }
-
             }
         }
     }
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun CharacterListItem(character: CharacterInfo, isFirstItem: Boolean, navController: NavHostController) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { navController.navigate("CharDetail/${character.characterName}") },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        GlideImage(
+            modifier = Modifier.size(48.dp),
+            contentScale = ContentScale.Crop,
+            model = CharacterResourceMapper.getCharacterThumbURL(character.characterClassName),
+            contentDescription = "직업 이미지"
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Column {
+            Text(
+                text = character.characterName,
+                fontWeight = if (isFirstItem) FontWeight.Bold else FontWeight.Normal
+            )
+            Text(
+                text = "${character.itemMaxLevel} ${character.characterClassName}",
+                fontSize = 12.sp,
+                color = Color.Gray
+            )
+        }
+    }
+    Spacer(modifier = Modifier.height(16.dp))
 }
 
 @Preview(showBackground = true)
