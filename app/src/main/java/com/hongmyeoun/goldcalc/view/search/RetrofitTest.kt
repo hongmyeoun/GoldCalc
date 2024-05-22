@@ -16,10 +16,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -47,6 +50,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -54,6 +58,8 @@ import androidx.core.content.ContextCompat.getString
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.google.gson.GsonBuilder
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
@@ -70,6 +76,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun CharacterScreen(navController: NavHostController) {
     var characterName by remember { mutableStateOf("") }
@@ -101,24 +108,46 @@ fun CharacterScreen(navController: NavHostController) {
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .wrapContentHeight()
                 .onFocusChanged {
                     isFocus = it.isFocused
                 },
             value = characterName,
             onValueChange = { characterName = it },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    isLoading = true
+                    // Retrofit을 사용하여 서버에서 데이터 가져오기
+                    scope.launch(Dispatchers.IO) {
+                        val info = getCharacter(context, characterName)
+                        characterInfo = info ?: emptyList()
+                        isLoading = false
+                    }
+                    keyboardController?.hide()
+                    focusState.clearFocus()
+                }
+            ),
             placeholder = {
                 if (!isFocus) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        Text(text = "캐릭터 검색")
+                        Text(
+                            text = "캐릭터 검색",
+                            color = Color.LightGray,
+                        )
                         Spacer(modifier = Modifier.width(4.dp))
                         Icon(imageVector = Icons.Default.Search, contentDescription = "검색")
                     }
                 } else {
-                    Text(text = "캐릭터 검색")
+                    Text(
+                        text = "캐릭터 검색",
+                        color = Color.LightGray,
+                    )
                 }
             },
             trailingIcon =
@@ -137,7 +166,10 @@ fun CharacterScreen(navController: NavHostController) {
                             focusState.clearFocus()
                         }
                     ) {
-                        Icon(imageVector = Icons.Default.Search, contentDescription = "검색")
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "검색"
+                        )
                     }
                 }
             } else {
@@ -151,7 +183,11 @@ fun CharacterScreen(navController: NavHostController) {
         if (isLoading) {
             CircularProgressIndicator()
         } else {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp)
+            ) {
                 items(characterInfo, key = { item -> item.characterName }) {
                     Row(
                         modifier = Modifier
@@ -159,25 +195,20 @@ fun CharacterScreen(navController: NavHostController) {
                             .clickable { navController.navigate("CharDetail/${it.characterName}") },
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Image(
-                            modifier = Modifier.size(32.dp),
+                        GlideImage(
+                            modifier = Modifier.size(48.dp),
                             contentScale = ContentScale.Crop,
-                            painter = painterResource(id = CharacterResourceMapper.getClassEmblem(isDark, it.characterClassName)),
-                            contentDescription = "직업군"
+                            model = CharacterResourceMapper.getCharacterThumbURL(it.characterClassName),
+                            contentDescription = "직업 이미지"
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Column {
-                            Text(
-                                text = "${it.serverName} ${it.characterClassName}",
-                                fontSize = 12.sp,
-                                color = Color.Gray
-                            )
                             Text(
                                 text = it.characterName,
                                 fontWeight = FontWeight(550)
                             )
                             Text(
-                                text = "Lv. ${it.itemMaxLevel}",
+                                text = "${it.itemMaxLevel} ${it.characterClassName}",
                                 fontSize = 12.sp,
                                 color = Color.Gray
                             )
