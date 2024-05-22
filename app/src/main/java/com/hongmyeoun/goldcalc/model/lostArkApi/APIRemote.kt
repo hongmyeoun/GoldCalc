@@ -1,7 +1,6 @@
 package com.hongmyeoun.goldcalc.model.lostArkApi
 
 import android.content.Context
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.gson.GsonBuilder
 import com.hongmyeoun.goldcalc.R
@@ -13,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
 object APIRemote {
-    suspend fun getCharacter(context: Context, characterName: String): List<CharacterInfo>? {
+    suspend fun getCharacter(context: Context, characterName: String): Pair<List<CharacterInfo>?, String?> {
         return withContext(Dispatchers.IO) {
             val gson = GsonBuilder().setLenient().create()
             val retrofit = Retrofit.Builder()
@@ -29,16 +28,14 @@ object APIRemote {
                 if (response.isSuccessful) {
                     var characterInfoList = response.body()
                     characterInfoList = characterInfoList?.sortedByDescending { it.itemMaxLevel }
-                    characterInfoList
+                    Pair(characterInfoList, null)
                 } else {
                     // 실패 처리
-                    Log.d("실패", "서버 응답 실패: ${response.code()}")
-                    null
+                    Pair(null, "서버 응답 실패: ${response.code()}")
                 }
             } catch (e: IOException) {
                 // 네트워크 오류 처리
-                Log.d("실패", "네트워크 오류: $e")
-                null
+                Pair(null, "네트워크 오류")
             }
         }
     }
@@ -59,11 +56,9 @@ object APIRemote {
                 if (response.isSuccessful) {
                     response.body()
                 } else {
-                    Log.d("실패", "서버 응답 실패: ${response.code()}")
                     null
                 }
             } catch (e: IOException) {
-                Log.d("실패", "네트워크 오류: $e")
                 null
             }
         }

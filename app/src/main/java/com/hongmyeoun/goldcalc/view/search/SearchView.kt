@@ -60,6 +60,7 @@ fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = view
     val characterName by viewModel.characterName.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val isSearch by viewModel.isSearch.collectAsState()
+    val errorMessage by viewModel.errorMessage.collectAsState()
     val characterList by viewModel.characterList.collectAsState()
 
     val context = LocalContext.current
@@ -158,12 +159,17 @@ fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = view
         Spacer(modifier = Modifier.height(16.dp))
 
         // 가져온 캐릭터 정보를 화면에 표시
-        if (isLoading) {
-            CircularProgressIndicator()
-        } else {
-            if (isSearch && characterList.isEmpty()) {
+        when {
+            isLoading -> {
+                CircularProgressIndicator()
+            }
+            errorMessage != null -> {
+                Text(text = errorMessage!!)
+            }
+            isSearch && characterList.isEmpty() -> {
                 Text(text = "\"${viewModel.tempCharName.value}\"(은)는 없는 결과입니다.")
-            } else {
+            }
+            else -> {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -198,6 +204,7 @@ fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = view
                         Spacer(modifier = Modifier.height(16.dp))
                     }
                 }
+
             }
         }
     }

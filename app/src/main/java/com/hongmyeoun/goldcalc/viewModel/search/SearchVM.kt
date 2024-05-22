@@ -28,10 +28,18 @@ class SearchVM : ViewModel() {
     private val _characterList = MutableStateFlow<List<CharacterInfo>>(emptyList())
     val characterList: StateFlow<List<CharacterInfo>> = _characterList
 
+    private val _errorMessage = MutableStateFlow<String?>(null)
+    val errorMessage: StateFlow<String?> = _errorMessage
+
     private fun getCharacterList(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            val info = getCharacter(context, _characterName.value)
-            _characterList.value = info ?: emptyList()
+            val (characterList, error) = getCharacter(context, _characterName.value)
+            if (characterList != null) {
+                _characterList.value = characterList
+                _errorMessage.value = null
+            } else {
+                _errorMessage.value = error
+            }
         }
     }
 
