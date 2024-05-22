@@ -6,10 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
-import com.hongmyeoun.goldcalc.view.search.getCharDetail
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
