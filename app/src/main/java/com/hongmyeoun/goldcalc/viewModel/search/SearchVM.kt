@@ -18,6 +18,10 @@ class SearchVM : ViewModel() {
         _characterName.value = newValue
     }
 
+    fun characterClear() {
+        _characterName.value = ""
+    }
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 

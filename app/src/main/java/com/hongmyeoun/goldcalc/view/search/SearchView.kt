@@ -1,5 +1,6 @@
 package com.hongmyeoun.goldcalc.view.search
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -39,6 +40,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,6 +50,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
 
@@ -122,17 +125,29 @@ fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = view
             trailingIcon =
             if (isFocus) {
                 {
-                    IconButton(
-                        onClick = {
-                            viewModel.onDone(context)
-                            keyboardController?.hide()
-                            focusState.clearFocus()
-                        }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "검색"
-                        )
+                        if (characterName.isNotEmpty()) {
+                            Image(
+                                modifier = Modifier.clickable { viewModel.characterClear() },
+                                painter = painterResource(id = R.drawable.baseline_cancel_24),
+                                contentDescription = "이름 초기화",
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+                        IconButton(
+                            onClick = {
+                                viewModel.onDone(context)
+                                keyboardController?.hide()
+                                focusState.clearFocus()
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "검색"
+                            )
+                        }
                     }
                 }
             } else {
@@ -191,7 +206,7 @@ fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = view
 @Preview(showBackground = true)
 @Composable
 fun TestPreview() {
-    var characterName by remember { mutableStateOf("") }
+    var characterName by remember { mutableStateOf("gg") }
 
     var isFocus by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -223,18 +238,31 @@ fun TestPreview() {
         trailingIcon =
         if (isFocus) {
             {
-                IconButton(
-                    onClick = {
-                        keyboardController?.hide()
-                        focusState.clearFocus()
-                    }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(imageVector = Icons.Default.Search, contentDescription = "검색")
+                    if (characterName.isNotEmpty()) {
+                        Image(
+                            painter = painterResource(id = R.drawable.baseline_cancel_24),
+                            contentDescription = "이름 초기화",
+                            contentScale = ContentScale.Crop
+                        )
+                    }
+                    IconButton(
+                        onClick = {
+                            keyboardController?.hide()
+                            focusState.clearFocus()
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "검색"
+                        )
+                    }
                 }
             }
         } else {
             null
         }
     )
-
 }
