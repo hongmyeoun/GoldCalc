@@ -129,4 +129,54 @@ object CharacterResourceMapper {
         return classImageMap[characterClassName] ?: R.drawable.img_detail_breaker
     }
 
+    fun getCharacterThumbURL(characterClassName: String): String {
+        val startURL = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/"
+        val endURL = ".png"
+        val classImageMap = mapOf(
+            "전사(남)" to "warrior",
+            "디스트로이어" to "destroyer",
+            "워로드" to "warlord",
+            "버서커" to "berserker",
+            "홀리나이트" to "holyknight",
+
+            "전사(여)" to "warrior_female",
+            "슬레이어" to "berserker_female",
+
+            "무도가(남)" to "fighter_male",
+            "스트라이커" to "battle_master_male",
+            "브레이커" to "infighter_male",
+
+            "무도가(여)" to "fighter",
+            "배틀마스터" to "battlemaster",
+            "인파이터" to "infighter",
+            "기공사" to "soulmaster",
+            "창술사" to "lancemaster",
+
+            "헌터(남)" to "hunter",
+            "데빌헌터" to "devilhunter",
+            "블래스터" to "blaster",
+            "호크아이" to "hawkeye",
+            "스카우터" to "scouter",
+
+            "헌터(여)" to "hunter_female",
+            "건슬링어" to "devil_hunter_female",
+
+            "마법사" to "magician",
+            "바드" to "bard",
+            "서머너" to "summoner",
+            "아르카나" to "arcana",
+            "소서리스" to "sorceress",
+
+            "암살자" to "delain",
+            "블레이드" to "blade",
+            "데모닉" to "demonic",
+            "리퍼" to "reaper",
+            "소울이터" to "soul_eater",
+
+            "스페셜리스트" to "specialist",
+            "도화가" to "artist",
+            "기상술사" to "weather_artist",
+        )
+        return startURL + classImageMap[characterClassName] + endURL
+    }
 }
