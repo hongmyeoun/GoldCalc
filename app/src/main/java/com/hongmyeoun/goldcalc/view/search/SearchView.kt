@@ -5,26 +5,25 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,6 +51,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.LoadingScreen
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterInfo
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
@@ -75,7 +75,6 @@ fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = view
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = {
@@ -83,17 +82,16 @@ fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = view
                         focusState.clearFocus()
                     }
                 )
-            },
+            }
+            .background(MaterialTheme.colorScheme.background)
+        ,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
-                .onFocusChanged {
-                    isFocus = it.isFocused
-                },
+                .onFocusChanged { isFocus = it.isFocused },
             value = characterName,
             onValueChange = { viewModel.onCharacterNameValueChange(it) },
             keyboardOptions = KeyboardOptions(
@@ -159,38 +157,38 @@ fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = view
             }
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
         // 가져온 캐릭터 정보를 화면에 표시
         when {
             isLoading -> {
-                CircularProgressIndicator()
+                LoadingScreen()
             }
-
-            errorMessage != null -> {
-                Text(text = errorMessage!!)
+            errorMessage == "네트워크 오류" -> {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.baseline_wifi_off_24),
+                        contentDescription = "Disconnect"
+                    )
+                    Text(
+                        text = errorMessage!!,
+                        color = Color(0xFFCFCFCF)
+                    )
+                }
             }
-
             isSearch && characterList.isEmpty() -> {
-                Text(text = "\"${viewModel.tempCharName.value}\"(은)는 없는 결과입니다.")
+                Text(
+                    text = "\"${viewModel.tempCharName.value}\"(은)는 없는 결과입니다.",
+                    color = Color(0xFFCFCFCF)
+                )
             }
-
             else -> {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(8.dp)
                 ) {
                     if (characterList.isNotEmpty()) {
-                        stickyHeader {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(Color.White)
-                            ) {
-                                Text(text = "검색 결과")
-                            }
-                        }
+                        stickyHeader { HeaderText("검색 결과") }
                         item {
                             val firstCharacter = characterList[0]
                             CharacterListItem(
@@ -201,15 +199,7 @@ fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = view
                         }
                     }
                     if (characterList.size >= 2) {
-                        stickyHeader {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(Color.White)
-                            ) {
-                                Text(text = "원정대 캐릭터")
-                            }
-                        }
+                        stickyHeader { HeaderText("원정대 캐릭터") }
                         items(characterList.drop(1), key = { item -> item.characterName }) {
                             CharacterListItem(
                                 character = it,
@@ -224,12 +214,29 @@ fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = view
     }
 }
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun CharacterListItem(character: CharacterInfo, isFirstItem: Boolean, navController: NavHostController) {
+private fun HeaderText(text: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .background(Color.LightGray)
+    ) {
+        Text(
+            modifier = Modifier.padding(4.dp),
+            text = text
+        )
+    }
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun CharacterListItem(character: CharacterInfo, isFirstItem: Boolean, navController: NavHostController, isDark: Boolean = isSystemInDarkTheme()) {
+    val textColor = if (isDark) Color.White else Color.Black
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
             .clickable { navController.navigate("CharDetail/${character.characterName}") },
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -243,7 +250,8 @@ fun CharacterListItem(character: CharacterInfo, isFirstItem: Boolean, navControl
         Column {
             Text(
                 text = character.characterName,
-                fontWeight = if (isFirstItem) FontWeight.Bold else FontWeight.Normal
+                fontWeight = if (isFirstItem) FontWeight.Bold else FontWeight.Normal,
+                color = textColor
             )
             Text(
                 text = "${character.itemMaxLevel} ${character.characterClassName}",
@@ -252,7 +260,6 @@ fun CharacterListItem(character: CharacterInfo, isFirstItem: Boolean, navControl
             )
         }
     }
-    Spacer(modifier = Modifier.height(16.dp))
 }
 
 @Preview(showBackground = true)
