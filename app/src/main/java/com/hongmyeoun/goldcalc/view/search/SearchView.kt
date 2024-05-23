@@ -164,6 +164,8 @@ fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = view
             }
             errorMessage == "네트워크 오류" -> {
                 Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
@@ -177,10 +179,16 @@ fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = view
                 }
             }
             isSearch && characterList.isEmpty() -> {
-                Text(
-                    text = "\"${viewModel.tempCharName.value}\"(은)는 없는 결과입니다.",
-                    color = Color(0xFFCFCFCF)
-                )
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "\"${viewModel.tempCharName.value}\"(은)는 없는 결과입니다.",
+//                        color = Color(0xFFCFCFCF)
+                    )
+                }
             }
             else -> {
                 LazyColumn(

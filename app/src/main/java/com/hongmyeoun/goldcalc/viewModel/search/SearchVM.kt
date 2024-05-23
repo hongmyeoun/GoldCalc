@@ -38,6 +38,7 @@ class SearchVM : ViewModel() {
                 _characterList.value = characterList
                 _errorMessage.value = null
             } else {
+                _characterList.value = emptyList()
                 _errorMessage.value = error
             }
         }
