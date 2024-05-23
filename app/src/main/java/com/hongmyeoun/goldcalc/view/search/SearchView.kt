@@ -1,5 +1,6 @@
 package com.hongmyeoun.goldcalc.view.search
 
+import android.content.Context
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -41,10 +43,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -57,18 +59,11 @@ import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterInfo
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = viewModel()) {
-    val characterName by viewModel.characterName.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val isSearch by viewModel.isSearch.collectAsState()
-    val errorMessage by viewModel.errorMessage.collectAsState()
-    val characterList by viewModel.characterList.collectAsState()
-
-    val context = LocalContext.current
-
-    var isFocus by remember { mutableStateOf(false) }
+fun CharacterScreen(
+    navController: NavHostController,
+    viewModel: SearchVM = viewModel()
+) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusState = LocalFocusManager.current
 
@@ -88,135 +83,184 @@ fun CharacterScreen(navController: NavHostController, viewModel: SearchVM = view
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .onFocusChanged { isFocus = it.isFocused },
-            value = characterName,
-            onValueChange = { viewModel.onCharacterNameValueChange(it) },
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    viewModel.onDone(context)
-                    keyboardController?.hide()
-                    focusState.clearFocus()
-                }
-            ),
-            placeholder = {
-                if (!isFocus) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = "캐릭터 검색",
-                            color = Color.LightGray,
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Icon(imageVector = Icons.Default.Search, contentDescription = "검색")
-                    }
-                } else {
-                    Text(
-                        text = "캐릭터 검색",
-                        color = Color.LightGray,
-                    )
-                }
-            },
-            trailingIcon =
-            if (isFocus) {
-                {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        if (characterName.isNotEmpty()) {
-                            Image(
-                                modifier = Modifier.clickable { viewModel.characterClear() },
-                                painter = painterResource(id = R.drawable.baseline_cancel_24),
-                                contentDescription = "이름 초기화",
-                                contentScale = ContentScale.Crop
-                            )
-                        }
-                        IconButton(
-                            onClick = {
-                                viewModel.onDone(context)
-                                keyboardController?.hide()
-                                focusState.clearFocus()
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Search,
-                                contentDescription = "검색"
-                            )
-                        }
-                    }
-                }
-            } else {
-                null
-            }
+        SearchTextField(
+            viewModel = viewModel,
+            keyboardController = keyboardController,
+            focusState = focusState
         )
+        SearchResult(
+            viewModel = viewModel,
+            navController = navController
+        )
+    }
+}
 
-        // 가져온 캐릭터 정보를 화면에 표시
-        when {
-            isLoading -> {
-                LoadingScreen()
+@Composable
+private fun SearchTextField(
+    viewModel: SearchVM,
+    keyboardController: SoftwareKeyboardController?,
+    focusState: FocusManager
+) {
+    val characterName by viewModel.characterName.collectAsState()
+    var isFocus by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .onFocusChanged { isFocus = it.isFocused },
+        value = characterName,
+        onValueChange = { viewModel.onCharacterNameValueChange(it) },
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                viewModel.onDone(context)
+                keyboardController?.hide()
+                focusState.clearFocus()
             }
-            errorMessage == "네트워크 오류" -> {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.baseline_wifi_off_24),
-                        contentDescription = "Disconnect"
-                    )
-                    Text(
-                        text = errorMessage!!,
-                        color = Color(0xFFCFCFCF)
-                    )
-                }
+        ),
+        placeholder = { SearchPlaceHolder(isFocus) },
+        trailingIcon = if (isFocus) {
+            { SearchTrailingIcon(characterName, viewModel, context, keyboardController, focusState) }
+        } else {
+            null
+        }
+    )
+}
+
+@Composable
+private fun SearchPlaceHolder(isFocus: Boolean) {
+    if (!isFocus) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "캐릭터 검색",
+                color = Color.LightGray,
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Icon(imageVector = Icons.Default.Search, contentDescription = "검색")
+        }
+    } else {
+        Text(
+            text = "캐릭터 검색",
+            color = Color.LightGray,
+        )
+    }
+}
+
+@Composable
+private fun SearchTrailingIcon(
+    characterName: String,
+    viewModel: SearchVM,
+    context: Context,
+    keyboardController: SoftwareKeyboardController?,
+    focusState: FocusManager
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if (characterName.isNotEmpty()) {
+            Image(
+                modifier = Modifier.clickable { viewModel.characterClear() },
+                painter = painterResource(id = R.drawable.baseline_cancel_24),
+                contentDescription = "이름 초기화",
+                contentScale = ContentScale.Crop
+            )
+        }
+        IconButton(
+            onClick = {
+                viewModel.onDone(context)
+                keyboardController?.hide()
+                focusState.clearFocus()
             }
-            isSearch && characterList.isEmpty() -> {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "\"${viewModel.tempCharName.value}\"(은)는 없는 결과입니다.",
-//                        color = Color(0xFFCFCFCF)
-                    )
-                }
+        ) {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = "검색"
+            )
+        }
+    }
+}
+
+@Composable
+private fun SearchResult(viewModel: SearchVM, navController: NavHostController) {
+    val isLoading by viewModel.isLoading.collectAsState()
+    val isSearch by viewModel.isSearch.collectAsState()
+    val errorMessage by viewModel.errorMessage.collectAsState()
+    val characterList by viewModel.characterList.collectAsState()
+
+    when {
+        isLoading -> { LoadingScreen() }
+        errorMessage == "네트워크 오류" -> { NetworkError(errorMessage) }
+        isSearch && characterList.isEmpty() -> { SearchError(viewModel) }
+        else -> { SearchResults(characterList, navController) }
+    }
+}
+
+@Composable
+private fun NetworkError(errorMessage: String?) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.baseline_wifi_off_24),
+            contentDescription = "Disconnect"
+        )
+        Text(
+            text = errorMessage!!,
+            color = Color(0xFFCFCFCF)
+        )
+    }
+}
+
+@Composable
+private fun SearchError(viewModel: SearchVM) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "\"${viewModel.tempCharName.value}\"(은)는 없는 결과입니다.",
+        )
+    }
+}
+
+@Composable
+@OptIn(ExperimentalFoundationApi::class)
+private fun SearchResults(
+    characterList: List<CharacterInfo>,
+    navController: NavHostController
+) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        if (characterList.isNotEmpty()) {
+            stickyHeader { HeaderText("검색 결과") }
+            item {
+                val firstCharacter = characterList[0]
+                CharacterListItem(
+                    character = firstCharacter,
+                    isFirstItem = true,
+                    navController = navController
+                )
             }
-            else -> {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    if (characterList.isNotEmpty()) {
-                        stickyHeader { HeaderText("검색 결과") }
-                        item {
-                            val firstCharacter = characterList[0]
-                            CharacterListItem(
-                                character = firstCharacter,
-                                isFirstItem = true,
-                                navController = navController
-                            )
-                        }
-                    }
-                    if (characterList.size >= 2) {
-                        stickyHeader { HeaderText("원정대 캐릭터") }
-                        items(characterList.drop(1), key = { item -> item.characterName }) {
-                            CharacterListItem(
-                                character = it,
-                                isFirstItem = false,
-                                navController = navController
-                            )
-                        }
-                    }
-                }
+        }
+        if (characterList.size >= 2) {
+            stickyHeader { HeaderText("원정대 캐릭터") }
+            items(characterList.drop(1), key = { item -> item.characterName }) {
+                CharacterListItem(
+                    character = it,
+                    isFirstItem = false,
+                    navController = navController
+                )
             }
         }
     }
@@ -268,68 +312,4 @@ fun CharacterListItem(character: CharacterInfo, isFirstItem: Boolean, navControl
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TestPreview() {
-    var characterName by remember { mutableStateOf("gg") }
-
-    var isFocus by remember { mutableStateOf(false) }
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val focusState = LocalFocusManager.current
-
-    OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .onFocusChanged {
-                isFocus = it.isFocused
-            },
-        value = characterName,
-        onValueChange = { characterName = it },
-        placeholder = {
-            if (!isFocus) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Text(text = "캐릭터 검색")
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Icon(imageVector = Icons.Default.Search, contentDescription = "검색")
-                }
-            } else {
-                Text(text = "캐릭터 검색")
-            }
-        },
-        trailingIcon =
-        if (isFocus) {
-            {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    if (characterName.isNotEmpty()) {
-                        Image(
-                            painter = painterResource(id = R.drawable.baseline_cancel_24),
-                            contentDescription = "이름 초기화",
-                            contentScale = ContentScale.Crop
-                        )
-                    }
-                    IconButton(
-                        onClick = {
-                            keyboardController?.hide()
-                            focusState.clearFocus()
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "검색"
-                        )
-                    }
-                }
-            }
-        } else {
-            null
-        }
-    )
 }
