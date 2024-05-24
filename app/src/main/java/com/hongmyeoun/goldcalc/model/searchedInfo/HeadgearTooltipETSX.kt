@@ -2,8 +2,8 @@ package com.hongmyeoun.goldcalc.model.searchedInfo
 
 import com.google.gson.annotations.SerializedName
 
-// 투구 E(엘릭서 O), T(초월 O), X(만렙 X)
-data class HeadgearTooltipETX(
+// 투구 E(엘릭서 O), T(초월 O), S(상급 재련), X(만렙 X)
+data class HeadgearTooltipETSX(
     @SerializedName("Element_000") val element000: BasicElement? = null,
     @SerializedName("Element_001") val element001: ItemTitle? = null,
     @SerializedName("Element_002") val element002: BasicElement? = null,
@@ -22,6 +22,25 @@ data class HeadgearTooltipETX(
     @SerializedName("Element_015") val element015: BasicElement? = null,
     @SerializedName("Element_016") val element016: BasicElement? = null,
     @SerializedName("Element_017") val element017: BasicElement? = null,
+)
+
+data class HeadgearTooltipEX(
+    @SerializedName("Element_000") val element000: BasicElement? = null,
+    @SerializedName("Element_001") val element001: ItemTitle? = null,
+    @SerializedName("Element_002") val element002: BasicElement? = null,
+    @SerializedName("Element_003") val element003: BasicElement? = null,
+    @SerializedName("Element_004") val element004: BasicElement? = null,
+    @SerializedName("Element_005") val element005: ItemPartBox? = null,
+    @SerializedName("Element_006") val element006: ItemPartBox? = null,
+    @SerializedName("Element_007") val element007: Progress? = null,
+    @SerializedName("Element_008") val element008: ElixirLevelAndInfo? = null,
+    @SerializedName("Element_009") val element009: ElixirLevelAndInfo? = null,
+    @SerializedName("Element_010") val element010: ItemPartBox? = null,
+    @SerializedName("Element_011") val element011: SetItemGroup? = null,
+    @SerializedName("Element_012") val element012: SetOptionInfo? = null,
+    @SerializedName("Element_013") val element013: BasicElement? = null,
+    @SerializedName("Element_014") val element014: BasicElement? = null,
+    @SerializedName("Element_015") val element015: BasicElement? = null,
 )
 
 data class BasicElement(
