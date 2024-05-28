@@ -9,3 +9,17 @@ data class Equipment(
   @SerializedName("Grade") val grade: String,
   @SerializedName("Tooltip") val tooltip: String,
 )
+
+data class CharacterEquipment(
+  val type: String,
+  val grade: String,
+  val upgradeLevel: String,
+  val itemLevel: String,
+  val itemQuality: Int,
+  val itemIcon: String,
+  val elixirFirst: String,
+  val elixirSecond: String,
+  val transcendenceLevel: String,
+  val transcendenceTotal: String,
+  val highUpgradeLevel: String,
+)
