@@ -8,7 +8,11 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.searchedInfo.AbilityStone
+import com.hongmyeoun.goldcalc.model.searchedInfo.Bracelet
+import com.hongmyeoun.goldcalc.model.searchedInfo.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.searchedInfo.CharacterEquipment
+import com.hongmyeoun.goldcalc.model.searchedInfo.CharacterItem
 import com.hongmyeoun.goldcalc.model.searchedInfo.Equipment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -237,60 +241,107 @@ class CharacterEquipmentDetail(jsonString: String) {
         return JsonParser.parseString(equipment.tooltip).asJsonObject
     }
 
-    fun getCharacterEquipmentDetails(): List<CharacterEquipment> {
-        val characterEquipmentList = mutableListOf<CharacterEquipment>()
+    fun getCharacterEquipmentDetails(): List<CharacterItem> {
+        val characterEquipmentList = mutableListOf<CharacterItem>()
 
         for (equipment in equipments) {
-            val characterEquipment = CharacterEquipment(
-                type = getEquipmentType(equipment),
-                grade = getEquipmentGrade(equipment),
-                upgradeLevel = getEquipmentUpgradeLevel(equipment),
-                itemLevel = getItemLevel(equipment),
-                itemQuality = getItemQuality(equipment),
-                itemIcon = getItemIcon(equipment),
-                elixirFirst = getElixirFirstOptionAndLevel(equipment),
-                elixirSecond = getElixirSecondOptionAndLevel(equipment),
-                transcendenceLevel = getTransendenceLevel(equipment),
-                transcendenceTotal = getTransendenceTotal(equipment),
-                highUpgradeLevel = getHigherUpgradLevel(equipment),
-            )
-            characterEquipmentList.add(characterEquipment)
+            when (equipment.type) {
+                "무기", "투구", "상의", "하의", "장갑", "어깨" -> {
+                    val characterEquipment = CharacterEquipment(
+                        type = getEquipmentType(equipment),
+                        grade = getEquipmentGrade(equipment),
+                        upgradeLevel = getEquipmentUpgradeLevel(equipment),
+                        itemLevel = getItemLevel(equipment),
+                        itemQuality = getItemQuality(equipment),
+                        itemIcon = getItemIcon(equipment),
+                        elixirFirst = getElixirFirstOptionAndLevel(equipment),
+                        elixirSecond = getElixirSecondOptionAndLevel(equipment),
+                        transcendenceLevel = getTranscendenceLevel(equipment),
+                        transcendenceTotal = getTranscendenceTotal(equipment),
+                        highUpgradeLevel = getHigherUpgradeLevel(equipment),
+                        setOption = getSetOption(equipment)
+                    )
+                    characterEquipmentList.add(characterEquipment)
+                }
+
+                "목걸이", "귀걸이", "반지" -> {
+                    val characterAccessory = CharacterAccessory(
+                        type = getEquipmentType(equipment),
+                        grade = getEquipmentGrade(equipment),
+                        name = getAccName(equipment),
+                        itemQuality = getItemQuality(equipment),
+                        itemIcon = getItemIcon(equipment),
+                        combatStat1 = getAccFirstCombatStat(equipment),
+                        combatStat2 = getAccSecondCombatStat(equipment),
+                        engraving1 = getAccFirstEngraving(equipment),
+                        engraving2 = getAccSecondEngraving(equipment),
+                        engraving3 = getAccThirdEngraving(equipment),
+                    )
+                    characterEquipmentList.add(characterAccessory)
+                }
+
+                "어빌리티 스톤" -> {
+                    val abilityStone = AbilityStone(
+                        type = getEquipmentType(equipment),
+                        grade = getEquipmentGrade(equipment),
+                        name = getAccName(equipment),
+                        itemIcon = getItemIcon(equipment),
+                        hpBonus = getABStoneHPBonus(equipment),
+                        engraving1 = getABStoneFirstEngraving(equipment),
+                        engraving2 = getABStoneSecondEngraving(equipment),
+                        engraving3 = getABStoneThirdEngraving(equipment),
+                    )
+                    characterEquipmentList.add(abilityStone)
+                }
+
+                "팔찌" -> {
+                    val bracelet = Bracelet(
+                        type = getEquipmentType(equipment),
+                        grade = getEquipmentGrade(equipment),
+                        name = getAccName(equipment),
+                        itemIcon = getItemIcon(equipment),
+                        effect = getBraceletEffect(equipment),
+                    )
+                    characterEquipmentList.add(bracelet)
+                }
+            }
+
         }
 
         return characterEquipmentList
     }
 
-    fun getEquipmentType(equipment: Equipment): String {
+    private fun getEquipmentType(equipment: Equipment): String {
         return equipment.type
     }
 
-    fun getEquipmentGrade(equipment: Equipment): String {
+    private fun getEquipmentGrade(equipment: Equipment): String {
         return equipment.grade
     }
 
-    fun getEquipmentUpgradeLevel(equipment: Equipment): String {
+    private fun getEquipmentUpgradeLevel(equipment: Equipment): String {
         return equipment.name.split(" ")[0]
     }
 
-    fun getItemLevel(equipment: Equipment): String {
+    private fun getItemLevel(equipment: Equipment): String {
         val tooltip = parserEquipmentTooltip(equipment)
         val itemTitleValue = tooltip.getAsJsonObject("Element_001").getAsJsonObject("value")
 
         return itemTitleValue.get("leftStr2").asString.split(" ")[3]
     }
 
-    fun getItemQuality(equipment: Equipment): Int {
+    private fun getItemQuality(equipment: Equipment): Int {
         val tooltip = parserEquipmentTooltip(equipment)
         val itemTitleValue = tooltip.getAsJsonObject("Element_001").getAsJsonObject("value")
 
         return itemTitleValue.get("qualityValue").asInt
     }
 
-    fun getItemIcon(equipment: Equipment): String {
+    private fun getItemIcon(equipment: Equipment): String {
         return equipment.icon
     }
 
-    fun getElixirFirstOptionAndLevel(equipment: Equipment): String {
+    private fun getElixirFirstOptionAndLevel(equipment: Equipment): String {
         // Tooltip을 JSON 객체로 파싱
         val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
         // Element_008부터 Element_010까지 확인
@@ -320,7 +371,7 @@ class CharacterEquipmentDetail(jsonString: String) {
         return ""
     }
 
-    fun getElixirSecondOptionAndLevel(equipment: Equipment): String {
+    private fun getElixirSecondOptionAndLevel(equipment: Equipment): String {
         // Tooltip을 JSON 객체로 파싱
         val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
         // Element_008부터 Element_010까지 확인
@@ -352,7 +403,7 @@ class CharacterEquipmentDetail(jsonString: String) {
         return ""
     }
 
-    fun getTransendenceLevel(equipment: Equipment): String {
+    private fun getTranscendenceLevel(equipment: Equipment): String {
         val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
 
         for (index in 7..10) {
@@ -373,7 +424,7 @@ class CharacterEquipmentDetail(jsonString: String) {
         return ""
     }
 
-    fun getTransendenceTotal(equipment: Equipment): String {
+    private fun getTranscendenceTotal(equipment: Equipment): String {
         val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
 
         for (index in 7..10) {
@@ -396,7 +447,29 @@ class CharacterEquipmentDetail(jsonString: String) {
         return ""
     }
 
-    fun getHigherUpgradLevel(equipment: Equipment): String {
+    private fun getSetOption(equipment: Equipment): String {
+        val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
+
+        for (index in 7..12) {
+            val elementKey = "Element_${String.format("%03d", index)}"
+            if (tooltipJson.has(elementKey)) {
+                val element = tooltipJson.getAsJsonObject(elementKey)
+                if (element.get("type").asString == "ItemPartBox") {
+                    val value = element.getAsJsonObject("value").get("Element_001").asString
+                    if (value.contains("Lv.")) {
+                        val setOption = value.substringBefore(" <FONT")
+                        val setLevel = value.substringAfterLast("Lv.").substringBefore("</FONT>")
+
+                        return "$setOption $setLevel"
+                    }
+                }
+            }
+        }
+
+        return ""
+    }
+
+    private fun getHigherUpgradeLevel(equipment: Equipment): String {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
         val element = tooltip.getAsJsonObject("Element_005")
 
@@ -407,4 +480,109 @@ class CharacterEquipmentDetail(jsonString: String) {
 
         return ""
     }
+
+    private fun getAccName(equipment: Equipment): String {
+        return equipment.name
+    }
+
+    private fun getAccFirstCombatStat(equipment: Equipment): String {
+        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
+        val combatStat = tooltip.getAsJsonObject("Element_005").getAsJsonObject("value").get("Element_001").asString
+
+        return combatStat.substringBefore("<BR>")
+    }
+
+    private fun getAccSecondCombatStat(equipment: Equipment): String {
+        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
+        val combatStat = tooltip.getAsJsonObject("Element_005").getAsJsonObject("value").get("Element_001").asString
+
+        return combatStat.substringAfter("<BR>")
+    }
+
+    private fun getAccFirstEngraving(equipment: Equipment): String {
+        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
+        val engraving = tooltip.getAsJsonObject("Element_006").getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
+            .getAsJsonObject("Element_000").get("contentStr").asString
+        val option = engraving.substringAfter("<FONT COLOR='#FFFFAC'>").substringBefore("</FONT>")
+        val activation = engraving.substringAfter("활성도 +").substringBefore("<BR>")
+
+        return "$option $activation"
+    }
+
+    private fun getAccSecondEngraving(equipment: Equipment): String {
+        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
+        val engraving = tooltip.getAsJsonObject("Element_006").getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
+            .getAsJsonObject("Element_001").get("contentStr").asString
+        val option = engraving.substringAfter("<FONT COLOR='#FFFFAC'>").substringBefore("</FONT>")
+        val activation = engraving.substringAfter("활성도 +").substringBefore("<BR>")
+
+        return "$option $activation"
+    }
+
+    private fun getAccThirdEngraving(equipment: Equipment): String {
+        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
+        val engraving = tooltip.getAsJsonObject("Element_006").getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
+            .getAsJsonObject("Element_002").get("contentStr").asString
+        val option = engraving.substringAfter("<FONT COLOR='#FE2E2E'>").substringBefore("</FONT>")
+        val activation = engraving.substringAfter("활성도 +").substringBefore("<BR>")
+
+        return "$option $activation"
+    }
+
+    private fun getABStoneHPBonus(equipment: Equipment): String {
+        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
+        val bonus = tooltip.getAsJsonObject("Element_005").getAsJsonObject("value").get("Element_001").asString
+
+        return bonus.substringAfter("체력 ")
+    }
+
+    private fun getABStoneFirstEngraving(equipment: Equipment): String {
+        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
+        val engraving = tooltip.getAsJsonObject("Element_006").getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
+            .getAsJsonObject("Element_000").get("contentStr").asString
+        val option = engraving.substringAfter("<FONT COLOR='#FFFFAC'>").substringBefore("</FONT>")
+        val activation = engraving.substringAfter("활성도 +").substringBefore("<BR>")
+
+        return "$option $activation"
+    }
+
+    private fun getABStoneSecondEngraving(equipment: Equipment): String {
+        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
+        val engraving = tooltip.getAsJsonObject("Element_006").getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
+            .getAsJsonObject("Element_001").get("contentStr").asString
+        val option = engraving.substringAfter("<FONT COLOR='#FFFFAC'>").substringBefore("</FONT>")
+        val activation = engraving.substringAfter("활성도 +").substringBefore("<BR>")
+
+        return "$option $activation"
+    }
+
+    private fun getABStoneThirdEngraving(equipment: Equipment): String {
+        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
+        val engraving = tooltip.getAsJsonObject("Element_006").getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
+            .getAsJsonObject("Element_002").get("contentStr").asString
+        val option = engraving.substringAfter("<FONT COLOR='#FE2E2E'>").substringBefore("</FONT>")
+        val activation = engraving.substringAfter("활성도 +").substringBefore("<BR>")
+
+        return "$option $activation"
+    }
+
+    private fun getBraceletEffect(equipment: Equipment): String {
+        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
+        val effect = tooltip.getAsJsonObject("Element_004").getAsJsonObject("value").get("Element_001").asString
+
+        return processString(effect)
+    }
+
+}
+
+fun processString(input: String): String {
+    // <BR> 태그를 줄 나누기로 변환
+    val withLineBreaks = input.replace(Regex("(?i)<BR>(?=[<\\[])"), "\n<BR>")
+
+    // HTML 태그 제거
+    val withoutTags = withLineBreaks.replace(Regex("<[^>]*>"), "")
+
+
+    // 결과 반환
+    return withoutTags
 }
