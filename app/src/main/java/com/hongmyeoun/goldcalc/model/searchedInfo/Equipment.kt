@@ -19,12 +19,14 @@ data class CharacterEquipment(
   val itemLevel: String,
   val itemQuality: Int,
   val itemIcon: String,
-  val elixirFirst: String,
-  val elixirSecond: String,
-  val transcendenceLevel: String,
-  val transcendenceTotal: String,
-  val highUpgradeLevel: String,
-  val setOption: String,
+  val elixirFirstLevel: String, // 엘릭서1 렙
+  val elixirFirstOption: String, // 엘릭서1 옵션
+  val elixirSecondLevel: String, // 엘릭서2 렙
+  val elixirSecondOption: String, // 엘릭서2 옵션
+  val transcendenceLevel: String, // 초월 단계
+  val transcendenceTotal: String, // 초월 레벨
+  val highUpgradeLevel: String, // 상급 재련 강화단계
+  val setOption: String, // 세트옵션(ex: 갈망)
 ) : CharacterItem
 
 data class CharacterAccessory(

@@ -133,6 +133,9 @@ class CharacterEquipmentDetail(private val equipments: List<Equipment>) {
         for (equipment in equipments) {
             when (equipment.type) {
                 "무기", "투구", "상의", "하의", "장갑", "어깨" -> {
+                    val (elixir1Lv, elixir1Op) = getElixirFirstOptionAndLevel(equipment)
+                    val (elixir2Lv, elixir2Op) = getElixirSecondOptionAndLevel(equipment)
+
                     val characterEquipment = CharacterEquipment(
                         type = getEquipmentType(equipment),
                         grade = getEquipmentGrade(equipment),
@@ -140,8 +143,10 @@ class CharacterEquipmentDetail(private val equipments: List<Equipment>) {
                         itemLevel = getItemLevel(equipment),
                         itemQuality = getItemQuality(equipment),
                         itemIcon = getItemIcon(equipment),
-                        elixirFirst = getElixirFirstOptionAndLevel(equipment),
-                        elixirSecond = getElixirSecondOptionAndLevel(equipment),
+                        elixirFirstLevel = elixir1Lv,
+                        elixirFirstOption = elixir1Op,
+                        elixirSecondLevel = elixir2Lv,
+                        elixirSecondOption = elixir2Op,
                         transcendenceLevel = getTranscendenceLevel(equipment),
                         transcendenceTotal = getTranscendenceTotal(equipment),
                         highUpgradeLevel = getHigherUpgradeLevel(equipment),
@@ -227,7 +232,7 @@ class CharacterEquipmentDetail(private val equipments: List<Equipment>) {
         return equipment.icon
     }
 
-    private fun getElixirFirstOptionAndLevel(equipment: Equipment): String {
+    private fun getElixirFirstOptionAndLevel(equipment: Equipment): Pair<String, String> {
         // Tooltip을 JSON 객체로 파싱
         val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
         // Element_008부터 Element_010까지 확인
@@ -247,17 +252,17 @@ class CharacterEquipmentDetail(private val equipments: List<Equipment>) {
                             val option = firstOption.substringAfter("</FONT> ").substringBefore(" <FONT color='#FFD200'>Lv")
                             val level = firstOption.substringAfter("<FONT color='#FFD200'>Lv.").substringBeforeLast("</FONT>")
 
-                            return "$option $level"
+                            return Pair(level, option)
                         }
                     }
                 }
             }
         }
 
-        return ""
+        return Pair("", "")
     }
 
-    private fun getElixirSecondOptionAndLevel(equipment: Equipment): String {
+    private fun getElixirSecondOptionAndLevel(equipment: Equipment): Pair<String, String> {
         // Tooltip을 JSON 객체로 파싱
         val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
         // Element_008부터 Element_010까지 확인
@@ -278,7 +283,7 @@ class CharacterEquipmentDetail(private val equipments: List<Equipment>) {
                                 val option = secondOption.substringAfter("</FONT> ").substringBefore(" <FONT color='#FFD200'>Lv")
                                 val level = secondOption.substringAfter("<FONT color='#FFD200'>Lv.").substringBeforeLast("</FONT>")
 
-                                return "$option $level"
+                                return Pair(level, option)
                             }
                         }
                     }
@@ -286,7 +291,7 @@ class CharacterEquipmentDetail(private val equipments: List<Equipment>) {
             }
         }
 
-        return ""
+        return Pair("", "")
     }
 
     private fun getTranscendenceLevel(equipment: Equipment): String {
@@ -322,9 +327,7 @@ class CharacterEquipmentDetail(private val equipments: List<Equipment>) {
                     if (value.has("Element_000")) {
                         val topStr = value.getAsJsonObject("Element_000").get("topStr").asString
                         if (topStr.contains("[초월]")) {
-                            val contentStr = value.getAsJsonObject("Element_000").getAsJsonObject("contentStr")
-                            val totalLevelContentStr = contentStr.getAsJsonObject("Element_001").get("contentStr").asString
-                            return totalLevelContentStr.substringAfterLast("</img>").substringBeforeLast("개</FONT>")
+                            return topStr.substringAfterLast("</img>")
                         }
                     }
                 }
