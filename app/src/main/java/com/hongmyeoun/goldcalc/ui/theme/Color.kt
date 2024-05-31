@@ -1,5 +1,6 @@
 package com.hongmyeoun.goldcalc.ui.theme
 
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 val Purple80 = Color(0xFFD0BCFF)
@@ -20,3 +21,19 @@ val CharacterEmblemBG = Color(0xFF414849)
 val LightBlue = Color(0xFF17C3CE)
 
 val MainBG = Color(0xFFE0F4A4)
+
+val HigherUpgradeColor = Color(0xFFA8EA6C)
+
+val AncientBG = Brush.linearGradient(
+    colors = listOf(
+        Color(0xFF3D3325),
+        Color(0xFFDCC999),
+    )
+)
+
+val RelicBG = Brush.linearGradient(
+    colors = listOf(
+        Color(0xFF362003),
+        Color(0xFF9E5F04),
+    )
+)
