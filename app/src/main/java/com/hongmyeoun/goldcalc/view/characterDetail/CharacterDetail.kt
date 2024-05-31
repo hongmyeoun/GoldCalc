@@ -5,6 +5,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,16 +33,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.fastSumBy
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.integration.compose.placeholder
+import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
@@ -54,7 +61,9 @@ import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.ui.theme.HigherUpgradeColor
 import com.hongmyeoun.goldcalc.ui.theme.RelicBG
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
+import kotlin.math.absoluteValue
 
+@OptIn(ExperimentalGlideComposeApi::class, ExperimentalLayoutApi::class)
 @Composable
 fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewModel()) {
     val context = LocalContext.current
@@ -117,11 +126,10 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
             }
 
             Row {
-
                 Column(modifier = Modifier.weight(0.7f)) {
                     characterEquipment?.let { characterEquipmentList ->
                         characterEquipmentList.forEach {
-                            when(it) {
+                            when (it) {
                                 is CharacterEquipment -> {
                                     EquipmentDetails(
                                         icon = it.itemIcon,
@@ -146,7 +154,7 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
                 Column(modifier = Modifier.weight(0.4f)) {
                     characterEquipment?.let { characterEquipmentList ->
                         characterEquipmentList.forEach {
-                            when(it) {
+                            when (it) {
                                 is CharacterAccessory -> {
                                     AccessoryDetails(
                                         icon = it.itemIcon,
@@ -155,6 +163,7 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
                                         quality = "${it.itemQuality}"
                                     )
                                 }
+
                                 is AbilityStone -> {
                                     AccessoryDetails(
                                         icon = it.itemIcon,
@@ -172,79 +181,116 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
             }
 
             characterGem?.let { gemList ->
-                gemList.forEach { 
-                    Text(text = it.type)
+                val annihilation = gemList.count { it.type == "멸화" }
+                val crimsonFlame = gemList.size - annihilation
+                Row {
+                    Text(text = "보석")
+                    TextChip(text = "멸화 x$annihilation")
+                    TextChip(text = "홍염 x$crimsonFlame")
+                }
+                Row {
+                    val (annMaxItemCount, criMaxItemCount) = calcMaxItemsInEachRow(annihilation, crimsonFlame)
+                    Column {
+                        FlowRow(
+                            maxItemsInEachRow = annMaxItemCount
+                        ) {
+                            gemList.filter { it.type == "멸화" }.forEach {
+                                GemSimple(it)
+                            }
+                        }
+                    }
+                    Column {
+                        FlowRow(
+                            maxItemsInEachRow = criMaxItemCount
+                        ) {
+                            gemList.filter { it.type == "홍염" }.forEach {
+                                GemSimple(it)
+                            }
+                        }
+                    }
+
                 }
             }
-
         }
     }
-
 }
 
+fun calcMaxItemsInEachRow(ann: Int, cri: Int): Pair<Int, Int> {
+    val difference = (ann - cri).absoluteValue
+    return when {
+        difference < 7 -> if (ann > cri) Pair(4, 3) else Pair(3, 4)
+        difference < 9 -> if (ann > cri) Pair(5, 2) else Pair(2, 5)
+        difference < 11 -> if (ann > cri) Pair(6, 1) else Pair(1, 6)
+        else -> if (ann > cri) Pair(7, 0) else Pair(0, 7)
+    }
+}
+
+@Composable
+@OptIn(ExperimentalGlideComposeApi::class)
+private fun GemSimple(it: Gem) {
+    Column(
+        modifier = Modifier
+            .padding(4.dp)
+            .background(
+                color = Color.DarkGray,
+                shape = RoundedCornerShape(4.dp)
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        GlideImage(
+            modifier = Modifier
+                .size(44.dp)
+                .background(
+                    brush = RelicBG,
+                    shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp)
+                )
+                .padding(4.dp),
+            model = it.icon,
+            contentDescription = "",
+        )
+        Text(text = "${it.level}", fontSize = 10.sp, color = Color.White)
+    }
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     GoldCalcTheme {
         Column(modifier = Modifier.fillMaxSize()) {
-            EquipmentDetails(
-                icon = "",
-                name = "투구",
-                grade = "고대",
-                upgrade = "+20",
-                itemLevel = "1640",
-                quality = "96",
-                elixir1Lv = "4",
-                elixir1Op = "진군 (질서)",
-                elixir2Lv = "5",
-                elixir2Op = "무기 공격력",
-                transcendenceLevel = "7",
-                transcendenceMultiple = "x20",
-                higherUpgrade = "15"
-            )
+            Row {
+                Text(text = "보석")
+                TextChip(text = "멸화 x1")
+                TextChip(text = "홍염 x10")
+            }
+            Row {
+                repeat(11) {
+                    Column(
+                        modifier = Modifier.background(
+                            color = Color.DarkGray,
+                            shape = RoundedCornerShape(4.dp)
+                        ),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        GlideImage(
+                            modifier = Modifier
+                                .size(30.dp)
+                                .background(
+                                    brush = RelicBG,
+                                    shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp)
+                                )
+                                .padding(4.dp),
+                            model = R.drawable.sm_item_01_172,
+                            loading = placeholder(painterResource(id = R.drawable.sm_item_01_172)),
+                            contentDescription = ""
+                        )
+                        Text(text = "10", fontSize = 10.sp, color = Color.White)
+                    }
+                }
+            }
         }
-
     }
 }
-
-//@Composable
-//fun EquipmentAndAccessoryDetails(
-//    eqName :String,
-//    eqLG: String,
-//    eqQal: String,
-//    eqUp: String,
-//    elixir1Lv: String = "",
-//    elixir1Op: String = "",
-//    elixir2Lv: String = "",
-//    elixir2Op: String = "",
-//    level: String = "",
-//    multiple: String = "",
-//    accName: String,
-//    accLG: String,
-//    accQal: String,
-//){
-//    Row {
-//        EquipmentDetails(
-//            icon = "",
-//            name = eqName,
-//            levelOrGrade = eqLG,
-//            quality = eqQal,
-//            elixir1Lv = elixir1Lv,
-//            elixir1Op = elixir1Op,
-//            elixir2Lv = elixir2Lv,
-//            elixir2Op = elixir2Op,
-//            level = level,
-//            multiple = multiple,
-//            upgrade = eqUp
-//        )
-//        AccessoryDetails(
-//            name = accName,
-//            levelOrGrade = accLG,
-//            quality = accQal,
-//        )
-//    }
-//
-//}
 
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
