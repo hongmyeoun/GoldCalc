@@ -33,6 +33,13 @@ val AncientBG = Brush.linearGradient(
 
 val RelicBG = Brush.linearGradient(
     colors = listOf(
+        Color(0xFF341A09),
+        Color(0xFFA24006),
+    )
+)
+
+val LegendaryBG = Brush.linearGradient(
+    colors = listOf(
         Color(0xFF362003),
         Color(0xFF9E5F04),
     )
