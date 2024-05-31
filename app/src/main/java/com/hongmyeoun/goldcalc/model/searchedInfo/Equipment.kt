@@ -63,3 +63,11 @@ data class Bracelet(
   val itemIcon: String,
   val effect: String,
 ) : CharacterItem
+
+data class Gem(
+  val type: String,
+  val level: Int,
+  val icon: String,
+  val skill: String,
+  val effect: String
+) : CharacterItem
