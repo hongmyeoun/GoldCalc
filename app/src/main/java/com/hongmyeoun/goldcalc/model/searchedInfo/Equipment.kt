@@ -48,9 +48,12 @@ data class AbilityStone(
   val name: String,
   val itemIcon: String,
   val hpBonus: String,
-  val engraving1: String,
-  val engraving2: String,
-  val engraving3: String,
+  val engraving1Lv: String,
+  val engraving1Op: String,
+  val engraving2Lv: String,
+  val engraving2Op: String,
+  val engraving3Lv: String,
+  val engraving3Op: String,
 ) : CharacterItem
 
 data class Bracelet(
