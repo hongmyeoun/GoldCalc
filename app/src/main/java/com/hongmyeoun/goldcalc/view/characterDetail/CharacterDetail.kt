@@ -357,8 +357,8 @@ private fun TranscendenceLevelRow(level: String, multiple: String, upgrade: Stri
     ) {
         if (level.isNotEmpty()) {
             GlideImage(
-                model = R.drawable.ico_tooltip_transcendence,
-                loading = placeholder(painter = painterResource(id = R.drawable.ico_tooltip_transcendence)),
+                model = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png",
+//                loading = placeholder(painter = painterResource(id = R.drawable.ico_tooltip_transcendence)),
                 contentDescription = ""
             )
             Text(text = "Lv.$level", fontSize = 10.sp)
