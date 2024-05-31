@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.core.content.ContextCompat
 import com.google.gson.GsonBuilder
 import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.EquipmentDetail
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
+import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.EquipmentDetail
+import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
+import com.hongmyeoun.goldcalc.model.searchedInfo.gem.GemDetail
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -94,6 +96,34 @@ object APIRemote {
                     equipmentList?.let {
                         val characterEquipmentDetail = EquipmentDetail(it)
                         return@withContext characterEquipmentDetail.getCharacterEquipmentDetails()
+                    }
+                } else {
+                    null
+                }
+            } catch (e: IOException) {
+                null
+            }
+        }
+    }
+
+    suspend fun getCharGem(context: Context, characterName: String): List<Gem>? {
+        return withContext(Dispatchers.IO) {
+            val gson = GsonBuilder().setLenient().create()
+            val retrofit = Retrofit.Builder()
+                .baseUrl(ContextCompat.getString(context, R.string.lost_ark_url))
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(authorizationHeader(context))
+                .build()
+
+            val lostArkApiService = retrofit.create(LostArkApiService::class.java)
+
+            try {
+                val response = lostArkApiService.getCharacterGem(characterName).execute()
+                if (response.isSuccessful) {
+                    val gemList = response.body()
+                    gemList?.let {
+                        val characterGemDetail = GemDetail(it.gems)
+                        return@withContext characterGemDetail.getCharacterGemDetails()
                     }
                 } else {
                     null

@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.model.lostArkApi
 
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.Equipment
+import com.hongmyeoun.goldcalc.model.searchedInfo.gem.GemAndEffect
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -20,4 +21,9 @@ interface LostArkApiService {
     fun getCharacterEquipment(
         @Path("characterName") characterName: String
     ): Call<List<Equipment>>
+
+    @GET("/armories/characters/{characterName}/gems")
+    fun getCharacterGem(
+        @Path("characterName") characterName: String
+    ): Call<GemAndEffect>
 }

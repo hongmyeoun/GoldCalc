@@ -48,6 +48,7 @@ import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.AbilityStone
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterEquipment
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
+import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
 import com.hongmyeoun.goldcalc.ui.theme.AncientBG
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.ui.theme.HigherUpgradeColor
@@ -59,10 +60,12 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
     val context = LocalContext.current
     var characterDetail by remember { mutableStateOf<CharacterDetail?>(null) }
     var characterEquipment by remember { mutableStateOf<List<CharacterItem>?>(null) }
+    var characterGem by remember { mutableStateOf<List<Gem>?>(null) }
 
     LaunchedEffect(Unit) {
         characterDetail = APIRemote.getCharDetail(context, charName)
         characterEquipment = APIRemote.getCharEquipment(context, charName)
+        characterGem = APIRemote.getCharGem(context, charName)
         viewModel.isSavedName(charName)
     }
 
@@ -165,6 +168,12 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
                         }
                     }
 
+                }
+            }
+
+            characterGem?.let { gemList ->
+                gemList.forEach { 
+                    Text(text = it.type)
                 }
             }
 
