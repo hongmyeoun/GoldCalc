@@ -32,7 +32,6 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,22 +41,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.bumptech.glide.integration.compose.placeholder
-import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
-import com.hongmyeoun.goldcalc.model.searchedInfo.AbilityStone
-import com.hongmyeoun.goldcalc.model.searchedInfo.CharacterAccessory
-import com.hongmyeoun.goldcalc.model.searchedInfo.CharacterEquipment
-import com.hongmyeoun.goldcalc.model.searchedInfo.CharacterItem
+import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.AbilityStone
+import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterAccessory
+import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterEquipment
+import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.ui.theme.AncientBG
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.ui.theme.HigherUpgradeColor
 import com.hongmyeoun.goldcalc.ui.theme.RelicBG
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewModel()) {
     val context = LocalContext.current

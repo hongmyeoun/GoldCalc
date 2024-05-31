@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.model.searchedInfo
+package com.hongmyeoun.goldcalc.model.searchedInfo.equipment
 
 import com.google.gson.annotations.SerializedName
 
@@ -62,12 +62,4 @@ data class Bracelet(
   val name: String,
   val itemIcon: String,
   val effect: String,
-) : CharacterItem
-
-data class Gem(
-  val type: String,
-  val level: Int,
-  val icon: String,
-  val skill: String,
-  val effect: String
 ) : CharacterItem

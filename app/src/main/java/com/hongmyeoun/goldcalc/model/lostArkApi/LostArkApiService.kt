@@ -1,6 +1,6 @@
 package com.hongmyeoun.goldcalc.model.lostArkApi
 
-import com.hongmyeoun.goldcalc.model.searchedInfo.Equipment
+import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.Equipment
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
