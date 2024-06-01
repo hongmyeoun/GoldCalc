@@ -146,5 +146,3 @@ object APIRemote {
         return httpClient.build()
     }
 }
-
-
