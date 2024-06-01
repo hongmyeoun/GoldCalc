@@ -33,7 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,7 +40,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.util.fastSumBy
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -245,7 +243,7 @@ private fun GemSimple(it: Gem) {
                     shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp)
                 )
                 .padding(4.dp),
-            model = it.icon,
+            model = it.gemIcon,
             contentDescription = "",
         )
         Text(text = "${it.level}", fontSize = 10.sp, color = Color.White)

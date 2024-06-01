@@ -122,7 +122,7 @@ object APIRemote {
                 if (response.isSuccessful) {
                     val gemList = response.body()
                     gemList?.let {
-                        val characterGemDetail = GemDetail(it.gems)
+                        val characterGemDetail = GemDetail(it)
                         val gems = characterGemDetail.getCharacterGemDetails()
                         return@withContext gems.sortedByDescending<Gem, Int> { gem -> gem.level }
                     }
