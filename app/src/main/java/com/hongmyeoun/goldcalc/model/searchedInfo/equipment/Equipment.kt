@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.model.searchedInfo
+package com.hongmyeoun.goldcalc.model.searchedInfo.equipment
 
 import com.google.gson.annotations.SerializedName
 

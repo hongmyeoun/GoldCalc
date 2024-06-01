@@ -2,12 +2,16 @@ package com.hongmyeoun.goldcalc.view.characterDetail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -28,9 +32,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -47,26 +53,31 @@ import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
-import com.hongmyeoun.goldcalc.model.searchedInfo.AbilityStone
-import com.hongmyeoun.goldcalc.model.searchedInfo.CharacterAccessory
-import com.hongmyeoun.goldcalc.model.searchedInfo.CharacterEquipment
-import com.hongmyeoun.goldcalc.model.searchedInfo.CharacterItem
+import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.AbilityStone
+import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterAccessory
+import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterEquipment
+import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
+import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
 import com.hongmyeoun.goldcalc.ui.theme.AncientBG
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.ui.theme.HigherUpgradeColor
 import com.hongmyeoun.goldcalc.ui.theme.RelicBG
+import com.hongmyeoun.goldcalc.ui.theme.RelicColor
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
+import kotlin.math.absoluteValue
 
-@OptIn(ExperimentalGlideComposeApi::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewModel()) {
     val context = LocalContext.current
     var characterDetail by remember { mutableStateOf<CharacterDetail?>(null) }
     var characterEquipment by remember { mutableStateOf<List<CharacterItem>?>(null) }
+    var characterGem by remember { mutableStateOf<List<Gem>?>(null) }
 
     LaunchedEffect(Unit) {
         characterDetail = APIRemote.getCharDetail(context, charName)
         characterEquipment = APIRemote.getCharEquipment(context, charName)
+        characterGem = APIRemote.getCharGem(context, charName)
         viewModel.isSavedName(charName)
     }
 
@@ -118,11 +129,10 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
             }
 
             Row {
-
                 Column(modifier = Modifier.weight(0.7f)) {
                     characterEquipment?.let { characterEquipmentList ->
                         characterEquipmentList.forEach {
-                            when(it) {
+                            when (it) {
                                 is CharacterEquipment -> {
                                     EquipmentDetails(
                                         icon = it.itemIcon,
@@ -147,7 +157,7 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
                 Column(modifier = Modifier.weight(0.4f)) {
                     characterEquipment?.let { characterEquipmentList ->
                         characterEquipmentList.forEach {
-                            when(it) {
+                            when (it) {
                                 is CharacterAccessory -> {
                                     AccessoryDetails(
                                         icon = it.itemIcon,
@@ -156,6 +166,7 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
                                         quality = "${it.itemQuality}"
                                     )
                                 }
+
                                 is AbilityStone -> {
                                     AccessoryDetails(
                                         icon = it.itemIcon,
@@ -172,74 +183,206 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
                 }
             }
 
+            characterGem?.let { gemList ->
+                val annihilation = gemList.count { it.type == "멸화" }
+                val crimsonFlame = gemList.size - annihilation
+
+                var isDetail by remember { mutableStateOf(false) }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { isDetail = !isDetail }
+                ) {
+                    Text(text = "보석")
+                    TextChip(text = "멸화 x$annihilation")
+                    TextChip(text = "홍염 x$crimsonFlame")
+                }
+                if (isDetail) {
+                    Row {
+                        GemDetail(
+                            modifier = Modifier.weight(1f),
+                            effectType = "피해",
+                            gemList = gemList
+                        )
+                        GemDetail(
+                            modifier = Modifier.weight(1f),
+                            effectType = "재사용 대기시간",
+                            gemList = gemList
+                        )
+                    }
+                } else {
+                    Row {
+                        val (annMaxItemCount, criMaxItemCount) = calcMaxItemsInEachRow(annihilation, crimsonFlame)
+                        Column {
+                            FlowRow(
+                                maxItemsInEachRow = annMaxItemCount
+                            ) {
+                                gemList.filter { it.type == "멸화" }.forEach {
+                                    GemSimple(it)
+                                }
+                            }
+                        }
+                        Column {
+                            FlowRow(
+                                maxItemsInEachRow = criMaxItemCount
+                            ) {
+                                gemList.filter { it.type == "홍염" }.forEach {
+                                    GemSimple(it)
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+            }
         }
     }
-
 }
 
+fun calcMaxItemsInEachRow(ann: Int, cri: Int): Pair<Int, Int> {
+    val difference = (ann - cri).absoluteValue
+    return when {
+        difference < 7 -> if (ann > cri) Pair(4, 3) else Pair(3, 4)
+        difference < 9 -> if (ann > cri) Pair(5, 2) else Pair(2, 5)
+        difference < 11 -> if (ann > cri) Pair(6, 1) else Pair(1, 6)
+        else -> if (ann > cri) Pair(7, 0) else Pair(0, 7)
+    }
+}
+
+@Composable
+@OptIn(ExperimentalGlideComposeApi::class)
+private fun GemSimple(it: Gem) {
+    Column(
+        modifier = Modifier
+            .padding(4.dp)
+            .background(
+                color = Color.DarkGray,
+                shape = RoundedCornerShape(4.dp)
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        GlideImage(
+            modifier = Modifier
+                .size(44.dp)
+                .background(
+                    brush = RelicBG,
+                    shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp)
+                )
+                .padding(4.dp),
+            model = it.gemIcon,
+            contentDescription = "",
+        )
+        Text(text = "${it.level}", fontSize = 10.sp, color = Color.White)
+    }
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     GoldCalcTheme {
         Column(modifier = Modifier.fillMaxSize()) {
-            EquipmentDetails(
-                icon = "",
-                name = "투구",
-                grade = "고대",
-                upgrade = "+20",
-                itemLevel = "1640",
-                quality = "96",
-                elixir1Lv = "4",
-                elixir1Op = "진군 (질서)",
-                elixir2Lv = "5",
-                elixir2Op = "무기 공격력",
-                transcendenceLevel = "7",
-                transcendenceMultiple = "x20",
-                higherUpgrade = "15"
-            )
+            Row {
+                Text(text = "보석")
+                TextChip(text = "멸화 x1")
+                TextChip(text = "홍염 x10")
+            }
+            Row {
+                GlideImage(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(RelicBG)
+//                        .border(
+//                            width = 1.dp,
+//                            color = Color.White,
+//                            shape = RoundedCornerShape(4.dp)
+//                        )
+                        .padding(2.dp),
+                    model = painterResource(id = R.drawable.sm_item_01_172),
+                    loading = placeholder(painterResource(id = R.drawable.sm_item_01_172)),
+                    contentDescription = ""
+                )
+            }
         }
-
     }
 }
 
-//@Composable
-//fun EquipmentAndAccessoryDetails(
-//    eqName :String,
-//    eqLG: String,
-//    eqQal: String,
-//    eqUp: String,
-//    elixir1Lv: String = "",
-//    elixir1Op: String = "",
-//    elixir2Lv: String = "",
-//    elixir2Op: String = "",
-//    level: String = "",
-//    multiple: String = "",
-//    accName: String,
-//    accLG: String,
-//    accQal: String,
-//){
-//    Row {
-//        EquipmentDetails(
-//            icon = "",
-//            name = eqName,
-//            levelOrGrade = eqLG,
-//            quality = eqQal,
-//            elixir1Lv = elixir1Lv,
-//            elixir1Op = elixir1Op,
-//            elixir2Lv = elixir2Lv,
-//            elixir2Op = elixir2Op,
-//            level = level,
-//            multiple = multiple,
-//            upgrade = eqUp
-//        )
-//        AccessoryDetails(
-//            name = accName,
-//            levelOrGrade = accLG,
-//            quality = accQal,
-//        )
-//    }
-//
-//}
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+private fun GemDetail(
+    modifier: Modifier,
+    effectType: String,
+    gemList: List<Gem>
+) {
+    Column(
+        modifier = modifier.background(Color.Black)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(4.dp)
+                .background(
+                    color = Color.DarkGray,
+                    shape = RoundedCornerShape(4.dp)
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = effectType,
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        val type = if (effectType == "피해") "멸화" else "홍염"
+
+        gemList.filter { it.type == type }.forEach { gem ->
+            Row(
+                modifier = Modifier.padding(4.dp)
+            ) {
+                Box {
+                    Column {
+                        Row {
+                            GlideImage(
+                                modifier = Modifier
+                                    .size(44.dp)
+                                    .border(
+                                        width = 1.dp,
+                                        color = Color.White,
+                                        shape = RoundedCornerShape(10.dp)
+                                    )
+                                    .clip(RoundedCornerShape(10.dp))
+                                ,
+                                model = gem.skillIcon,
+                                contentScale = ContentScale.Crop,
+                                contentDescription = ""
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                        }
+                        Spacer(modifier = Modifier.height(6.dp))
+                    }
+                    Box(modifier = Modifier.align(Alignment.BottomEnd)) {
+                        TextChip(text = "${gem.level}")
+                    }
+                }
+                Column(horizontalAlignment = Alignment.Start) {
+                    Text(
+                        text = gem.skill,
+                        color = RelicColor,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = gem.effect.substringAfter("$effectType "),
+                        color = Color.White
+                    )
+                }
+            }
+        }
+    }
+}
 
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -304,17 +447,11 @@ private fun EquipmentDetails(
                     shape = RoundedCornerShape(8.dp)
                 )
         ) {
-//        GlideImage(
-//            modifier = Modifier.size(48.dp),
-//            model = icon,
-//            contentDescription = "",
-//        )
             GlideImage(
                 modifier = Modifier
                     .size(48.dp)
                     .padding(4.dp),
                 model = icon,
-//                loading = placeholder(painterResource(id = R.drawable.sm_item_01_172)),
                 contentDescription = "",
             )
             TextChip(text = name)
@@ -358,7 +495,6 @@ private fun TranscendenceLevelRow(level: String, multiple: String, upgrade: Stri
         if (level.isNotEmpty()) {
             GlideImage(
                 model = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png",
-//                loading = placeholder(painter = painterResource(id = R.drawable.ico_tooltip_transcendence)),
                 contentDescription = ""
             )
             Text(text = "Lv.$level", fontSize = 10.sp)
