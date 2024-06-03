@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -31,11 +32,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -66,7 +71,7 @@ import com.hongmyeoun.goldcalc.ui.theme.RelicColor
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
 import kotlin.math.absoluteValue
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalGlideComposeApi::class)
 @Composable
 fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewModel()) {
     val context = LocalContext.current
@@ -237,6 +242,15 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
 
                 }
             }
+
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(4.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                repeat(6) {
+                    CardImage(grade = "전설", icon = "https://cdn-lostark.game.onstove.com/efui_iconatlas/card_legend/card_legend_00_0.png", 3)
+                }
+            }
         }
     }
 }
@@ -279,32 +293,140 @@ private fun GemSimple(it: Gem) {
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun CardImage(grade: String, icon: String, awakeCount: Int) {
+    val horizontalBias = when (grade) {
+        "일반" -> {
+            -1f
+        }
+
+        "고급" -> {
+            -0.6f
+        }
+
+        "희귀" -> {
+            -0.2f
+        }
+
+        "영웅" -> {
+            0.2f
+        }
+
+        "전설" -> {
+            0.6f
+        }
+
+        else -> {
+            1f
+        }
+    }
+
+    val xOffset = ((5 - awakeCount) * (-8.8)).dp
+    Box(
+        modifier = Modifier.padding(end = 12.dp)
+    ) {
+        Box(
+            modifier = Modifier.size(width = 47.dp, height = 69.dp)
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                GlideImage(
+                    modifier = Modifier.padding(start = 1.dp, end = 1.7.dp, top = 1.dp),
+                    model = icon,
+                    contentDescription = "카드 이미지"
+                )
+            }
+            GlideImage(
+                alignment = BiasAlignment(horizontalBias, 0f),
+                contentScale = ContentScale.FillHeight,
+                model = "https://cdn-lostark.iloa.gg/2018/obt/assets/images/pc/profile/img_card_grade.png",
+                contentDescription = "카드 테두리"
+            )
+        }
+        Box(
+            modifier = Modifier
+                .height(80.6.dp)
+                .padding(start = 3.dp, bottom = 3.dp, end = 3.dp)
+                .offset(x = (-1).dp),
+            contentAlignment = Alignment.BottomStart
+        ) {
+            Box {
+                // 활성화 안된거
+                Box(
+                    modifier = Modifier.clipToBounds()
+                ) {
+                    GlideImage(
+                        modifier = Modifier.offset(y = 12.6.dp),
+                        model = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/img_profile_awake.png",
+                        contentDescription = "빈슬롯(위)"
+                    )
+                }
+
+                Column {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    // 활성화 된거
+                    Box(
+                        modifier = Modifier.clipToBounds()
+                    ) {
+                        GlideImage(
+                            modifier = Modifier
+                                .offset(x= xOffset,y = (-12.6).dp),
+                            alignment = BiasAlignment(-1f, 0f),
+                            model = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/img_profile_awake.png",
+                            contentDescription = "활성화"
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     GoldCalcTheme {
         Column(modifier = Modifier.fillMaxSize()) {
-            Row {
-                Text(text = "보석")
-                TextChip(text = "멸화 x1")
-                TextChip(text = "홍염 x10")
-            }
-            Row {
-                GlideImage(
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clip(RoundedCornerShape(4.dp))
-                        .background(RelicBG)
-//                        .border(
-//                            width = 1.dp,
-//                            color = Color.White,
-//                            shape = RoundedCornerShape(4.dp)
-//                        )
-                        .padding(2.dp),
-                    model = painterResource(id = R.drawable.sm_item_01_172),
-                    loading = placeholder(painterResource(id = R.drawable.sm_item_01_172)),
-                    contentDescription = ""
-                )
+            Box(
+                modifier = Modifier
+                    .height(80.6.dp)
+                    .padding(start = 3.dp, bottom = 3.dp, end = 3.dp)
+                    .offset(x = (-1).dp),
+                contentAlignment = Alignment.BottomStart
+            ) {
+                Box {
+                    // 활성화 안된거
+                    Box(
+                        modifier = Modifier.clipToBounds()
+                    ) {
+                        GlideImage(
+                            modifier = Modifier.offset(y = 12.6.dp),
+                            model = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/img_profile_awake.png",
+                            loading = placeholder(painterResource(id = R.drawable.img_profile_awake)),
+                            contentDescription = "빈슬롯(위)"
+                        )
+                    }
+
+                    Column {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        // 활성화 된거
+                        Box(
+                            modifier = Modifier.clipToBounds()
+                        ) {
+                            GlideImage(
+                                modifier = Modifier
+                                    .offset(x=(0).dp ,y = (-12.6).dp),
+                                alignment = BiasAlignment(-1f, 0f),
+                                model = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/img_profile_awake.png",
+                                loading = placeholder(painterResource(id = R.drawable.img_profile_awake)),
+                                contentDescription = "활성화"
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -354,8 +476,7 @@ private fun GemDetail(
                                         color = Color.White,
                                         shape = RoundedCornerShape(10.dp)
                                     )
-                                    .clip(RoundedCornerShape(10.dp))
-                                ,
+                                    .clip(RoundedCornerShape(10.dp)),
                                 model = gem.skillIcon,
                                 contentScale = ContentScale.Crop,
                                 contentDescription = ""
