@@ -39,8 +39,6 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -58,6 +56,8 @@ import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
+import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardEffects
+import com.hongmyeoun.goldcalc.model.searchedInfo.card.Cards
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.AbilityStone
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterEquipment
@@ -71,18 +71,25 @@ import com.hongmyeoun.goldcalc.ui.theme.RelicColor
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
 import kotlin.math.absoluteValue
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalGlideComposeApi::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewModel()) {
     val context = LocalContext.current
     var characterDetail by remember { mutableStateOf<CharacterDetail?>(null) }
     var characterEquipment by remember { mutableStateOf<List<CharacterItem>?>(null) }
     var characterGem by remember { mutableStateOf<List<Gem>?>(null) }
+    var characterCards by remember { mutableStateOf<List<Cards>?>(null) }
+    var characterCardsEffects by remember { mutableStateOf<List<CardEffects>?>(null) }
 
     LaunchedEffect(Unit) {
         characterDetail = APIRemote.getCharDetail(context, charName)
         characterEquipment = APIRemote.getCharEquipment(context, charName)
         characterGem = APIRemote.getCharGem(context, charName)
+        APIRemote.getCharCard(context, charName)?.let { (cards, effects) ->
+            characterCards = cards
+            characterCardsEffects = effects
+        }
+
         viewModel.isSavedName(charName)
     }
 
@@ -243,12 +250,39 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
                 }
             }
 
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(4.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                repeat(6) {
-                    CardImage(grade = "전설", icon = "https://cdn-lostark.game.onstove.com/efui_iconatlas/card_legend/card_legend_00_0.png", 3)
+            characterCards?.let { cardList ->
+                var isDetail by remember { mutableStateOf(false) }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { isDetail = !isDetail }
+                ) {
+                    Text(text = "카드")
+                    characterCardsEffects?.let { cardEffects ->
+                        cardEffects.forEach { effect ->
+                            val cardInfo = effect.items.last().name
+                            val regex = Regex("""(.*)\s(\d+세트)\s\((\d+)각성합계\)""")
+                            regex.find(cardInfo)?.let {
+                                val (setOption, setLevel, setAwakeCount) = it.destructured
+                                TextChip(text = "$setOption $setAwakeCount (${setLevel})")
+                            }
+                        }
+                    }
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    cardList.forEach { card ->
+                        CardImage(
+                            grade = card.grade,
+                            icon = card.icon,
+                            awakeCount = card.awakeCount
+                        )
+                    }
                 }
             }
         }
@@ -372,7 +406,7 @@ fun CardImage(grade: String, icon: String, awakeCount: Int) {
                     ) {
                         GlideImage(
                             modifier = Modifier
-                                .offset(x= xOffset,y = (-12.6).dp),
+                                .offset(x = xOffset, y = (-12.6).dp),
                             alignment = BiasAlignment(-1f, 0f),
                             model = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/img_profile_awake.png",
                             contentDescription = "활성화"
@@ -418,7 +452,7 @@ fun DefaultPreview() {
                         ) {
                             GlideImage(
                                 modifier = Modifier
-                                    .offset(x=(0).dp ,y = (-12.6).dp),
+                                    .offset(x = (0).dp, y = (-12.6).dp),
                                 alignment = BiasAlignment(-1f, 0f),
                                 model = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/img_profile_awake.png",
                                 loading = placeholder(painterResource(id = R.drawable.img_profile_awake)),

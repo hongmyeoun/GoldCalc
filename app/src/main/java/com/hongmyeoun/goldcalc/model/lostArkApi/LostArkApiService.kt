@@ -1,5 +1,6 @@
 package com.hongmyeoun.goldcalc.model.lostArkApi
 
+import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardsWithEffects
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.Equipment
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.GemAndEffect
 import retrofit2.Call
@@ -26,4 +27,9 @@ interface LostArkApiService {
     fun getCharacterGem(
         @Path("characterName") characterName: String
     ): Call<GemAndEffect>
+
+    @GET("/armories/characters/{characterName}/cards")
+    fun getCharacterCard(
+        @Path("characterName") characterName: String
+    ): Call<CardsWithEffects>
 }

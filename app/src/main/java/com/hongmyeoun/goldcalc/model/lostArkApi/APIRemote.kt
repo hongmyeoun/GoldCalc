@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.core.content.ContextCompat
 import com.google.gson.GsonBuilder
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardDetail
+import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardEffects
+import com.hongmyeoun.goldcalc.model.searchedInfo.card.Cards
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.EquipmentDetail
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
@@ -134,6 +137,37 @@ object APIRemote {
             }
         }
     }
+
+    suspend fun getCharCard(context: Context, characterName: String): Pair<List<Cards>, List<CardEffects>>? {
+        return withContext(Dispatchers.IO) {
+            val gson = GsonBuilder().setLenient().create()
+            val retrofit = Retrofit.Builder()
+                .baseUrl(ContextCompat.getString(context, R.string.lost_ark_url))
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(authorizationHeader(context))
+                .build()
+
+            val lostArkApiService = retrofit.create(LostArkApiService::class.java)
+
+            try {
+                val response = lostArkApiService.getCharacterCard(characterName).execute()
+                if (response.isSuccessful) {
+                    val gemList = response.body()
+                    gemList?.let {
+                        val cardDetail = CardDetail(it)
+                        val cards = cardDetail.getCardsDetails()
+                        val effects = cardDetail.getCardEffects()
+                        return@withContext Pair(cards, effects)
+                    }
+                } else {
+                    null
+                }
+            } catch (e: IOException) {
+                null
+            }
+        }
+    }
+
 
     private fun authorizationHeader(context: Context): OkHttpClient {
         val httpClient = OkHttpClient.Builder()
