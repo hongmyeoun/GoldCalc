@@ -63,6 +63,7 @@ import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterEquipment
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
+import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
 import com.hongmyeoun.goldcalc.ui.theme.AncientBG
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.ui.theme.HigherUpgradeColor
@@ -80,6 +81,7 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
     var characterGem by remember { mutableStateOf<List<Gem>?>(null) }
     var characterCards by remember { mutableStateOf<List<Cards>?>(null) }
     var characterCardsEffects by remember { mutableStateOf<List<CardEffects>?>(null) }
+    var characterSkills by remember { mutableStateOf<List<Skills>?>(null) }
 
     LaunchedEffect(Unit) {
         characterDetail = APIRemote.getCharDetail(context, charName)
@@ -89,6 +91,7 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
             characterCards = cards
             characterCardsEffects = effects
         }
+        characterSkills = APIRemote.getCharSkill(context, charName)
 
         viewModel.isSavedName(charName)
     }
