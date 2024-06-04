@@ -35,7 +35,7 @@ class CombatSkillsDetail(private val combatSkills: List<CombatSkills>) {
         return skillList
     }
 
-    private fun getSkillGem(combatSkills: CombatSkills): List<String>? {
+    private fun getSkillGem(combatSkills: CombatSkills): List<Map<String, String>>? {
         val tooltip = JsonParser.parseString(combatSkills.tooltip).asJsonObject
 
         for (index in 7..8) {
@@ -56,8 +56,8 @@ class CombatSkillsDetail(private val combatSkills: List<CombatSkills>) {
         return null
     }
 
-    private fun getGem(str: String) : List<String> {
-        val gemList = mutableListOf<String>()
+    private fun getGem(str: String) : MutableList<Map<String, String>> {
+        val gemList = mutableListOf<Map<String, String>>()
 
         val regex = "(\\d+(\\.\\d+)?)% (증가|감소)".toRegex()
         val matches = regex.findAll(str)
@@ -72,34 +72,52 @@ class CombatSkillsDetail(private val combatSkills: List<CombatSkills>) {
                 calcCriLevel(percent).toString() + "홍"
             }
 
-            gemList.add(result)
+            val icon = getGemIcon(result)
+
+            gemList.add(mapOf("name" to result, "icon" to icon))
         }
 
         return gemList
     }
 
-
-    private fun getGemLevel(gemType: String, percent: Int): Int {
-        return if (gemType == "멸") {
-            calcAnnLevel(percent)
-        } else {
-            calcCriLevel(percent)
-        }
-    }
-
     private fun calcAnnLevel(percent: Int): Int {
-        val level = if (percent <= 24) {
-            percent / 3
-        } else if (percent <= 30) {
-            9
-        } else {
-            10
+        return when {
+            percent <= 24 -> percent / 3
+            percent <= 30 -> 9
+            else -> 10
         }
-
-        return level
     }
 
     private fun calcCriLevel(percent: Int): Int {
         return percent / 2
+    }
+
+    private fun getGemIcon(gemInfo: String): String {
+        val baseUrl = "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/"
+        val dotPNG = ".png"
+
+        return when (gemInfo) {
+            "1멸" -> baseUrl + "use_9_46" + dotPNG
+            "2멸" -> baseUrl + "use_9_47" + dotPNG
+            "3멸" -> baseUrl + "use_9_48" + dotPNG
+            "4멸" -> baseUrl + "use_9_49" + dotPNG
+            "5멸" -> baseUrl + "use_9_50" + dotPNG
+            "6멸" -> baseUrl + "use_9_51" + dotPNG
+            "7멸" -> baseUrl + "use_9_52" + dotPNG
+            "8멸" -> baseUrl + "use_9_53" + dotPNG
+            "9멸" -> baseUrl + "use_9_54" + dotPNG
+            "10멸" -> baseUrl + "use_9_55" + dotPNG
+            "1홍" -> baseUrl + "use_9_56" + dotPNG
+            "2홍" -> baseUrl + "use_9_57" + dotPNG
+            "3홍" -> baseUrl + "use_9_58" + dotPNG
+            "4홍" -> baseUrl + "use_9_59" + dotPNG
+            "5홍" -> baseUrl + "use_9_60" + dotPNG
+            "6홍" -> baseUrl + "use_9_61" + dotPNG
+            "7홍" -> baseUrl + "use_9_62" + dotPNG
+            "8홍" -> baseUrl + "use_9_63" + dotPNG
+            "9홍" -> baseUrl + "use_9_64" + dotPNG
+            "10홍" -> baseUrl + "use_9_65" + dotPNG
+            else -> ""
+        }
     }
 }

@@ -73,7 +73,7 @@ import com.hongmyeoun.goldcalc.ui.theme.RelicColor
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
 import kotlin.math.absoluteValue
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalGlideComposeApi::class)
 @Composable
 fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewModel()) {
     val context = LocalContext.current
@@ -288,6 +288,135 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
                         )
                     }
                 }
+            }
+
+            characterSkills?.let { skills ->
+                Column(
+                    modifier = Modifier.background(Color.Black)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp)
+                            .background(
+                                color = Color.DarkGray,
+                                shape = RoundedCornerShape(4.dp)
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "뭐 넣어야 될까",
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    skills.forEach {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box {
+                                Column {
+                                    Row {
+                                        GlideImage(
+                                            modifier = Modifier
+                                                .size(44.dp)
+                                                .border(
+                                                    width = 1.dp,
+                                                    color = Color.White,
+                                                    shape = RoundedCornerShape(10.dp)
+                                                )
+                                                .clip(RoundedCornerShape(10.dp)),
+                                            model = it.icon,
+                                            contentScale = ContentScale.Crop,
+                                            contentDescription = ""
+                                        )
+                                        Spacer(modifier = Modifier.width(10.dp))
+                                    }
+                                    Spacer(modifier = Modifier.height(6.dp))
+                                }
+                                Box(modifier = Modifier.align(Alignment.BottomEnd)) {
+                                    TextChip(text = "${it.level}")
+                                }
+                            }
+                            Column(horizontalAlignment = Alignment.Start) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text(
+                                        text = it.name,
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    it.tripods.let { tripods ->
+                                        tripods.forEach { tripod ->
+                                            if (tripod.isSelected) {
+                                                TextChip(text = "${tripod.slot}")
+                                            }
+                                        }
+                                    }
+                                }
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    it.tripods.let { tripods ->
+                                        tripods.forEach { tripod ->
+                                            if (tripod.isSelected) {
+                                                TextChip(text = "${tripod.level}")
+                                                Text(
+                                                    text = tripod.name,
+                                                    color = Color.White,
+                                                    fontSize = 10.sp
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (it.rune != null || it.gem != null) {
+                                Column(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalAlignment = Alignment.End
+                                ) {
+                                    it.rune?.let { rune ->
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            TextChip(text = rune.name)
+                                            GlideImage(
+                                                modifier = Modifier
+                                                    .background(
+                                                        brush = LegendaryBG,
+                                                        shape = RoundedCornerShape(30.dp)
+                                                    ),
+                                                model = rune.icon,
+                                                contentDescription = ""
+                                            )
+                                        }
+                                    }
+                                    it.gem?.let { gems ->
+                                        gems.forEach { gem ->
+                                            Spacer(modifier = Modifier.height(4.dp))
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                TextChip(text = gem["name"]!!)
+                                                GlideImage(
+                                                    modifier = Modifier
+                                                        .background(
+                                                            brush = LegendaryBG,
+                                                            shape = RoundedCornerShape(30.dp)
+                                                        ),
+                                                    model = gem["icon"],
+                                                    contentDescription = ""
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
             }
         }
     }
