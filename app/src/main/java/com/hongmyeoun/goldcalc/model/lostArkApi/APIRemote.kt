@@ -1,7 +1,6 @@
 package com.hongmyeoun.goldcalc.model.lostArkApi
 
 import android.content.Context
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.gson.GsonBuilder
 import com.hongmyeoun.goldcalc.R
@@ -189,8 +188,7 @@ object APIRemote {
                     gemList?.let {
                         val characterCombatSkills = CombatSkillsDetail(it)
                         val skills = characterCombatSkills.getSkills()
-                        Log.d("통신성공","$skills")
-                        return@withContext skills
+                        return@withContext skills.sortedByDescending { item -> item.level }
                     }
                 } else {
                     null
