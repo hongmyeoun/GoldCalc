@@ -67,6 +67,7 @@ import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
 import com.hongmyeoun.goldcalc.ui.theme.AncientBG
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.ui.theme.HigherUpgradeColor
+import com.hongmyeoun.goldcalc.ui.theme.LegendaryBG
 import com.hongmyeoun.goldcalc.ui.theme.RelicBG
 import com.hongmyeoun.goldcalc.ui.theme.RelicColor
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
@@ -427,42 +428,128 @@ fun CardImage(grade: String, icon: String, awakeCount: Int) {
 fun DefaultPreview() {
     GoldCalcTheme {
         Column(modifier = Modifier.fillMaxSize()) {
-            Box(
-                modifier = Modifier
-                    .height(80.6.dp)
-                    .padding(start = 3.dp, bottom = 3.dp, end = 3.dp)
-                    .offset(x = (-1).dp),
-                contentAlignment = Alignment.BottomStart
+            Column(
+                modifier = Modifier.background(Color.Black)
             ) {
-                Box {
-                    // 활성화 안된거
-                    Box(
-                        modifier = Modifier.clipToBounds()
-                    ) {
-                        GlideImage(
-                            modifier = Modifier.offset(y = 12.6.dp),
-                            model = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/img_profile_awake.png",
-                            loading = placeholder(painterResource(id = R.drawable.img_profile_awake)),
-                            contentDescription = "빈슬롯(위)"
-                        )
-                    }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp)
+                        .background(
+                            color = Color.DarkGray,
+                            shape = RoundedCornerShape(4.dp)
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "뭐 넣어야 될까",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
 
-                    Column {
-                        Spacer(modifier = Modifier.height(12.dp))
-                        // 활성화 된거
-                        Box(
-                            modifier = Modifier.clipToBounds()
-                        ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp)
+                ) {
+                    Box {
+                        Column {
+                            Row {
+                                GlideImage(
+                                    loading = placeholder(painterResource(id = R.drawable.bd_skill_01_26)),
+                                    modifier = Modifier
+                                        .size(44.dp)
+                                        .border(
+                                            width = 1.dp,
+                                            color = Color.White,
+                                            shape = RoundedCornerShape(10.dp)
+                                        )
+                                        .clip(RoundedCornerShape(10.dp)),
+                                    model = "",
+                                    contentScale = ContentScale.Crop,
+                                    contentDescription = ""
+                                )
+                                Spacer(modifier = Modifier.width(10.dp))
+                            }
+                            Spacer(modifier = Modifier.height(6.dp))
+                        }
+                        Box(modifier = Modifier.align(Alignment.BottomEnd)) {
+                            TextChip(text = "${10}")
+                        }
+                    }
+                    Column(horizontalAlignment = Alignment.Start) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = "소나티네",
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            TextChip(text = "${1}")
+                            TextChip(text = "${3}")
+                            TextChip(text = "${2}")
+                        }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            TextChip(text = "${5}")
+                            Text(
+                                text = "빠른 준비",
+                                color = Color.White,
+                                fontSize = 10.sp
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            TextChip(text = "${1}")
+                            Text(
+                                text = "음표 낙인",
+                                color = Color.White,
+                                fontSize = 10.sp
+                            )
+
+                            Spacer(modifier = Modifier.width(4.dp))
+                            TextChip(text = "${5}")
+                            Text(
+                                text = "선율 증가",
+                                color = Color.White,
+                                fontSize = 10.sp
+                            )
+
+                        }
+                    }
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            TextChip(text = "집중")
                             GlideImage(
                                 modifier = Modifier
-                                    .offset(x = (0).dp, y = (-12.6).dp),
-                                alignment = BiasAlignment(-1f, 0f),
-                                model = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/img_profile_awake.png",
-                                loading = placeholder(painterResource(id = R.drawable.img_profile_awake)),
-                                contentDescription = "활성화"
+                                    .background(
+                                        brush = LegendaryBG,
+                                        shape = RoundedCornerShape(30.dp)
+                                    )
+                                ,
+                                loading = placeholder(painterResource(id = R.drawable.use_7_200)),
+                                model = "",
+                                contentDescription = ""
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Row {
+                            TextChip(text = "7홍")
+                            GlideImage(
+                                modifier = Modifier
+                                    .background(
+                                        brush = LegendaryBG,
+                                        shape = RoundedCornerShape(30.dp)
+                                    )
+                                ,
+                                loading = placeholder(painterResource(id = R.drawable.use_7_200)),
+                                model = "",
+                                contentDescription = ""
                             )
                         }
                     }
+
                 }
             }
         }
