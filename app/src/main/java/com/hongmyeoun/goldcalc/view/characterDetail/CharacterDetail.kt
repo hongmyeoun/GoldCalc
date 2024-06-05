@@ -45,8 +45,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.fastSumBy
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -73,7 +75,7 @@ import com.hongmyeoun.goldcalc.ui.theme.RelicColor
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
 import kotlin.math.absoluteValue
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalGlideComposeApi::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewModel()) {
     val context = LocalContext.current
@@ -291,136 +293,313 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
             }
 
             characterSkills?.let { skills ->
-                Column(
-                    modifier = Modifier.background(Color.Black)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(4.dp)
-                            .background(
-                                color = Color.DarkGray,
-                                shape = RoundedCornerShape(4.dp)
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "뭐 넣어야 될까",
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
+                var isDetail by remember { mutableStateOf(false) }
 
-                    skills.forEach {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(4.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Box {
-                                Column {
-                                    Row {
-                                        GlideImage(
-                                            modifier = Modifier
-                                                .size(44.dp)
-                                                .border(
-                                                    width = 1.dp,
-                                                    color = Color.White,
-                                                    shape = RoundedCornerShape(10.dp)
-                                                )
-                                                .clip(RoundedCornerShape(10.dp)),
-                                            model = it.icon,
-                                            contentScale = ContentScale.Crop,
-                                            contentDescription = ""
-                                        )
-                                        Spacer(modifier = Modifier.width(10.dp))
-                                    }
-                                    Spacer(modifier = Modifier.height(6.dp))
-                                }
-                                Box(modifier = Modifier.align(Alignment.BottomEnd)) {
-                                    TextChip(text = "${it.level}")
-                                }
-                            }
-                            Column(horizontalAlignment = Alignment.Start) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text(
-                                        text = it.name,
-                                        color = Color.White,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    it.tripods.let { tripods ->
-                                        tripods.forEach { tripod ->
-                                            if (tripod.isSelected) {
-                                                TextChip(text = "${tripod.slot}")
-                                            }
-                                        }
-                                    }
-                                }
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    it.tripods.let { tripods ->
-                                        tripods.forEach { tripod ->
-                                            if (tripod.isSelected) {
-                                                TextChip(text = "${tripod.level}")
-                                                Text(
-                                                    text = tripod.name,
-                                                    color = Color.White,
-                                                    fontSize = 10.sp
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            if (it.rune != null || it.gem != null) {
-                                Column(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalAlignment = Alignment.End
-                                ) {
-                                    it.rune?.let { rune ->
-                                        Row(verticalAlignment = Alignment.CenterVertically) {
-                                            TextChip(text = rune.name)
-                                            GlideImage(
-                                                modifier = Modifier
-                                                    .background(
-                                                        brush = LegendaryBG,
-                                                        shape = RoundedCornerShape(30.dp)
-                                                    ),
-                                                model = rune.icon,
-                                                contentDescription = ""
-                                            )
-                                        }
-                                    }
-                                    it.gem?.let { gems ->
-                                        gems.forEach { gem ->
-                                            Spacer(modifier = Modifier.height(4.dp))
-                                            Row(
-                                                verticalAlignment = Alignment.CenterVertically
-                                            ) {
-                                                TextChip(text = gem["name"]!!)
-                                                GlideImage(
-                                                    modifier = Modifier
-                                                        .background(
-                                                            brush = LegendaryBG,
-                                                            shape = RoundedCornerShape(30.dp)
-                                                        ),
-                                                    model = gem["icon"],
-                                                    contentDescription = ""
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { isDetail = !isDetail }
+                ) {
+                    Text(text = "스킬")
+                    characterDetail?.let { characterDetail ->
+                        TextChip(text = "스킬 포인트 ${characterDetail.usingSkillPoint}/${characterDetail.totalSkillPoint}")
+                    }
+                    val fiveLevel = skills.fastSumBy { skill -> skill.tripods.count { tripod -> tripod.isSelected && tripod.level == 5 } }
+                    val fourLevel = skills.fastSumBy { skill -> skill.tripods.count { tripod -> tripod.isSelected && tripod.level == 4 } }
+                    if (fiveLevel > 0) {
+                        TextChip(text = "Lv.5 x $fiveLevel")
+                    }
+                    if (fourLevel > 0) {
+                        TextChip(text = "Lv.4 x $fourLevel")
                     }
                 }
 
+                if (isDetail) {
+                    SkillDetail(skills)
+                } else {
+                    SkillSimple(skills)
+                }
             }
         }
     }
 }
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun SkillSimple(skills: List<Skills>) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = Color.Black)
+    ) {
+        FlowRow(
+            maxItemsInEachRow = 2,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            skills.forEach {
+                if (it.level > 3) {
+                    Row(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .background(
+                                color = Color.DarkGray,
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .weight(1f),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        SkillIcon(it, true)
+                        Column(
+                            horizontalAlignment = Alignment.Start
+                        ) {
+                            SkillSimpleTripods(it)
+                            SkillSimpleRuneAndGem(it)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SkillSimpleTripods(it: Skills) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = it.name,
+            color = Color.White,
+            fontWeight = FontWeight.Bold,
+            fontSize = 12.sp
+        )
+    }
+}
+
+@Composable
+private fun SkillSimpleRuneAndGem(it: Skills) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        it.rune?.let { rune ->
+            TextChip(text = "(${rune.grade})${rune.name}")
+        }
+        it.gem?.let { gems ->
+            gems.forEach { gem ->
+                TextChip(text = gem["name"]!!)
+            }
+        }
+    }
+}
+
+@Composable
+private fun SkillDetail(skills: List<Skills>) {
+    Column(
+        modifier = Modifier.background(Color.Black)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(4.dp)
+                .background(
+                    color = Color.DarkGray,
+                    shape = RoundedCornerShape(4.dp)
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "뭐 넣어야 될까",
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        skills.forEach {
+            SkillDetailRow(it)
+        }
+    }
+}
+
+@Composable
+private fun SkillDetailRow(it: Skills) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        SkillIcon(it)
+        SkillTripods(it)
+        if (it.rune != null || it.gem != null) {
+            SkillRuneAndGem(it)
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalGlideComposeApi::class)
+private fun SkillRuneAndGem(it: Skills) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.End
+    ) {
+        it.rune?.let { rune ->
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                TextChip(text = rune.name)
+                GlideImage(
+                    modifier = Modifier
+                        .background(
+                            brush = LegendaryBG,
+                            shape = RoundedCornerShape(30.dp)
+                        ),
+                    model = rune.icon,
+                    contentDescription = "룬"
+                )
+            }
+        }
+        it.gem?.let { gems ->
+            gems.forEach { gem ->
+                Spacer(modifier = Modifier.height(4.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TextChip(text = gem["name"]!!)
+                    GlideImage(
+                        modifier = Modifier
+                            .background(
+                                brush = LegendaryBG,
+                                shape = RoundedCornerShape(30.dp)
+                            ),
+                        model = gem["icon"],
+                        contentDescription = "보석"
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SkillTripods(it: Skills) {
+    Column(horizontalAlignment = Alignment.Start) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = it.name,
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            it.tripods.let { tripods ->
+                tripods.forEach { tripod ->
+                    if (tripod.isSelected) {
+                        TextChip(text = "${tripod.slot}")
+                    }
+                }
+            }
+        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            it.tripods.let { tripods ->
+                tripods.forEach { tripod ->
+                    if (tripod.isSelected) {
+                        TextChip(text = "${tripod.level}")
+                        Text(
+                            text = tripod.name,
+                            color = Color.White,
+                            fontSize = 10.sp
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+//@Composable
+//@OptIn(ExperimentalGlideComposeApi::class)
+//private fun SkillIcon(it: Skills) {
+//    Box {
+//        Column {
+//            Row {
+//                GlideImage(
+//                    modifier = Modifier
+//                        .size(44.dp)
+//                        .border(
+//                            width = 1.dp,
+//                            color = Color.White,
+//                            shape = RoundedCornerShape(10.dp)
+//                        )
+//                        .clip(RoundedCornerShape(10.dp)),
+//                    model = it.icon,
+//                    contentScale = ContentScale.Crop,
+//                    contentDescription = ""
+//                )
+//                Spacer(modifier = Modifier.width(10.dp))
+//            }
+//            Spacer(modifier = Modifier.height(6.dp))
+//        }
+//        Box(modifier = Modifier.align(Alignment.BottomEnd)) {
+//            TextChip(text = "${it.level}")
+//        }
+//    }
+//}
+
+@Composable
+@OptIn(ExperimentalGlideComposeApi::class)
+private fun SkillIcon(it: Skills, isSimple: Boolean = false) {
+    Box {
+        Column {
+            Row {
+                Box {
+                    GlideImage(
+                        modifier = Modifier
+                            .size(44.dp)
+                            .border(
+                                width = 1.dp,
+                                color = Color.White,
+                                shape = RoundedCornerShape(10.dp)
+                            )
+                            .clip(RoundedCornerShape(10.dp)),
+                        model = it.icon,
+                        contentScale = ContentScale.Crop,
+                        contentDescription = ""
+                    )
+
+                    if (isSimple) {
+                        Column(modifier = Modifier.padding(2.dp)) {
+                            var tripodSlots = ""
+                            var tripodLevels = ""
+                            it.tripods.forEach { tripods ->
+                                if (tripods.isSelected) {
+                                    tripodSlots += tripods.slot.toString()
+                                    tripodLevels += tripods.level.toString()
+                                }
+                            }
+                            TextChip(
+                                text = tripodSlots,
+                                customTextSize = 8.sp,
+                                borderless = true,
+                                customPadding = Modifier.padding(start = 1.dp, end = 1.dp)
+                            )
+                            Spacer(modifier = Modifier.height(1.dp))
+                            TextChip(
+                                text = tripodLevels,
+                                customTextSize = 8.sp,
+                                borderless = true,
+                                customPadding = Modifier.padding(start = 1.dp, end = 1.dp)
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.width(10.dp))
+            }
+            Spacer(modifier = Modifier.height(6.dp))
+        }
+        Box(modifier = Modifier.align(Alignment.BottomEnd)) {
+            TextChip(text = "${it.level}")
+        }
+    }
+}
+
 
 fun calcMaxItemsInEachRow(ann: Int, cri: Int): Pair<Int, Int> {
     val difference = (ann - cri).absoluteValue
@@ -453,7 +632,7 @@ private fun GemSimple(it: Gem) {
                 )
                 .padding(4.dp),
             model = it.gemIcon,
-            contentDescription = "",
+            contentDescription = "보석",
         )
         Text(text = "${it.level}", fontSize = 10.sp, color = Color.White)
     }
@@ -556,132 +735,49 @@ fun CardImage(grade: String, icon: String, awakeCount: Int) {
 @Composable
 fun DefaultPreview() {
     GoldCalcTheme {
-        Column(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier.background(Color.Black)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(4.dp)
-                        .background(
-                            color = Color.DarkGray,
-                            shape = RoundedCornerShape(4.dp)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "뭐 넣어야 될까",
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(4.dp)
-                ) {
+        Box {
+            Column {
+                Row {
                     Box {
-                        Column {
-                            Row {
-                                GlideImage(
-                                    loading = placeholder(painterResource(id = R.drawable.bd_skill_01_26)),
-                                    modifier = Modifier
-                                        .size(44.dp)
-                                        .border(
-                                            width = 1.dp,
-                                            color = Color.White,
-                                            shape = RoundedCornerShape(10.dp)
-                                        )
-                                        .clip(RoundedCornerShape(10.dp)),
-                                    model = "",
-                                    contentScale = ContentScale.Crop,
-                                    contentDescription = ""
+                        GlideImage(
+                            loading = placeholder(painterResource(id = R.drawable.bd_skill_01_26)),
+                            modifier = Modifier
+                                .size(44.dp)
+                                .border(
+                                    width = 1.dp,
+                                    color = Color.White,
+                                    shape = RoundedCornerShape(10.dp)
                                 )
-                                Spacer(modifier = Modifier.width(10.dp))
-                            }
-                            Spacer(modifier = Modifier.height(6.dp))
-                        }
-                        Box(modifier = Modifier.align(Alignment.BottomEnd)) {
-                            TextChip(text = "${10}")
-                        }
-                    }
-                    Column(horizontalAlignment = Alignment.Start) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                text = "소나티네",
-                                color = Color.White,
-                                fontWeight = FontWeight.Bold
+                                .clip(RoundedCornerShape(10.dp)),
+                            model = "it.icon",
+                            contentScale = ContentScale.Crop,
+                            contentDescription = ""
+                        )
+                        Column {
+                            TextChip(
+                                text = "232",
+                                customTextSize = 6.sp,
+                                borderless = true,
+                                customPadding = Modifier.padding(start = 1.dp, end = 1.dp)
                             )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            TextChip(text = "${1}")
-                            TextChip(text = "${3}")
-                            TextChip(text = "${2}")
-                        }
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            TextChip(text = "${5}")
-                            Text(
-                                text = "빠른 준비",
-                                color = Color.White,
-                                fontSize = 10.sp
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            TextChip(text = "${1}")
-                            Text(
-                                text = "음표 낙인",
-                                color = Color.White,
-                                fontSize = 10.sp
-                            )
-
-                            Spacer(modifier = Modifier.width(4.dp))
-                            TextChip(text = "${5}")
-                            Text(
-                                text = "선율 증가",
-                                color = Color.White,
-                                fontSize = 10.sp
-                            )
-
-                        }
-                    }
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.End
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            TextChip(text = "집중")
-                            GlideImage(
-                                modifier = Modifier
-                                    .background(
-                                        brush = LegendaryBG,
-                                        shape = RoundedCornerShape(30.dp)
-                                    )
-                                ,
-                                loading = placeholder(painterResource(id = R.drawable.use_7_200)),
-                                model = "",
-                                contentDescription = ""
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Row {
-                            TextChip(text = "7홍")
-                            GlideImage(
-                                modifier = Modifier
-                                    .background(
-                                        brush = LegendaryBG,
-                                        shape = RoundedCornerShape(30.dp)
-                                    )
-                                ,
-                                loading = placeholder(painterResource(id = R.drawable.use_7_200)),
-                                model = "",
-                                contentDescription = ""
+                            Spacer(modifier = Modifier.height(1.dp))
+                            TextChip(
+                                text = "555",
+                                customTextSize = 6.sp,
+                                borderless = true,
+                                customPadding = Modifier.padding(start = 1.dp, end = 1.dp)
                             )
                         }
                     }
-
+                    Spacer(modifier = Modifier.width(10.dp))
                 }
+                Spacer(modifier = Modifier.height(6.dp))
+            }
+            Box(modifier = Modifier.align(Alignment.BottomEnd)) {
+                TextChip(text = "${10}")
             }
         }
+
     }
 }
 
@@ -809,6 +905,7 @@ private fun EquipmentDetails(
     higherUpgrade: String,
 ) {
     val itemBG = if (grade == "고대") AncientBG else RelicBG
+    val fontSize = if (name.length >= 3) 8.sp else 10.sp
 
     Row(
         horizontalArrangement = Arrangement.Center
@@ -826,9 +923,9 @@ private fun EquipmentDetails(
                     .size(48.dp)
                     .padding(4.dp),
                 model = icon,
-                contentDescription = "",
+                contentDescription = "장비 아이콘",
             )
-            TextChip(text = name)
+            TextChip(text = name, customTextSize = fontSize)
         }
         Spacer(modifier = Modifier.width(4.dp))
         Column {
@@ -936,31 +1033,33 @@ fun CustomSuggestionChip(labelText: String) {
 @Composable
 fun TextChip(
     text: String,
+    customTextSize: TextUnit = 10.sp,
+    borderless: Boolean = false,
+    customPadding: Modifier = Modifier.padding(start = 6.dp, end = 6.dp, top = 2.dp, bottom = 2.dp)
 ) {
-    val textSize = if (text.length == 3) 8.sp else 10.sp
-
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .padding(
-                vertical = 1.dp,
-                horizontal = 4.dp
-            )
+    val modifier = if (!borderless) {
+        Modifier
             .border(
                 width = 1.dp,
                 color = Color.White,
                 shape = RoundedCornerShape(4.dp)
             )
+    } else {
+        Modifier
+    }
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
             .background(
                 color = Color.Black,
                 shape = RoundedCornerShape(4.dp)
             )
-            .padding(start = 6.dp, end = 6.dp, top = 2.dp, bottom = 2.dp)
+            .then(customPadding)
     ) {
         Text(
             text = text,
-            fontSize = textSize,
+            fontSize = customTextSize,
             color = Color.White
         )
     }
