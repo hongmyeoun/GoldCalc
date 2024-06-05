@@ -11,6 +11,8 @@ import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.EquipmentDetail
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.GemDetail
+import com.hongmyeoun.goldcalc.model.searchedInfo.skills.CombatSkillsDetail
+import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -167,6 +169,36 @@ object APIRemote {
             }
         }
     }
+
+    suspend fun getCharSkill(context: Context, characterName: String): List<Skills>? {
+        return withContext(Dispatchers.IO) {
+            val gson = GsonBuilder().setLenient().create()
+            val retrofit = Retrofit.Builder()
+                .baseUrl(ContextCompat.getString(context, R.string.lost_ark_url))
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(authorizationHeader(context))
+                .build()
+
+            val lostArkApiService = retrofit.create(LostArkApiService::class.java)
+
+            try {
+                val response = lostArkApiService.getCharacterSkills(characterName).execute()
+                if (response.isSuccessful) {
+                    val gemList = response.body()
+                    gemList?.let {
+                        val characterCombatSkills = CombatSkillsDetail(it)
+                        val skills = characterCombatSkills.getSkills()
+                        return@withContext skills.sortedByDescending { item -> item.level }
+                    }
+                } else {
+                    null
+                }
+            } catch (e: IOException) {
+                null
+            }
+        }
+    }
+
 
 
     private fun authorizationHeader(context: Context): OkHttpClient {

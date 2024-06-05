@@ -3,6 +3,7 @@ package com.hongmyeoun.goldcalc.model.lostArkApi
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardsWithEffects
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.Equipment
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.GemAndEffect
+import com.hongmyeoun.goldcalc.model.searchedInfo.skills.CombatSkills
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -32,4 +33,9 @@ interface LostArkApiService {
     fun getCharacterCard(
         @Path("characterName") characterName: String
     ): Call<CardsWithEffects>
+
+    @GET("/armories/characters/{characterName}/combat-skills")
+    fun getCharacterSkills(
+        @Path("characterName") characterName: String
+    ): Call<List<CombatSkills>>
 }
