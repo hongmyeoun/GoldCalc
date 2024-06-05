@@ -149,7 +149,7 @@ fun GemDetail(
                                     .clip(RoundedCornerShape(10.dp)),
                                 model = gem.skillIcon,
                                 contentScale = ContentScale.Crop,
-                                contentDescription = ""
+                                contentDescription = "보석 아이콘"
                             )
                             Spacer(modifier = Modifier.width(10.dp))
                         }

@@ -132,7 +132,7 @@ private fun SkillIcon(it: Skills, isSimple: Boolean = false) {
                             .clip(RoundedCornerShape(10.dp)),
                         model = it.icon,
                         contentScale = ContentScale.Crop,
-                        contentDescription = ""
+                        contentDescription = "스킬 아이콘"
                     )
 
                     if (isSimple) {

@@ -191,7 +191,7 @@ private fun TranscendenceLevelRow(level: String, multiple: String, upgrade: Stri
         if (level.isNotEmpty()) {
             GlideImage(
                 model = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png",
-                contentDescription = ""
+                contentDescription = "초월 아이콘"
             )
             Text(text = "Lv.$level", fontSize = 10.sp)
             Spacer(modifier = Modifier.width(2.dp))
@@ -283,7 +283,7 @@ fun AccessoryDetails(
                     .size(48.dp)
                     .padding(4.dp),
                 model = icon,
-                contentDescription = ""
+                contentDescription = "악세서리 이미지"
             )
             TextChip(text = name)
         }
