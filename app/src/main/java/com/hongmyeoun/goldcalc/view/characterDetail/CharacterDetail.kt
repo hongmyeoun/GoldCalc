@@ -37,6 +37,7 @@ import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardEffects
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.Cards
+import com.hongmyeoun.goldcalc.model.searchedInfo.engravings.SkillEngravings
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
 import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
@@ -52,6 +53,7 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
     var characterCards by remember { mutableStateOf<List<Cards>?>(null) }
     var characterCardsEffects by remember { mutableStateOf<List<CardEffects>?>(null) }
     var characterSkills by remember { mutableStateOf<List<Skills>?>(null) }
+    var characterEngravings by remember { mutableStateOf<List<SkillEngravings>?>(null) }
 
     LaunchedEffect(Unit) {
         characterDetail = APIRemote.getCharDetail(context, charName)
@@ -62,6 +64,7 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
             characterCardsEffects = effects
         }
         characterSkills = APIRemote.getCharSkill(context, charName)
+        characterEngravings = APIRemote.getCharEngravings(context, charName)
 
         viewModel.isSavedName(charName)
     }

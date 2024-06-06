@@ -268,6 +268,7 @@ fun AccessoryDetails(
     quality: String
 ) {
     val itemBG = if (grade == "고대") AncientBG else RelicBG
+    val fontSize = if (name.length >= 3) 8.sp else 10.sp
 
     Row {
         Box(
@@ -285,7 +286,7 @@ fun AccessoryDetails(
                 model = icon,
                 contentDescription = "악세서리 이미지"
             )
-            TextChip(text = name)
+            TextChip(text = name, customTextSize = fontSize)
         }
         Spacer(modifier = Modifier.width(4.dp))
         UpgradeQualityRow(quality)
