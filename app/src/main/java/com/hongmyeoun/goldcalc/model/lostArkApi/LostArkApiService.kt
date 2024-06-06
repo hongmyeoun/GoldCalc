@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.model.lostArkApi
 
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardsWithEffects
+import com.hongmyeoun.goldcalc.model.searchedInfo.engravings.SkillEngravingsAndEffects
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.Equipment
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.GemAndEffect
 import com.hongmyeoun.goldcalc.model.searchedInfo.skills.CombatSkills
@@ -38,4 +39,9 @@ interface LostArkApiService {
     fun getCharacterSkills(
         @Path("characterName") characterName: String
     ): Call<List<CombatSkills>>
+
+    @GET("/armories/characters/{characterName}/engravings")
+    fun getCharacterEngravings(
+        @Path("characterName") characterName: String
+    ): Call<SkillEngravingsAndEffects>
 }

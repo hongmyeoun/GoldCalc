@@ -1,12 +1,15 @@
 package com.hongmyeoun.goldcalc.model.lostArkApi
 
 import android.content.Context
+import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.gson.GsonBuilder
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardDetail
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardEffects
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.Cards
+import com.hongmyeoun.goldcalc.model.searchedInfo.engravings.SkillEngravings
+import com.hongmyeoun.goldcalc.model.searchedInfo.engravings.SkillEngravingsDetail
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.EquipmentDetail
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
@@ -199,6 +202,34 @@ object APIRemote {
         }
     }
 
+    suspend fun getCharEngravings(context: Context, characterName: String): List<SkillEngravings>? {
+        return withContext(Dispatchers.IO) {
+            val gson = GsonBuilder().setLenient().create()
+            val retrofit = Retrofit.Builder()
+                .baseUrl(ContextCompat.getString(context, R.string.lost_ark_url))
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(authorizationHeader(context))
+                .build()
+
+            val lostArkApiService = retrofit.create(LostArkApiService::class.java)
+
+            try {
+                val response = lostArkApiService.getCharacterEngravings(characterName).execute()
+                if (response.isSuccessful) {
+                    val engravings = response.body()
+                    engravings?.let {
+                        val skillEngravingDetail = SkillEngravingsDetail(engravings)
+                        Log.d("통신성공", skillEngravingDetail.getEngravingsDetail().toString())
+                        return@withContext skillEngravingDetail.getEngravingsDetail()
+                    }
+                } else {
+                    null
+                }
+            } catch (e: IOException) {
+                null
+            }
+        }
+    }
 
 
     private fun authorizationHeader(context: Context): OkHttpClient {
