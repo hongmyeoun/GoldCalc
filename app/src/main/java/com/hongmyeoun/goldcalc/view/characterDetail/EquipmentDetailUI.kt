@@ -54,8 +54,10 @@ fun EquipmentDetailUI(characterEquipment: List<CharacterItem>?) {
         "$count$option Lv.$formattedLevel"
     }
 
-//    val combatStatTotals = characterEquipment?.filterIsInstance<CharacterAccessory>()?.map { it.combatStat1 }
-//    val combatStatTotal =
+    val combatStat = characterEquipment?.filterIsInstance<CharacterAccessory>()?.map { it.combatStat1 }
+    val combatStatOne = combatStat?.sumOf { it.split(" ")[1].removePrefix("+").toInt() }?:0
+    val combatStatTwo = characterEquipment?.filterIsInstance<CharacterAccessory>()?.get(0)?.combatStat2?.split(" ")?.get(1)?.removePrefix("+")?.toInt()?:0
+
 
 
 
@@ -66,7 +68,7 @@ fun EquipmentDetailUI(characterEquipment: List<CharacterItem>?) {
         Spacer(modifier = Modifier.width(8.dp))
         TextChip(text = "악세 품질 $accessoryQualityAvg")
         Spacer(modifier = Modifier.width(8.dp))
-        TextChip(text = "특성합 ${combatStatTotalQuality ?: 0}")
+        TextChip(text = "특성합 ${combatStatOne + combatStatTwo}")
 //            CustomSuggestionChip("특성합 ${combatStatTotalQuality?:0}")
     }
 
