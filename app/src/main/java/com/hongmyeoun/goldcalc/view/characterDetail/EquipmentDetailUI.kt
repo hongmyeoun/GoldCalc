@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.fastSumBy
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.AbilityStone
@@ -35,14 +36,38 @@ import com.hongmyeoun.goldcalc.ui.theme.RelicBG
 
 @Composable
 fun EquipmentDetailUI(characterEquipment: List<CharacterItem>?) {
+    val accessoryTotalQuality = characterEquipment?.filterIsInstance<CharacterAccessory>()?.map { it.itemQuality }
+    val accessoryQualityAvg = if (accessoryTotalQuality?.isNotEmpty() == true) {
+        accessoryTotalQuality.average()
+    } else {
+        0.0
+    }
+
+    val setOptions = characterEquipment?.filterIsInstance<CharacterEquipment>()?.map { it.setOption }
+    val setOptionGroups = setOptions?.map { it.split(" ") }?.groupBy({ it[0] }, { it[1].toInt() })
+    val formattedSetOptions = setOptionGroups?.map { (option, levels) ->
+        val count = levels.size
+        val averageLevel = levels.average()
+
+        val formattedLevel = if (averageLevel % 1 == 0.0) averageLevel.toInt().toString() else "%.1f".format(averageLevel)
+
+        "$count$option Lv.$formattedLevel"
+    }
+
+//    val combatStatTotals = characterEquipment?.filterIsInstance<CharacterAccessory>()?.map { it.combatStat1 }
+//    val combatStatTotal =
+
+
+
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(text = "장비", fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.width(8.dp))
-        CustomSuggestionChip("배신 333333")
+        TextChip(text = formattedSetOptions?.joinToString(", ") ?: "세트효과 없음")
         Spacer(modifier = Modifier.width(8.dp))
-        CustomSuggestionChip("악세 품질 68")
+        TextChip(text = "악세 품질 $accessoryQualityAvg")
         Spacer(modifier = Modifier.width(8.dp))
-        CustomSuggestionChip("특성합 1875")
+        TextChip(text = "특성합 ${combatStatTotalQuality ?: 0}")
+//            CustomSuggestionChip("특성합 ${combatStatTotalQuality?:0}")
     }
 
     Row {
@@ -89,7 +114,9 @@ fun EquipmentDetailUI(characterEquipment: List<CharacterItem>?) {
                                 icon = it.itemIcon,
                                 name = "스톤",
                                 grade = it.grade,
-                                quality = "68"
+                                quality = it.engraving1Lv.substringAfter("Lv. ") + it.engraving2Lv.substringAfter("Lv. ") + it.engraving3Lv.substringAfter(
+                                    "Lv. "
+                                )
                             )
 
                         }
