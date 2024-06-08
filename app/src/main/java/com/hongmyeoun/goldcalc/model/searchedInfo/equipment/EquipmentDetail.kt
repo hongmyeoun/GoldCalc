@@ -53,9 +53,9 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                 }
 
                 "어빌리티 스톤" -> {
-                    val (eng1Lv, eng1Op) = getABStoneFirstEngraving(equipment)
-                    val (eng2Lv, eng2Op) = getABStoneSecondEngraving(equipment)
-                    val (eng3Lv, eng3Op) = getABStoneThirdEngraving(equipment)
+                    val (eng1Op, eng1Lv) = getABStoneFirstEngraving(equipment)
+                    val (eng2Op, eng2Lv) = getABStoneSecondEngraving(equipment)
+                    val (eng3Op, eng3Lv) = getABStoneThirdEngraving(equipment)
 
                     val abilityStone = AbilityStone(
                         type = getEquipmentType(equipment),

@@ -1,5 +1,6 @@
 package com.hongmyeoun.goldcalc.view.characterDetail
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -58,9 +59,6 @@ fun EquipmentDetailUI(characterEquipment: List<CharacterItem>?) {
     val combatStatOne = combatStat?.sumOf { it.split(" ")[1].removePrefix("+").toInt() }?:0
     val combatStatTwo = characterEquipment?.filterIsInstance<CharacterAccessory>()?.get(0)?.combatStat2?.split(" ")?.get(1)?.removePrefix("+")?.toInt()?:0
 
-
-
-
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(text = "장비", fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.width(8.dp))
@@ -69,7 +67,6 @@ fun EquipmentDetailUI(characterEquipment: List<CharacterItem>?) {
         TextChip(text = "악세 품질 $accessoryQualityAvg")
         Spacer(modifier = Modifier.width(8.dp))
         TextChip(text = "특성합 ${combatStatOne + combatStatTwo}")
-//            CustomSuggestionChip("특성합 ${combatStatTotalQuality?:0}")
     }
 
     Row {
@@ -112,13 +109,12 @@ fun EquipmentDetailUI(characterEquipment: List<CharacterItem>?) {
                         }
 
                         is AbilityStone -> {
+                            val abilityStone = it.engraving1Lv.substringAfter("Lv. ") + it.engraving2Lv.substringAfter("Lv. ") + it.engraving3Lv.substringAfter("Lv. ")
                             AccessoryDetails(
                                 icon = it.itemIcon,
                                 name = "스톤",
                                 grade = it.grade,
-                                quality = it.engraving1Lv.substringAfter("Lv. ") + it.engraving2Lv.substringAfter("Lv. ") + it.engraving3Lv.substringAfter(
-                                    "Lv. "
-                                )
+                                quality = abilityStone
                             )
 
                         }
