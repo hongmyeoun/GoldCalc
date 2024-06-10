@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
@@ -41,6 +40,7 @@ import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
 import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
+import com.hongmyeoun.goldcalc.view.goldCheck.setting.CharacterDetailSimpleUI
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
 
 @Composable
@@ -52,7 +52,6 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
     var characterCards by remember { mutableStateOf<List<Cards>?>(null) }
     var characterCardsEffects by remember { mutableStateOf<List<CardEffects>?>(null) }
     var characterSkills by remember { mutableStateOf<List<Skills>?>(null) }
-
 
     LaunchedEffect(Unit) {
         characterDetail = APIRemote.getCharDetail(context, charName)
@@ -67,55 +66,52 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
         viewModel.isSavedName(charName)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-    ) {
-        AsyncImage(
-            model = characterDetail?.characterImage,
-            contentDescription = null,
-        )
-        Text(text = "${characterDetail?.characterClassName ?: "ERROR"} ${characterDetail?.characterName ?: "ERROR"} : Lv. ${characterDetail?.itemMaxLevel ?: 0}")
-        Button(
-            onClick = {
-                val avatarImage = !characterDetail?.characterImage.isNullOrEmpty()
-
-                val character = Character(
-                    name = characterDetail!!.characterName,
-                    itemLevel = characterDetail!!.itemMaxLevel,
-                    serverName = characterDetail!!.serverName,
-                    className = characterDetail!!.characterClassName,
-
-                    guildName = characterDetail!!.guildName,
-                    title = characterDetail!!.title,
-                    characterLevel = characterDetail!!.characterLevel,
-                    expeditionLevel = characterDetail!!.expeditionLevel,
-                    pvpGradeName = characterDetail!!.pvpGradeName,
-                    townLevel = characterDetail!!.townLevel,
-                    townName = characterDetail!!.townName,
-                    characterImage = characterDetail?.characterImage,
-                    avatarImage = avatarImage
-                )
-                viewModel.saveCharacter(character)
-            },
-            enabled = !viewModel.isSaved
+    characterDetail?.let { charDetail ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
-            Text(text = "가져오기")
-        }
-        Column(modifier = Modifier.fillMaxSize()) {
-            EquipmentDetailUI(characterEquipment)
+            CharacterDetailSimpleUI(characterDetail = charDetail)
+            Button(
+                onClick = {
+                    val avatarImage = charDetail.characterImage.isNotEmpty()
 
-            characterGem?.let { gemList ->
-                GemDetailUI(gemList)
+                    val character = Character(
+                        name = charDetail.characterName,
+                        itemLevel = charDetail.itemMaxLevel,
+                        serverName = charDetail.serverName,
+                        className = charDetail.characterClassName,
+                        guildName = charDetail.guildName,
+                        title = charDetail.title,
+                        characterLevel = charDetail.characterLevel,
+                        expeditionLevel = charDetail.expeditionLevel,
+                        pvpGradeName = charDetail.pvpGradeName,
+                        townLevel = charDetail.townLevel,
+                        townName = charDetail.townName,
+                        characterImage = charDetail.characterImage,
+                        avatarImage = avatarImage
+                    )
+                    viewModel.saveCharacter(character)
+                },
+                enabled = !viewModel.isSaved
+            ) {
+                Text(text = "가져오기")
             }
+            Column(modifier = Modifier.fillMaxSize()) {
+                EquipmentDetailUI(characterEquipment)
 
-            characterCards?.let { cardList ->
-                CardDetailUI(characterCardsEffects, cardList)
-            }
+                characterGem?.let { gemList ->
+                    GemDetailUI(gemList)
+                }
 
-            characterSkills?.let { skills ->
-                SkillDetailUI(characterDetail, skills)
+                characterCards?.let { cardList ->
+                    CardDetailUI(characterCardsEffects, cardList)
+                }
+
+                characterSkills?.let { skills ->
+                    SkillDetailUI(characterDetail, skills)
+                }
             }
         }
     }

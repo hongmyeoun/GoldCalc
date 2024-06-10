@@ -60,6 +60,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.LoadingScreen
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.DarkModeGray
@@ -102,7 +103,7 @@ fun GoldSettingContent(
                 .padding(paddingValues)
         ) {
             item {
-                GoldSettingCharacterDetails(
+                CharacterDetailSimpleUI(
                     character = character,
                     onReloadClick = { viewModel.onReloadClick(context, character?.name) },
                     onAvatarClick = { viewModel.onAvatarClick(character) }
@@ -126,89 +127,143 @@ fun GoldSettingContent(
 }
 
 @Composable
+fun CharacterDetailSimpleUI(
+    characterDetail: CharacterDetail? = null,
+    character: Character? = null,
+    onReloadClick: () -> Unit = {},
+    onAvatarClick: () -> Unit = {}
+) {
+    character?.let {
+        LoadLocalDataCharInfo(it, onAvatarClick, onReloadClick)
+    }
+    characterDetail?.let {
+        LoadAPIDataCharInfo(it)
+    }
+}
+
+@Composable
 @OptIn(ExperimentalGlideComposeApi::class)
-private fun GoldSettingCharacterDetails(character: Character?, onReloadClick: () -> Unit, onAvatarClick: () -> Unit) {
+private fun LoadLocalDataCharInfo(
+    it: Character,
+    onAvatarClick: () -> Unit,
+    onReloadClick: () -> Unit
+) {
     var isBlinking by remember { mutableStateOf(false) }
-    val characterImgText = if (character?.avatarImage == true) "아바타" else "기본"
     val coroutineScope = rememberCoroutineScope()
+    val characterImgText = if (it.avatarImage) "아바타" else "기본"
 
     Box(
         modifier = Modifier
             .background(ImageBG)
             .fillMaxWidth()
     ) {
-        character?.let {
-            if (it.avatarImage) {
-                GlideImage(
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .height(320.dp),
-                    model = it.characterImage,
-                    contentDescription = "캐릭터 이미지"
-                )
-            } else {
-                GlideImage(
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .height(320.dp),
-                    contentScale = ContentScale.FillHeight,
-                    model = CharacterResourceMapper.getClassDefaultImg(character.className),
-                    contentDescription = "캐릭터 이미지"
-                )
-            }
-            Column(
+        if (it.avatarImage) {
+            GlideImage(
                 modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
-            ) {
-                DetailInfomation(detailMenu = "닉네임", detail = it.name)
-                DetailInfomation(detailMenu = "서    버", detail = it.serverName)
-                DetailInfomation(detailMenu = "클래스", detail = it.className)
-                DetailInfomation(detailMenu = "템레벨", detail = it.itemLevel)
-                DetailInfomation(detailMenu = "원정대", detail = it.expeditionLevel.toString())
-                DetailInfomation(detailMenu = "칭    호", detail = it.title)
-                DetailInfomation(detailMenu = "전투렙", detail = it.characterLevel.toString())
-                DetailInfomation(detailMenu = "길    드", detail = it.guildName ?: "-")
-                DetailInfomation(detailMenu = "P  V  P", detail = it.pvpGradeName)
-                DetailInfomation(detailMenu = "영    지", detail = "Lv.${it.townLevel} ${it.townName}")
-            }
-            Column(
+                    .align(Alignment.CenterEnd)
+                    .height(320.dp),
+                model = it.characterImage,
+                contentDescription = "캐릭터 이미지"
+            )
+        } else {
+            GlideImage(
                 modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = 8.dp, bottom = 16.dp)
+                    .align(Alignment.CenterEnd)
+                    .height(320.dp),
+                contentScale = ContentScale.FillHeight,
+                model = CharacterResourceMapper.getClassDefaultImg(it.className),
+                contentDescription = "캐릭터 이미지"
+            )
+        }
+        Column(
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
+        ) {
+            DetailInfomation(detailMenu = "닉네임", detail = it.name)
+            DetailInfomation(detailMenu = "서    버", detail = it.serverName)
+            DetailInfomation(detailMenu = "클래스", detail = it.className)
+            DetailInfomation(detailMenu = "템레벨", detail = it.itemLevel)
+            DetailInfomation(detailMenu = "원정대", detail = it.expeditionLevel.toString())
+            DetailInfomation(detailMenu = "칭    호", detail = it.title)
+            DetailInfomation(detailMenu = "전투렙", detail = it.characterLevel.toString())
+            DetailInfomation(detailMenu = "길    드", detail = it.guildName ?: "-")
+            DetailInfomation(detailMenu = "P  V  P", detail = it.pvpGradeName)
+            DetailInfomation(detailMenu = "영    지", detail = "Lv.${it.townLevel} ${it.townName}")
+        }
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(end = 8.dp, bottom = 16.dp)
+        ) {
+            SmallFloatingActionButton(
+                onClick = {
+                    onAvatarClick()
+                    isBlinking = true
+                    coroutineScope.launch {
+                        delay(2250)
+                        isBlinking = false
+                    }
+                },
+                containerColor = DarkModeGray
             ) {
-                SmallFloatingActionButton(
-                    onClick = {
-                        onAvatarClick()
-                        isBlinking = true
-                        coroutineScope.launch {
-                            delay(2250)
-                            isBlinking = false
-                        }
-                    },
-                    containerColor = DarkModeGray
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = "아바타 이미지",
-                        tint = Color.White
-                    )
-                }
-                SmallFloatingActionButton(
-                    onClick = onReloadClick,
-                    containerColor = DarkModeGray
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Refresh,
-                        contentDescription = "새로고침",
-                        tint = Color.White
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "아바타 이미지",
+                    tint = Color.White
+                )
             }
-            BlinkingText(isBlinking, characterImgText, Modifier.align(Alignment.TopEnd))
+            SmallFloatingActionButton(
+                onClick = onReloadClick,
+                containerColor = DarkModeGray
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = "새로고침",
+                    tint = Color.White
+                )
+            }
+        }
+        BlinkingText(isBlinking, characterImgText, Modifier.align(Alignment.TopEnd))
+    }
+}
+
+@Composable
+@OptIn(ExperimentalGlideComposeApi::class)
+private fun LoadAPIDataCharInfo(
+    it: CharacterDetail,
+) {
+    Box(
+        modifier = Modifier
+            .background(ImageBG)
+            .fillMaxWidth()
+    ) {
+        GlideImage(
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .height(320.dp),
+            model = it.characterImage,
+            contentDescription = "캐릭터 이미지"
+        )
+        Column(
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
+        ) {
+            DetailInfomation(detailMenu = "닉네임", detail = it.characterName)
+            DetailInfomation(detailMenu = "서    버", detail = it.serverName)
+            DetailInfomation(detailMenu = "클래스", detail = it.characterClassName)
+            DetailInfomation(detailMenu = "템레벨", detail = it.itemMaxLevel)
+            DetailInfomation(detailMenu = "원정대", detail = it.expeditionLevel.toString())
+            DetailInfomation(detailMenu = "칭    호", detail = it.title?:"-")
+            DetailInfomation(detailMenu = "전투렙", detail = it.characterLevel.toString())
+            DetailInfomation(detailMenu = "길    드", detail = it.guildName?:"-")
+            DetailInfomation(detailMenu = "P  V  P", detail = it.pvpGradeName)
+            DetailInfomation(detailMenu = "영    지", detail = "Lv.${it.townLevel} ${it.townName}")
         }
     }
 }
+
 
 @Composable
 fun BlinkingText(isBlinking: Boolean, text: String, modifier: Modifier) {
@@ -235,6 +290,7 @@ fun BlinkingText(isBlinking: Boolean, text: String, modifier: Modifier) {
         }
     }
 }
+
 @Composable
 private fun DetailInfomation(detailMenu: String, detail: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -340,8 +396,7 @@ private fun TopBarBox(
         modifier = modifier
             .fillMaxSize()
             .clickable { onClick() }
-            .background(selectedBGColor)
-        ,
+            .background(selectedBGColor),
         contentAlignment = Alignment.Center
     ) {
         if (title == "어비스 던전") {
