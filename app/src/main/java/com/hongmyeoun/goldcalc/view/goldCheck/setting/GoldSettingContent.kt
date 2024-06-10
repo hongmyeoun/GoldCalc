@@ -238,11 +238,12 @@ private fun LoadAPIDataCharInfo(
             .background(ImageBG)
             .fillMaxWidth()
     ) {
+        val characterImage = if (it.characterImage.isNullOrEmpty()) CharacterResourceMapper.getClassDefaultImg(it.characterClassName) else it.characterImage
         GlideImage(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .height(320.dp),
-            model = it.characterImage,
+            model = characterImage,
             contentDescription = "캐릭터 이미지"
         )
         Column(

@@ -127,24 +127,6 @@ fun DefaultPreview() {
     }
 }
 
-
-@Composable
-fun CustomSuggestionChip(labelText: String) {
-    SuggestionChip(
-        shape = MaterialTheme.shapes.small,
-        enabled = false,
-        onClick = { /*TODO*/ },
-        label = { Text(text = labelText) },
-        colors = SuggestionChipDefaults.suggestionChipColors(
-            disabledContainerColor = Color.Transparent,
-            disabledLabelColor = Color.Black
-        ),
-        border = SuggestionChipDefaults.suggestionChipBorder(
-            disabledBorderColor = Color.Black
-        )
-    )
-}
-
 @Composable
 fun TextChip(
     text: String,
