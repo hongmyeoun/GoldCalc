@@ -65,6 +65,10 @@ import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.DarkModeGray
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
+import com.hongmyeoun.goldcalc.view.characterDetail.Extra
+import com.hongmyeoun.goldcalc.view.characterDetail.Levels
+import com.hongmyeoun.goldcalc.view.characterDetail.ServerClassName
+import com.hongmyeoun.goldcalc.view.characterDetail.TitleCharName
 import com.hongmyeoun.goldcalc.view.goldCheck.RaidCard
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.AbyssDungeon
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.CommandRaid
@@ -233,34 +237,23 @@ private fun LoadLocalDataCharInfo(
 private fun LoadAPIDataCharInfo(
     it: CharacterDetail,
 ) {
-    Box(
-        modifier = Modifier
-            .background(ImageBG)
-            .fillMaxWidth()
-    ) {
+    Box(modifier = Modifier.fillMaxWidth().height(230.dp).background(ImageBG)) {
         val characterImage = if (it.characterImage.isNullOrEmpty()) CharacterResourceMapper.getClassDefaultImg(it.characterClassName) else it.characterImage
+
         GlideImage(
-            modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .height(320.dp),
+            modifier = Modifier.align(Alignment.CenterEnd),
             model = characterImage,
+            contentScale = ContentScale.FillHeight,
             contentDescription = "캐릭터 이미지"
         )
-        Column(
-            modifier = Modifier
-                .align(Alignment.CenterStart)
-                .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
-        ) {
-            DetailInfomation(detailMenu = "닉네임", detail = it.characterName)
-            DetailInfomation(detailMenu = "서    버", detail = it.serverName)
-            DetailInfomation(detailMenu = "클래스", detail = it.characterClassName)
-            DetailInfomation(detailMenu = "템레벨", detail = it.itemMaxLevel)
-            DetailInfomation(detailMenu = "원정대", detail = it.expeditionLevel.toString())
-            DetailInfomation(detailMenu = "칭    호", detail = it.title?:"-")
-            DetailInfomation(detailMenu = "전투렙", detail = it.characterLevel.toString())
-            DetailInfomation(detailMenu = "길    드", detail = it.guildName?:"-")
-            DetailInfomation(detailMenu = "P  V  P", detail = it.pvpGradeName)
-            DetailInfomation(detailMenu = "영    지", detail = "Lv.${it.townLevel} ${it.townName}")
+        Column(modifier = Modifier.padding(8.dp)) {
+            ServerClassName(it.serverName, it.characterClassName)
+
+            TitleCharName(it.title, it.characterName)
+
+            Extra(it)
+
+            Levels(it)
         }
     }
 }

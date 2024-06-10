@@ -3,17 +3,19 @@ package com.hongmyeoun.goldcalc.view.characterDetail
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SuggestionChip
-import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,13 +26,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.integration.compose.placeholder
+import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
@@ -123,7 +134,123 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
 @Composable
 fun DefaultPreview() {
     GoldCalcTheme {
+        Box(modifier = Modifier.fillMaxWidth()) {
+            GlideImage(
+                modifier = Modifier.align(Alignment.CenterEnd),
+                loading = placeholder(painterResource(id = R.drawable.img_detail_bard)),
+                model = "",
+                contentScale = ContentScale.FillWidth,
+                contentDescription = "캐릭터 이미지"
+            )
+            Column(modifier = Modifier.padding(8.dp)) {
+                ServerClassName("루페온", "바드")
 
+                TitleCharName("욕망의 주인", "딜관여율0에수렴")
+
+//                Extra(it)
+//
+//                Levels(it)
+            }
+        }
+    }
+}
+
+@Composable
+fun Levels(characterDetail: CharacterDetail) {
+    Row {
+        CharLevel("아이템", characterDetail.itemMaxLevel)
+        Spacer(modifier = Modifier.width(8.dp))
+
+        CharLevel("전투", characterDetail.characterLevel.toString())
+        Spacer(modifier = Modifier.width(8.dp))
+
+        CharLevel("원정대", characterDetail.expeditionLevel.toString())
+    }
+}
+
+@Composable
+private fun CharLevel(title: String, level: String) {
+
+    Column {
+        Text(text = title, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color.White)
+        if (title == "아이템") {
+            val dot = "."
+            val beforeDot = level.substringBefore(dot)
+            val afterDot = level.substringAfter(dot)
+            Text(
+                buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = Color.White
+                        )
+                    ) {
+                        append(beforeDot)
+                    }
+                    withStyle(
+                        style = SpanStyle(
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = Color.White
+                        )
+                    ) {
+                        append(dot)
+                    }
+                    withStyle(
+                        style = SpanStyle(
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = Color.White
+                        )
+                    ) {
+                        append(afterDot)
+                    }
+                }
+            )
+        } else {
+            Text(text = "Lv.$level", fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, color = Color.White)
+        }
+    }
+}
+
+@Composable
+fun Extra(characterDetail: CharacterDetail) {
+    ExtraInfo("길드", characterDetail.guildName)
+    Spacer(modifier = Modifier.height(6.dp))
+
+    ExtraInfo("영지", "Lv.${characterDetail.townLevel} ${characterDetail.townName}")
+    Spacer(modifier = Modifier.height(6.dp))
+
+    ExtraInfo("PVP", characterDetail.pvpGradeName)
+    Spacer(modifier = Modifier.height(16.dp))
+}
+
+@Composable
+private fun ExtraInfo(extraTitle: String, extraDetail: String?) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        TextChip(text = extraTitle)
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = extraDetail?:"-", fontSize = 10.sp, color = Color.White)
+    }
+}
+
+@Composable
+fun TitleCharName(title: String?, name:String) {
+    Spacer(modifier = Modifier.height(12.dp))
+    title?.let {
+        Text(text = title, fontSize = 10.sp, color = Color.White)
+    }
+    Text(text = name, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
+    Spacer(modifier = Modifier.height(16.dp))
+}
+
+@Composable
+fun ServerClassName(serverName: String, className: String) {
+    Row {
+        TextChip(text = serverName)
+        Spacer(modifier = Modifier.width(8.dp))
+        TextChip(text = className)
     }
 }
 
