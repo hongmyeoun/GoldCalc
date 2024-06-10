@@ -3,19 +3,16 @@ package com.hongmyeoun.goldcalc.view.characterDetail
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,9 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -39,9 +34,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
-import com.bumptech.glide.integration.compose.placeholder
-import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
@@ -51,12 +43,14 @@ import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
 import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
+import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.view.goldCheck.setting.CharacterDetailSimpleUI
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
 
 @Composable
 fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewModel()) {
     val context = LocalContext.current
+    val verticalScrollState = rememberScrollState()
     var characterDetail by remember { mutableStateOf<CharacterDetail?>(null) }
     var characterEquipment by remember { mutableStateOf<List<CharacterItem>?>(null) }
     var characterGem by remember { mutableStateOf<List<Gem>?>(null) }
@@ -81,11 +75,12 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .background(ImageBG)
+                .verticalScroll(verticalScrollState)
         ) {
-            CharacterDetailSimpleUI(characterDetail = charDetail)
-            Button(
-                onClick = {
+            CharacterDetailSimpleUI(
+                characterDetail = charDetail,
+                onGetClick = {
                     val avatarImage = charDetail.characterImage.isNotEmpty()
 
                     val character = Character(
@@ -105,10 +100,8 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
                     )
                     viewModel.saveCharacter(character)
                 },
-                enabled = !viewModel.isSaved
-            ) {
-                Text(text = "가져오기")
-            }
+                getButtonEnabled = !viewModel.isSaved
+            )
             Column(modifier = Modifier.fillMaxSize()) {
                 EquipmentDetailUI(characterEquipment)
 
@@ -134,24 +127,6 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
 @Composable
 fun DefaultPreview() {
     GoldCalcTheme {
-        Box(modifier = Modifier.fillMaxWidth()) {
-            GlideImage(
-                modifier = Modifier.align(Alignment.CenterEnd),
-                loading = placeholder(painterResource(id = R.drawable.img_detail_bard)),
-                model = "",
-                contentScale = ContentScale.FillWidth,
-                contentDescription = "캐릭터 이미지"
-            )
-            Column(modifier = Modifier.padding(8.dp)) {
-                ServerClassName("루페온", "바드")
-
-                TitleCharName("욕망의 주인", "딜관여율0에수렴")
-
-//                Extra(it)
-//
-//                Levels(it)
-            }
-        }
     }
 }
 

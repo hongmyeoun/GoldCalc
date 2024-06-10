@@ -31,6 +31,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
@@ -46,7 +47,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -138,13 +138,15 @@ fun CharacterDetailSimpleUI(
     characterDetail: CharacterDetail? = null,
     character: Character? = null,
     onReloadClick: () -> Unit = {},
-    onAvatarClick: () -> Unit = {}
+    onAvatarClick: () -> Unit = {},
+    onGetClick:() -> Unit = {},
+    getButtonEnabled: Boolean = false
 ) {
     character?.let {
         LoadLocalDataCharInfo(it, onAvatarClick, onReloadClick)
     }
     characterDetail?.let {
-        LoadAPIDataCharInfo(it)
+        LoadAPIDataCharInfo(it, onGetClick, getButtonEnabled)
     }
 }
 
@@ -239,12 +241,20 @@ private fun LoadLocalDataCharInfo(
 @OptIn(ExperimentalGlideComposeApi::class)
 private fun LoadAPIDataCharInfo(
     it: CharacterDetail,
+    onGetClick: () -> Unit,
+    enabled: Boolean
 ) {
-    Box(modifier = Modifier.fillMaxWidth().height(230.dp).background(ImageBG)) {
+    val height = if (enabled) 300.dp else 230.dp
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .height(height)) {
         val characterImage = if (it.characterImage.isNullOrEmpty()) CharacterResourceMapper.getClassDefaultImg(it.characterClassName) else it.characterImage
 
         GlideImage(
-            modifier = Modifier.align(Alignment.CenterEnd).scale(1.5f).offset(y = 30.dp),
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .scale(1.5f)
+                .offset(y = 30.dp),
             model = characterImage,
             contentScale = ContentScale.FillHeight,
             contentDescription = "캐릭터 이미지"
@@ -257,6 +267,14 @@ private fun LoadAPIDataCharInfo(
             Extra(it)
 
             Levels(it)
+
+            if (enabled) {
+                ElevatedButton(
+                    onClick = { onGetClick() },
+                ) {
+                    Text(text = "가져오기")
+                }
+            }
         }
     }
 }
