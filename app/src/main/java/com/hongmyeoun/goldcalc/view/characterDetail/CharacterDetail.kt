@@ -102,7 +102,7 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
                 },
                 getButtonEnabled = !viewModel.isSaved
             )
-            Column(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.fillMaxSize().padding(4.dp)) {
                 EquipmentDetailUI(characterEquipment)
 
                 characterGem?.let { gemList ->
@@ -234,7 +234,8 @@ fun TextChip(
     text: String,
     customTextSize: TextUnit = 10.sp,
     borderless: Boolean = false,
-    customPadding: Modifier = Modifier.padding(start = 6.dp, end = 6.dp, top = 2.dp, bottom = 2.dp)
+    customPadding: Modifier = Modifier.padding(start = 6.dp, end = 6.dp, top = 2.dp, bottom = 2.dp),
+    customBG: Color = Color.Black
 ) {
     val modifier = if (!borderless) {
         Modifier
@@ -251,7 +252,7 @@ fun TextChip(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .background(
-                color = Color.Black,
+                color = customBG,
                 shape = RoundedCornerShape(4.dp)
             )
             .then(customPadding)

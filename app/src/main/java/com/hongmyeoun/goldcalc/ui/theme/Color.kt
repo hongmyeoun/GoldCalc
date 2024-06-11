@@ -22,7 +22,16 @@ val LightBlue = Color(0xFF17C3CE)
 
 val MainBG = Color(0xFFE0F4A4)
 
+val LightGrayBG = Color(0x801C1F26)
+
 val HigherUpgradeColor = Color(0xFFA8EA6C)
+
+val OrangeQual = Color(0xFFEA6811)
+val PurpleQual = Color(0xFF7030A0)
+val BlueQual = Color(0xFF4472C4)
+val GreenQual = Color(0xFF70AD47)
+val YellowQual = Color(0xFFFFC000)
+val RedQual = Color(0xFFC00000)
 
 val AncientDark = Color(0xFF3D3325)
 val AncientColor = Color(0xFFDCC999)
@@ -30,24 +39,33 @@ val RelicDark = Color(0xFF341A09)
 val RelicColor = Color(0xFFA24006)
 val LegendaryDark = Color(0xFF362003)
 val LegendaryColor = Color(0xFF9E5F04)
+val EstherDark = Color(0xFF0C2E2C)
+val EsterColor = Color(0xFF2FABA8)
+
+val EstherBG = Brush.linearGradient(
+    colors = listOf(
+        EstherDark,
+        EsterColor,
+    )
+)
 
 val AncientBG = Brush.linearGradient(
     colors = listOf(
-        Color(0xFF3D3325),
-        Color(0xFFDCC999),
+        AncientDark,
+        AncientColor,
     )
 )
 
 val RelicBG = Brush.linearGradient(
     colors = listOf(
-        Color(0xFF341A09),
-        Color(0xFFA24006),
+        RelicDark,
+        RelicColor,
     )
 )
 
 val LegendaryBG = Brush.linearGradient(
     colors = listOf(
-        Color(0xFF362003),
-        Color(0xFF9E5F04),
+        LegendaryDark,
+        LegendaryColor,
     )
 )
