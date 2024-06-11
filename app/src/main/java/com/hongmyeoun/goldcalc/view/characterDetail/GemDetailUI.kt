@@ -50,9 +50,9 @@ fun GemDetailUI(gemList: List<Gem>) {
         modifier = Modifier
             .background(LightGrayTransBG, RoundedCornerShape(8.dp))
             .clip(RoundedCornerShape(8.dp))
-            .padding(4.dp)
+            .padding(8.dp)
     ) {
-        Column(modifier = Modifier.clickable { isDetail = !isDetail }) {
+        Column(modifier = Modifier.fillMaxWidth().clickable { isDetail = !isDetail }) {
             Text(
                 text = "보석",
                 style = titleTextStyle()
@@ -107,6 +107,7 @@ fun GemDetailUI(gemList: List<Gem>) {
             }
         }
     }
+    Spacer(modifier = Modifier.height(8.dp))
 }
 
 private fun calcMaxItemsInEachRow(ann: Int, cri: Int): Pair<Int, Int> {

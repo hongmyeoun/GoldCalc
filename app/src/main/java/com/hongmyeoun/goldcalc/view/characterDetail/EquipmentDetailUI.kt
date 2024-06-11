@@ -72,7 +72,7 @@ fun EquipmentDetailUI(characterEquipment: List<CharacterItem>?) {
         modifier = Modifier
             .background(LightGrayTransBG, RoundedCornerShape(8.dp))
             .clip(RoundedCornerShape(8.dp))
-            .padding(4.dp)
+            .padding(8.dp)
     ) {
         Text(
             text = "장비",
@@ -151,6 +151,7 @@ fun EquipmentDetailUI(characterEquipment: List<CharacterItem>?) {
             }
         }
     }
+    Spacer(modifier = Modifier.height(8.dp))
 }
 
 @Composable

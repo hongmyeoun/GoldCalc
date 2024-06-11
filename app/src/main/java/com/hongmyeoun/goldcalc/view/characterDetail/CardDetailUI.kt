@@ -44,7 +44,7 @@ fun CardDetailUI(
         modifier = Modifier
             .background(LightGrayTransBG, RoundedCornerShape(8.dp))
             .clip(RoundedCornerShape(8.dp))
-            .padding(4.dp)
+            .padding(8.dp)
     ) {
         Column(
             modifier = Modifier.clickable { isDetail = !isDetail }
@@ -89,6 +89,7 @@ fun CardDetailUI(
             }
         }
     }
+    Spacer(modifier = Modifier.height(8.dp))
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
