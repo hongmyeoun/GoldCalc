@@ -1,5 +1,6 @@
 package com.hongmyeoun.goldcalc.view.characterDetail
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
@@ -28,6 +31,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardEffects
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.Cards
+import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 
 @Composable
 fun CardDetailUI(
@@ -36,35 +40,53 @@ fun CardDetailUI(
 ) {
     var isDetail by remember { mutableStateOf(false) }
 
-    Row(
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .clickable { isDetail = !isDetail }
+            .background(LightGrayTransBG, RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(8.dp))
+            .padding(4.dp)
     ) {
-        Text(text = "카드")
-        characterCardsEffects?.let { cardEffects ->
-            cardEffects.forEach { effect ->
-                val cardInfo = effect.items.last().name
-                val regex = Regex("""(.*)\s(\d+세트)\s\((\d+)각성합계\)""")
-                regex.find(cardInfo)?.let {
-                    val (setOption, setLevel, setAwakeCount) = it.destructured
-                    TextChip(text = "$setOption $setAwakeCount (${setLevel})")
+        Column(
+            modifier = Modifier.clickable { isDetail = !isDetail }
+        ) {
+
+            Text(
+                text = "카드",
+                style = titleTextStyle()
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                characterCardsEffects?.let { cardEffects ->
+                    cardEffects.forEach { effect ->
+                        val cardInfo = effect.items.last().name
+                        val regex = Regex("""(.*)\s(\d+세트)\s\((\d+)각성합계\)""")
+                        regex.find(cardInfo)?.let {
+                            val (setOption, setLevel, setAwakeCount) = it.destructured
+                            TextChip(text = "$setOption $setAwakeCount (${setLevel})")
+                        }
+                    }
                 }
             }
         }
-    }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(4.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-        cardList.forEach { card ->
-            CardImage(
-                grade = card.grade,
-                icon = card.icon,
-                awakeCount = card.awakeCount
-            )
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(4.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            cardList.forEach { card ->
+                CardImage(
+                    grade = card.grade,
+                    icon = card.icon,
+                    awakeCount = card.awakeCount
+                )
+            }
         }
     }
 }
