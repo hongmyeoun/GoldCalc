@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -34,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
@@ -76,6 +79,7 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
             modifier = Modifier
                 .fillMaxSize()
                 .background(ImageBG)
+                .padding(8.dp)
                 .verticalScroll(verticalScrollState)
         ) {
             CharacterDetailSimpleUI(
@@ -102,7 +106,9 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
                 },
                 getButtonEnabled = !viewModel.isSaved
             )
-            Column(modifier = Modifier.fillMaxSize().padding(4.dp)) {
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .padding(4.dp)) {
                 EquipmentDetailUI(characterEquipment)
 
                 characterGem?.let { gemList ->
@@ -133,11 +139,8 @@ fun DefaultPreview() {
 @Composable
 fun Levels(characterDetail: CharacterDetail) {
     Row {
-        CharLevel("아이템", characterDetail.itemMaxLevel)
-        Spacer(modifier = Modifier.width(8.dp))
-
         CharLevel("전투", characterDetail.characterLevel.toString())
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(16.dp))
 
         CharLevel("원정대", characterDetail.expeditionLevel.toString())
     }
@@ -145,9 +148,11 @@ fun Levels(characterDetail: CharacterDetail) {
 
 @Composable
 private fun CharLevel(title: String, level: String) {
-
     Column {
-        Text(text = title, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color.White)
+        Text(
+            text = title, 
+            style = titleBoldWhite12()
+        )
         if (title == "아이템") {
             val dot = "."
             val beforeDot = level.substringBefore(dot)
@@ -189,6 +194,54 @@ private fun CharLevel(title: String, level: String) {
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun ItemLevel(level: String) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        GlideImage(
+            modifier = Modifier.size(24.dp),
+            model = "https://cdn-lostark.game.onstove.com/efui_iconatlas/tooltip/tooltip_0_12.png",
+            contentScale = ContentScale.FillHeight,
+            contentDescription = "아이템 레벨"
+        )
+        val dot = "."
+        val beforeDot = level.substringBefore(dot)
+        val afterDot = level.substringAfter(dot)
+        Text(
+            buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = Color.White
+                    )
+                ) {
+                    append(beforeDot)
+                }
+                withStyle(
+                    style = SpanStyle(
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = Color.White
+                    )
+                ) {
+                    append(dot)
+                }
+                withStyle(
+                    style = SpanStyle(
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = Color.White
+                    )
+                ) {
+                    append(afterDot)
+                }
+            }
+        )
+    }
+    Spacer(modifier = Modifier.height(12.dp))
+}
+
 @Composable
 fun Extra(characterDetail: CharacterDetail) {
     ExtraInfo("길드", characterDetail.guildName)
@@ -206,7 +259,10 @@ private fun ExtraInfo(extraTitle: String, extraDetail: String?) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         TextChip(text = extraTitle)
         Spacer(modifier = Modifier.width(8.dp))
-        Text(text = extraDetail?:"-", fontSize = 10.sp, color = Color.White)
+        Text(
+            text = extraDetail?:"-",
+            style = normalTextStyle()
+        )
     }
 }
 
@@ -214,18 +270,30 @@ private fun ExtraInfo(extraTitle: String, extraDetail: String?) {
 fun TitleCharName(title: String?, name:String) {
     Spacer(modifier = Modifier.height(12.dp))
     title?.let {
-        Text(text = title, fontSize = 10.sp, color = Color.White)
+        Text(
+            text = title,
+            style = normalTextStyle()
+        )
     }
-    Text(text = name, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
-    Spacer(modifier = Modifier.height(16.dp))
+    Text(
+        text = name,
+        style = titleTextStyle()
+    )
+    Spacer(modifier = Modifier.height(12.dp))
 }
 
 @Composable
 fun ServerClassName(serverName: String, className: String) {
-    Row {
-        TextChip(text = serverName)
+    Row(verticalAlignment = Alignment.Bottom) {
+        Text(
+            text = serverName,
+            style = titleBoldWhite12()
+        )
         Spacer(modifier = Modifier.width(8.dp))
-        TextChip(text = className)
+        Text(
+            text = className,
+            style = normalTextStyle()
+        )
     }
 }
 

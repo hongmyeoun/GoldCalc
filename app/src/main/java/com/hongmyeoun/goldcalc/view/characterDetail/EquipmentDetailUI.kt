@@ -76,7 +76,7 @@ fun EquipmentDetailUI(characterEquipment: List<CharacterItem>?) {
     ) {
         Text(
             text = "장비",
-            style = CharDetailTitleTextStyle(),
+            style = titleTextStyle(),
         )
         Spacer(modifier = Modifier.height(4.dp))
 

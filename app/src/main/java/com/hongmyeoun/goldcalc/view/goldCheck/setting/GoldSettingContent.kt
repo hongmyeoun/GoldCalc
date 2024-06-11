@@ -69,6 +69,7 @@ import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.DarkModeGray
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.view.characterDetail.Extra
+import com.hongmyeoun.goldcalc.view.characterDetail.ItemLevel
 import com.hongmyeoun.goldcalc.view.characterDetail.Levels
 import com.hongmyeoun.goldcalc.view.characterDetail.ServerClassName
 import com.hongmyeoun.goldcalc.view.characterDetail.TitleCharName
@@ -244,10 +245,12 @@ private fun LoadAPIDataCharInfo(
     onGetClick: () -> Unit,
     enabled: Boolean
 ) {
-    val height = if (enabled) 300.dp else 230.dp
-    Box(modifier = Modifier
+    val height = if (enabled) 332.dp else 262.dp
+    Box(
+        modifier = Modifier
         .fillMaxWidth()
-        .height(height)) {
+        .height(height)
+    ) {
         val characterImage = if (it.characterImage.isNullOrEmpty()) CharacterResourceMapper.getClassDefaultImg(it.characterClassName) else it.characterImage
 
         GlideImage(
@@ -263,6 +266,8 @@ private fun LoadAPIDataCharInfo(
             ServerClassName(it.serverName, it.characterClassName)
 
             TitleCharName(it.title, it.characterName)
+
+            ItemLevel(it.itemMaxLevel)
 
             Extra(it)
 
