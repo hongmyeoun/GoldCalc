@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
+import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
+import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.ui.theme.RelicBG
 import com.hongmyeoun.goldcalc.ui.theme.RelicColor
 import kotlin.math.absoluteValue
@@ -44,46 +46,62 @@ fun GemDetailUI(gemList: List<Gem>) {
 
     var isDetail by remember { mutableStateOf(false) }
 
-    Row(
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .clickable { isDetail = !isDetail }
+            .background(LightGrayTransBG, RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(8.dp))
+            .padding(4.dp)
     ) {
-        Text(text = "보석")
-        TextChip(text = "멸화 x$annihilation")
-        TextChip(text = "홍염 x$crimsonFlame")
-    }
-    if (isDetail) {
-        Row {
-            GemDetail(
-                modifier = Modifier.weight(1f),
-                effectType = "피해",
-                gemList = gemList
+        Column(modifier = Modifier.clickable { isDetail = !isDetail }) {
+            Text(
+                text = "보석",
+                style = titleTextStyle()
             )
-            GemDetail(
-                modifier = Modifier.weight(1f),
-                effectType = "재사용 대기시간",
-                gemList = gemList
-            )
+            Spacer(modifier = Modifier.height(4.dp))
+
         }
-    } else {
-        Row {
-            val (annMaxItemCount, criMaxItemCount) = calcMaxItemsInEachRow(annihilation, crimsonFlame)
-            Column {
-                FlowRow(
-                    maxItemsInEachRow = annMaxItemCount
-                ) {
-                    gemList.filter { it.type == "멸화" }.forEach {
-                        GemSimple(it)
+        if (isDetail) {
+            Row {
+                GemDetail(
+                    modifier = Modifier.weight(1f),
+                    effectType = "피해",
+                    gemList = gemList
+                )
+                GemDetail(
+                    modifier = Modifier.weight(1f),
+                    effectType = "재사용 대기시간",
+                    gemList = gemList
+                )
+            }
+        } else {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                TextChip(text = "멸화 x$annihilation")
+                Spacer(modifier = Modifier.width(8.dp))
+                TextChip(text = "홍염 x$crimsonFlame")
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Row {
+                val (annMaxItemCount, criMaxItemCount) = calcMaxItemsInEachRow(annihilation, crimsonFlame)
+                Column {
+                    FlowRow(
+                        maxItemsInEachRow = annMaxItemCount
+                    ) {
+                        gemList.filter { it.type == "멸화" }.forEach {
+                            GemSimple(it)
+                        }
                     }
                 }
-            }
-            Column {
-                FlowRow(
-                    maxItemsInEachRow = criMaxItemCount
-                ) {
-                    gemList.filter { it.type == "홍염" }.forEach {
-                        GemSimple(it)
+                Column {
+                    FlowRow(
+                        maxItemsInEachRow = criMaxItemCount
+                    ) {
+                        gemList.filter { it.type == "홍염" }.forEach {
+                            GemSimple(it)
+                        }
                     }
                 }
             }
@@ -117,7 +135,7 @@ fun GemDetail(
                 .fillMaxWidth()
                 .padding(4.dp)
                 .background(
-                    color = Color.DarkGray,
+                    color = LightGrayBG,
                     shape = RoundedCornerShape(4.dp)
                 ),
             contentAlignment = Alignment.Center
@@ -159,6 +177,8 @@ fun GemDetail(
                         TextChip(text = "${gem.level}")
                     }
                 }
+                Spacer(modifier = Modifier.width(8.dp))
+
                 Column(horizontalAlignment = Alignment.Start) {
                     Text(
                         text = gem.skill,
@@ -182,7 +202,7 @@ private fun GemSimple(it: Gem) {
         modifier = Modifier
             .padding(4.dp)
             .background(
-                color = Color.DarkGray,
+                color = LightGrayBG,
                 shape = RoundedCornerShape(4.dp)
             ),
         horizontalAlignment = Alignment.CenterHorizontally

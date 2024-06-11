@@ -106,9 +106,11 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
                 },
                 getButtonEnabled = !viewModel.isSaved
             )
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .padding(4.dp)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(4.dp)
+            ) {
                 EquipmentDetailUI(characterEquipment)
 
                 characterGem?.let { gemList ->
@@ -150,7 +152,7 @@ fun Levels(characterDetail: CharacterDetail) {
 private fun CharLevel(title: String, level: String) {
     Column {
         Text(
-            text = title, 
+            text = title,
             style = titleBoldWhite12()
         )
         if (title == "아이템") {
@@ -260,14 +262,14 @@ private fun ExtraInfo(extraTitle: String, extraDetail: String?) {
         TextChip(text = extraTitle)
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = extraDetail?:"-",
+            text = extraDetail ?: "-",
             style = normalTextStyle()
         )
     }
 }
 
 @Composable
-fun TitleCharName(title: String?, name:String) {
+fun TitleCharName(title: String?, name: String) {
     Spacer(modifier = Modifier.height(12.dp))
     title?.let {
         Text(
