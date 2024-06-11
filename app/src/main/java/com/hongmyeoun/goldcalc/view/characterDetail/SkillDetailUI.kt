@@ -36,6 +36,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
 import com.hongmyeoun.goldcalc.ui.theme.LegendaryBG
+import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 
 @Composable
 fun SkillDetailUI(
@@ -44,29 +45,46 @@ fun SkillDetailUI(
 ) {
     var isDetail by remember { mutableStateOf(false) }
 
-    Row(
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .clickable { isDetail = !isDetail }
+            .background(LightGrayTransBG, RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(8.dp))
+            .padding(4.dp)
     ) {
-        Text(text = "스킬")
-        characterDetail?.let { characterDetail ->
-            TextChip(text = "스킬 포인트 ${characterDetail.usingSkillPoint}/${characterDetail.totalSkillPoint}")
-        }
-        val fiveLevel = skills.fastSumBy { skill -> skill.tripods.count { tripod -> tripod.isSelected && tripod.level == 5 } }
-        val fourLevel = skills.fastSumBy { skill -> skill.tripods.count { tripod -> tripod.isSelected && tripod.level == 4 } }
-        if (fiveLevel > 0) {
-            TextChip(text = "Lv.5 x $fiveLevel")
-        }
-        if (fourLevel > 0) {
-            TextChip(text = "Lv.4 x $fourLevel")
-        }
-    }
+        Column(
+            modifier = Modifier.clickable { isDetail = !isDetail }
+        ) {
+            Text(
+                text = "스킬",
+                style = titleTextStyle()
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                characterDetail?.let { characterDetail ->
+                    TextChip(text = "스킬 포인트 ${characterDetail.usingSkillPoint}/${characterDetail.totalSkillPoint}")
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
+                val fiveLevel = skills.fastSumBy { skill -> skill.tripods.count { tripod -> tripod.isSelected && tripod.level == 5 } }
+                val fourLevel = skills.fastSumBy { skill -> skill.tripods.count { tripod -> tripod.isSelected && tripod.level == 4 } }
+                if (fiveLevel > 0) {
+                    TextChip(text = "Lv.5 x$fiveLevel")
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
+                if (fourLevel > 0) {
+                    TextChip(text = "Lv.4 x$fourLevel")
+                }
+            }
+            Spacer(modifier = Modifier.height(4.dp))
 
-    if (isDetail) {
-        SkillDetail(skills)
-    } else {
-        SkillSimple(skills)
+            if (isDetail) {
+                SkillDetail(skills)
+            } else {
+                SkillSimple(skills)
+            }
+        }
     }
 }
 
