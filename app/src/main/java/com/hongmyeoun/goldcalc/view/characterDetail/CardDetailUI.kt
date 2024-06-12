@@ -16,10 +16,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
@@ -27,18 +25,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardEffects
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.Cards
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
+import com.hongmyeoun.goldcalc.viewModel.charDetail.CardDetailVM
 
 @Composable
 fun CardDetailUI(
     characterCardsEffects: List<CardEffects>?,
-    cardList: List<Cards>
+    cardList: List<Cards>,
+    viewModel: CardDetailVM = viewModel()
 ) {
-    var isDetail by remember { mutableStateOf(false) }
+    val isDetail by viewModel.isDetail.collectAsState()
 
     Column(
         modifier = Modifier
@@ -47,7 +48,7 @@ fun CardDetailUI(
             .padding(8.dp)
     ) {
         Column(
-            modifier = Modifier.clickable { isDetail = !isDetail }
+            modifier = Modifier.clickable { viewModel.onDetailClicked() }
         ) {
 
             Text(
@@ -62,11 +63,9 @@ fun CardDetailUI(
             ) {
                 characterCardsEffects?.let { cardEffects ->
                     cardEffects.forEach { effect ->
-                        val cardInfo = effect.items.last().name
-                        val regex = Regex("""(.*)\s(\d+세트)\s\((\d+)각성합계\)""")
-                        regex.find(cardInfo)?.let {
-                            val (setOption, setLevel, setAwakeCount) = it.destructured
-                            TextChip(text = "$setOption $setAwakeCount (${setLevel})")
+                        val setOption = viewModel.cardSetOption(effect)
+                        setOption?.let {
+                            TextChip(text = it)
                         }
                     }
                 }
