@@ -19,9 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,15 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.LoadingScreen
-import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
-import com.hongmyeoun.goldcalc.model.roomDB.character.Character
-import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardEffects
-import com.hongmyeoun.goldcalc.model.searchedInfo.card.Cards
-import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
-import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
-import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.view.goldCheck.setting.CharacterDetailSimpleUI
@@ -59,31 +48,19 @@ fun CharacterDetailScreen(
 ) {
     val context = LocalContext.current
     val verticalScrollState = rememberScrollState()
-//    var characterDetail by remember { mutableStateOf<CharacterDetail?>(null) }
-
-//    var characterEquipment by remember { mutableStateOf<List<CharacterItem>?>(null) }
-//    var characterGem by remember { mutableStateOf<List<Gem>?>(null) }
-//    var characterCards by remember { mutableStateOf<List<Cards>?>(null) }
-//    var characterCardsEffects by remember { mutableStateOf<List<CardEffects>?>(null) }
-//    var characterSkills by remember { mutableStateOf<List<Skills>?>(null) }
-
-//    LaunchedEffect(Unit) {
-//        characterDetail = APIRemote.getCharDetail(context, charName)
-//        characterEquipment = APIRemote.getCharEquipment(context, charName)
-//        characterGem = APIRemote.getCharGem(context, charName)
-//        APIRemote.getCharCard(context, charName)?.let { (cards, effects) ->
-//            characterCards = cards
-//            characterCardsEffects = effects
-//        }
-//        characterSkills = APIRemote.getCharSkill(context, charName)
-//    }
 
     LaunchedEffect(Unit) {
-        viewModel.getCharDetail(context, charName)
+        viewModel.getCharDetails(context, charName)
         viewModel.isSavedName(charName)
     }
 
     val characterDetail by viewModel.characterDetail.collectAsState()
+    val equipment by viewModel.equipments.collectAsState()
+    val gems by viewModel.gems.collectAsState()
+    val cards by viewModel.cards.collectAsState()
+    val cardsEffects by viewModel.cardsEffects.collectAsState()
+    val skills by viewModel.skills.collectAsState()
+
     val isSaved by viewModel.isSaved.collectAsState()
 
     characterDetail?.let { charDetail ->
@@ -99,25 +76,27 @@ fun CharacterDetailScreen(
                 onGetClick = { viewModel.saveCharDetailToLocal(charDetail) },
                 getButtonEnabled = !isSaved
             )
-//            Column(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .padding(4.dp)
-//            ) {
-//                EquipmentDetailUI(characterEquipment)
-//
-//                characterGem?.let { gemList ->
-//                    GemDetailUI(gemList)
-//                }
-//
-//                characterCards?.let { cardList ->
-//                    CardDetailUI(characterCardsEffects, cardList)
-//                }
-//
-//                characterSkills?.let { skills ->
-//                    SkillDetailUI(characterDetail, skills)
-//                }
-//            }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(4.dp)
+            ) {
+                equipment?.let { equipmentList ->
+                    EquipmentDetailUI(equipmentList)
+                }
+
+                gems?.let { gemList ->
+                    GemDetailUI(gemList)
+                }
+
+                cards?.let { cardList ->
+                    CardDetailUI(cardsEffects, cardList)
+                }
+
+                skills?.let { skillsList ->
+                    SkillDetailUI(characterDetail, skillsList)
+                }
+            }
         }
     }
 

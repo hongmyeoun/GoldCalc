@@ -3,10 +3,19 @@ package com.hongmyeoun.goldcalc.viewModel.charDetail
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote
+import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharCard
+import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharDetail
+import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharEquipment
+import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharGem
+import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharSkill
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
+import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardEffects
+import com.hongmyeoun.goldcalc.model.searchedInfo.card.Cards
+import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
+import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
+import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,19 +37,6 @@ class CharDetailVM @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val savedNames = withContext(Dispatchers.IO) { characterRepository.getNames() }
             _isSaved.value = savedNames.contains(charName)
-        }
-    }
-
-
-
-    // API로 받아올 캐릭터 형식
-    private val _characterDetail = MutableStateFlow<CharacterDetail?>(null)
-    val characterDetail: StateFlow<CharacterDetail?> = _characterDetail
-
-    // API에서 받아옴
-    fun getCharDetail(context: Context, charName: String) {
-        viewModelScope.launch {
-            _characterDetail.value = APIRemote.getCharDetail(context, charName)
         }
     }
 
@@ -72,5 +68,38 @@ class CharDetailVM @Inject constructor(
             characterRepository.insertAll(character)
         }
         _isSaved.value = true
+    }
+
+    // API로 받아올 캐릭터 형식
+    private val _characterDetail = MutableStateFlow<CharacterDetail?>(null)
+    val characterDetail: StateFlow<CharacterDetail?> = _characterDetail
+
+    private val _equipments = MutableStateFlow<List<CharacterItem>?>(null)
+    val equipments: StateFlow<List<CharacterItem>?> = _equipments
+
+    private val _gems = MutableStateFlow<List<Gem>?>(null)
+    val gems: StateFlow<List<Gem>?> = _gems
+
+    private val _cards = MutableStateFlow<List<Cards>?>(null)
+    val cards: StateFlow<List<Cards>?> = _cards
+
+    private val _cardsEffects = MutableStateFlow<List<CardEffects>?>(null)
+    val cardsEffects: StateFlow<List<CardEffects>?> = _cardsEffects
+
+    private val _skills = MutableStateFlow<List<Skills>?>(null)
+    val skills: StateFlow<List<Skills>?> = _skills
+
+    // API에서 character 정보들을 받아옴
+    fun getCharDetails(context: Context, charName: String) {
+        viewModelScope.launch {
+            _characterDetail.value = getCharDetail(context, charName)
+            _equipments.value = getCharEquipment(context, charName)
+            _gems.value = getCharGem(context, charName)
+            getCharCard(context, charName)?.let { (cards, effects) ->
+                _cards.value = cards
+                _cardsEffects.value = effects
+            }
+            _skills.value = getCharSkill(context, charName)
+        }
     }
 }
