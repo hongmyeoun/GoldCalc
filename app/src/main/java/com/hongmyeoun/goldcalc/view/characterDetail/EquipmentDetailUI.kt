@@ -13,12 +13,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -31,43 +32,20 @@ import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.AbilityStone
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterEquipment
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
-import com.hongmyeoun.goldcalc.ui.theme.AncientBG
-import com.hongmyeoun.goldcalc.ui.theme.BlueQual
-import com.hongmyeoun.goldcalc.ui.theme.EstherBG
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
-import com.hongmyeoun.goldcalc.ui.theme.LegendaryBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
-import com.hongmyeoun.goldcalc.ui.theme.OrangeQual
-import com.hongmyeoun.goldcalc.ui.theme.PurpleQual
-import com.hongmyeoun.goldcalc.ui.theme.RedQual
-import com.hongmyeoun.goldcalc.ui.theme.RelicBG
-import com.hongmyeoun.goldcalc.ui.theme.RelicColor
-import com.hongmyeoun.goldcalc.ui.theme.YellowQual
+import com.hongmyeoun.goldcalc.viewModel.charDetail.EquipmentDetailVM
 
 @Composable
-fun EquipmentDetailUI(characterEquipment: List<CharacterItem>?) {
-    val accessoryTotalQuality = characterEquipment?.filterIsInstance<CharacterAccessory>()?.map { it.itemQuality }
-    val accessoryQualityAvg = if (accessoryTotalQuality?.isNotEmpty() == true) {
-        accessoryTotalQuality.average()
-    } else {
-        0.0
-    }
+fun EquipmentDetailUI(
+    characterEquipment: List<CharacterItem>,
+) {
+    val viewModel = EquipmentDetailVM(characterEquipment)
 
-    val setOptions = characterEquipment?.filterIsInstance<CharacterEquipment>()?.map { it.setOption }
-    val setOptionGroups = setOptions?.map { it.split(" ") }?.groupBy({ it[0] }, { it[1].toInt() })
-    val formattedSetOptions = setOptionGroups?.map { (option, levels) ->
-        val count = levels.size
-        val averageLevel = levels.average()
+    val accessoryQualityAvg by viewModel.accessoryAvgQuality.collectAsState()
+    val setOption by viewModel.setOption.collectAsState()
+    val totalCombatStat by viewModel.totalCombatStat.collectAsState()
 
-        val formattedLevel = if (averageLevel % 1 == 0.0) averageLevel.toInt().toString() else "%.1f".format(averageLevel)
-
-        "$count$option Lv.$formattedLevel"
-    }
-
-    val combatStat = characterEquipment?.filterIsInstance<CharacterAccessory>()?.map { it.combatStat1 }
-    val combatStatOne = combatStat?.sumOf { it.split(" ")[1].removePrefix("+").toInt() } ?: 0
-    val combatStatTwo =
-        characterEquipment?.filterIsInstance<CharacterAccessory>()?.get(0)?.combatStat2?.split(" ")?.get(1)?.removePrefix("+")?.toInt() ?: 0
     Column(
         modifier = Modifier
             .background(LightGrayTransBG, RoundedCornerShape(8.dp))
@@ -81,73 +59,70 @@ fun EquipmentDetailUI(characterEquipment: List<CharacterItem>?) {
         Spacer(modifier = Modifier.height(4.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            TextChip(text = formattedSetOptions?.joinToString(", ") ?: "세트효과 없음")
+            TextChip(text = setOption)
             Spacer(modifier = Modifier.width(8.dp))
             TextChip(text = "악세 품질 $accessoryQualityAvg")
             Spacer(modifier = Modifier.width(8.dp))
-            TextChip(text = "특성합 ${combatStatOne + combatStatTwo}")
+            TextChip(text = "특성합 $totalCombatStat")
         }
         Spacer(modifier = Modifier.height(12.dp))
 
         Row {
             Column(modifier = Modifier.weight(0.7f)) {
-                characterEquipment?.let { characterEquipmentList ->
-                    characterEquipmentList.forEach {
-                        when (it) {
-                            is CharacterEquipment -> {
-                                val setOption = it.setOption.split(" ").first()
-                                EquipmentDetails(
-                                    icon = it.itemIcon,
-                                    grade = it.grade,
-                                    name = it.type,
-                                    upgrade = it.upgradeLevel,
-                                    itemLevel = it.itemLevel,
-                                    quality = "${it.itemQuality}",
-                                    elixir1Lv = it.elixirFirstLevel,
-                                    elixir1Op = it.elixirFirstOption,
-                                    elixir2Lv = it.elixirSecondLevel,
-                                    elixir2Op = it.elixirSecondOption,
-                                    transcendenceLevel = it.transcendenceLevel,
-                                    transcendenceMultiple = it.transcendenceTotal,
-                                    higherUpgrade = it.highUpgradeLevel,
-                                    setOption = setOption
-                                )
-                            }
+                characterEquipment.forEach {
+                    when (it) {
+                        is CharacterEquipment -> {
+                            val setOptionName = viewModel.setOptionName(it)
+                            EquipmentDetails(
+                                icon = it.itemIcon,
+                                grade = it.grade,
+                                name = it.type,
+                                upgrade = it.upgradeLevel,
+                                itemLevel = it.itemLevel,
+                                quality = "${it.itemQuality}",
+                                elixir1Lv = it.elixirFirstLevel,
+                                elixir1Op = it.elixirFirstOption,
+                                elixir2Lv = it.elixirSecondLevel,
+                                elixir2Op = it.elixirSecondOption,
+                                transcendenceLevel = it.transcendenceLevel,
+                                transcendenceMultiple = it.transcendenceTotal,
+                                higherUpgrade = it.highUpgradeLevel,
+                                setOption = setOptionName,
+                                viewModel = viewModel
+                            )
                         }
                     }
                 }
             }
             Column(modifier = Modifier.weight(0.4f)) {
-                characterEquipment?.let { characterEquipmentList ->
-                    characterEquipmentList.forEach {
-                        when (it) {
-                            is CharacterAccessory -> {
-                                AccessoryDetails(
-                                    icon = it.itemIcon,
-                                    name = it.type,
-                                    grade = it.grade,
-                                    quality = "${it.itemQuality}",
-                                    combatStat1 = it.combatStat1,
-                                    combatStat2 = it.combatStat2
-                                )
-                            }
+                characterEquipment.forEach {
+                    when (it) {
+                        is CharacterAccessory -> {
+                            AccessoryDetails(
+                                icon = it.itemIcon,
+                                name = it.type,
+                                grade = it.grade,
+                                quality = "${it.itemQuality}",
+                                combatStat1 = it.combatStat1,
+                                combatStat2 = it.combatStat2,
+                                viewModel = viewModel
+                            )
+                        }
 
-                            is AbilityStone -> {
-                                val abilityStone =
-                                    it.engraving1Lv.substringAfter("Lv. ") + it.engraving2Lv.substringAfter("Lv. ") + it.engraving3Lv.substringAfter("Lv. ")
-                                AccessoryDetails(
-                                    icon = it.itemIcon,
-                                    name = "스톤",
-                                    grade = it.grade,
-                                    quality = abilityStone,
-                                    engraving1 = it.engraving1Op,
-                                    engraving2 = it.engraving2Op
-                                )
-                            }
+                        is AbilityStone -> {
+                            val abilityStone = viewModel.abilityStone(it)
+                            AccessoryDetails(
+                                icon = it.itemIcon,
+                                name = "스톤",
+                                grade = it.grade,
+                                quality = abilityStone,
+                                engraving1 = it.engraving1Op,
+                                engraving2 = it.engraving2Op,
+                                viewModel = viewModel
+                            )
                         }
                     }
                 }
-
             }
         }
     }
@@ -157,6 +132,7 @@ fun EquipmentDetailUI(characterEquipment: List<CharacterItem>?) {
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
 fun EquipmentDetails(
+    viewModel: EquipmentDetailVM,
     icon: String,
     grade: String,
     name: String,
@@ -181,7 +157,7 @@ fun EquipmentDetails(
             modifier = Modifier
                 .size(48.dp)
                 .background(
-                    brush = getItemBG(grade),
+                    brush = viewModel.getItemBG(grade),
                     shape = RoundedCornerShape(8.dp)
                 )
         ) {
@@ -195,7 +171,12 @@ fun EquipmentDetails(
         }
         Spacer(modifier = Modifier.width(6.dp))
         Column {
-            UpgradeQualityRow(quality, upgrade, itemLevel)
+            UpgradeQualityRow(
+                quality = quality,
+                upgrade = upgrade,
+                itemLevel = itemLevel,
+                viewModel = viewModel
+            )
             if (transcendenceLevel.isNotEmpty() || higherUpgrade.isNotEmpty()) {
                 TranscendenceLevelRow(transcendenceLevel, transcendenceMultiple, higherUpgrade, setOption)
             }
@@ -203,8 +184,16 @@ fun EquipmentDetails(
         Spacer(modifier = Modifier.width(4.dp))
         if (elixir1Lv.isNotEmpty()) {
             Column {
-                ElixirLevelOptionRow(elixir1Lv, elixir1Op)
-                ElixirLevelOptionRow(elixir2Lv, elixir2Op)
+                ElixirLevelOptionRow(
+                    level = elixir1Lv,
+                    option = elixir1Op,
+                    viewModel = viewModel
+                )
+                ElixirLevelOptionRow(
+                    level = elixir2Lv,
+                    option = elixir2Op,
+                    viewModel = viewModel
+                )
             }
         }
     }
@@ -212,18 +201,12 @@ fun EquipmentDetails(
 }
 
 @Composable
-private fun getItemBG(grade: String): Brush {
-    val itemBG = when (grade) {
-        "에스더" -> EstherBG
-        "고대" -> AncientBG
-        "유물" -> RelicBG
-        else -> LegendaryBG
-    }
-    return itemBG
-}
-
-@Composable
-private fun UpgradeQualityRow(quality: String, upgrade: String = "", itemLevel: String = "") {
+private fun UpgradeQualityRow(
+    quality: String,
+    viewModel: EquipmentDetailVM,
+    upgrade: String = "",
+    itemLevel: String = ""
+) {
     Row(
         modifier = Modifier.height(24.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -248,34 +231,8 @@ private fun UpgradeQualityRow(quality: String, upgrade: String = "", itemLevel: 
             text = quality,
             borderless = true,
             customPadding = Modifier.padding(start = 8.dp, end = 8.dp, top = 2.dp, bottom = 2.dp),
-            customBG = getQualityColor(quality)
+            customBG = viewModel.getQualityColor(quality)
         )
-    }
-}
-
-private fun getQualityColor(quality: String): Color {
-    return if (quality.toInt() >= 100) {
-        OrangeQual
-    } else if (quality.toInt() in 90 until 100) {
-        PurpleQual
-    } else if (quality.toInt() in 70 until 90) {
-        BlueQual
-    } else if (quality.toInt() in 30 until 70) {
-        GreenQual
-    } else if (quality.toInt() in 10 until 30) {
-        YellowQual
-    } else {
-        RedQual
-    }
-}
-
-private fun getElixirColor(level: String): Color {
-    return when (level.toInt()) {
-        5 -> RelicColor
-        4 -> OrangeQual
-        3 -> PurpleQual
-        2 -> BlueQual
-        else -> GreenQual
     }
 }
 
@@ -329,7 +286,11 @@ private fun TranscendenceLevelRow(level: String, multiple: String, upgrade: Stri
 }
 
 @Composable
-private fun ElixirLevelOptionRow(level: String, option: String) {
+private fun ElixirLevelOptionRow(
+    level: String,
+    option: String,
+    viewModel: EquipmentDetailVM
+) {
     Row(
         modifier = Modifier.height(24.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -338,7 +299,7 @@ private fun ElixirLevelOptionRow(level: String, option: String) {
             text = level,
             borderless = true,
             customPadding = Modifier.padding(start = 5.dp, end = 5.dp, top = 2.dp, bottom = 2.dp),
-            customBG = getElixirColor(level)
+            customBG = viewModel.getElixirColor(level)
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
@@ -355,6 +316,7 @@ fun AccessoryDetails(
     name: String,
     grade: String,
     quality: String,
+    viewModel: EquipmentDetailVM,
     combatStat1: String = "",
     combatStat2: String = "",
     engraving1: String = "",
@@ -367,14 +329,13 @@ fun AccessoryDetails(
             modifier = Modifier
                 .size(48.dp)
                 .background(
-                    brush = getItemBG(grade),
+                    brush = viewModel.getItemBG(grade),
                     shape = RoundedCornerShape(8.dp)
                 )
         ) {
             GlideImage(
                 modifier = Modifier
-                    .size(48.dp)
-                ,
+                    .size(48.dp),
                 model = icon,
                 contentDescription = "악세서리 이미지"
             )
@@ -382,7 +343,10 @@ fun AccessoryDetails(
         }
         Spacer(modifier = Modifier.width(4.dp))
         Column {
-            UpgradeQualityRow(quality)
+            UpgradeQualityRow(
+                quality = quality,
+                viewModel = viewModel
+            )
             if (combatStat1.isNotEmpty()) {
                 Column {
                     Text(
