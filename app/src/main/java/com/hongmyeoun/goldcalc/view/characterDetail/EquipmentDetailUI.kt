@@ -72,22 +72,8 @@ fun EquipmentDetailUI(
                 characterEquipment.forEach {
                     when (it) {
                         is CharacterEquipment -> {
-                            val setOptionName = viewModel.setOptionName(it)
                             EquipmentDetails(
-                                icon = it.itemIcon,
-                                grade = it.grade,
-                                name = it.type,
-                                upgrade = it.upgradeLevel,
-                                itemLevel = it.itemLevel,
-                                quality = "${it.itemQuality}",
-                                elixir1Lv = it.elixirFirstLevel,
-                                elixir1Op = it.elixirFirstOption,
-                                elixir2Lv = it.elixirSecondLevel,
-                                elixir2Op = it.elixirSecondOption,
-                                transcendenceLevel = it.transcendenceLevel,
-                                transcendenceMultiple = it.transcendenceTotal,
-                                higherUpgrade = it.highUpgradeLevel,
-                                setOption = setOptionName,
+                                equipment = it,
                                 viewModel = viewModel
                             )
                         }
@@ -132,23 +118,10 @@ fun EquipmentDetailUI(
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
 fun EquipmentDetails(
+    equipment: CharacterEquipment,
     viewModel: EquipmentDetailVM,
-    icon: String,
-    grade: String,
-    name: String,
-    upgrade: String,
-    itemLevel: String,
-    quality: String,
-    elixir1Lv: String,
-    elixir1Op: String,
-    elixir2Lv: String,
-    elixir2Op: String,
-    transcendenceLevel: String,
-    transcendenceMultiple: String,
-    higherUpgrade: String,
-    setOption: String,
 ) {
-    val fontSize = if (name.length >= 3) 8.sp else 10.sp
+    val setOptionName = viewModel.setOptionName(equipment)
 
     Row(
         horizontalArrangement = Arrangement.Center
@@ -157,41 +130,46 @@ fun EquipmentDetails(
             modifier = Modifier
                 .size(48.dp)
                 .background(
-                    brush = viewModel.getItemBG(grade),
+                    brush = viewModel.getItemBG(equipment.grade),
                     shape = RoundedCornerShape(8.dp)
                 )
         ) {
             GlideImage(
                 modifier = Modifier
                     .size(48.dp),
-                model = icon,
+                model = equipment.itemIcon,
                 contentDescription = "장비 아이콘",
             )
-            TextChip(text = name, customTextSize = fontSize)
+            TextChip(text = equipment.type)
         }
         Spacer(modifier = Modifier.width(6.dp))
         Column {
             UpgradeQualityRow(
-                quality = quality,
-                upgrade = upgrade,
-                itemLevel = itemLevel,
+                quality = "${equipment.itemQuality}",
+                upgrade = equipment.upgradeLevel,
+                itemLevel = equipment.itemLevel,
                 viewModel = viewModel
             )
-            if (transcendenceLevel.isNotEmpty() || higherUpgrade.isNotEmpty()) {
-                TranscendenceLevelRow(transcendenceLevel, transcendenceMultiple, higherUpgrade, setOption)
+            if (equipment.transcendenceLevel.isNotEmpty() || equipment.highUpgradeLevel.isNotEmpty() || setOptionName.isNotEmpty()) {
+                TranscendenceLevelRow(
+                    level = equipment.transcendenceLevel,
+                    multiple = equipment.transcendenceTotal,
+                    upgrade = equipment.highUpgradeLevel,
+                    setOption = setOptionName
+                )
             }
         }
         Spacer(modifier = Modifier.width(4.dp))
-        if (elixir1Lv.isNotEmpty()) {
+        if (equipment.elixirFirstLevel.isNotEmpty()) {
             Column {
                 ElixirLevelOptionRow(
-                    level = elixir1Lv,
-                    option = elixir1Op,
+                    level = equipment.elixirFirstLevel,
+                    option = equipment.elixirFirstOption,
                     viewModel = viewModel
                 )
                 ElixirLevelOptionRow(
-                    level = elixir2Lv,
-                    option = elixir2Op,
+                    level = equipment.elixirSecondLevel,
+                    option = equipment.elixirSecondOption,
                     viewModel = viewModel
                 )
             }
