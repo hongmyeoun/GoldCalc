@@ -17,6 +17,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.LoadingScreen
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
@@ -51,28 +53,38 @@ import com.hongmyeoun.goldcalc.view.goldCheck.setting.CharacterDetailSimpleUI
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
 
 @Composable
-fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewModel()) {
+fun CharacterDetailScreen(
+    charName: String,
+    viewModel: CharDetailVM = hiltViewModel()
+) {
     val context = LocalContext.current
     val verticalScrollState = rememberScrollState()
-    var characterDetail by remember { mutableStateOf<CharacterDetail?>(null) }
-    var characterEquipment by remember { mutableStateOf<List<CharacterItem>?>(null) }
-    var characterGem by remember { mutableStateOf<List<Gem>?>(null) }
-    var characterCards by remember { mutableStateOf<List<Cards>?>(null) }
-    var characterCardsEffects by remember { mutableStateOf<List<CardEffects>?>(null) }
-    var characterSkills by remember { mutableStateOf<List<Skills>?>(null) }
+//    var characterDetail by remember { mutableStateOf<CharacterDetail?>(null) }
+
+//    var characterEquipment by remember { mutableStateOf<List<CharacterItem>?>(null) }
+//    var characterGem by remember { mutableStateOf<List<Gem>?>(null) }
+//    var characterCards by remember { mutableStateOf<List<Cards>?>(null) }
+//    var characterCardsEffects by remember { mutableStateOf<List<CardEffects>?>(null) }
+//    var characterSkills by remember { mutableStateOf<List<Skills>?>(null) }
+
+//    LaunchedEffect(Unit) {
+//        characterDetail = APIRemote.getCharDetail(context, charName)
+//        characterEquipment = APIRemote.getCharEquipment(context, charName)
+//        characterGem = APIRemote.getCharGem(context, charName)
+//        APIRemote.getCharCard(context, charName)?.let { (cards, effects) ->
+//            characterCards = cards
+//            characterCardsEffects = effects
+//        }
+//        characterSkills = APIRemote.getCharSkill(context, charName)
+//    }
 
     LaunchedEffect(Unit) {
-        characterDetail = APIRemote.getCharDetail(context, charName)
-        characterEquipment = APIRemote.getCharEquipment(context, charName)
-        characterGem = APIRemote.getCharGem(context, charName)
-        APIRemote.getCharCard(context, charName)?.let { (cards, effects) ->
-            characterCards = cards
-            characterCardsEffects = effects
-        }
-        characterSkills = APIRemote.getCharSkill(context, charName)
-
+        viewModel.getCharDetail(context, charName)
         viewModel.isSavedName(charName)
     }
+
+    val characterDetail by viewModel.characterDetail.collectAsState()
+    val isSaved by viewModel.isSaved.collectAsState()
 
     characterDetail?.let { charDetail ->
         Column(
@@ -84,49 +96,31 @@ fun CharacterDetailScreen(charName: String, viewModel: CharDetailVM = hiltViewMo
         ) {
             CharacterDetailSimpleUI(
                 characterDetail = charDetail,
-                onGetClick = {
-                    val avatarImage = charDetail.characterImage.isNotEmpty()
-
-                    val character = Character(
-                        name = charDetail.characterName,
-                        itemLevel = charDetail.itemMaxLevel,
-                        serverName = charDetail.serverName,
-                        className = charDetail.characterClassName,
-                        guildName = charDetail.guildName,
-                        title = charDetail.title,
-                        characterLevel = charDetail.characterLevel,
-                        expeditionLevel = charDetail.expeditionLevel,
-                        pvpGradeName = charDetail.pvpGradeName,
-                        townLevel = charDetail.townLevel,
-                        townName = charDetail.townName,
-                        characterImage = charDetail.characterImage,
-                        avatarImage = avatarImage
-                    )
-                    viewModel.saveCharacter(character)
-                },
-                getButtonEnabled = !viewModel.isSaved
+                onGetClick = { viewModel.saveCharDetailToLocal(charDetail) },
+                getButtonEnabled = !isSaved
             )
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(4.dp)
-            ) {
-                EquipmentDetailUI(characterEquipment)
-
-                characterGem?.let { gemList ->
-                    GemDetailUI(gemList)
-                }
-
-                characterCards?.let { cardList ->
-                    CardDetailUI(characterCardsEffects, cardList)
-                }
-
-                characterSkills?.let { skills ->
-                    SkillDetailUI(characterDetail, skills)
-                }
-            }
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .padding(4.dp)
+//            ) {
+//                EquipmentDetailUI(characterEquipment)
+//
+//                characterGem?.let { gemList ->
+//                    GemDetailUI(gemList)
+//                }
+//
+//                characterCards?.let { cardList ->
+//                    CardDetailUI(characterCardsEffects, cardList)
+//                }
+//
+//                characterSkills?.let { skills ->
+//                    SkillDetailUI(characterDetail, skills)
+//                }
+//            }
         }
     }
+
 }
 
 
