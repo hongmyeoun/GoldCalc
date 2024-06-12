@@ -17,10 +17,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,6 +27,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
@@ -36,15 +35,12 @@ import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.ui.theme.RelicBG
 import com.hongmyeoun.goldcalc.ui.theme.RelicColor
-import kotlin.math.absoluteValue
+import com.hongmyeoun.goldcalc.viewModel.charDetail.GemDetailVM
 
 @Composable
 @OptIn(ExperimentalLayoutApi::class)
-fun GemDetailUI(gemList: List<Gem>) {
-    val annihilation = gemList.count { it.type == "멸화" }
-    val crimsonFlame = gemList.size - annihilation
-
-    var isDetail by remember { mutableStateOf(false) }
+fun GemDetailUI(gemList: List<Gem>, viewModel: GemDetailVM = viewModel()) {
+    val isDetail by viewModel.isDetail.collectAsState()
 
     Column(
         modifier = Modifier
@@ -52,7 +48,11 @@ fun GemDetailUI(gemList: List<Gem>) {
             .clip(RoundedCornerShape(8.dp))
             .padding(8.dp)
     ) {
-        Column(modifier = Modifier.fillMaxWidth().clickable { isDetail = !isDetail }) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { viewModel.onDetailClicked() }
+        ) {
             Text(
                 text = "보석",
                 style = titleTextStyle()
@@ -74,6 +74,7 @@ fun GemDetailUI(gemList: List<Gem>) {
                 )
             }
         } else {
+            val (annihilation, crimsonFlame) = viewModel.countAnnihilationGem(gemList)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -85,7 +86,7 @@ fun GemDetailUI(gemList: List<Gem>) {
             Spacer(modifier = Modifier.height(4.dp))
 
             Row {
-                val (annMaxItemCount, criMaxItemCount) = calcMaxItemsInEachRow(annihilation, crimsonFlame)
+                val (annMaxItemCount, criMaxItemCount) = viewModel.calcMaxItemsInEachRow(annihilation, crimsonFlame)
                 Column {
                     FlowRow(
                         maxItemsInEachRow = annMaxItemCount
@@ -109,17 +110,6 @@ fun GemDetailUI(gemList: List<Gem>) {
     }
     Spacer(modifier = Modifier.height(8.dp))
 }
-
-private fun calcMaxItemsInEachRow(ann: Int, cri: Int): Pair<Int, Int> {
-    val difference = (ann - cri).absoluteValue
-    return when {
-        difference < 7 -> if (ann > cri) Pair(4, 3) else Pair(3, 4)
-        difference < 9 -> if (ann > cri) Pair(5, 2) else Pair(2, 5)
-        difference < 11 -> if (ann > cri) Pair(6, 1) else Pair(1, 6)
-        else -> if (ann > cri) Pair(7, 0) else Pair(0, 7)
-    }
-}
-
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
