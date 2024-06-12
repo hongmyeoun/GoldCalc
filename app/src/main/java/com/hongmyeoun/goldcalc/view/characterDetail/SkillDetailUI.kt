@@ -18,10 +18,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,20 +28,22 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.util.fastSumBy
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
 import com.hongmyeoun.goldcalc.ui.theme.LegendaryBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
+import com.hongmyeoun.goldcalc.viewModel.charDetail.SkillDetailVM
 
 @Composable
 fun SkillDetailUI(
     characterDetail: CharacterDetail?,
-    skills: List<Skills>
+    skills: List<Skills>,
+    viewModel: SkillDetailVM = viewModel()
 ) {
-    var isDetail by remember { mutableStateOf(false) }
+    val isDetail by viewModel.isDetail.collectAsState()
 
     Column(
         modifier = Modifier
@@ -52,7 +52,7 @@ fun SkillDetailUI(
             .padding(8.dp)
     ) {
         Column(
-            modifier = Modifier.clickable { isDetail = !isDetail }
+            modifier = Modifier.clickable { viewModel.onDetailClicked() }
         ) {
             Text(
                 text = "스킬",
@@ -67,8 +67,8 @@ fun SkillDetailUI(
                     TextChip(text = "스킬 포인트 ${characterDetail.usingSkillPoint}/${characterDetail.totalSkillPoint}")
                     Spacer(modifier = Modifier.width(8.dp))
                 }
-                val fiveLevel = skills.fastSumBy { skill -> skill.tripods.count { tripod -> tripod.isSelected && tripod.level == 5 } }
-                val fourLevel = skills.fastSumBy { skill -> skill.tripods.count { tripod -> tripod.isSelected && tripod.level == 4 } }
+                val (fiveLevel, fourLevel) = viewModel.tripodLevel54(skills)
+
                 if (fiveLevel > 0) {
                     TextChip(text = "Lv.5 x$fiveLevel")
                     Spacer(modifier = Modifier.width(8.dp))
