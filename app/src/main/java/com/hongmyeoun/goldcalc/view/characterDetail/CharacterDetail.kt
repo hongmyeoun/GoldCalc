@@ -29,6 +29,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -278,25 +279,36 @@ fun TextChip(
     customTextSize: TextUnit = 10.sp,
     borderless: Boolean = false,
     customPadding: Modifier = Modifier.padding(start = 6.dp, end = 6.dp, top = 2.dp, bottom = 2.dp),
-    customBG: Color = Color.Black
+    customBG: Color = Color.Black,
+    fixedWidth: Boolean = false,
+    customWidthSize: Dp = 40.dp,
+    customRoundedCornerSize: Dp = 4.dp
 ) {
     val modifier = if (!borderless) {
         Modifier
             .border(
                 width = 1.dp,
                 color = Color.White,
-                shape = RoundedCornerShape(4.dp)
+                shape = RoundedCornerShape(customRoundedCornerSize)
             )
     } else {
         Modifier
     }
+
+    val customWidth = if (!fixedWidth) {
+        Modifier
+    } else {
+        Modifier.width(customWidthSize)
+    }
+
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
+            .then(customWidth)
             .background(
                 color = customBG,
-                shape = RoundedCornerShape(4.dp)
+                shape = RoundedCornerShape(customRoundedCornerSize)
             )
             .then(customPadding)
     ) {
