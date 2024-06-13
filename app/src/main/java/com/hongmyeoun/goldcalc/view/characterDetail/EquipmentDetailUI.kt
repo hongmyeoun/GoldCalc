@@ -22,8 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -32,15 +30,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.bumptech.glide.integration.compose.placeholder
-import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.AbilityStone
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterEquipment
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
-import com.hongmyeoun.goldcalc.ui.theme.AncientBG
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
-import com.hongmyeoun.goldcalc.ui.theme.BlueQual
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
@@ -96,25 +90,14 @@ fun EquipmentDetailUI(
                     when (it) {
                         is CharacterAccessory -> {
                             AccessoryDetails(
-                                icon = it.itemIcon,
-                                name = it.type,
-                                grade = it.grade,
-                                quality = "${it.itemQuality}",
-                                combatStat1 = it.combatStat1,
-                                combatStat2 = it.combatStat2,
+                                accessory = it,
                                 viewModel = viewModel
                             )
                         }
 
                         is AbilityStone -> {
-                            val abilityStone = viewModel.abilityStone(it)
                             AccessoryDetails(
-                                icon = it.itemIcon,
-                                name = "스톤",
-                                grade = it.grade,
-                                quality = abilityStone,
-                                engraving1 = it.engraving1Op,
-                                engraving2 = it.engraving2Op,
+                                abilityStone = it,
                                 viewModel = viewModel
                             )
                         }
@@ -143,15 +126,14 @@ fun EquipmentDetails(
         Spacer(modifier = Modifier.width(6.dp))
         Column {
             UpgradeQualityRow(
-                quality = "${equipment.itemQuality}",
+                viewModel = viewModel,
+                grade = equipment.grade,
                 upgrade = equipment.upgradeLevel,
                 itemLevel = equipment.itemLevel,
-                viewModel = viewModel
             )
             if (equipment.transcendenceLevel.isNotEmpty() || equipment.highUpgradeLevel.isNotEmpty() || setOptionName.isNotEmpty()) {
                 TranscendenceLevelRow(
                     level = equipment.transcendenceLevel,
-                    multiple = equipment.transcendenceTotal,
                     upgrade = equipment.highUpgradeLevel,
                     setOption = setOptionName
                 )
@@ -178,10 +160,10 @@ fun EquipmentDetails(
 
 @Composable
 private fun UpgradeQualityRow(
-    quality: String,
     viewModel: EquipmentDetailVM,
+    grade: String,
     upgrade: String = "",
-    itemLevel: String = ""
+    itemLevel: String = "",
 ) {
     Row(
         modifier = Modifier.height(24.dp),
@@ -194,7 +176,7 @@ private fun UpgradeQualityRow(
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start,
-                    color = Color.White
+                    color = viewModel.getGradeBG(grade)
                 ),
             )
             Spacer(modifier = Modifier.width(4.dp))
@@ -203,34 +185,26 @@ private fun UpgradeQualityRow(
             TextChip(itemLevel)
             Spacer(modifier = Modifier.width(4.dp))
         }
-        TextChip(
-            text = quality,
-            borderless = true,
-            customPadding = Modifier.padding(start = 8.dp, end = 8.dp, top = 2.dp, bottom = 2.dp),
-            customBG = viewModel.getQualityColor(quality)
-        )
+        if (upgrade.isEmpty()) {
+            TextChip(
+                text = grade,
+                borderless = true,
+                customPadding = Modifier.padding(start = 4.dp, end = 4.dp, top = 2.dp, bottom = 2.dp),
+                customBGColor = viewModel.getGradeBG(grade, false)
+            )
+        }
     }
 }
 
 @Composable
-@OptIn(ExperimentalGlideComposeApi::class)
-private fun TranscendenceLevelRow(level: String, multiple: String, upgrade: String, setOption: String) {
+private fun TranscendenceLevelRow(level: String, upgrade: String, setOption: String) {
     Row(
         modifier = Modifier.height(24.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (level.isNotEmpty()) {
-            GlideImage(
-                model = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png",
-                contentDescription = "초월 아이콘"
-            )
             Text(
                 text = "Lv.$level",
-                style = normalTextStyle()
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-            Text(
-                text = "x$multiple",
                 style = normalTextStyle()
             )
             Spacer(modifier = Modifier.width(4.dp))
@@ -275,7 +249,7 @@ private fun ElixirLevelOptionRow(
             text = level,
             borderless = true,
             customPadding = Modifier.padding(start = 5.dp, end = 5.dp, top = 2.dp, bottom = 2.dp),
-            customBG = viewModel.getElixirColor(level)
+            customBGColor = viewModel.getElixirColor(level)
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
@@ -286,67 +260,34 @@ private fun ElixirLevelOptionRow(
 }
 
 @Composable
-@OptIn(ExperimentalGlideComposeApi::class)
 fun AccessoryDetails(
-    icon: String,
-    name: String,
-    grade: String,
-    quality: String,
+    accessory: CharacterAccessory,
     viewModel: EquipmentDetailVM,
-    combatStat1: String = "",
-    combatStat2: String = "",
-    engraving1: String = "",
-    engraving2: String = "",
 ) {
-    val fontSize = if (name.length >= 3) 8.sp else 10.sp
-
     Row {
-        Box(
-            modifier = Modifier
-                .size(48.dp)
-                .background(
-                    brush = viewModel.getItemBG(grade),
-                    shape = RoundedCornerShape(8.dp)
-                )
-        ) {
-            GlideImage(
-                modifier = Modifier
-                    .size(48.dp),
-                model = icon,
-                contentDescription = "악세서리 이미지"
-            )
-            TextChip(text = name, customTextSize = fontSize)
-        }
+        EquipmentIcon(
+            accessory = accessory,
+            viewModel = viewModel
+        )
+
         Spacer(modifier = Modifier.width(4.dp))
         Column {
             UpgradeQualityRow(
-                quality = quality,
-                viewModel = viewModel
+                viewModel = viewModel,
+                grade = accessory.grade
             )
-            if (combatStat1.isNotEmpty()) {
+            if (accessory.combatStat1.isNotEmpty()) {
                 Column {
                     Text(
-                        text = combatStat1,
+                        text = accessory.combatStat1,
                         style = normalTextStyle()
                     )
-                    if (combatStat2.isNotEmpty() && name == "목걸이") {
+                    if (accessory.combatStat2.isNotEmpty() && accessory.type == "목걸이") {
                         Text(
-                            text = combatStat2,
+                            text = accessory.combatStat2,
                             style = normalTextStyle()
                         )
                     }
-                }
-            }
-            if (name == "스톤") {
-                Column {
-                    Text(
-                        text = engraving1,
-                        style = normalTextStyle()
-                    )
-                    Text(
-                        text = engraving2,
-                        style = normalTextStyle()
-                    )
                 }
             }
         }
@@ -354,89 +295,59 @@ fun AccessoryDetails(
     Spacer(modifier = Modifier.height(4.dp))
 }
 
+@Composable
+@OptIn(ExperimentalGlideComposeApi::class)
+fun AccessoryDetails(
+    abilityStone: AbilityStone,
+    viewModel: EquipmentDetailVM,
+) {
+    Row {
+        Box(
+            modifier = Modifier
+                .size(48.dp)
+                .background(
+                    brush = viewModel.getItemBG(abilityStone.grade),
+                    shape = RoundedCornerShape(8.dp)
+                )
+        ) {
+            GlideImage(
+                modifier = Modifier
+                    .size(48.dp),
+                model = abilityStone.itemIcon,
+                contentDescription = "악세서리 이미지"
+            )
+            TextChip(
+                text = "스톤",
+            )
+        }
+
+        Spacer(modifier = Modifier.width(4.dp))
+        Column {
+            UpgradeQualityRow(
+                viewModel = viewModel,
+                grade = viewModel.abilityStone(abilityStone)
+            )
+            Column {
+                Text(
+                    text = abilityStone.engraving1Op,
+                    style = normalTextStyle()
+                )
+                Text(
+                    text = abilityStone.engraving2Op,
+                    style = normalTextStyle()
+                )
+            }
+        }
+    }
+    Spacer(modifier = Modifier.height(4.dp))
+}
+
+
 @OptIn(ExperimentalGlideComposeApi::class)
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     GoldCalcTheme {
-        Box(
-            modifier = Modifier
-                .size(48.dp)
-                .background(
-                    brush = AncientBG,
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
-        ) {
-            GlideImage(
-                loading = placeholder(painterResource(id = R.drawable.sm_item_01_172)),
-                modifier = Modifier
-                    .size(48.dp),
-                model = "equipment.itemIcon",
-                contentDescription = "장비 아이콘",
-            )
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .padding(2.dp)
-            ) {
-                TextChip(
-                    text = "무기",
-                    borderless = true,
-                    customBG = BlackTransBG,
-                    customRoundedCornerSize = 8.dp,
-                    customTextSize = 8.sp
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-            ) {
-                Box {
-                    Column {
-                        TextChip(
-                            text = "15",
-                            borderless = true,
-                            customBG = BlackTransBG,
-                            customTextSize = 8.sp,
-                            customPadding = Modifier.padding(start = 10.dp, end = 2.dp)
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
-                    }
-                    GlideImage(
-                        modifier = Modifier
-                            .size(11.dp)
-                            .padding(start = 1.dp),
-                        loading = placeholder(painterResource(id = R.drawable.ico_tooltip_transcendence)),
-                        model = "",
-                        contentDescription = "초월"
-                    )
-                }
-                LinearProgressIndicator(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(10.dp)
-                        .clip(RoundedCornerShape(4.dp))
-                        .align(Alignment.BottomCenter)
-                    ,
-                    progress = 89 * 0.01f,
-                    color = BlueQual,
-                    trackColor = ImageBG
-                )
-
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.BottomCenter)
-                    ,
-                    text = "89",
-                    style = smallTextStyle(),
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
-
     }
 }
 
@@ -469,7 +380,7 @@ fun EquipmentIcon(
             TextChip(
                 text = equipment.type,
                 borderless = true,
-                customBG = BlackTransBG,
+                customBGColor = BlackTransBG,
                 customRoundedCornerSize = 8.dp,
                 customTextSize = 8.sp
             )
@@ -485,7 +396,7 @@ fun EquipmentIcon(
                         TextChip(
                             text = equipment.transcendenceTotal,
                             borderless = true,
-                            customBG = BlackTransBG,
+                            customBGColor = BlackTransBG,
                             customTextSize = 8.sp,
                             customPadding = Modifier.padding(start = 2.dp, end = 2.dp),
                             image = true,
@@ -521,6 +432,71 @@ fun EquipmentIcon(
                     .align(Alignment.BottomCenter)
                 ,
                 text = "${equipment.itemQuality}",
+                style = smallTextStyle(),
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun EquipmentIcon(
+    accessory: CharacterAccessory,
+    viewModel: EquipmentDetailVM,
+) {
+    Box(
+        modifier = Modifier
+            .size(48.dp)
+            .background(
+                brush = viewModel.getItemBG(accessory.grade),
+                shape = RoundedCornerShape(8.dp)
+            )
+            .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+    ) {
+        GlideImage(
+            modifier = Modifier
+                .size(48.dp),
+            model = accessory.itemIcon,
+            contentDescription = "장비 아이콘",
+        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(2.dp)
+        ) {
+            TextChip(
+                text = accessory.type,
+                borderless = true,
+                customBGColor = BlackTransBG,
+                customRoundedCornerSize = 8.dp,
+                customTextSize = 8.sp
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+        ) {
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(10.dp)
+                    .clip(RoundedCornerShape(4.dp))
+                    .align(Alignment.BottomCenter)
+                ,
+                progress = accessory.itemQuality * 0.01f,
+                color = viewModel.getQualityColor(accessory.itemQuality.toString()),
+                trackColor = ImageBG
+            )
+
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                ,
+                text = "${accessory.itemQuality}",
                 style = smallTextStyle(),
                 textAlign = TextAlign.Center
             )

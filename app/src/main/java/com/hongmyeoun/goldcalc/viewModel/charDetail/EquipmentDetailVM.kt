@@ -8,10 +8,15 @@ import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterEquipment
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.ui.theme.AncientBG
+import com.hongmyeoun.goldcalc.ui.theme.AncientColor
+import com.hongmyeoun.goldcalc.ui.theme.AncientMiddle
 import com.hongmyeoun.goldcalc.ui.theme.BlueQual
+import com.hongmyeoun.goldcalc.ui.theme.EsterColor
 import com.hongmyeoun.goldcalc.ui.theme.EstherBG
+import com.hongmyeoun.goldcalc.ui.theme.EstherDark
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.LegendaryBG
+import com.hongmyeoun.goldcalc.ui.theme.LegendaryColor
 import com.hongmyeoun.goldcalc.ui.theme.OrangeQual
 import com.hongmyeoun.goldcalc.ui.theme.PurpleQual
 import com.hongmyeoun.goldcalc.ui.theme.RedQual
@@ -79,6 +84,16 @@ class EquipmentDetailVM(characterEquipment: List<CharacterItem>): ViewModel() {
             "고대" -> AncientBG
             "유물" -> RelicBG
             else -> LegendaryBG
+        }
+        return itemBG
+    }
+
+    fun getGradeBG(grade: String, brightAncient: Boolean = true): Color {
+        val itemBG = when (grade) {
+            "에스더" -> EsterColor
+            "고대" -> if(brightAncient) AncientColor else AncientMiddle
+            "유물" -> RelicColor
+            else -> LegendaryColor
         }
         return itemBG
     }

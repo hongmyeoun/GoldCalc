@@ -36,6 +36,7 @@ val YellowQual = Color(0xFFFFC000)
 val RedQual = Color(0xFFC00000)
 
 val AncientDark = Color(0xFF3D3325)
+val AncientMiddle = Color(0xFFA88B6D)
 val AncientColor = Color(0xFFDCC999)
 val RelicDark = Color(0xFF341A09)
 val RelicColor = Color(0xFFA24006)
