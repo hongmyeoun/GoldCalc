@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class SearchVM : ViewModel() {
-    private val _characterName = MutableStateFlow("")
+    private val _characterName = MutableStateFlow("딜관여율0에수렴")
     val characterName: StateFlow<String> = _characterName
 
     fun onCharacterNameValueChange(newValue: String) {
