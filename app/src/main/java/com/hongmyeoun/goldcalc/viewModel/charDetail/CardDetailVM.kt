@@ -1,5 +1,8 @@
 package com.hongmyeoun.goldcalc.viewModel.charDetail
 
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardEffects
@@ -24,6 +27,22 @@ class CardDetailVM: ViewModel() {
         return null
     }
 
+    fun onlySetOption(effect: CardEffects): String? {
+        val cardInfo = effect.items.last().name
+        val regex = Regex("""^[^\d]+""")
+        return regex.find(cardInfo)?.value?.trim()
+    }
+
+    fun effect(effectName: String): String {
+        val name = effectName.split(" ").last()
+
+        return if (name.contains("각성")) {
+            name.substringAfter("(").substringBefore("합계")
+        } else {
+            name
+        }
+    }
+
     fun awakePoint(awakeCount: Int): Int {
         return  when (awakeCount) {
             5 -> { R.drawable.img_profile_awake_filled5 }
@@ -43,5 +62,13 @@ class CardDetailVM: ViewModel() {
             "전설" -> { R.drawable.img_card_grade_legendary }
             else -> { R.drawable.img_card_grade_relic }
         }
+    }
+
+    fun imageSizes(detail: Boolean, awakeCount: Int): Triple<Modifier, Modifier, Modifier> {
+        val cardSize = if (!detail) Modifier.size(width = 53.6.dp, height = 80.dp) else Modifier.size(width = 110.5.dp, height = 164.93.dp)
+        val awakeUnfilledSize = if (!detail) Modifier.size(width = 48.dp, height = 20.dp) else Modifier.size(width = 92.dp, height = 40.dp)
+        val awakeFillSize = if (!detail) Modifier.size(width = (awakeCount * 9.6).dp, height = 20.dp) else Modifier.size(width = (awakeCount * 18.4).dp, height = 40.dp)
+
+        return Triple(cardSize, awakeUnfilledSize, awakeFillSize)
     }
 }

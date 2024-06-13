@@ -9,41 +9,25 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.bumptech.glide.integration.compose.placeholder
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardEffects
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.Cards
-import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
@@ -67,22 +51,22 @@ fun CardDetailUI(
         Column(
             modifier = Modifier.clickable { viewModel.onDetailClicked() }
         ) {
-
             Text(
                 text = "카드",
                 style = titleTextStyle()
             )
             Spacer(modifier = Modifier.height(4.dp))
 
+            // 카드 세트 효과 (ex: 남겨진 바람의 절벽 30(6세트))
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
                 characterCardsEffects?.let { cardEffects ->
                     cardEffects.forEach { effect ->
                         val setOption = viewModel.cardSetOption(effect)
                         setOption?.let {
                             TextChip(text = it)
+                            Spacer(modifier = Modifier.width(8.dp))
                         }
                     }
                 }
@@ -92,8 +76,7 @@ fun CardDetailUI(
 
         if (isDetail) {
             FlowRow(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 maxItemsInEachRow = 3
             ) {
@@ -110,9 +93,11 @@ fun CardDetailUI(
             }
             Spacer(modifier = Modifier.height(8.dp))
 
+            // 카드 세트 옵션 효과
             characterCardsEffects?.let { cardEffects ->
-                cardEffects.forEach { effects ->
-                    effects.items.forEach {
+                cardEffects.forEach { effect ->
+                    val setOption = viewModel.onlySetOption(effect)
+                    setOption?.let { setOpt ->
                         Column(
                             modifier = Modifier
                                 .background(ImageBG, RoundedCornerShape(8.dp))
@@ -120,41 +105,35 @@ fun CardDetailUI(
                                 .fillMaxWidth()
                                 .padding(8.dp)
                         ) {
+                            // 카드 세트 옵션 이름(ex: 남겨진 바람의 절벽)
                             Text(
-                                text = "부르는 소리 있도다",
+                                text = setOpt,
                                 style = titleBoldWhite12()
                             )
                             Spacer(modifier = Modifier.height(8.dp))
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                TextChip(
-                                    text = "3세트",
-                                    customBG = LightGrayBG,
-                                    borderless = true,
-                                    fixedWidth = true,
-                                    customWidthSize = 50.dp,
-                                    customRoundedCornerSize = 8.dp
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = "가디언 토벌 시 가디언에게 받는 피해 7.5% 감소",
-                                    style = normalTextStyle()
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                TextChip(
-                                    text = "15각성",
-                                    customBG = LightGrayBG,
-                                    borderless = true,
-                                    fixedWidth = true,
-                                    customWidthSize = 50.dp,
-                                    customRoundedCornerSize = 8.dp
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = "가디언 토벌 시 가디언에게 받는 피해 7.5% 감소",
-                                    style = normalTextStyle()
-                                )
+
+                            effect.items.forEach {
+                                val name = viewModel.effect(it.name)
+
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    // 세트 혹은 각성 단계
+                                    TextChip(
+                                        text = name, // "3세트" or "18각성")
+                                        customBG = LightGrayBG,
+                                        borderless = true,
+                                        fixedWidth = true,
+                                        customWidthSize = 50.dp,
+                                        customRoundedCornerSize = 8.dp
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+
+                                    // 세트 옵션 혹은 각성 옵션 설명
+                                    Text(
+                                        text = it.description, // "가디언 토벌 시 가디언에게 받는 피해 7.5% 감소"
+                                        style = normalTextStyle()
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(4.dp))
                             }
                         }
                     }
@@ -194,11 +173,7 @@ private fun CardImage(
 ) {
     val cardBorder = viewModel.cardBorderGrade(grade)
     val awake = viewModel.awakePoint(awakeCount)
-
-    val cardSize = if (!detail) Modifier.size(width = 53.6.dp, height = 80.dp) else Modifier.size(width = 110.5.dp, height = 164.93.dp)
-    val awakeUnfilledSize = if (!detail) Modifier.size(width = 48.dp, height = 20.dp) else Modifier.size(width = 92.dp, height = 40.dp)
-    val awakeFillSize =
-        if (!detail) Modifier.size(width = (awakeCount * 9.6).dp, height = 20.dp) else Modifier.size(width = (awakeCount * 18.4).dp, height = 40.dp)
+    val (cardSize, awakeUnfilledSize, awakeFillSize) = viewModel.imageSizes(detail, awakeCount)
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -213,7 +188,6 @@ private fun CardImage(
             )
             GlideImage(
                 modifier = cardSize,
-                loading = placeholder(painterResource(id = cardBorder)),
                 model = cardBorder,
                 contentDescription = "카드 테두리"
             )
@@ -225,14 +199,12 @@ private fun CardImage(
                 Box {
                     GlideImage(
                         modifier = awakeUnfilledSize,
-                        loading = placeholder(painterResource(id = R.drawable.img_profile_awake_unfilled)),
                         model = R.drawable.img_profile_awake_unfilled,
                         contentDescription = "빈슬롯"
                     )
                     // 활성화 된거
                     GlideImage(
                         modifier = awakeFillSize,
-                        loading = placeholder(painterResource(id = awake)),
                         model = awake,
                         contentDescription = "활성화"
                     )
@@ -247,57 +219,5 @@ private fun CardImage(
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
-    }
-}
-
-@OptIn(ExperimentalGlideComposeApi::class, ExperimentalLayoutApi::class)
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    GoldCalcTheme {
-        Column(
-            modifier = Modifier
-                .background(ImageBG, RoundedCornerShape(8.dp))
-                .clip(RoundedCornerShape(8.dp))
-                .fillMaxWidth()
-                .padding(8.dp)
-        ) {
-            Text(
-                text = "부르는 소리 있도다",
-                style = titleBoldWhite12()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                TextChip(
-                    text = "3세트",
-                    customBG = LightGrayBG,
-                    borderless = true,
-                    fixedWidth = true,
-                    customWidthSize = 50.dp,
-                    customRoundedCornerSize = 8.dp
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "가디언 토벌 시 가디언에게 받는 피해 7.5% 감소",
-                    style = normalTextStyle()
-                )
-            }
-            Spacer(modifier = Modifier.height(4.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                TextChip(
-                    text = "15각성",
-                    customBG = LightGrayBG,
-                    borderless = true,
-                    fixedWidth = true,
-                    customWidthSize = 50.dp,
-                    customRoundedCornerSize = 8.dp
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "가디언 토벌 시 가디언에게 받는 피해 7.5% 감소",
-                    style = normalTextStyle()
-                )
-            }
-        }
     }
 }
