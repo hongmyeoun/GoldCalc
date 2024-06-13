@@ -17,6 +17,11 @@ fun normalTextStyle() = TextStyle(
     color = Color.White
 )
 
+fun smallTextStyle() = TextStyle(
+    fontSize = 8.sp,
+    color = Color.White
+)
+
 fun titleBoldWhite12() = TextStyle(
     fontSize = 12.sp,
     fontWeight = FontWeight.Bold,

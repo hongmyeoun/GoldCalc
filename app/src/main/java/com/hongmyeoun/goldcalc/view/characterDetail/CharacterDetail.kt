@@ -28,7 +28,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -37,7 +36,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
-import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.view.goldCheck.setting.CharacterDetailSimpleUI
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
@@ -273,6 +271,7 @@ fun ServerClassName(serverName: String, className: String) {
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun TextChip(
     text: String,
@@ -282,7 +281,9 @@ fun TextChip(
     customBG: Color = Color.Black,
     fixedWidth: Boolean = false,
     customWidthSize: Dp = 40.dp,
-    customRoundedCornerSize: Dp = 4.dp
+    customRoundedCornerSize: Dp = 4.dp,
+    image: Boolean = false,
+    yourImage: @Composable (() -> Unit)? = null
 ) {
     val modifier = if (!borderless) {
         Modifier
@@ -312,10 +313,21 @@ fun TextChip(
             )
             .then(customPadding)
     ) {
-        Text(
-            text = text,
-            fontSize = customTextSize,
-            color = Color.White
-        )
+        if (!image) {
+            Text(
+                text = text,
+                fontSize = customTextSize,
+                color = Color.White
+            )
+        } else {
+            if (yourImage != null) {
+                yourImage()
+            }
+            Text(
+                text = text,
+                fontSize = customTextSize,
+                color = Color.White
+            )
+        }
     }
 }
