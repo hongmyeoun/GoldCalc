@@ -95,7 +95,8 @@ fun CardDetailUI(
                 CardImage(
                     grade = card.grade,
                     icon = card.icon,
-                    awakeCount = card.awakeCount
+                    awakeCount = card.awakeCount,
+                    viewModel = viewModel
                 )
             }
         }
@@ -103,146 +104,58 @@ fun CardDetailUI(
     Spacer(modifier = Modifier.height(8.dp))
 }
 
-@OptIn(ExperimentalGlideComposeApi::class)
-@Composable
-private fun CardImage(grade: String, icon: Int, awakeCount: Int) {
-    val cardBorder = when (grade) {
-        "일반" -> {
-            R.drawable.img_card_grade_normal
-        }
-
-        "고급" -> {
-            R.drawable.img_card_grade_uncommon
-        }
-
-        "희귀" -> {
-            R.drawable.img_card_grade_rare
-        }
-
-        "영웅" -> {
-            R.drawable.img_card_grade_epic
-        }
-
-        "전설" -> {
-            R.drawable.img_card_grade_legendary
-        }
-
-        else -> {
-            R.drawable.img_card_grade_relic
-        }
-    }
-
-    val awake = when (awakeCount) {
-        5 -> {
-            R.drawable.img_profile_awake_filled5
-        }
-
-        4 -> {
-            R.drawable.img_profile_awake_filled4
-        }
-
-        3 -> {
-            R.drawable.img_profile_awake_filled3
-        }
-
-        2 -> {
-            R.drawable.img_profile_awake_filled2
-        }
-
-        else -> {
-            R.drawable.img_profile_awake_filled1
-        }
-    }
-    Box {
-        GlideImage(
-            modifier = Modifier
-                .size(width = 53.6.dp, height = 80.dp)
-                .padding(start = 1.dp, end = 1.dp),
-            loading = placeholder(painterResource(id = icon)),
-            model = icon,
-            contentDescription = "카드 이미지"
-        )
-        GlideImage(
-            modifier = Modifier.size(width = 53.6.dp, height = 80.dp),
-            loading = placeholder(painterResource(id = cardBorder)),
-            model = cardBorder,
-            contentDescription = "카드 테두리"
-        )
-        Box(
-            modifier = Modifier.size(width = 53.6.dp, height = 80.dp),
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            // 활성화 안된거
-            Box {
-                GlideImage(
-                    modifier = Modifier.size(width = 48.dp, height = 20.dp),
-                    loading = placeholder(painterResource(id = R.drawable.img_profile_awake_unfilled)),
-                    model = R.drawable.img_profile_awake_unfilled,
-                    contentDescription = "빈슬롯"
-                )
-                // 활성화 된거
-                GlideImage(
-                    modifier = Modifier.size(width = (awakeCount * 1.2 * 8).dp, height = 20.dp),
-                    loading = placeholder(painterResource(id = awake)),
-                    model = awake,
-                    contentDescription = "활성화"
-                )
-            }
-        }
-    }
-
-}
+//@OptIn(ExperimentalGlideComposeApi::class)
+//@Composable
+//private fun CardImage(grade: String, icon: Int, awakeCount: Int) {
+//    val cardBorder = cardBorderGrade(grade)
+//    val awake = awakePoint(awakeCount)
+//
+//    Box {
+//        GlideImage(
+//            modifier = Modifier
+//                .size(width = 53.6.dp, height = 80.dp)
+//                .padding(start = 1.dp, end = 1.dp),
+//            loading = placeholder(painterResource(id = icon)),
+//            model = icon,
+//            contentDescription = "카드 이미지"
+//        )
+//        GlideImage(
+//            modifier = Modifier.size(width = 53.6.dp, height = 80.dp),
+//            loading = placeholder(painterResource(id = cardBorder)),
+//            model = cardBorder,
+//            contentDescription = "카드 테두리"
+//        )
+//        Box(
+//            modifier = Modifier.size(width = 53.6.dp, height = 80.dp),
+//            contentAlignment = Alignment.BottomCenter
+//        ) {
+//            // 활성화 안된거
+//            Box {
+//                GlideImage(
+//                    modifier = Modifier.size(width = 48.dp, height = 20.dp),
+//                    loading = placeholder(painterResource(id = R.drawable.img_profile_awake_unfilled)),
+//                    model = R.drawable.img_profile_awake_unfilled,
+//                    contentDescription = "빈슬롯"
+//                )
+//                // 활성화 된거
+//                GlideImage(
+//                    modifier = Modifier.size(width = (awakeCount * 1.2 * 8).dp, height = 20.dp),
+//                    loading = placeholder(painterResource(id = awake)),
+//                    model = awake,
+//                    contentDescription = "활성화"
+//                )
+//            }
+//        }
+//    }
+//
+//}
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-private fun CardImage(grade: String, icon: String, awakeCount: Int) {
-    val cardBorder = when (grade) {
-        "일반" -> {
-            R.drawable.img_card_grade_normal
-        }
+private fun CardImage(grade: String, icon: String, awakeCount: Int, viewModel: CardDetailVM) {
+    val cardBorder = viewModel.cardBorderGrade(grade)
+    val awake = viewModel.awakePoint(awakeCount)
 
-        "고급" -> {
-            R.drawable.img_card_grade_uncommon
-        }
-
-        "희귀" -> {
-            R.drawable.img_card_grade_rare
-        }
-
-        "영웅" -> {
-            R.drawable.img_card_grade_epic
-        }
-
-        "전설" -> {
-            R.drawable.img_card_grade_legendary
-        }
-
-        else -> {
-            R.drawable.img_card_grade_relic
-        }
-    }
-
-    val awake = when (awakeCount) {
-        5 -> {
-            R.drawable.img_profile_awake_filled5
-        }
-
-        4 -> {
-            R.drawable.img_profile_awake_filled4
-        }
-
-        3 -> {
-            R.drawable.img_profile_awake_filled3
-        }
-
-        2 -> {
-            R.drawable.img_profile_awake_filled2
-        }
-
-        else -> {
-            R.drawable.img_profile_awake_filled1
-        }
-    }
     Box {
         GlideImage(
             modifier = Modifier
@@ -279,15 +192,13 @@ private fun CardImage(grade: String, icon: String, awakeCount: Int) {
             }
         }
     }
-
 }
-
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     GoldCalcTheme {
-        CardImage("전설", R.drawable.card_legend_00_0, 4)
+//        CardImage("전설", R.drawable.card_legend_00_0, 4)
     }
 }
