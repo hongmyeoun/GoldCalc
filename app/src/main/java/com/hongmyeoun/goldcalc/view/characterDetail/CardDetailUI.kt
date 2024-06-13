@@ -13,23 +13,35 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.integration.compose.placeholder
+import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardEffects
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.Cards
+import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CardDetailVM
 
@@ -93,92 +105,189 @@ fun CardDetailUI(
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-private fun CardImage(grade: String, icon: String, awakeCount: Int) {
-    val horizontalBias = when (grade) {
+private fun CardImage(grade: String, icon: Int, awakeCount: Int) {
+    val cardBorder = when (grade) {
         "일반" -> {
-            -1f
+            R.drawable.img_card_grade_normal
         }
 
         "고급" -> {
-            -0.6f
+            R.drawable.img_card_grade_uncommon
         }
 
         "희귀" -> {
-            -0.2f
+            R.drawable.img_card_grade_rare
         }
 
         "영웅" -> {
-            0.2f
+            R.drawable.img_card_grade_epic
         }
 
         "전설" -> {
-            0.6f
+            R.drawable.img_card_grade_legendary
         }
 
         else -> {
-            1f
+            R.drawable.img_card_grade_relic
         }
     }
 
-    val xOffset = ((5 - awakeCount) * (-8.8)).dp
-    Box(
-        modifier = Modifier.padding(end = 12.dp)
-    ) {
+    val awake = when (awakeCount) {
+        5 -> {
+            R.drawable.img_profile_awake_filled5
+        }
+
+        4 -> {
+            R.drawable.img_profile_awake_filled4
+        }
+
+        3 -> {
+            R.drawable.img_profile_awake_filled3
+        }
+
+        2 -> {
+            R.drawable.img_profile_awake_filled2
+        }
+
+        else -> {
+            R.drawable.img_profile_awake_filled1
+        }
+    }
+    Box {
+        GlideImage(
+            modifier = Modifier
+                .size(width = 53.6.dp, height = 80.dp)
+                .padding(start = 1.dp, end = 1.dp),
+            loading = placeholder(painterResource(id = icon)),
+            model = icon,
+            contentDescription = "카드 이미지"
+        )
+        GlideImage(
+            modifier = Modifier.size(width = 53.6.dp, height = 80.dp),
+            loading = placeholder(painterResource(id = cardBorder)),
+            model = cardBorder,
+            contentDescription = "카드 테두리"
+        )
         Box(
-            modifier = Modifier.size(width = 47.dp, height = 69.dp)
+            modifier = Modifier.size(width = 53.6.dp, height = 80.dp),
+            contentAlignment = Alignment.BottomCenter
         ) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
+            // 활성화 안된거
+            Box {
                 GlideImage(
-                    modifier = Modifier.padding(start = 1.dp, end = 1.7.dp, top = 1.dp),
-                    model = icon,
-                    contentDescription = "카드 이미지"
+                    modifier = Modifier.size(width = 48.dp, height = 20.dp),
+                    loading = placeholder(painterResource(id = R.drawable.img_profile_awake_unfilled)),
+                    model = R.drawable.img_profile_awake_unfilled,
+                    contentDescription = "빈슬롯"
+                )
+                // 활성화 된거
+                GlideImage(
+                    modifier = Modifier.size(width = (awakeCount * 1.2 * 8).dp, height = 20.dp),
+                    loading = placeholder(painterResource(id = awake)),
+                    model = awake,
+                    contentDescription = "활성화"
                 )
             }
-            GlideImage(
-                alignment = BiasAlignment(horizontalBias, 0f),
-                contentScale = ContentScale.FillHeight,
-                model = "https://cdn-lostark.iloa.gg/2018/obt/assets/images/pc/profile/img_card_grade.png",
-                contentDescription = "카드 테두리"
-            )
         }
-        Box(
-            modifier = Modifier
-                .height(80.6.dp)
-                .padding(start = 3.dp, bottom = 3.dp, end = 3.dp)
-                .offset(x = (-1).dp),
-            contentAlignment = Alignment.BottomStart
-        ) {
-            Box {
-                // 활성화 안된거
-                Box(
-                    modifier = Modifier.clipToBounds()
-                ) {
-                    GlideImage(
-                        modifier = Modifier.offset(y = 12.6.dp),
-                        model = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/img_profile_awake.png",
-                        contentDescription = "빈슬롯(위)"
-                    )
-                }
+    }
 
-                Column {
-                    Spacer(modifier = Modifier.height(12.dp))
-                    // 활성화 된거
-                    Box(
-                        modifier = Modifier.clipToBounds()
-                    ) {
-                        GlideImage(
-                            modifier = Modifier
-                                .offset(x = xOffset, y = (-12.6).dp),
-                            alignment = BiasAlignment(-1f, 0f),
-                            model = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/profile/img_profile_awake.png",
-                            contentDescription = "활성화"
-                        )
-                    }
-                }
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+private fun CardImage(grade: String, icon: String, awakeCount: Int) {
+    val cardBorder = when (grade) {
+        "일반" -> {
+            R.drawable.img_card_grade_normal
+        }
+
+        "고급" -> {
+            R.drawable.img_card_grade_uncommon
+        }
+
+        "희귀" -> {
+            R.drawable.img_card_grade_rare
+        }
+
+        "영웅" -> {
+            R.drawable.img_card_grade_epic
+        }
+
+        "전설" -> {
+            R.drawable.img_card_grade_legendary
+        }
+
+        else -> {
+            R.drawable.img_card_grade_relic
+        }
+    }
+
+    val awake = when (awakeCount) {
+        5 -> {
+            R.drawable.img_profile_awake_filled5
+        }
+
+        4 -> {
+            R.drawable.img_profile_awake_filled4
+        }
+
+        3 -> {
+            R.drawable.img_profile_awake_filled3
+        }
+
+        2 -> {
+            R.drawable.img_profile_awake_filled2
+        }
+
+        else -> {
+            R.drawable.img_profile_awake_filled1
+        }
+    }
+    Box {
+        GlideImage(
+            modifier = Modifier
+                .size(width = 53.6.dp, height = 80.dp)
+                .padding(start = 1.dp, end = 1.dp),
+            model = icon,
+            contentDescription = "카드 이미지"
+        )
+        GlideImage(
+            modifier = Modifier.size(width = 53.6.dp, height = 80.dp),
+            loading = placeholder(painterResource(id = cardBorder)),
+            model = cardBorder,
+            contentDescription = "카드 테두리"
+        )
+        Box(
+            modifier = Modifier.size(width = 53.6.dp, height = 80.dp),
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            // 활성화 안된거
+            Box {
+                GlideImage(
+                    modifier = Modifier.size(width = 48.dp, height = 20.dp),
+                    loading = placeholder(painterResource(id = R.drawable.img_profile_awake_unfilled)),
+                    model = R.drawable.img_profile_awake_unfilled,
+                    contentDescription = "빈슬롯"
+                )
+                // 활성화 된거
+                GlideImage(
+                    modifier = Modifier.size(width = (awakeCount * 1.2 * 8).dp, height = 20.dp),
+                    loading = placeholder(painterResource(id = awake)),
+                    model = awake,
+                    contentDescription = "활성화"
+                )
             }
         }
+    }
+
+}
+
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    GoldCalcTheme {
+        CardImage("전설", R.drawable.card_legend_00_0, 4)
     }
 }

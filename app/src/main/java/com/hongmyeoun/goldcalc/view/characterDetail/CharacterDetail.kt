@@ -103,13 +103,13 @@ fun CharacterDetailScreen(
 }
 
 
-@OptIn(ExperimentalGlideComposeApi::class)
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    GoldCalcTheme {
-    }
-}
+//@OptIn(ExperimentalGlideComposeApi::class)
+//@Preview(showBackground = true)
+//@Composable
+//fun DefaultPreview() {
+//    GoldCalcTheme {
+//    }
+//}
 
 @Composable
 fun Levels(characterDetail: CharacterDetail) {
