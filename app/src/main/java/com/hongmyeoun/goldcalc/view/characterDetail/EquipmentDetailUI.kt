@@ -32,6 +32,7 @@ import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.AbilityStone
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterEquipment
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
+import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.viewModel.charDetail.EquipmentDetailVM
@@ -140,7 +141,19 @@ fun EquipmentDetails(
                 model = equipment.itemIcon,
                 contentDescription = "장비 아이콘",
             )
-            TextChip(text = equipment.type)
+            Box(
+                modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(2.dp)
+            ) {
+                TextChip(
+                    text = equipment.type,
+                    borderless = true,
+                    customBG = BlackTransBG,
+                    customRoundedCornerSize = 8.dp,
+                    customTextSize = 8.sp
+                )
+            }
         }
         Spacer(modifier = Modifier.width(6.dp))
         Column {
