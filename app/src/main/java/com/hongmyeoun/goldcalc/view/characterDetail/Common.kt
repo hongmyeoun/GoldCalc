@@ -12,9 +12,9 @@ fun titleTextStyle() = TextStyle(
     color = Color.White
 )
 
-fun normalTextStyle() = TextStyle(
+fun normalTextStyle(color: Color = Color.White) = TextStyle(
     fontSize = 10.sp,
-    color = Color.White
+    color = color
 )
 
 fun smallTextStyle() = TextStyle(

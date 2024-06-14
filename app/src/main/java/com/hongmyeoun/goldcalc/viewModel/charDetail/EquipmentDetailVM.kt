@@ -13,7 +13,6 @@ import com.hongmyeoun.goldcalc.ui.theme.AncientMiddle
 import com.hongmyeoun.goldcalc.ui.theme.BlueQual
 import com.hongmyeoun.goldcalc.ui.theme.EsterColor
 import com.hongmyeoun.goldcalc.ui.theme.EstherBG
-import com.hongmyeoun.goldcalc.ui.theme.EstherDark
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.LegendaryBG
 import com.hongmyeoun.goldcalc.ui.theme.LegendaryColor
@@ -124,4 +123,15 @@ class EquipmentDetailVM(characterEquipment: List<CharacterItem>): ViewModel() {
         }
     }
 
+    fun getStoneColor(level: String): Color {
+        return if (level.toInt() >= 9) {
+            OrangeQual
+        } else if (level.toInt() in 7 until 9) {
+            PurpleQual
+        } else if (level.toInt() in 5 until 7) {
+            BlueQual
+        } else {
+            RedQual
+        }
+    }
 }

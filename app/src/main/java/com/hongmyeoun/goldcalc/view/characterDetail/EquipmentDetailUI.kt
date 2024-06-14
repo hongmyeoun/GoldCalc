@@ -39,6 +39,7 @@ import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
+import com.hongmyeoun.goldcalc.ui.theme.RedQual
 import com.hongmyeoun.goldcalc.viewModel.charDetail.EquipmentDetailVM
 
 @Composable
@@ -296,48 +297,36 @@ fun AccessoryDetails(
 }
 
 @Composable
-@OptIn(ExperimentalGlideComposeApi::class)
 fun AccessoryDetails(
     abilityStone: AbilityStone,
     viewModel: EquipmentDetailVM,
 ) {
-    Row {
-        Box(
-            modifier = Modifier
-                .size(48.dp)
-                .background(
-                    brush = viewModel.getItemBG(abilityStone.grade),
-                    shape = RoundedCornerShape(8.dp)
-                )
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        EquipmentIcon(
+            abilityStone = abilityStone,
+            viewModel = viewModel
+        )
+
+        Spacer(modifier = Modifier.width(4.dp))
+        Column(
+            horizontalAlignment = Alignment.Start,
         ) {
-            GlideImage(
-                modifier = Modifier
-                    .size(48.dp),
-                model = abilityStone.itemIcon,
-                contentDescription = "악세서리 이미지"
+            Text(
+                text = abilityStone.engraving1Op,
+                style = normalTextStyle()
             )
-            TextChip(
-                text = "스톤",
+            Text(
+                text = abilityStone.engraving2Op,
+                style = normalTextStyle()
+            )
+            Text(
+                text = abilityStone.engraving3Op,
+                style = normalTextStyle(RedQual)
             )
         }
 
-        Spacer(modifier = Modifier.width(4.dp))
-        Column {
-            UpgradeQualityRow(
-                viewModel = viewModel,
-                grade = viewModel.abilityStone(abilityStone)
-            )
-            Column {
-                Text(
-                    text = abilityStone.engraving1Op,
-                    style = normalTextStyle()
-                )
-                Text(
-                    text = abilityStone.engraving2Op,
-                    style = normalTextStyle()
-                )
-            }
-        }
     }
     Spacer(modifier = Modifier.height(4.dp))
 }
@@ -503,4 +492,75 @@ fun EquipmentIcon(
         }
     }
 
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun EquipmentIcon(
+    abilityStone: AbilityStone,
+    viewModel: EquipmentDetailVM,
+) {
+    Box(
+        modifier = Modifier
+            .size(48.dp)
+            .background(
+                brush = viewModel.getItemBG(abilityStone.grade),
+                shape = RoundedCornerShape(8.dp)
+            )
+            .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+    ) {
+        GlideImage(
+            modifier = Modifier
+                .size(48.dp),
+            model = abilityStone.itemIcon,
+            contentDescription = "장비 아이콘",
+        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(2.dp)
+        ) {
+            TextChip(
+                text = "스톤",
+                borderless = true,
+                customBGColor = BlackTransBG,
+                customRoundedCornerSize = 8.dp,
+                customTextSize = 8.sp
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+        ) {
+            Row {
+                TextChip(
+                    text = abilityStone.engraving1Lv,
+                    borderless = true,
+                    customTextSize = 8.sp,
+                    customBGColor = viewModel.getStoneColor(abilityStone.engraving1Lv),
+                    customPadding = Modifier.padding(start = 4.75.dp, end = 4.75.dp, top = 2.dp, bottom = 2.dp),
+                    customRoundedCornerSize = 5.dp
+                )
+                Spacer(modifier = Modifier.width(1.dp))
+                TextChip(
+                    text = abilityStone.engraving2Lv,
+                    borderless = true,
+                    customTextSize = 8.sp,
+                    customBGColor = viewModel.getStoneColor(abilityStone.engraving2Lv),
+                    customPadding = Modifier.padding(start = 4.75.dp, end = 4.75.dp, top = 2.dp, bottom = 2.dp),
+                    customRoundedCornerSize = 5.dp
+                )
+                Spacer(modifier = Modifier.width(1.dp))
+                TextChip(
+                    text = abilityStone.engraving3Lv,
+                    borderless = true,
+                    customTextSize = 8.sp,
+                    customBGColor = viewModel.getStoneColor(abilityStone.engraving3Lv),
+                    customPadding = Modifier.padding(start = 4.75.dp, end = 4.75.dp, top = 2.dp, bottom = 2.dp),
+                    customRoundedCornerSize = 5.dp
+                )
+            }
+        }
+    }
 }
