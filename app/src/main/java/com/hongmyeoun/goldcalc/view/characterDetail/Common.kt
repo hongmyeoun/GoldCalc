@@ -3,6 +3,7 @@ package com.hongmyeoun.goldcalc.view.characterDetail
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
 
@@ -12,14 +13,9 @@ fun titleTextStyle() = TextStyle(
     color = Color.White
 )
 
-fun normalTextStyle(color: Color = Color.White) = TextStyle(
-    fontSize = 10.sp,
+fun normalTextStyle(color: Color = Color.White, fontSize: TextUnit = 10.sp) = TextStyle(
+    fontSize = fontSize,
     color = color
-)
-
-fun smallTextStyle() = TextStyle(
-    fontSize = 8.sp,
-    color = Color.White
 )
 
 fun titleBoldWhite12() = TextStyle(

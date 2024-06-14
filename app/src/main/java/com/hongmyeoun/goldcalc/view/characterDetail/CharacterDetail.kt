@@ -39,8 +39,10 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.RelicBG
+import com.hongmyeoun.goldcalc.view.characterDetail.equipment.EquipmentDetailUI
 import com.hongmyeoun.goldcalc.view.goldCheck.setting.CharacterDetailSimpleUI
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
+import com.hongmyeoun.goldcalc.viewModel.charDetail.EquipmentDetailVM
 
 @Composable
 fun CharacterDetailScreen(
@@ -83,7 +85,8 @@ fun CharacterDetailScreen(
                     .padding(4.dp)
             ) {
                 equipment?.let { equipmentList ->
-                    EquipmentDetailUI(equipmentList)
+                    val equipmentVM = EquipmentDetailVM(equipmentList)
+                    EquipmentDetailUI(equipmentList, equipmentVM)
                 }
 
                 gems?.let { gemList ->
