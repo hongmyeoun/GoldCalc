@@ -175,7 +175,6 @@ fun ExtraEquipmentsElixir(
 
                 TextChip(
                     text = viewModel.elixirSetOption(characterEquipment),
-                    customTextSize = 8.sp,
                     customRoundedCornerSize = 8.dp,
                     borderless = true
                 )
@@ -209,7 +208,6 @@ fun ExtraTrans(
 
                 TextChip(
                     text = "평균 ${viewModel.avgTransLevel(characterEquipment)}단계",
-                    customTextSize = 8.sp,
                     customRoundedCornerSize = 8.dp,
                     borderless = true
                 )
