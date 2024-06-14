@@ -21,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -28,7 +29,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -37,10 +37,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
-import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
+import com.hongmyeoun.goldcalc.ui.theme.RelicBG
+import com.hongmyeoun.goldcalc.view.characterDetail.equipment.EquipmentDetailUI
 import com.hongmyeoun.goldcalc.view.goldCheck.setting.CharacterDetailSimpleUI
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
+import com.hongmyeoun.goldcalc.viewModel.charDetail.EquipmentDetailVM
 
 @Composable
 fun CharacterDetailScreen(
@@ -83,7 +85,8 @@ fun CharacterDetailScreen(
                     .padding(4.dp)
             ) {
                 equipment?.let { equipmentList ->
-                    EquipmentDetailUI(equipmentList)
+                    val equipmentVM = EquipmentDetailVM(equipmentList)
+                    EquipmentDetailUI(equipmentList, equipmentVM)
                 }
 
                 gems?.let { gemList ->
@@ -279,10 +282,14 @@ fun TextChip(
     customTextSize: TextUnit = 10.sp,
     borderless: Boolean = false,
     customPadding: Modifier = Modifier.padding(start = 6.dp, end = 6.dp, top = 2.dp, bottom = 2.dp),
-    customBG: Color = Color.Black,
+    customBGColor: Color = Color.Black,
+    brush: Boolean = false,
+    customBGBrush: Brush = RelicBG,
     fixedWidth: Boolean = false,
     customWidthSize: Dp = 40.dp,
-    customRoundedCornerSize: Dp = 4.dp
+    customRoundedCornerSize: Dp = 4.dp,
+    image: Boolean = false,
+    yourImage: @Composable (() -> Unit)? = null
 ) {
     val modifier = if (!borderless) {
         Modifier
@@ -301,21 +308,43 @@ fun TextChip(
         Modifier.width(customWidthSize)
     }
 
+    val customBG = if (!brush) {
+        Modifier
+            .background(
+            color = customBGColor,
+            shape = RoundedCornerShape(customRoundedCornerSize)
+        )
+    } else {
+        Modifier
+            .background(
+                brush = customBGBrush,
+                shape = RoundedCornerShape(customRoundedCornerSize)
+            )
+    }
+
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .then(customWidth)
-            .background(
-                color = customBG,
-                shape = RoundedCornerShape(customRoundedCornerSize)
-            )
+            .then(customBG)
             .then(customPadding)
     ) {
-        Text(
-            text = text,
-            fontSize = customTextSize,
-            color = Color.White
-        )
+        if (!image) {
+            Text(
+                text = text,
+                fontSize = customTextSize,
+                color = Color.White
+            )
+        } else {
+            if (yourImage != null) {
+                yourImage()
+            }
+            Text(
+                text = text,
+                fontSize = customTextSize,
+                color = Color.White
+            )
+        }
     }
 }

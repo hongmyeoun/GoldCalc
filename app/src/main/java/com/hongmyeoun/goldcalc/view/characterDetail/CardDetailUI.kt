@@ -119,7 +119,7 @@ fun CardDetailUI(
                                     // 세트 혹은 각성 단계
                                     TextChip(
                                         text = name, // "3세트" or "18각성")
-                                        customBG = LightGrayBG,
+                                        customBGColor = LightGrayBG,
                                         borderless = true,
                                         fixedWidth = true,
                                         customWidthSize = 50.dp,

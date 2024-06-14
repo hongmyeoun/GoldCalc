@@ -22,6 +22,7 @@ val LightBlue = Color(0xFF17C3CE)
 
 val MainBG = Color(0xFFE0F4A4)
 
+val BlackTransBG = Color(0x80000000)
 val LightGrayTransBG = Color(0x801C1F26)
 val LightGrayBG = Color(0xFF2B313A)
 
@@ -35,6 +36,7 @@ val YellowQual = Color(0xFFFFC000)
 val RedQual = Color(0xFFC00000)
 
 val AncientDark = Color(0xFF3D3325)
+val AncientMiddle = Color(0xFFA88B6D)
 val AncientColor = Color(0xFFDCC999)
 val RelicDark = Color(0xFF341A09)
 val RelicColor = Color(0xFFA24006)

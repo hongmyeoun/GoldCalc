@@ -31,7 +31,8 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                         transcendenceLevel = getTranscendenceLevel(equipment),
                         transcendenceTotal = getTranscendenceTotal(equipment),
                         highUpgradeLevel = getHigherUpgradeLevel(equipment),
-                        setOption = getSetOption(equipment)
+                        setOption = getSetOption(equipment),
+                        elixirSetOption = getElixirSetOption(equipment)
                     )
                     characterEquipmentList.add(characterEquipment)
                 }
@@ -74,12 +75,15 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                 }
 
                 "팔찌" -> {
+                    val (specialEffect, stats, extraStats) = getBraceletEffect(equipment)
                     val bracelet = Bracelet(
                         type = getEquipmentType(equipment),
                         grade = getEquipmentGrade(equipment),
                         name = getAccName(equipment),
                         itemIcon = getItemIcon(equipment),
-                        effect = getBraceletEffect(equipment),
+                        specialEffect = specialEffect,
+                        stats = stats,
+                        extraStats = extraStats
                     )
                     characterEquipmentList.add(bracelet)
                 }
@@ -246,6 +250,32 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         return ""
     }
 
+    private fun getElixirSetOption(equipment: Equipment): String {
+        // Tooltip을 JSON 객체로 파싱
+        val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
+
+        for (index in 9..11) {
+            val elementKey = "Element_${String.format("%03d", index)}"
+            if (tooltipJson.has(elementKey)) {
+                val element = tooltipJson.getAsJsonObject(elementKey)
+                if (element.get("type").asString == "IndentStringGroup") {
+                    val value = element.getAsJsonObject("value")
+                    if (value.has("Element_000")) {
+                        val topStr = value.getAsJsonObject("Element_000").get("topStr").asString
+                        if (topStr.contains("연성 추가 효과")) {
+                            val setOption = topStr.substringAfterLast("'>").substringBeforeLast("</FONT>")
+
+                            return if (setOption.contains("단계")) setOption else "추가 연성 효과 없음"
+                        }
+                    }
+                }
+            }
+        }
+
+        return "추가 연성 효과 없음"
+    }
+
+
     private fun getHigherUpgradeLevel(equipment: Equipment): String {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
         val element = tooltip.getAsJsonObject("Element_005")
@@ -396,23 +426,75 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         return Pair("", "")
     }
 
-    private fun getBraceletEffect(equipment: Equipment): String {
+    private fun getBraceletEffect(equipment: Equipment): Triple<List<Pair<String, String>>, List<Pair<String, String>>, List<Pair<String, String>>> {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
         val effect = tooltip.getAsJsonObject("Element_004").getAsJsonObject("value").get("Element_001").asString
+        val (effects, keyStats) = processStringFiltered(effect)
+        val allStats = processString(effect)
 
-        return processString(effect)
+        return Triple(effects, keyStats, allStats)
     }
 
 }
 
-fun processString(input: String): String {
+fun processStringFiltered(input: String): Pair<List<Pair<String, String>>, List<Pair<String, String>>> {
     // <BR> 태그를 줄 나누기로 변환
-    val withLineBreaks = input.replace(Regex("(?i)<BR>(?=[<\\[])"), "\n<BR>")
+    var withLineBreaks = input.replace(Regex("(?i)<BR>(?=[<\\[])"), "\n<BR>")
 
     // HTML 태그 제거
-    val withoutTags = withLineBreaks.replace(Regex("<[^>]*>"), "")
+    withLineBreaks = withLineBreaks.replace(Regex("<[^>]*>"), "")
 
+    // [이름] 값 패턴 찾아서 key와 값을 분리하여 리스트에 저장
+    val namePattern = Regex("\\[([^\\[\\]]+)\\]\\s*(.+)")
+    val nameValueList = mutableListOf<Pair<String, String>>()
+
+    withLineBreaks.split("\n").forEach { line ->
+        namePattern.find(line)?.let { matchResult ->
+            val key = matchResult.groupValues[1].replace("\\s+".toRegex(), "")
+            val value = matchResult.groupValues[2].trim()
+            nameValueList.add(key to value)
+        }
+    }
+
+    // 키워드 패턴과 값 찾아서 리스트에 저장
+    val keywords = listOf("치명", "특화", "신속")
+    val keyValuePattern = Regex("(\\S+)\\s*\\+\\s*(.+)")
+    val keyValueList = mutableListOf<Pair<String, String>>()
+
+    withLineBreaks.split("\n").forEach { line ->
+        keyValuePattern.find(line)?.let { matchResult ->
+            val key = matchResult.groupValues[1]
+            val value = matchResult.groupValues[2].trim()
+            if (keywords.contains(key)) {
+                keyValueList.add(key to value)
+            }
+        }
+    }
 
     // 결과 반환
-    return withoutTags
+    return nameValueList to keyValueList
 }
+
+fun processString(input: String): List<Pair<String, String>> {
+    // <BR> 태그를 줄 나누기로 변환
+    var withLineBreaks = input.replace(Regex("(?i)<BR>(?=[<\\[])"), "\n<BR>")
+
+    // HTML 태그 제거
+    withLineBreaks = withLineBreaks.replace(Regex("<[^>]*>"), "")
+
+    // 키 + 값 패턴 찾아서 key와 값을 분리하여 리스트에 저장
+    val keyValuePattern = Regex("(\\S+)\\s*\\+\\s*(.+)")
+    val keyValueList = mutableListOf<Pair<String, String>>()
+
+    withLineBreaks.split("\n").forEach { line ->
+        keyValuePattern.find(line)?.let { matchResult ->
+            val key = matchResult.groupValues[1]
+            val value = matchResult.groupValues[2].trim()
+            keyValueList.add(key to value)
+        }
+    }
+
+    // 결과 반환
+    return keyValueList
+}
+
