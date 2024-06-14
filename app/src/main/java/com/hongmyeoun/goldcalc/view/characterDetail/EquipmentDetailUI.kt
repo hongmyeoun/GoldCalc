@@ -118,7 +118,8 @@ fun EquipmentDetails(
     val setOptionName = viewModel.setOptionName(equipment)
 
     Row(
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         EquipmentIcon(
             equipment = equipment,
@@ -348,7 +349,7 @@ fun EquipmentIcon(
 ) {
     Box(
         modifier = Modifier
-            .size(48.dp)
+            .size(56.dp)
             .background(
                 brush = viewModel.getItemBG(equipment.grade),
                 shape = RoundedCornerShape(8.dp)
@@ -357,7 +358,7 @@ fun EquipmentIcon(
     ) {
         GlideImage(
             modifier = Modifier
-                .size(48.dp),
+                .size(56.dp),
             model = equipment.itemIcon,
             contentDescription = "장비 아이콘",
         )
@@ -386,27 +387,26 @@ fun EquipmentIcon(
                             text = equipment.transcendenceTotal,
                             borderless = true,
                             customBGColor = BlackTransBG,
-                            customTextSize = 8.sp,
                             customPadding = Modifier.padding(start = 2.dp, end = 2.dp),
                             image = true,
                             yourImage = {
                                 GlideImage(
                                     modifier = Modifier
-                                        .size(11.dp),
+                                        .size(13.dp),
                                     model = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png",
                                     contentDescription = "초월 아이콘"
                                 )
                                 Spacer(modifier = Modifier.width(2.dp))
                             }
                         )
-                        Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.height(14.dp))
                     }
                 }
             }
             LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(10.dp)
+                    .height(14.dp)
                     .clip(RoundedCornerShape(4.dp))
                     .align(Alignment.BottomCenter)
                 ,
@@ -421,7 +421,7 @@ fun EquipmentIcon(
                     .align(Alignment.BottomCenter)
                 ,
                 text = "${equipment.itemQuality}",
-                style = smallTextStyle(),
+                style = normalTextStyle(),
                 textAlign = TextAlign.Center
             )
         }
@@ -437,7 +437,7 @@ fun EquipmentIcon(
 ) {
     Box(
         modifier = Modifier
-            .size(48.dp)
+            .size(56.dp)
             .background(
                 brush = viewModel.getItemBG(accessory.grade),
                 shape = RoundedCornerShape(8.dp)
@@ -446,7 +446,7 @@ fun EquipmentIcon(
     ) {
         GlideImage(
             modifier = Modifier
-                .size(48.dp),
+                .size(56.dp),
             model = accessory.itemIcon,
             contentDescription = "장비 아이콘",
         )
@@ -471,7 +471,7 @@ fun EquipmentIcon(
             LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(10.dp)
+                    .height(14.dp)
                     .clip(RoundedCornerShape(4.dp))
                     .align(Alignment.BottomCenter)
                 ,
@@ -486,7 +486,7 @@ fun EquipmentIcon(
                     .align(Alignment.BottomCenter)
                 ,
                 text = "${accessory.itemQuality}",
-                style = smallTextStyle(),
+                style = normalTextStyle(),
                 textAlign = TextAlign.Center
             )
         }
@@ -502,7 +502,7 @@ fun EquipmentIcon(
 ) {
     Box(
         modifier = Modifier
-            .size(48.dp)
+            .size(56.dp)
             .background(
                 brush = viewModel.getItemBG(abilityStone.grade),
                 shape = RoundedCornerShape(8.dp)
@@ -511,7 +511,7 @@ fun EquipmentIcon(
     ) {
         GlideImage(
             modifier = Modifier
-                .size(48.dp),
+                .size(56.dp),
             model = abilityStone.itemIcon,
             contentDescription = "장비 아이콘",
         )
@@ -537,7 +537,6 @@ fun EquipmentIcon(
                 TextChip(
                     text = abilityStone.engraving1Lv,
                     borderless = true,
-                    customTextSize = 8.sp,
                     customBGColor = viewModel.getStoneColor(abilityStone.engraving1Lv),
                     customPadding = Modifier.padding(start = 4.75.dp, end = 4.75.dp, top = 2.dp, bottom = 2.dp),
                     customRoundedCornerSize = 5.dp
@@ -546,7 +545,6 @@ fun EquipmentIcon(
                 TextChip(
                     text = abilityStone.engraving2Lv,
                     borderless = true,
-                    customTextSize = 8.sp,
                     customBGColor = viewModel.getStoneColor(abilityStone.engraving2Lv),
                     customPadding = Modifier.padding(start = 4.75.dp, end = 4.75.dp, top = 2.dp, bottom = 2.dp),
                     customRoundedCornerSize = 5.dp
@@ -555,7 +553,6 @@ fun EquipmentIcon(
                 TextChip(
                     text = abilityStone.engraving3Lv,
                     borderless = true,
-                    customTextSize = 8.sp,
                     customBGColor = viewModel.getStoneColor(abilityStone.engraving3Lv),
                     customPadding = Modifier.padding(start = 4.75.dp, end = 4.75.dp, top = 2.dp, bottom = 2.dp),
                     customRoundedCornerSize = 5.dp
