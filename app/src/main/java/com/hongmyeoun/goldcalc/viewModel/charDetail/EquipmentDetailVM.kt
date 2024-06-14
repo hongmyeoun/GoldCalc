@@ -35,6 +35,16 @@ class EquipmentDetailVM(characterEquipment: List<CharacterItem>): ViewModel() {
     private val _totalCombatStat = MutableStateFlow(0)
     val totalCombatStat: StateFlow<Int> = _totalCombatStat
 
+    private val _showDialog = MutableStateFlow(false)
+    val showDialog: StateFlow<Boolean> = _showDialog
+    fun onDismissRequest() {
+        _showDialog.value = false
+    }
+
+    fun onClicked() {
+        _showDialog.value = true
+    }
+
     init {
         _accessoryAvgQuality.value = getAccessoryAvgQuality(characterEquipment)
         _setOption.value = getSetoption(characterEquipment)
@@ -133,5 +143,74 @@ class EquipmentDetailVM(characterEquipment: List<CharacterItem>): ViewModel() {
         } else {
             RedQual
         }
+    }
+
+    fun simplyEngravingName(engraving: String): String {
+        val setOption = onlySetOption(engraving)
+        val level = engraving.split(" ").last()
+        return "$setOption $level"
+    }
+
+    fun onlySetOption(engraving: String): String {
+        val regex = Regex("""^[^\d]+""")
+        val match = regex.find(engraving)?.value?.trim()?:""
+        return getSimpleEngraving(match)
+    }
+
+    fun getSimpleEngraving(engraving: String): String {
+        val simpleName = mapOf(
+            "결투의 대가" to "결대",
+            "급소 타격" to "급타",
+            "기습의 대가" to "기습",
+            "돌격대장" to "돌대",
+            "속전속결" to "속속",
+            "슈퍼 차지" to "슈차",
+            "아드레날린" to "아드",
+            "에테르 포식자" to "에포",
+            "예리한 둔기" to "예둔",
+            "저주받은 인형" to "저받",
+            "정기 흡수" to "정흡",
+            "중갑 착용" to "중갑",
+            "정밀 단도" to "정단",
+            "질량 증가" to "질증",
+            "최대 마나 증가" to "최마증",
+            "타격의 대가" to "타대",
+            "폭발물 전문가" to "폭전",
+            "분노의 망치" to "분망",
+            "중력 수련" to "중수",
+            "광전사의 비기" to "비기",
+            "고독한 기사" to "고기",
+            "전투 태세" to "전태",
+            "축복의 오라" to "축오",
+            "세맥타통" to "세맥",
+            "역천지체" to "역천",
+            "수라의 길" to "수라",
+            "권왕파천무" to "권왕",
+            "일격필살" to "일격",
+            "극의: 체술" to "체술",
+            "충격 단련" to "충단",
+            "사냥의 시간" to "사시",
+            "피스메이커" to "피메",
+            "강화 무기" to "강무",
+            "포격 강화" to "포강",
+            "화력 강화" to "화강",
+            "진화의 유산" to "유산",
+            "아르데타인의 기술" to "기술",
+            "두 번째 동료" to "두동",
+            "죽음의 습격" to "죽습",
+            "절실한 구원" to "절구",
+            "넘치는 교감" to "교감",
+            "상급 소환사" to "상소",
+            "황제의 칙령" to "황제",
+            "황후의 은총" to "황후",
+            "멈출 수 없는 충동" to "충동",
+            "완벽한 억제" to "억제",
+            "달의 소리" to "달소",
+            "잔재된 기운" to "잔재",
+            "그믐의 경계" to "그믐",
+            "만월의 집행자" to "만월",
+            "질풍노도" to "질풍"
+        )
+        return simpleName[engraving] ?: engraving
     }
 }
