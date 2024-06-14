@@ -37,8 +37,10 @@ import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.Bracelet
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterEquipment
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
+import com.hongmyeoun.goldcalc.ui.theme.AncientBG
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
+import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.view.characterDetail.TextChip
 import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
@@ -56,10 +58,113 @@ fun EquipmentDetailUI(
     val setOption by viewModel.setOption.collectAsState()
     val totalCombatStat by viewModel.totalCombatStat.collectAsState()
 
-    val showDialog by viewModel.showDialog.collectAsState()
+    val showAccDialog by viewModel.showAccDialog.collectAsState()
+    val showBraDialog by viewModel.showBraDialog.collectAsState()
 
-    if (showDialog) {
+    if (showAccDialog) {
         AccessoryDetailDialog(viewModel, characterEquipment)
+    } else if (showBraDialog) {
+        Dialog(
+            onDismissRequest = { viewModel.onBraDismissRequest() }
+        ) {
+            Column(
+                modifier = Modifier
+                    .background(ImageBG, RoundedCornerShape(16.dp))
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = "팔찌",
+                    style = titleTextStyle()
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+                Divider()
+                Spacer(modifier = Modifier.height(8.dp))
+
+                characterEquipment.forEach {
+                    when (it) {
+                        is Bracelet -> {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(56.dp)
+                                        .background(
+                                            brush = viewModel.getItemBG(it.grade),
+                                            shape = RoundedCornerShape(8.dp)
+                                        )
+                                        .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+                                ) {
+                                    GlideImage(
+                                        modifier = Modifier.size(56.dp),
+                                        model = it.itemIcon,
+                                        contentDescription = "팔찌 이미지"
+                                    )
+                                }
+                                Spacer(modifier = Modifier.width(16.dp))
+
+                                Text(
+                                    text = it.name,
+                                    style = titleTextStyle()
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            it.extraStats.forEach { (statName, statValue) ->
+                                Row {
+                                    TextChip(
+                                        text = "특성",
+                                        borderless = true,
+                                        customBGColor = LightGrayBG
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+
+                                    TextChip(
+                                        text = "$statName $statValue",
+                                        borderless = true,
+                                        customBGColor = LightGrayBG
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
+
+                            it.specialEffect.forEach { (effectName, tooltip) ->
+                                Column {
+                                    Row {
+                                        TextChip(
+                                            text = "효과",
+                                            borderless = true,
+                                            customBGColor = LightGrayBG
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+
+                                        TextChip(
+                                            text = effectName,
+                                            borderless = true,
+                                            customBGColor = LightGrayBG
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.height(8.dp))
+
+                                    Box(
+                                        modifier = Modifier
+                                            .background(LightGrayBG, RoundedCornerShape(4.dp))
+                                            .fillMaxWidth()
+                                            .padding(16.dp)
+                                    ) {
+                                        Text(
+                                            text = tooltip,
+                                            style = normalTextStyle()
+                                        )
+                                    }
+                                }
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     Column(
@@ -99,7 +204,7 @@ fun EquipmentDetailUI(
             Column(
                 modifier = Modifier
                     .weight(0.4f)
-                    .noRippleClickable { viewModel.onClicked() }
+                    .noRippleClickable { viewModel.onAccClicked() }
             ) {
                 characterEquipment.forEach {
                     when (it) {
@@ -174,7 +279,7 @@ private fun AccessoryDetailDialog(
     characterEquipment: List<CharacterItem>
 ) {
     Dialog(
-        onDismissRequest = { viewModel.onDismissRequest() }
+        onDismissRequest = { viewModel.onAccDismissRequest() }
     ) {
         Column(
             modifier = Modifier
@@ -256,92 +361,144 @@ fun UpgradeQualityRow(
 @Composable
 fun DefaultPreview() {
     GoldCalcTheme {
-        Row(
-            modifier = Modifier
-                .background(LightGrayTransBG)
-                .fillMaxWidth()
-                .height(70.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+        Dialog(
+            onDismissRequest = { }
         ) {
-            Column(modifier = Modifier.weight(1.5f)) {
-                Text(text = "팔찌", style = titleTextStyle())
-                Row {
-                    GlideImage(
-                        loading = placeholder(painterResource(id = R.drawable.sm_item_01_172)),
-                        model = "",
-                        contentDescription = "팔찌이미지"
+            Column(
+                modifier = Modifier
+                    .background(ImageBG, RoundedCornerShape(16.dp))
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = "팔찌",
+                    style = titleTextStyle()
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+                Divider()
+                Spacer(modifier = Modifier.height(8.dp))
+
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(
+                        modifier = Modifier
+                            .size(56.dp)
+                            .background(
+                                brush = AncientBG,
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+                    ) {
+                        GlideImage(
+                            modifier = Modifier.size(56.dp),
+                            loading = placeholder(painterResource(id = R.drawable.sm_item_01_172)),
+                            model = "",
+                            contentDescription = "팔찌 이미지"
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    Text(
+                        text = "찬란한 영웅의 팔찌",
+                        style = titleTextStyle()
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Column {
-                        Row {
-                            Text(text = "신속 99", style = normalTextStyle())
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text(text = "특화 99", style = normalTextStyle())
-                        }
-                        Row {
-                            TextChip(
-                                text = "강타",
-                                customTextSize = 8.sp,
-                                customRoundedCornerSize = 8.dp,
-                                borderless = true
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            TextChip(
-                                text = "약점 노출",
-                                customTextSize = 8.sp,
-                                customRoundedCornerSize = 8.dp,
-                                borderless = true
-                            )
-                        }
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row {
+                    TextChip(
+                        text = "특성",
+                        borderless = true,
+                        customBGColor = LightGrayTransBG
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    TextChip(
+                        text = "신속 99",
+                        borderless = true,
+                        customBGColor = LightGrayTransBG
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row {
+                    TextChip(
+                        text = "특성",
+                        borderless = true,
+                        customBGColor = LightGrayTransBG
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    TextChip(
+                        text = "특화 99",
+                        borderless = true,
+                        customBGColor = LightGrayTransBG
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Column {
+                    Row {
+                        TextChip(
+                            text = "효과",
+                            borderless = true,
+                            customBGColor = LightGrayTransBG
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        TextChip(
+                            text = "강타",
+                            borderless = true,
+                            customBGColor = LightGrayTransBG
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .background(LightGrayTransBG, RoundedCornerShape(4.dp))
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        Text(
+                            text = "치명타 적중 후 4초 동안 제압이 100, 숙련이 100 증가한다.",
+                            style = normalTextStyle()
+                        )
                     }
                 }
-            }
+                Spacer(modifier = Modifier.height(8.dp))
 
-            Divider(
-                modifier = Modifier
-                    .height(50.dp)
-                    .width(1.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Column(modifier = Modifier.weight(1f)) {
-                Text(text = "엘릭서", style = titleTextStyle())
-                Row {
-                    Column {
-                        Text(text = "합계 41", style = normalTextStyle())
+                Column {
+                    Row {
                         TextChip(
-                            text = "진군 2단계",
-                            customTextSize = 8.sp,
-                            customRoundedCornerSize = 8.dp,
-                            borderless = true
+                            text = "효과",
+                            borderless = true,
+                            customBGColor = LightGrayTransBG
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        TextChip(
+                            text = "약점 노출",
+                            borderless = true,
+                            customBGColor = LightGrayTransBG
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .background(LightGrayTransBG, RoundedCornerShape(4.dp))
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        Text(
+                            text = "몬스터에게 공격 적중 시 8초 동안 대상의 치명타 저항을 1.8% 감소시킨다. '약점 노출' 효과는 하나의 대상에게 최대 1개만 적용된다. (60레벨 초과 몬스터에게는 효과 감소)",
+                            style = normalTextStyle()
                         )
                     }
                 }
             }
-
-            Divider(
-                modifier = Modifier
-                    .height(50.dp)
-                    .width(1.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Column(modifier = Modifier.weight(1f)) {
-                Text(text = "초월", style = titleTextStyle())
-                Row {
-                    Column {
-                        Text(text = "합계 102", style = normalTextStyle())
-                        TextChip(
-                            text = "평균 5.8단계",
-                            customTextSize = 8.sp,
-                            customRoundedCornerSize = 8.dp,
-                            borderless = true
-                        )
-                    }
-                }
-            }
-
         }
     }
 }
@@ -353,7 +510,9 @@ fun ExtraEquipmentsBracelet(
     characterEquipment: List<CharacterItem>,
     viewModel: EquipmentDetailVM
 ) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier.noRippleClickable { viewModel.onBraClicked() }
+    ) {
         Text(text = "팔찌", style = titleTextStyle())
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -361,7 +520,7 @@ fun ExtraEquipmentsBracelet(
             verticalAlignment = Alignment.CenterVertically
         ) {
             characterEquipment.forEach {
-                when(it) {
+                when (it) {
                     is Bracelet -> {
                         Box(
                             modifier = Modifier

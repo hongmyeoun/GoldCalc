@@ -63,5 +63,6 @@ data class Bracelet(
   val name: String,
   val itemIcon: String,
   val specialEffect: List<Pair<String, String>>,
-  val stats: List<Pair<String, String>>
+  val stats: List<Pair<String, String>>,
+  val extraStats: List<Pair<String, String>>
 ) : CharacterItem

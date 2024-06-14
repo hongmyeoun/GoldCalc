@@ -35,14 +35,24 @@ class EquipmentDetailVM(characterEquipment: List<CharacterItem>) : ViewModel() {
     private val _totalCombatStat = MutableStateFlow(0)
     val totalCombatStat: StateFlow<Int> = _totalCombatStat
 
-    private val _showDialog = MutableStateFlow(false)
-    val showDialog: StateFlow<Boolean> = _showDialog
-    fun onDismissRequest() {
-        _showDialog.value = false
+    private val _showAccDialog = MutableStateFlow(false)
+    val showAccDialog: StateFlow<Boolean> = _showAccDialog
+    fun onAccDismissRequest() {
+        _showAccDialog.value = false
     }
 
-    fun onClicked() {
-        _showDialog.value = true
+    fun onAccClicked() {
+        _showAccDialog.value = true
+    }
+
+    private val _showBraDialog = MutableStateFlow(false)
+    val showBraDialog: StateFlow<Boolean> = _showBraDialog
+    fun onBraDismissRequest() {
+        _showBraDialog.value = false
+    }
+
+    fun onBraClicked() {
+        _showBraDialog.value = true
     }
 
     init {

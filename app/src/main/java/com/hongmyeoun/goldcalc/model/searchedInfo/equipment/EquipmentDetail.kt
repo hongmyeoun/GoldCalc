@@ -75,14 +75,15 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                 }
 
                 "팔찌" -> {
-                    val (specialEffect, stats) = getBraceletEffect(equipment)
+                    val (specialEffect, stats, extraStats) = getBraceletEffect(equipment)
                     val bracelet = Bracelet(
                         type = getEquipmentType(equipment),
                         grade = getEquipmentGrade(equipment),
                         name = getAccName(equipment),
                         itemIcon = getItemIcon(equipment),
                         specialEffect = specialEffect,
-                        stats = stats
+                        stats = stats,
+                        extraStats = extraStats
                     )
                     characterEquipmentList.add(bracelet)
                 }
@@ -425,16 +426,18 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         return Pair("", "")
     }
 
-    private fun getBraceletEffect(equipment: Equipment): Pair<List<Pair<String, String>>, List<Pair<String, String>>> {
+    private fun getBraceletEffect(equipment: Equipment): Triple<List<Pair<String, String>>, List<Pair<String, String>>, List<Pair<String, String>>> {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
         val effect = tooltip.getAsJsonObject("Element_004").getAsJsonObject("value").get("Element_001").asString
+        val (effects, keyStats) = processStringFiltered(effect)
+        val allStats = processString(effect)
 
-        return processString(effect)
+        return Triple(effects, keyStats, allStats)
     }
 
 }
 
-fun processString(input: String): Pair<List<Pair<String, String>>, List<Pair<String, String>>> {
+fun processStringFiltered(input: String): Pair<List<Pair<String, String>>, List<Pair<String, String>>> {
     // <BR> 태그를 줄 나누기로 변환
     var withLineBreaks = input.replace(Regex("(?i)<BR>(?=[<\\[])"), "\n<BR>")
 
@@ -470,5 +473,28 @@ fun processString(input: String): Pair<List<Pair<String, String>>, List<Pair<Str
 
     // 결과 반환
     return nameValueList to keyValueList
+}
+
+fun processString(input: String): List<Pair<String, String>> {
+    // <BR> 태그를 줄 나누기로 변환
+    var withLineBreaks = input.replace(Regex("(?i)<BR>(?=[<\\[])"), "\n<BR>")
+
+    // HTML 태그 제거
+    withLineBreaks = withLineBreaks.replace(Regex("<[^>]*>"), "")
+
+    // 키 + 값 패턴 찾아서 key와 값을 분리하여 리스트에 저장
+    val keyValuePattern = Regex("(\\S+)\\s*\\+\\s*(.+)")
+    val keyValueList = mutableListOf<Pair<String, String>>()
+
+    withLineBreaks.split("\n").forEach { line ->
+        keyValuePattern.find(line)?.let { matchResult ->
+            val key = matchResult.groupValues[1]
+            val value = matchResult.groupValues[2].trim()
+            keyValueList.add(key to value)
+        }
+    }
+
+    // 결과 반환
+    return keyValueList
 }
 
