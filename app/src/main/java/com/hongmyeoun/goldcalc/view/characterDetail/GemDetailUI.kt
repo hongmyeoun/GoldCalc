@@ -31,6 +31,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
+import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.ui.theme.RelicBG
@@ -119,7 +120,7 @@ fun GemDetail(
     gemList: List<Gem>
 ) {
     Column(
-        modifier = modifier.background(Color.Black)
+        modifier = modifier.background(BlackTransBG, RoundedCornerShape(4.dp))
     ) {
         Box(
             modifier = Modifier
@@ -142,7 +143,8 @@ fun GemDetail(
 
         gemList.filter { it.type == type }.forEach { gem ->
             Row(
-                modifier = Modifier.padding(4.dp)
+                modifier = Modifier.padding(4.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Box {
                     Column {
@@ -174,11 +176,13 @@ fun GemDetail(
                     Text(
                         text = gem.skill,
                         color = RelicColor,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp
                     )
+                    Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = gem.effect.substringAfter("$effectType "),
-                        color = Color.White
+                        style = normalTextStyle(fontSize = 12.sp)
                     )
                 }
             }
