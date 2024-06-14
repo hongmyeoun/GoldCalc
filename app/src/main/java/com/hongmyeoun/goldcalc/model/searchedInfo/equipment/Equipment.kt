@@ -27,6 +27,7 @@ data class CharacterEquipment(
   val transcendenceTotal: String, // 초월 레벨
   val highUpgradeLevel: String, // 상급 재련 강화단계
   val setOption: String, // 세트옵션(ex: 갈망)
+  val elixirSetOption: String // 엘릭서 세트옵
 ) : CharacterItem
 
 data class CharacterAccessory(
@@ -61,5 +62,6 @@ data class Bracelet(
   val grade: String,
   val name: String,
   val itemIcon: String,
-  val effect: String,
+  val specialEffect: List<Pair<String, String>>,
+  val stats: List<Pair<String, String>>
 ) : CharacterItem

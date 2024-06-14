@@ -2,8 +2,8 @@ package com.hongmyeoun.goldcalc.viewModel.charDetail
 
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.util.fastSumBy
 import androidx.lifecycle.ViewModel
-import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.AbilityStone
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterEquipment
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
@@ -25,7 +25,7 @@ import com.hongmyeoun.goldcalc.ui.theme.YellowQual
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class EquipmentDetailVM(characterEquipment: List<CharacterItem>): ViewModel() {
+class EquipmentDetailVM(characterEquipment: List<CharacterItem>) : ViewModel() {
     private val _accessoryAvgQuality = MutableStateFlow(0.0)
     val accessoryAvgQuality: StateFlow<Double> = _accessoryAvgQuality
 
@@ -83,8 +83,40 @@ class EquipmentDetailVM(characterEquipment: List<CharacterItem>): ViewModel() {
         return equipment.setOption.split(" ").first()
     }
 
-    fun abilityStone(equipment: AbilityStone): String {
-        return equipment.engraving1Lv.substringAfter("Lv. ") + equipment.engraving2Lv.substringAfter("Lv. ") + equipment.engraving3Lv.substringAfter("Lv. ")
+    fun sumElixirLevel(equipment: List<CharacterItem>): Int {
+        val sumFirst = equipment.filterIsInstance<CharacterEquipment>()
+            .fastSumBy {
+                if (it.elixirFirstLevel.isNotEmpty()) {
+                    it.elixirFirstLevel.toInt()
+                } else {
+                    0
+                }
+            }
+
+        val sumSecond = equipment.filterIsInstance<CharacterEquipment>()
+            .fastSumBy {
+                if (it.elixirSecondLevel.isNotEmpty()) {
+                    it.elixirSecondLevel.toInt()
+                } else {
+                    0
+                }
+            }
+        return sumFirst + sumSecond
+    }
+
+    fun elixirSetOption(equipment: List<CharacterItem>): String {
+        val setOption = equipment.filterIsInstance<CharacterEquipment>().filter { it.type == "투구" }.map { it.elixirSetOption }
+        return setOption[0]
+    }
+
+    fun sumTransLevel(equipment: List<CharacterItem>): Int {
+        return equipment.filterIsInstance<CharacterEquipment>().fastSumBy { if (it.transcendenceTotal.isNotEmpty()) it.transcendenceTotal.toInt() else 0 }
+    }
+
+    fun avgTransLevel(equipment: List<CharacterItem>): String {
+        val sumLevel = equipment.filterIsInstance<CharacterEquipment>().fastSumBy { if (it.transcendenceLevel.isNotEmpty()) it.transcendenceLevel.toInt() else 0 }
+        val avg = sumLevel.toDouble() / 6.0
+        return "%.1f".format(avg)
     }
 
     fun getItemBG(grade: String): Brush {
@@ -100,7 +132,7 @@ class EquipmentDetailVM(characterEquipment: List<CharacterItem>): ViewModel() {
     fun getGradeBG(grade: String, brightAncient: Boolean = true): Color {
         val itemBG = when (grade) {
             "에스더" -> EsterColor
-            "고대" -> if(brightAncient) AncientColor else AncientMiddle
+            "고대" -> if (brightAncient) AncientColor else AncientMiddle
             "유물" -> RelicColor
             else -> LegendaryColor
         }
@@ -153,7 +185,7 @@ class EquipmentDetailVM(characterEquipment: List<CharacterItem>): ViewModel() {
 
     fun onlySetOption(engraving: String): String {
         val regex = Regex("""^[^\d]+""")
-        val match = regex.find(engraving)?.value?.trim()?:""
+        val match = regex.find(engraving)?.value?.trim() ?: ""
         return getSimpleEngraving(match)
     }
 
