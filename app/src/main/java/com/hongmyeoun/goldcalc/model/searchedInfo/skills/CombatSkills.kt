@@ -36,5 +36,5 @@ data class Skills(
     val level: Int,
     val tripods: List<Tripods>,
     val rune: Rune?,
-    val gem: List<Map<String, String>>? = null,
+    val gem: Boolean,
 )
