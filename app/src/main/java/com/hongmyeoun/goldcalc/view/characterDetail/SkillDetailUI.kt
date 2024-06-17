@@ -82,7 +82,7 @@ fun SkillDetailUI(
             if (isDetail) {
                 SkillDetail(skills)
             } else {
-                SkillSimple(skills)
+                SkillSimple(skills, viewModel)
             }
         }
     }
@@ -269,11 +269,10 @@ private fun SkillRuneAndGem(it: Skills) {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun SkillSimple(skills: List<Skills>) {
+private fun SkillSimple(skills: List<Skills>, viewModel: SkillDetailVM) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-//            .background(color = Color.Black)
     ) {
         FlowRow(
             maxItemsInEachRow = 2,
@@ -296,7 +295,7 @@ private fun SkillSimple(skills: List<Skills>) {
                             horizontalAlignment = Alignment.Start
                         ) {
                             SkillSimpleTripods(it)
-                            SkillSimpleRuneAndGem(it)
+                            SkillSimpleRuneAndGem(it, viewModel)
                         }
                     }
                 }
@@ -329,12 +328,18 @@ private fun SkillSimpleTripods(it: Skills) {
 }
 
 @Composable
-private fun SkillSimpleRuneAndGem(it: Skills) {
+private fun SkillSimpleRuneAndGem(
+    it: Skills,
+    viewModel: SkillDetailVM
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
         it.rune?.let { rune ->
-            TextChip(text = "(${rune.grade})${rune.name}")
+            TextChip(
+                text = rune.name,
+                customBGColor = viewModel.getGradeBG(rune.grade)
+            )
         }
         it.gem?.let { gems ->
             gems.forEach { gem ->
