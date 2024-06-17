@@ -32,9 +32,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
+import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
 import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
-import com.hongmyeoun.goldcalc.ui.theme.LegendaryBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.viewModel.charDetail.SkillDetailVM
 
@@ -42,6 +42,7 @@ import com.hongmyeoun.goldcalc.viewModel.charDetail.SkillDetailVM
 fun SkillDetailUI(
     characterDetail: CharacterDetail?,
     skills: List<Skills>,
+    gemList: List<Gem>?,
     viewModel: SkillDetailVM = viewModel()
 ) {
     val isDetail by viewModel.isDetail.collectAsState()
@@ -81,16 +82,20 @@ fun SkillDetailUI(
             Spacer(modifier = Modifier.height(4.dp))
 
             if (isDetail) {
-                SkillDetail(skills)
+                SkillDetail(skills, gemList, viewModel)
             } else {
-                SkillSimple(skills, viewModel)
+                SkillSimple(skills, gemList, viewModel)
             }
         }
     }
 }
 
 @Composable
-private fun SkillDetail(skills: List<Skills>) {
+private fun SkillDetail(
+    skills: List<Skills>,
+    gemList: List<Gem>?,
+    viewModel: SkillDetailVM
+) {
     Column(
         modifier = Modifier.background(Color.Black)
     ) {
@@ -112,13 +117,17 @@ private fun SkillDetail(skills: List<Skills>) {
         }
 
         skills.forEach {
-            SkillDetailRow(it)
+            SkillDetailRow(it, gemList, viewModel)
         }
     }
 }
 
 @Composable
-private fun SkillDetailRow(it: Skills) {
+private fun SkillDetailRow(
+    it: Skills,
+    gemList: List<Gem>?,
+    viewModel: SkillDetailVM
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -127,8 +136,10 @@ private fun SkillDetailRow(it: Skills) {
     ) {
         SkillIcon(it)
         SkillTripods(it)
-        if (it.rune != null || it.gem != null) {
-            SkillRuneAndGem(it)
+        gemList?.let { gemList ->
+            if (it.rune != null || it.gem) {
+                SkillRuneAndGem(it, gemList, viewModel)
+            }
         }
     }
 }
@@ -229,7 +240,11 @@ private fun SkillTripods(it: Skills) {
 
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
-private fun SkillRuneAndGem(it: Skills) {
+private fun SkillRuneAndGem(
+    it: Skills,
+    gemList: List<Gem>,
+    viewModel: SkillDetailVM
+) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.End
@@ -240,7 +255,7 @@ private fun SkillRuneAndGem(it: Skills) {
                 GlideImage(
                     modifier = Modifier
                         .background(
-                            brush = LegendaryBG,
+                            brush = viewModel.getItemBG(rune.grade),
                             shape = RoundedCornerShape(30.dp)
                         ),
                     model = rune.icon,
@@ -248,20 +263,25 @@ private fun SkillRuneAndGem(it: Skills) {
                 )
             }
         }
-        it.gem?.let { gems ->
-            gems.forEach { gem ->
+
+        if (it.gem) {
+            val equipGemList = viewModel.gemFiltering(gemList, it)
+
+            equipGemList.forEach { gem ->
+                val gemType = viewModel.typeTrans(gem)
+
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TextChip(text = gem["name"]!!)
+                    TextChip(text = "${gem.level}${gemType}")
                     GlideImage(
                         modifier = Modifier
                             .background(
-                                brush = LegendaryBG,
+                                brush = viewModel.getItemBG(gem.grade),
                                 shape = RoundedCornerShape(30.dp)
                             ),
-                        model = gem["icon"],
+                        model = gem.gemIcon,
                         contentDescription = "보석"
                     )
                 }
@@ -272,7 +292,7 @@ private fun SkillRuneAndGem(it: Skills) {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun SkillSimple(skills: List<Skills>, viewModel: SkillDetailVM) {
+private fun SkillSimple(skills: List<Skills>, gemList: List<Gem>?, viewModel: SkillDetailVM) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -301,7 +321,9 @@ private fun SkillSimple(skills: List<Skills>, viewModel: SkillDetailVM) {
                         ) {
                             SkillSimpleTripods(it)
                             Spacer(modifier = Modifier.height(4.dp))
-                            SkillSimpleRuneAndGem(it, viewModel)
+                            gemList?.let { gemList ->
+                                SkillSimpleRuneAndGem(it, gemList, viewModel)
+                            }
                         }
                     }
                 }
@@ -334,6 +356,7 @@ private fun SkillSimpleTripods(it: Skills) {
 @Composable
 private fun SkillSimpleRuneAndGem(
     it: Skills,
+    gemList: List<Gem>,
     viewModel: SkillDetailVM
 ) {
     Row(
@@ -347,14 +370,18 @@ private fun SkillSimpleRuneAndGem(
             )
             Spacer(modifier = Modifier.width(4.dp))
         }
-        it.gem?.let { gems ->
-            gems.forEach { gem ->
-                val padding = if (gem["name"]!!.length >= 3 && gem.size > 1) {
+        if (it.gem) {
+            val equipGemList = gemList.filter { gem -> gem.skill == it.name }
+            equipGemList.forEach { gem ->
+                val gemType = if (gem.type.contains('멸')) '멸' else '홍'
+                val gemInfo = "${gem.level}${gemType}"
+
+                val padding = if (gemInfo.length >= 3 && equipGemList.size > 1) {
                     Modifier.padding(start = 4.dp, end = 4.dp, top = 2.dp, bottom = 2.dp)
                 } else {
                     Modifier.padding(start = 6.dp, end = 6.dp, top = 2.dp, bottom = 2.dp)
                 }
-                TextChip(text = gem["name"]!!, borderless = true, customPadding = padding)
+                TextChip(text = gemInfo, borderless = true, customPadding = padding)
                 Spacer(modifier = Modifier.width(4.dp))
             }
         }
