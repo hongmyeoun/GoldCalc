@@ -58,7 +58,7 @@ class SkillDetailVM: ViewModel() {
     fun getIndexColor(index: Int): Color {
         val indexColor = when(index) {
             0 -> GreenQual
-            1 -> PurpleQual
+            1 -> BlueQual
             else -> OrangeQual
         }
         return indexColor
@@ -68,7 +68,11 @@ class SkillDetailVM: ViewModel() {
         return gemList.filter { gem -> gem.skill == skill.name }
     }
 
-    fun typeTrans(gem: Gem): Char {
+    private fun typeTrans(gem: Gem): Char {
         return if (gem.type.contains('멸')) '멸' else '홍'
+    }
+
+    fun gemInfo(gem: Gem): String {
+        return "${gem.level}${typeTrans(gem)}"
     }
 }
