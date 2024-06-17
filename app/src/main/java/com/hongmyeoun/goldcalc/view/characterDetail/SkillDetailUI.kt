@@ -273,7 +273,7 @@ private fun SkillSimple(skills: List<Skills>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.Black)
+//            .background(color = Color.Black)
     ) {
         FlowRow(
             maxItemsInEachRow = 2,
@@ -298,6 +298,15 @@ private fun SkillSimple(skills: List<Skills>) {
                             SkillSimpleTripods(it)
                             SkillSimpleRuneAndGem(it)
                         }
+                    }
+                }
+                if (it == skills.last()) {
+                    if (skills.size % 2 == 1) {
+                        Spacer(
+                            modifier = Modifier
+                            .width(1.dp)
+                            .weight(1f)
+                        )
                     }
                 }
             }
