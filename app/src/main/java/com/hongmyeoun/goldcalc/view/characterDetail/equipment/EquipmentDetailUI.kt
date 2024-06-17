@@ -75,7 +75,9 @@ private fun EquipmentAndAccessorySimple(
     Spacer(modifier = Modifier.height(4.dp))
 
     Row(verticalAlignment = Alignment.CenterVertically) {
-        TextChip(text = setOption)
+        if (setOption.isNotEmpty()) {
+            TextChip(text = setOption)
+        }
         Spacer(modifier = Modifier.width(8.dp))
         TextChip(text = "악세 품질 $accessoryQualityAvg")
         Spacer(modifier = Modifier.width(8.dp))
@@ -192,7 +194,11 @@ fun UpgradeQualityRow(
             Spacer(modifier = Modifier.width(4.dp))
         }
         if (itemLevel.isNotEmpty()) {
-            TextChip(itemLevel)
+            if (itemLevel.contains("</FONT>")) {
+                TextChip(itemLevel.substringBefore("</FONT>"))
+            } else {
+                TextChip(itemLevel)
+            }
             Spacer(modifier = Modifier.width(4.dp))
         }
         if (upgrade.isEmpty()) {

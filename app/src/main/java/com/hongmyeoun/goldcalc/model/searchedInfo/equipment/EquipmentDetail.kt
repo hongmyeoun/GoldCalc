@@ -265,14 +265,14 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                         if (topStr.contains("연성 추가 효과")) {
                             val setOption = topStr.substringAfterLast("'>").substringBeforeLast("</FONT>")
 
-                            return if (setOption.contains("단계")) setOption else "추가 연성 효과 없음"
+                            return if (setOption.contains("단계")) setOption else "세트 없음"
                         }
                     }
                 }
             }
         }
 
-        return "추가 연성 효과 없음"
+        return "세트 없음"
     }
 
 
@@ -367,7 +367,8 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                 if (element.get("type").asString == "IndentStringGroup") {
                     val topStr = element.getAsJsonObject("value").getAsJsonObject("Element_000").get("topStr").asString
                     if (topStr.contains("무작위 각인 효과")) {
-                        val contentStr = element.getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr").getAsJsonObject("Element_000").get("contentStr").asString
+                        val contentStr = element.getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
+                            .getAsJsonObject("Element_000").get("contentStr").asString
                         val option = contentStr.substringAfter("<FONT COLOR='#FFFFAC'>").substringBefore("</FONT>")
                         val activation = contentStr.substringAfter("활성도 +").substringBefore("<BR>")
 
@@ -390,7 +391,8 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                 if (element.get("type").asString == "IndentStringGroup") {
                     val topStr = element.getAsJsonObject("value").getAsJsonObject("Element_000").get("topStr").asString
                     if (topStr.contains("무작위 각인 효과")) {
-                        val contentStr = element.getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr").getAsJsonObject("Element_001").get("contentStr").asString
+                        val contentStr = element.getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
+                            .getAsJsonObject("Element_001").get("contentStr").asString
                         val option = contentStr.substringAfter("<FONT COLOR='#FFFFAC'>").substringBefore("</FONT>")
                         val activation = contentStr.substringAfter("활성도 +").substringBefore("<BR>")
 
@@ -413,7 +415,8 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                 if (element.get("type").asString == "IndentStringGroup") {
                     val topStr = element.getAsJsonObject("value").getAsJsonObject("Element_000").get("topStr").asString
                     if (topStr.contains("무작위 각인 효과")) {
-                        val contentStr = element.getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr").getAsJsonObject("Element_002").get("contentStr").asString
+                        val contentStr = element.getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
+                            .getAsJsonObject("Element_002").get("contentStr").asString
                         val option = contentStr.substringAfter("<FONT COLOR='#FE2E2E'>").substringBefore("</FONT>")
                         val activation = contentStr.substringAfter("활성도 +").substringBefore("<BR>")
 
