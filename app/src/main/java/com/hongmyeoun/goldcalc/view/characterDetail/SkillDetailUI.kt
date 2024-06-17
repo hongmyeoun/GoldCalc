@@ -33,6 +33,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
+import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.ui.theme.LegendaryBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.viewModel.charDetail.SkillDetailVM
@@ -165,16 +166,18 @@ private fun SkillIcon(it: Skills, isSimple: Boolean = false) {
                             }
                             TextChip(
                                 text = tripodSlots,
-                                customTextSize = 8.sp,
                                 borderless = true,
-                                customPadding = Modifier.padding(start = 1.dp, end = 1.dp)
+                                customTextSize = 8.sp,
+                                customBGColor = BlackTransBG,
+                                customPadding = Modifier.padding(start = 2.dp, end = 2.dp)
                             )
                             Spacer(modifier = Modifier.height(1.dp))
                             TextChip(
                                 text = tripodLevels,
-                                customTextSize = 8.sp,
                                 borderless = true,
-                                customPadding = Modifier.padding(start = 1.dp, end = 1.dp)
+                                customTextSize = 8.sp,
+                                customBGColor = BlackTransBG,
+                                customPadding = Modifier.padding(start = 2.dp, end = 2.dp)
                             )
                         }
                     }
@@ -287,14 +290,17 @@ private fun SkillSimple(skills: List<Skills>, viewModel: SkillDetailVM) {
                                 color = Color.DarkGray,
                                 shape = RoundedCornerShape(8.dp)
                             )
+                            .padding(4.dp)
                             .weight(1f),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         SkillIcon(it, true)
+                        Spacer(modifier = Modifier.width(4.dp))
                         Column(
                             horizontalAlignment = Alignment.Start
                         ) {
                             SkillSimpleTripods(it)
+                            Spacer(modifier = Modifier.height(4.dp))
                             SkillSimpleRuneAndGem(it, viewModel)
                         }
                     }
@@ -303,8 +309,8 @@ private fun SkillSimple(skills: List<Skills>, viewModel: SkillDetailVM) {
                     if (skills.size % 2 == 1) {
                         Spacer(
                             modifier = Modifier
-                            .width(1.dp)
-                            .weight(1f)
+                                .width(1.dp)
+                                .weight(1f)
                         )
                     }
                 }
@@ -320,9 +326,7 @@ private fun SkillSimpleTripods(it: Skills) {
     ) {
         Text(
             text = it.name,
-            color = Color.White,
-            fontWeight = FontWeight.Bold,
-            fontSize = 12.sp
+            style = titleBoldWhite12()
         )
     }
 }
@@ -338,12 +342,20 @@ private fun SkillSimpleRuneAndGem(
         it.rune?.let { rune ->
             TextChip(
                 text = rune.name,
-                customBGColor = viewModel.getGradeBG(rune.grade)
+                customBGColor = viewModel.getGradeBG(rune.grade),
+                borderless = true
             )
+            Spacer(modifier = Modifier.width(4.dp))
         }
         it.gem?.let { gems ->
             gems.forEach { gem ->
-                TextChip(text = gem["name"]!!)
+                val padding = if (gem["name"]!!.length >= 3 && gem.size > 1) {
+                    Modifier.padding(start = 4.dp, end = 4.dp, top = 2.dp, bottom = 2.dp)
+                } else {
+                    Modifier.padding(start = 6.dp, end = 6.dp, top = 2.dp, bottom = 2.dp)
+                }
+                TextChip(text = gem["name"]!!, borderless = true, customPadding = padding)
+                Spacer(modifier = Modifier.width(4.dp))
             }
         }
     }
