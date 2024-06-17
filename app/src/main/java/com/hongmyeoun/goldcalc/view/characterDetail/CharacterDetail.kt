@@ -98,22 +98,13 @@ fun CharacterDetailScreen(
                 }
 
                 skills?.let { skillsList ->
-                    SkillDetailUI(characterDetail, skillsList)
+                    SkillDetailUI(characterDetail, skillsList, gems)
                 }
             }
         }
     }
 
 }
-
-
-//@OptIn(ExperimentalGlideComposeApi::class)
-//@Preview(showBackground = true)
-//@Composable
-//fun DefaultPreview() {
-//    GoldCalcTheme {
-//    }
-//}
 
 @Composable
 fun Levels(characterDetail: CharacterDetail) {
