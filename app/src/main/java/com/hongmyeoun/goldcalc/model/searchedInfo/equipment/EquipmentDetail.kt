@@ -308,32 +308,46 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
 
     private fun getAccFirstEngraving(equipment: Equipment): String {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
-        val engraving = tooltip.getAsJsonObject("Element_006").getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
-            .getAsJsonObject("Element_000").get("contentStr").asString
-        val option = engraving.substringAfter("<FONT COLOR='#FFFFAC'>").substringBefore("</FONT>")
-        val activation = engraving.substringAfter("활성도 +").substringBefore("<BR>")
+        if (tooltip.getAsJsonObject("Element_006").get("type").asString != "SingleTextBox") {
+            val engraving =
+                tooltip.getAsJsonObject("Element_006").getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
+                    .getAsJsonObject("Element_000").get("contentStr").asString
+            val option = engraving.substringAfter("<FONT COLOR='#FFFFAC'>").substringBefore("</FONT>")
+            val activation = engraving.substringAfter("활성도 +").substringBefore("<BR>")
 
-        return "$option $activation"
+            return "$option $activation"
+        }
+        return ""
     }
 
     private fun getAccSecondEngraving(equipment: Equipment): String {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
-        val engraving = tooltip.getAsJsonObject("Element_006").getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
-            .getAsJsonObject("Element_001").get("contentStr").asString
-        val option = engraving.substringAfter("<FONT COLOR='#FFFFAC'>").substringBefore("</FONT>")
-        val activation = engraving.substringAfter("활성도 +").substringBefore("<BR>")
+        if (tooltip.getAsJsonObject("Element_006").get("type").asString != "SingleTextBox") {
+            val contentStr = tooltip.getAsJsonObject("Element_006").getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
+            if (contentStr.has("Element_001")) {
+                val engraving = contentStr.getAsJsonObject("Element_001").get("contentStr").asString
+                val option = engraving.substringAfter("<FONT COLOR='#FFFFAC'>").substringBefore("</FONT>")
+                val activation = engraving.substringAfter("활성도 +").substringBefore("<BR>")
 
-        return "$option $activation"
+                return "$option $activation"
+            }
+        }
+        return ""
     }
 
     private fun getAccThirdEngraving(equipment: Equipment): String {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
-        val engraving = tooltip.getAsJsonObject("Element_006").getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
-            .getAsJsonObject("Element_002").get("contentStr").asString
-        val option = engraving.substringAfter("<FONT COLOR='#FE2E2E'>").substringBefore("</FONT>")
-        val activation = engraving.substringAfter("활성도 +").substringBefore("<BR>")
+        if (tooltip.getAsJsonObject("Element_006").get("type").asString != "SingleTextBox") {
+            val contentStr = tooltip.getAsJsonObject("Element_006").getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
+            if (contentStr.has("Element_002")) {
+                val engraving = contentStr.getAsJsonObject("Element_002").get("contentStr").asString
+                val option = engraving.substringAfter("<FONT COLOR='#FE2E2E'>").substringBefore("</FONT>")
+                val activation = engraving.substringAfter("활성도 +").substringBefore("<BR>")
 
-        return "$option $activation"
+                return "$option $activation"
+            }
+        }
+        return ""
     }
 
     private fun getABStoneHPBonus(equipment: Equipment): String {

@@ -152,29 +152,35 @@ private fun EquipmentIcon(
                 .align(Alignment.BottomCenter)
         ) {
             Row {
-                TextChip(
-                    text = abilityStone.engraving1Lv,
-                    borderless = true,
-                    customBGColor = viewModel.getStoneColor(abilityStone.engraving1Lv),
-                    customPadding = Modifier.padding(start = 4.75.dp, end = 4.75.dp, top = 2.dp, bottom = 2.dp),
-                    customRoundedCornerSize = 5.dp
-                )
-                Spacer(modifier = Modifier.width(1.dp))
-                TextChip(
-                    text = abilityStone.engraving2Lv,
-                    borderless = true,
-                    customBGColor = viewModel.getStoneColor(abilityStone.engraving2Lv),
-                    customPadding = Modifier.padding(start = 4.75.dp, end = 4.75.dp, top = 2.dp, bottom = 2.dp),
-                    customRoundedCornerSize = 5.dp
-                )
-                Spacer(modifier = Modifier.width(1.dp))
-                TextChip(
-                    text = abilityStone.engraving3Lv,
-                    borderless = true,
-                    customBGColor = viewModel.getStoneColor(abilityStone.engraving3Lv),
-                    customPadding = Modifier.padding(start = 4.75.dp, end = 4.75.dp, top = 2.dp, bottom = 2.dp),
-                    customRoundedCornerSize = 5.dp
-                )
+                if (abilityStone.engraving1Lv.isNotEmpty()) {
+                    TextChip(
+                        text = abilityStone.engraving1Lv,
+                        borderless = true,
+                        customBGColor = viewModel.getStoneColor(abilityStone.engraving1Lv),
+                        customPadding = Modifier.padding(start = 4.75.dp, end = 4.75.dp, top = 2.dp, bottom = 2.dp),
+                        customRoundedCornerSize = 5.dp
+                    )
+                    Spacer(modifier = Modifier.width(1.dp))
+                }
+                if (abilityStone.engraving2Lv.isNotEmpty()) {
+                    TextChip(
+                        text = abilityStone.engraving2Lv,
+                        borderless = true,
+                        customBGColor = viewModel.getStoneColor(abilityStone.engraving2Lv),
+                        customPadding = Modifier.padding(start = 4.75.dp, end = 4.75.dp, top = 2.dp, bottom = 2.dp),
+                        customRoundedCornerSize = 5.dp
+                    )
+                    Spacer(modifier = Modifier.width(1.dp))
+                }
+                if (abilityStone.engraving3Lv.isNotEmpty()) {
+                    TextChip(
+                        text = abilityStone.engraving3Lv,
+                        borderless = true,
+                        customBGColor = viewModel.getStoneColor(abilityStone.engraving3Lv),
+                        customPadding = Modifier.padding(start = 4.75.dp, end = 4.75.dp, top = 2.dp, bottom = 2.dp),
+                        customRoundedCornerSize = 5.dp
+                    )
+                }
             }
         }
     }

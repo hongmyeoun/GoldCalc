@@ -90,10 +90,13 @@ class EquipmentDetailVM(characterEquipment: List<CharacterItem>) : ViewModel() {
 
     private fun getSumCombatStat(equipment: List<CharacterItem>): Int {
         val combatStat = equipment.filterIsInstance<CharacterAccessory>().map { it.combatStat1 }
-        val combatStatOne = combatStat.sumOf { it.split(" ")[1].removePrefix("+").toInt() }
-        val combatStatTwo = equipment.filterIsInstance<CharacterAccessory>()[0].combatStat2.split(" ")[1].removePrefix("+").toInt()
+        if (combatStat.isNotEmpty()) {
+            val combatStatOne = combatStat.sumOf { it.split(" ")[1].removePrefix("+").toInt() }
+            val combatStatTwo = equipment.filterIsInstance<CharacterAccessory>()[0].combatStat2.split(" ")[1].removePrefix("+").toInt()
 
-        return combatStatOne + combatStatTwo
+            return combatStatOne + combatStatTwo
+        }
+        return 0
     }
 
     fun setOptionName(equipment: CharacterEquipment): String {
