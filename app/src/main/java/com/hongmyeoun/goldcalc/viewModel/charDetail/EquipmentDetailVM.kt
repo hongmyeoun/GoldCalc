@@ -68,7 +68,13 @@ class EquipmentDetailVM(characterEquipment: List<CharacterItem>) : ViewModel() {
 
     private fun getSetoption(equipment: List<CharacterItem>): String {
         val setOptions = equipment.filterIsInstance<CharacterEquipment>().map { it.setOption }
-        val setOptionGroups = setOptions.map { it.split(" ") }.groupBy({ it[0] }, { it[1].toInt() })
+        val setOptionGroups = setOptions.map {
+            val parts = it.split(" ")
+            val option = parts.dropLast(1).joinToString(" ")
+            val level = parts.last().toIntOrNull() ?: 0 // 숫자로 변환이 안되면 0으로 처리
+            option to level
+        }.groupBy({ it.first }, { it.second })
+
         val formattedSetOptions = setOptionGroups.map { (option, levels) ->
             val count = levels.size
             val averageLevel = levels.average()
@@ -80,6 +86,7 @@ class EquipmentDetailVM(characterEquipment: List<CharacterItem>) : ViewModel() {
 
         return formattedSetOptions.joinToString(", ")
     }
+
 
     private fun getSumCombatStat(equipment: List<CharacterItem>): Int {
         val combatStat = equipment.filterIsInstance<CharacterAccessory>().map { it.combatStat1 }
@@ -116,7 +123,7 @@ class EquipmentDetailVM(characterEquipment: List<CharacterItem>) : ViewModel() {
 
     fun elixirSetOption(equipment: List<CharacterItem>): String {
         val setOption = equipment.filterIsInstance<CharacterEquipment>().filter { it.type == "투구" }.map { it.elixirSetOption }
-        return setOption[0]
+        return if (setOption.isEmpty()) "세트 없음" else setOption[0]
     }
 
     fun sumTransLevel(equipment: List<CharacterItem>): Int {
