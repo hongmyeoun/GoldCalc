@@ -424,7 +424,7 @@ private fun SkillSimple(skills: List<Skills>, gemList: List<Gem>?, viewModel: Sk
                         modifier = Modifier
                             .padding(4.dp)
                             .background(
-                                color = Color.DarkGray,
+                                color = LightGrayBG ,
                                 shape = RoundedCornerShape(8.dp)
                             )
                             .padding(4.dp)
