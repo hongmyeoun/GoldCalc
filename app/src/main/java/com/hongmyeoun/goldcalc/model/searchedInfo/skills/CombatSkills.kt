@@ -35,6 +35,7 @@ data class Skills(
     val name: String,
     val level: Int,
     val tripods: List<Tripods>,
-    val rune: Rune?,
+    val rune: Rune? = null,
+    val runeTooltip: String? = null,
     val gem: Boolean,
 )

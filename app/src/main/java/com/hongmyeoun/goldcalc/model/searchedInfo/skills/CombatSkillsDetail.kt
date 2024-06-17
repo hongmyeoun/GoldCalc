@@ -10,15 +10,27 @@ class CombatSkillsDetail(private val combatSkills: List<CombatSkills>) {
 
             val gemList = getSkillGem(skill)
 
-            val skills = Skills(
-                icon = skill.icon,
-                name = skill.name,
-                level = skill.level,
-                tripods = skill.tripods,
-                rune = skill.rune,
-                gem = gemList
-            )
-            skillList.add(skills)
+            if (skill.rune != null) {
+                val skills = Skills(
+                    icon = skill.icon,
+                    name = skill.name,
+                    level = skill.level,
+                    tripods = skill.tripods,
+                    rune = skill.rune,
+                    gem = gemList,
+                    runeTooltip = getRuneTooltip(skill.rune)
+                )
+                skillList.add(skills)
+            } else {
+                val skills = Skills(
+                    icon = skill.icon,
+                    name = skill.name,
+                    level = skill.level,
+                    tripods = skill.tripods,
+                    gem = gemList
+                )
+                skillList.add(skills)
+            }
 
         }
 
@@ -43,4 +55,11 @@ class CombatSkillsDetail(private val combatSkills: List<CombatSkills>) {
 
         return false
     }
+
+    private fun getRuneTooltip(rune: Rune): String? {
+        val tooltip = JsonParser.parseString(rune.tooltip).asJsonObject
+
+        return tooltip.getAsJsonObject("Element_002").getAsJsonObject("value").get("Element_001").asString
+    }
+
 }
