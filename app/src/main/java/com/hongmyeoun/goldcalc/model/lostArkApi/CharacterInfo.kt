@@ -24,7 +24,7 @@ data class CharacterDetail(
     @SerializedName("TotalSkillPoint") val totalSkillPoint: Int,
     @SerializedName("Stats") val stats: List<Stats>,
     @SerializedName("Tendencies") val tendencies: List<Tendency>,
-    @SerializedName("ServerName") val serverName: String,
+    @SerializedName("ServerName") var serverName: String,
     @SerializedName("CharacterName") val characterName: String,
     @SerializedName("CharacterLevel") val characterLevel: Int,
     @SerializedName("CharacterClassName") val characterClassName: String,

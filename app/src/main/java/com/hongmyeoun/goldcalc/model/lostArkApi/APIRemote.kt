@@ -43,6 +43,7 @@ object APIRemote {
                         val primaryCharacter = characterInfoList.find { it.characterName == characterName }
                         val sortedCharacterInfoList = characterInfoList
                             .filter { it.characterName != characterName }
+//                            .filter { it.characterName != characterName && parseDoubleWithoutComma(it.itemMaxLevel) > 1302.00 }
                             .sortedByDescending { it.itemMaxLevel }
                             .toMutableList()
                         primaryCharacter?.let { sortedCharacterInfoList.add(0, it) }
@@ -74,9 +75,24 @@ object APIRemote {
             val lostArkApiService = retrofit.create(LostArkApiService::class.java)
 
             try {
-                val response = lostArkApiService.getCharacterDetail(characterName).execute()
-                if (response.isSuccessful) {
-                    response.body()
+                val characterInfo = lostArkApiService.getCharacters(characterName).execute()
+                if (characterInfo.isSuccessful) {
+                    val characterInfoList = characterInfo.body()
+                    val char = characterInfoList?.find { it.characterName == characterName }
+                    if (characterInfoList != null) {
+                        val profilesResponse = lostArkApiService.getCharacterDetail(characterName).execute()
+                        if (profilesResponse.isSuccessful) {
+                            val charDetail = profilesResponse.body()
+
+                            charDetail?.serverName = char!!.serverName
+
+                            charDetail
+                        } else{
+                            null
+                        }
+                    } else {
+                        null
+                    }
                 } else {
                     null
                 }
@@ -242,4 +258,8 @@ object APIRemote {
         }
         return httpClient.build()
     }
+}
+
+fun parseDoubleWithoutComma(value: String): Double {
+    return value.replace(",", "").toDouble()
 }
