@@ -9,6 +9,7 @@ class GemDetail(private val gemAndEffect: GemAndEffect) {
                 val type = if (effect.description.trim().split(" ").last() == "증가") "멸화" else "홍염"
                 Gem(
                     type = type,
+                    grade = gem.grade,
                     level = gem.level,
                     gemIcon = gem.icon,
                     skillIcon = effect.icon,

@@ -27,6 +27,7 @@ data class Effects(
 
 data class Gem(
     val type: String,
+    val grade: String,
     val level: Int,
     val gemIcon: String,
     val skillIcon: String,
