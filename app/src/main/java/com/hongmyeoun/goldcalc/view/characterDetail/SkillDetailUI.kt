@@ -135,7 +135,8 @@ private fun SkillDetailRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         SkillIcon(it)
-        SkillTripods(it)
+        Spacer(modifier = Modifier.width(4.dp))
+        SkillTripods(it, viewModel)
         gemList?.let { gemList ->
             if (it.rune != null || it.gem) {
                 SkillRuneAndGem(it, gemList, viewModel)
@@ -204,7 +205,7 @@ private fun SkillIcon(it: Skills, isSimple: Boolean = false) {
 }
 
 @Composable
-private fun SkillTripods(it: Skills) {
+private fun SkillTripods(it: Skills, viewModel: SkillDetailVM) {
     Column(horizontalAlignment = Alignment.Start) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
@@ -214,23 +215,36 @@ private fun SkillTripods(it: Skills) {
             )
             Spacer(modifier = Modifier.width(8.dp))
             it.tripods.let { tripods ->
+                var selectedIndex = 0
+
                 tripods.forEach { tripod ->
                     if (tripod.isSelected) {
-                        TextChip(text = "${tripod.slot}")
+                        TextChip(
+                            text = "${tripod.slot}",
+                            borderless = true,
+                            customRoundedCornerSize = 8.dp,
+                            customBGColor = viewModel.getIndexColor(selectedIndex)
+                        )
+                        selectedIndex++
                     }
                 }
             }
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
             it.tripods.let { tripods ->
+                var selectedIndex = 0
                 tripods.forEach { tripod ->
                     if (tripod.isSelected) {
-                        TextChip(text = "${tripod.level}")
+                        TextChip(
+                            text = "${tripod.level}",
+                            borderless = true,
+                            customBGColor = viewModel.getIndexColor(selectedIndex)
+                        )
                         Text(
                             text = tripod.name,
-                            color = Color.White,
-                            fontSize = 10.sp
+                            style = normalTextStyle(color = viewModel.getIndexColor(selectedIndex))
                         )
+                        selectedIndex++
                     }
                 }
             }

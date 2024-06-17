@@ -55,6 +55,15 @@ class SkillDetailVM: ViewModel() {
         return itemBG
     }
 
+    fun getIndexColor(index: Int): Color {
+        val indexColor = when(index) {
+            0 -> GreenQual
+            1 -> PurpleQual
+            else -> OrangeQual
+        }
+        return indexColor
+    }
+
     fun gemFiltering(gemList: List<Gem>, skill: Skills): List<Gem> {
         return gemList.filter { gem -> gem.skill == skill.name }
     }
