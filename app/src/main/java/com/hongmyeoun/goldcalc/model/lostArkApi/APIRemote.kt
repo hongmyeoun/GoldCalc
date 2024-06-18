@@ -1,7 +1,6 @@
 package com.hongmyeoun.goldcalc.model.lostArkApi
 
 import android.content.Context
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.gson.GsonBuilder
 import com.hongmyeoun.goldcalc.R
@@ -234,7 +233,6 @@ object APIRemote {
                     val engravings = response.body()
                     engravings?.let {
                         val skillEngravingDetail = SkillEngravingsDetail(engravings)
-                        Log.d("통신성공", skillEngravingDetail.getEngravingsDetail().toString())
                         return@withContext skillEngravingDetail.getEngravingsDetail()
                     }
                 } else {
