@@ -25,4 +25,5 @@ data class SkillEngravings(
     val name: String,
     val icon: String,
     val level: String,
+    val description: String,
 )
