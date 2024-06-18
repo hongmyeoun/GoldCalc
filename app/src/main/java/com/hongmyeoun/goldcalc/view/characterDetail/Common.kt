@@ -7,8 +7,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 
 
-fun titleTextStyle() = TextStyle(
-    fontSize = 18.sp,
+fun titleTextStyle(fontSize: TextUnit = 18.sp) = TextStyle(
+    fontSize = fontSize,
     fontWeight = FontWeight.Bold,
     color = Color.White
 )
