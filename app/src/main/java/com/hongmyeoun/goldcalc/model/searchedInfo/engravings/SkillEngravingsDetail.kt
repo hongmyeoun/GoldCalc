@@ -4,7 +4,7 @@ import com.google.gson.JsonParser
 
 class SkillEngravingsDetail(private val skillEngravings: SkillEngravingsAndEffects) {
     fun getEngravingsDetail(): List<SkillEngravings> {
-        val engravingMap = skillEngravings.engravings.associateBy { it?.name }
+        val engravingMap = skillEngravings.engravings?.associateBy { it?.name }
 
         return skillEngravings.effect.map { effect ->
             val name = effect.name.substringBefore(" Lv")
@@ -14,7 +14,7 @@ class SkillEngravingsDetail(private val skillEngravings: SkillEngravingsAndEffec
                 level = effect.name.substringAfter("Lv. "),
             )
 
-            engravingMap[name]?.let { engraving ->
+            engravingMap?.get(name)?.let { engraving ->
                 engravingDetail.copy(
                     awakenEngravingsPoint = getAwakenEngravingsPoint(engraving)
                 )

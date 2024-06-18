@@ -3,7 +3,7 @@ package com.hongmyeoun.goldcalc.model.searchedInfo.engravings
 import com.google.gson.annotations.SerializedName
 
 data class SkillEngravingsAndEffects(
-    @SerializedName("Engravings") val engravings: List<SkillEngraving?>,
+    @SerializedName("Engravings") val engravings: List<SkillEngraving?>? = null,
     @SerializedName("Effects") val effect: List<SkillEffect>
 )
 
