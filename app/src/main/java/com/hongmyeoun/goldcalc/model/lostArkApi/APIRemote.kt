@@ -43,8 +43,7 @@ object APIRemote {
                         val primaryCharacter = characterInfoList.find { it.characterName == characterName }
                         val sortedCharacterInfoList = characterInfoList
                             .filter { it.characterName != characterName }
-//                            .filter { it.characterName != characterName && parseDoubleWithoutComma(it.itemMaxLevel) > 1302.00 }
-                            .sortedByDescending { it.itemMaxLevel }
+                            .sortedByDescending { parseDoubleWithoutComma(it.itemMaxLevel) }
                             .toMutableList()
                         primaryCharacter?.let { sortedCharacterInfoList.add(0, it) }
 
