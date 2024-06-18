@@ -1,7 +1,13 @@
 package com.hongmyeoun.goldcalc.viewModel.charDetail
 
+import androidx.compose.ui.graphics.Brush
 import androidx.lifecycle.ViewModel
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
+import com.hongmyeoun.goldcalc.ui.theme.EpicBG
+import com.hongmyeoun.goldcalc.ui.theme.LegendaryBG
+import com.hongmyeoun.goldcalc.ui.theme.RareBG
+import com.hongmyeoun.goldcalc.ui.theme.RelicBG
+import com.hongmyeoun.goldcalc.ui.theme.UncommonBG
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.absoluteValue
@@ -30,4 +36,16 @@ class GemDetailVM: ViewModel() {
             else -> if (ann > cri) Pair(7, 0) else Pair(0, 7)
         }
     }
+
+    fun getItemBG(grade: String): Brush {
+        val itemBG = when (grade) {
+            "유물" -> RelicBG
+            "전설" -> LegendaryBG
+            "영웅" -> EpicBG
+            "희귀" -> RareBG
+            else -> UncommonBG
+        }
+        return itemBG
+    }
+
 }

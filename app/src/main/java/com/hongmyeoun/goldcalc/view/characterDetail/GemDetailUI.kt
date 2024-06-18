@@ -34,7 +34,6 @@ import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
-import com.hongmyeoun.goldcalc.ui.theme.RelicBG
 import com.hongmyeoun.goldcalc.ui.theme.RelicColor
 import com.hongmyeoun.goldcalc.viewModel.charDetail.GemDetailVM
 
@@ -93,7 +92,7 @@ fun GemDetailUI(gemList: List<Gem>, viewModel: GemDetailVM = viewModel()) {
                         maxItemsInEachRow = annMaxItemCount
                     ) {
                         gemList.filter { it.type == "멸화" }.forEach {
-                            GemSimple(it)
+                            GemSimple(it, viewModel)
                         }
                     }
                 }
@@ -102,7 +101,7 @@ fun GemDetailUI(gemList: List<Gem>, viewModel: GemDetailVM = viewModel()) {
                         maxItemsInEachRow = criMaxItemCount
                     ) {
                         gemList.filter { it.type == "홍염" }.forEach {
-                            GemSimple(it)
+                            GemSimple(it, viewModel)
                         }
                     }
                 }
@@ -192,7 +191,7 @@ fun GemDetail(
 
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
-private fun GemSimple(it: Gem) {
+private fun GemSimple(it: Gem, viewModel: GemDetailVM) {
     Column(
         modifier = Modifier
             .padding(4.dp)
@@ -206,7 +205,7 @@ private fun GemSimple(it: Gem) {
             modifier = Modifier
                 .size(44.dp)
                 .background(
-                    brush = RelicBG,
+                    brush = viewModel.getItemBG(it.grade),
                     shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp)
                 )
                 .padding(4.dp),
