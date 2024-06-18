@@ -1,11 +1,11 @@
 package com.hongmyeoun.goldcalc.viewModel.charDetail
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharCard
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharDetail
+import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharEngravings
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharEquipment
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharGem
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharSkill
@@ -14,6 +14,7 @@ import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardEffects
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.Cards
+import com.hongmyeoun.goldcalc.model.searchedInfo.engravings.SkillEngravings
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
 import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
@@ -75,6 +76,9 @@ class CharDetailVM @Inject constructor(
     private val _characterDetail = MutableStateFlow<CharacterDetail?>(null)
     val characterDetail: StateFlow<CharacterDetail?> = _characterDetail
 
+    private val _engravings = MutableStateFlow<List<SkillEngravings>?>(null)
+    val engravings: StateFlow<List<SkillEngravings>?> = _engravings
+
     private val _equipments = MutableStateFlow<List<CharacterItem>?>(null)
     val equipments: StateFlow<List<CharacterItem>?> = _equipments
 
@@ -94,6 +98,7 @@ class CharDetailVM @Inject constructor(
     fun getCharDetails(context: Context, charName: String) {
         viewModelScope.launch {
             _characterDetail.value = getCharDetail(context, charName)
+            _engravings.value = getCharEngravings(context, charName)
             _equipments.value = getCharEquipment(context, charName)
             _gems.value = getCharGem(context, charName)
             getCharCard(context, charName)?.let { (cards, effects) ->

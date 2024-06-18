@@ -58,6 +58,7 @@ fun CharacterDetailScreen(
     }
 
     val characterDetail by viewModel.characterDetail.collectAsState()
+    val engravings by viewModel.engravings.collectAsState()
     val equipment by viewModel.equipments.collectAsState()
     val gems by viewModel.gems.collectAsState()
     val cards by viewModel.cards.collectAsState()
@@ -84,6 +85,10 @@ fun CharacterDetailScreen(
                     .fillMaxSize()
                     .padding(4.dp)
             ) {
+                engravings?.let { skillEngravings ->
+                    EngravingDetailUI(skillEngravings)
+                }
+
                 equipment?.let { equipmentList ->
                     val equipmentVM = EquipmentDetailVM(equipmentList)
                     EquipmentDetailUI(equipmentList, equipmentVM)
@@ -302,9 +307,9 @@ fun TextChip(
     val customBG = if (!brush) {
         Modifier
             .background(
-            color = customBGColor,
-            shape = RoundedCornerShape(customRoundedCornerSize)
-        )
+                color = customBGColor,
+                shape = RoundedCornerShape(customRoundedCornerSize)
+            )
     } else {
         Modifier
             .background(
