@@ -48,12 +48,14 @@ fun EngravingDetailUI(
         modifier = Modifier
             .background(LightGrayTransBG, RoundedCornerShape(8.dp))
             .clip(RoundedCornerShape(8.dp))
-            .padding(16.dp)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         skillEngravings.forEach {
             Row(
-                modifier = Modifier.noRippleClickable { viewModel.onClicked(it.name) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .noRippleClickable { viewModel.onClicked(it.name) },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 GlideImage(
