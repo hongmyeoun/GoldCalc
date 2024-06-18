@@ -35,6 +35,7 @@ import com.hongmyeoun.goldcalc.viewModel.charDetail.EngravingDetailVM
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun EngravingDetailUI(
+    modifier: Modifier,
     skillEngravings: List<SkillEngravings>,
     viewModel: EngravingDetailVM = viewModel()
 ) {
@@ -45,7 +46,7 @@ fun EngravingDetailUI(
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .background(LightGrayTransBG, RoundedCornerShape(8.dp))
             .clip(RoundedCornerShape(8.dp))
             .padding(16.dp),
