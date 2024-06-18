@@ -233,7 +233,8 @@ object APIRemote {
                     val engravings = response.body()
                     engravings?.let {
                         val skillEngravingDetail = SkillEngravingsDetail(engravings)
-                        return@withContext skillEngravingDetail.getEngravingsDetail()
+                        val detailedEngravings = skillEngravingDetail.getEngravingsDetail()
+                        return@withContext detailedEngravings.sortedWith(compareByDescending<SkillEngravings> { it.awakenEngravingsPoint != null }.thenBy { it.awakenEngravingsPoint })
                     }
                 } else {
                     null
