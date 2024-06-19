@@ -72,7 +72,11 @@ fun EngravingDetailUI(
                 Spacer(modifier = Modifier.width(8.dp))
 
                 Column {
-                    Text(text = it.name, style = titleTextStyle(fontSize = 15.sp))
+                    val textSize = if (it.name.length > 8) 10.sp else if (it.name.length > 7) 13.sp else 15.sp
+                    Text(
+                        text = it.name,
+                        style = titleTextStyle(fontSize = textSize)
+                    )
                     if (it.awakenEngravingsPoint != null) {
                         Text(text = "각인서 ${it.awakenEngravingsPoint}", style = normalTextStyle(fontSize = 12.sp))
                     }
