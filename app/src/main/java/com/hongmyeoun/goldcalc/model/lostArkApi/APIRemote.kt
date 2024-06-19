@@ -4,6 +4,17 @@ import android.content.Context
 import androidx.core.content.ContextCompat
 import com.google.gson.GsonBuilder
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardDetail
+import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardEffects
+import com.hongmyeoun.goldcalc.model.searchedInfo.card.Cards
+import com.hongmyeoun.goldcalc.model.searchedInfo.engravings.SkillEngravings
+import com.hongmyeoun.goldcalc.model.searchedInfo.engravings.SkillEngravingsDetail
+import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
+import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.EquipmentDetail
+import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
+import com.hongmyeoun.goldcalc.model.searchedInfo.gem.GemDetail
+import com.hongmyeoun.goldcalc.model.searchedInfo.skills.CombatSkillsDetail
+import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -31,7 +42,7 @@ object APIRemote {
                         val primaryCharacter = characterInfoList.find { it.characterName == characterName }
                         val sortedCharacterInfoList = characterInfoList
                             .filter { it.characterName != characterName }
-                            .sortedByDescending { it.itemMaxLevel }
+                            .sortedByDescending { parseDoubleWithoutComma(it.itemMaxLevel) }
                             .toMutableList()
                         primaryCharacter?.let { sortedCharacterInfoList.add(0, it) }
 
@@ -62,9 +73,24 @@ object APIRemote {
             val lostArkApiService = retrofit.create(LostArkApiService::class.java)
 
             try {
-                val response = lostArkApiService.getCharacterDetail(characterName).execute()
-                if (response.isSuccessful) {
-                    response.body()
+                val characterInfo = lostArkApiService.getCharacters(characterName).execute()
+                if (characterInfo.isSuccessful) {
+                    val characterInfoList = characterInfo.body()
+                    val char = characterInfoList?.find { it.characterName == characterName }
+                    if (characterInfoList != null) {
+                        val profilesResponse = lostArkApiService.getCharacterDetail(characterName).execute()
+                        if (profilesResponse.isSuccessful) {
+                            val charDetail = profilesResponse.body()
+
+                            charDetail?.serverName = char!!.serverName
+
+                            charDetail
+                        } else{
+                            null
+                        }
+                    } else {
+                        null
+                    }
                 } else {
                     null
                 }
@@ -73,6 +99,152 @@ object APIRemote {
             }
         }
     }
+
+    suspend fun getCharEquipment(context: Context, characterName: String): List<CharacterItem>? {
+        return withContext(Dispatchers.IO) {
+            val gson = GsonBuilder().setLenient().create()
+            val retrofit = Retrofit.Builder()
+                .baseUrl(ContextCompat.getString(context, R.string.lost_ark_url))
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(authorizationHeader(context))
+                .build()
+
+            val lostArkApiService = retrofit.create(LostArkApiService::class.java)
+
+            try {
+                val response = lostArkApiService.getCharacterEquipment(characterName).execute()
+                if (response.isSuccessful) {
+                    val equipmentList = response.body()
+                    equipmentList?.let {
+                        val characterEquipmentDetail = EquipmentDetail(it)
+                        return@withContext characterEquipmentDetail.getCharacterEquipmentDetails()
+                    }
+                } else {
+                    null
+                }
+            } catch (e: IOException) {
+                null
+            }
+        }
+    }
+
+    suspend fun getCharGem(context: Context, characterName: String): List<Gem>? {
+        return withContext(Dispatchers.IO) {
+            val gson = GsonBuilder().setLenient().create()
+            val retrofit = Retrofit.Builder()
+                .baseUrl(ContextCompat.getString(context, R.string.lost_ark_url))
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(authorizationHeader(context))
+                .build()
+
+            val lostArkApiService = retrofit.create(LostArkApiService::class.java)
+
+            try {
+                val response = lostArkApiService.getCharacterGem(characterName).execute()
+                if (response.isSuccessful) {
+                    val gemList = response.body()
+                    gemList?.let {
+                        val characterGemDetail = GemDetail(it)
+                        val gems = characterGemDetail.getCharacterGemDetails()
+                        return@withContext gems.sortedByDescending<Gem, Int> { gem -> gem.level }
+                    }
+                } else {
+                    null
+                }
+            } catch (e: IOException) {
+                null
+            }
+        }
+    }
+
+    suspend fun getCharCard(context: Context, characterName: String): Pair<List<Cards>, List<CardEffects>>? {
+        return withContext(Dispatchers.IO) {
+            val gson = GsonBuilder().setLenient().create()
+            val retrofit = Retrofit.Builder()
+                .baseUrl(ContextCompat.getString(context, R.string.lost_ark_url))
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(authorizationHeader(context))
+                .build()
+
+            val lostArkApiService = retrofit.create(LostArkApiService::class.java)
+
+            try {
+                val response = lostArkApiService.getCharacterCard(characterName).execute()
+                if (response.isSuccessful) {
+                    val gemList = response.body()
+                    gemList?.let {
+                        val cardDetail = CardDetail(it)
+                        val cards = cardDetail.getCardsDetails()
+                        val effects = cardDetail.getCardEffects()
+                        return@withContext Pair(cards, effects)
+                    }
+                } else {
+                    null
+                }
+            } catch (e: IOException) {
+                null
+            }
+        }
+    }
+
+    suspend fun getCharSkill(context: Context, characterName: String): List<Skills>? {
+        return withContext(Dispatchers.IO) {
+            val gson = GsonBuilder().setLenient().create()
+            val retrofit = Retrofit.Builder()
+                .baseUrl(ContextCompat.getString(context, R.string.lost_ark_url))
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(authorizationHeader(context))
+                .build()
+
+            val lostArkApiService = retrofit.create(LostArkApiService::class.java)
+
+            try {
+                val response = lostArkApiService.getCharacterSkills(characterName).execute()
+                if (response.isSuccessful) {
+                    val gemList = response.body()
+                    gemList?.let {
+                        val characterCombatSkills = CombatSkillsDetail(it)
+                        val skills = characterCombatSkills.getSkills()
+                        return@withContext skills.sortedByDescending { item -> item.level }
+                    }
+                } else {
+                    null
+                }
+            } catch (e: IOException) {
+                null
+            }
+        }
+    }
+
+    suspend fun getCharEngravings(context: Context, characterName: String): List<SkillEngravings>? {
+        return withContext(Dispatchers.IO) {
+            val gson = GsonBuilder().setLenient().create()
+            val retrofit = Retrofit.Builder()
+                .baseUrl(ContextCompat.getString(context, R.string.lost_ark_url))
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(authorizationHeader(context))
+                .build()
+
+            val lostArkApiService = retrofit.create(LostArkApiService::class.java)
+
+            try {
+                val response = lostArkApiService.getCharacterEngravings(characterName).execute()
+                if (response.isSuccessful) {
+                    val engravings = response.body()
+                    engravings?.let {
+                        val skillEngravingDetail = SkillEngravingsDetail(engravings)
+                        val detailedEngravings = skillEngravingDetail.getEngravingsDetail()
+                        return@withContext detailedEngravings.sortedWith(compareByDescending<SkillEngravings> { it.awakenEngravingsPoint != null }.thenBy { it.awakenEngravingsPoint })
+                    }
+                } else {
+                    null
+                }
+            } catch (e: IOException) {
+                null
+            }
+        }
+    }
+
 
     private fun authorizationHeader(context: Context): OkHttpClient {
         val httpClient = OkHttpClient.Builder()
@@ -84,4 +256,8 @@ object APIRemote {
         }
         return httpClient.build()
     }
+}
+
+fun parseDoubleWithoutComma(value: String): Double {
+    return value.replace(",", "").toDouble()
 }

@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -30,6 +31,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
@@ -45,6 +47,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -60,10 +63,16 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.LoadingScreen
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.DarkModeGray
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
+import com.hongmyeoun.goldcalc.view.characterDetail.Extra
+import com.hongmyeoun.goldcalc.view.characterDetail.ItemLevel
+import com.hongmyeoun.goldcalc.view.characterDetail.Levels
+import com.hongmyeoun.goldcalc.view.characterDetail.ServerClassName
+import com.hongmyeoun.goldcalc.view.characterDetail.TitleCharName
 import com.hongmyeoun.goldcalc.view.goldCheck.RaidCard
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.AbyssDungeon
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.CommandRaid
@@ -102,7 +111,7 @@ fun GoldSettingContent(
                 .padding(paddingValues)
         ) {
             item {
-                GoldSettingCharacterDetails(
+                CharacterDetailSimpleUI(
                     character = character,
                     onReloadClick = { viewModel.onReloadClick(context, character?.name) },
                     onAvatarClick = { viewModel.onAvatarClick(character) }
@@ -126,89 +135,160 @@ fun GoldSettingContent(
 }
 
 @Composable
+fun CharacterDetailSimpleUI(
+    characterDetail: CharacterDetail? = null,
+    character: Character? = null,
+    onReloadClick: () -> Unit = {},
+    onAvatarClick: () -> Unit = {},
+    onGetClick:() -> Unit = {},
+    getButtonEnabled: Boolean = false
+) {
+    character?.let {
+        LoadLocalDataCharInfo(it, onAvatarClick, onReloadClick)
+    }
+    characterDetail?.let {
+        LoadAPIDataCharInfo(it, onGetClick, getButtonEnabled)
+    }
+}
+
+@Composable
 @OptIn(ExperimentalGlideComposeApi::class)
-private fun GoldSettingCharacterDetails(character: Character?, onReloadClick: () -> Unit, onAvatarClick: () -> Unit) {
+private fun LoadLocalDataCharInfo(
+    it: Character,
+    onAvatarClick: () -> Unit,
+    onReloadClick: () -> Unit
+) {
     var isBlinking by remember { mutableStateOf(false) }
-    val characterImgText = if (character?.avatarImage == true) "아바타" else "기본"
     val coroutineScope = rememberCoroutineScope()
+    val characterImgText = if (it.avatarImage) "아바타" else "기본"
 
     Box(
         modifier = Modifier
             .background(ImageBG)
             .fillMaxWidth()
     ) {
-        character?.let {
-            if (it.avatarImage) {
-                GlideImage(
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .height(320.dp),
-                    model = it.characterImage,
-                    contentDescription = "캐릭터 이미지"
-                )
-            } else {
-                GlideImage(
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .height(320.dp),
-                    contentScale = ContentScale.FillHeight,
-                    model = CharacterResourceMapper.getClassDefaultImg(character.className),
-                    contentDescription = "캐릭터 이미지"
-                )
-            }
-            Column(
+        if (it.avatarImage) {
+            GlideImage(
                 modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
-            ) {
-                DetailInfomation(detailMenu = "닉네임", detail = it.name)
-                DetailInfomation(detailMenu = "서    버", detail = it.serverName)
-                DetailInfomation(detailMenu = "클래스", detail = it.className)
-                DetailInfomation(detailMenu = "템레벨", detail = it.itemLevel)
-                DetailInfomation(detailMenu = "원정대", detail = it.expeditionLevel.toString())
-                DetailInfomation(detailMenu = "칭    호", detail = it.title)
-                DetailInfomation(detailMenu = "전투렙", detail = it.characterLevel.toString())
-                DetailInfomation(detailMenu = "길    드", detail = it.guildName ?: "-")
-                DetailInfomation(detailMenu = "P  V  P", detail = it.pvpGradeName)
-                DetailInfomation(detailMenu = "영    지", detail = "Lv.${it.townLevel} ${it.townName}")
-            }
-            Column(
+                    .align(Alignment.CenterEnd)
+                    .height(320.dp),
+                model = it.characterImage,
+                contentDescription = "캐릭터 이미지"
+            )
+        } else {
+            GlideImage(
                 modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = 8.dp, bottom = 16.dp)
+                    .align(Alignment.CenterEnd)
+                    .height(320.dp),
+                contentScale = ContentScale.FillHeight,
+                model = CharacterResourceMapper.getClassDefaultImg(it.className),
+                contentDescription = "캐릭터 이미지"
+            )
+        }
+        Column(
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
+        ) {
+            DetailInfomation(detailMenu = "닉네임", detail = it.name)
+            DetailInfomation(detailMenu = "서    버", detail = it.serverName)
+            DetailInfomation(detailMenu = "클래스", detail = it.className)
+            DetailInfomation(detailMenu = "템레벨", detail = it.itemLevel)
+            DetailInfomation(detailMenu = "원정대", detail = it.expeditionLevel.toString())
+            DetailInfomation(detailMenu = "칭    호", detail = it.title)
+            DetailInfomation(detailMenu = "전투렙", detail = it.characterLevel.toString())
+            DetailInfomation(detailMenu = "길    드", detail = it.guildName ?: "-")
+            DetailInfomation(detailMenu = "P  V  P", detail = it.pvpGradeName)
+            DetailInfomation(detailMenu = "영    지", detail = "Lv.${it.townLevel} ${it.townName}")
+        }
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(end = 8.dp, bottom = 16.dp)
+        ) {
+            SmallFloatingActionButton(
+                onClick = {
+                    onAvatarClick()
+                    isBlinking = true
+                    coroutineScope.launch {
+                        delay(2250)
+                        isBlinking = false
+                    }
+                },
+                containerColor = DarkModeGray
             ) {
-                SmallFloatingActionButton(
-                    onClick = {
-                        onAvatarClick()
-                        isBlinking = true
-                        coroutineScope.launch {
-                            delay(2250)
-                            isBlinking = false
-                        }
-                    },
-                    containerColor = DarkModeGray
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = "아바타 이미지",
-                        tint = Color.White
-                    )
-                }
-                SmallFloatingActionButton(
-                    onClick = onReloadClick,
-                    containerColor = DarkModeGray
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Refresh,
-                        contentDescription = "새로고침",
-                        tint = Color.White
-                    )
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "아바타 이미지",
+                    tint = Color.White
+                )
+            }
+            SmallFloatingActionButton(
+                onClick = onReloadClick,
+                containerColor = DarkModeGray
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = "새로고침",
+                    tint = Color.White
+                )
+            }
+        }
+        BlinkingText(isBlinking, characterImgText, Modifier.align(Alignment.TopEnd))
+    }
+}
+
+@Composable
+@OptIn(ExperimentalGlideComposeApi::class)
+private fun LoadAPIDataCharInfo(
+    it: CharacterDetail,
+    onGetClick: () -> Unit,
+    enabled: Boolean
+) {
+    val height = if (enabled) 332.dp else 262.dp
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(height)
+    ) {
+        val characterImage = if (it.characterImage.isNullOrEmpty()) CharacterResourceMapper.getClassDefaultImg(it.characterClassName) else it.characterImage
+
+        GlideImage(
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .scale(1.5f)
+                .offset(y = 30.dp),
+            model = characterImage,
+            contentScale = ContentScale.FillHeight,
+            contentDescription = "캐릭터 이미지"
+        )
+        Column(modifier = Modifier.padding(8.dp)) {
+            ServerClassName(it.serverName, it.characterClassName)
+
+            TitleCharName(it.title, it.characterName)
+
+            ItemLevel(it.itemMaxLevel)
+
+            Extra(it)
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Levels(it)
+
+                if (enabled) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    ElevatedButton(
+                        onClick = { onGetClick() },
+                    ) {
+                        Text(text = "가져오기")
+                    }
                 }
             }
-            BlinkingText(isBlinking, characterImgText, Modifier.align(Alignment.TopEnd))
         }
     }
 }
+
 
 @Composable
 fun BlinkingText(isBlinking: Boolean, text: String, modifier: Modifier) {
@@ -235,6 +315,7 @@ fun BlinkingText(isBlinking: Boolean, text: String, modifier: Modifier) {
         }
     }
 }
+
 @Composable
 private fun DetailInfomation(detailMenu: String, detail: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -340,8 +421,7 @@ private fun TopBarBox(
         modifier = modifier
             .fillMaxSize()
             .clickable { onClick() }
-            .background(selectedBGColor)
-        ,
+            .background(selectedBGColor),
         contentAlignment = Alignment.Center
     ) {
         if (title == "어비스 던전") {
