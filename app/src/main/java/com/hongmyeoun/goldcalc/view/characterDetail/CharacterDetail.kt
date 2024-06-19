@@ -85,9 +85,16 @@ fun CharacterDetailScreen(
                     .fillMaxSize()
                     .padding(4.dp)
             ) {
-                engravings?.let { skillEngravings ->
-                    EngravingDetailUI(skillEngravings)
+                Row {
+                    val rowWeight = Modifier.weight(1f)
+                    CombatStatDetailUI(rowWeight, charDetail)
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    engravings?.let { skillEngravings ->
+                        EngravingDetailUI(rowWeight, skillEngravings)
+                    }
                 }
+                Spacer(modifier = Modifier.height(16.dp))
 
                 equipment?.let { equipmentList ->
                     val equipmentVM = EquipmentDetailVM(equipmentList)

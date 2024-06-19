@@ -72,11 +72,13 @@ fun EquipmentDetails(
                     option = equipment.elixirFirstOption,
                     viewModel = viewModel
                 )
-                ElixirLevelOptionRow(
-                    level = equipment.elixirSecondLevel,
-                    option = equipment.elixirSecondOption,
-                    viewModel = viewModel
-                )
+                if (equipment.elixirSecondLevel.isNotEmpty()) {
+                    ElixirLevelOptionRow(
+                        level = equipment.elixirSecondLevel,
+                        option = equipment.elixirSecondOption,
+                        viewModel = viewModel
+                    )
+                }
             }
         }
     }
