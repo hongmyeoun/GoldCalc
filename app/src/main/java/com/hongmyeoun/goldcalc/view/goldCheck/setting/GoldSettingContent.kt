@@ -248,8 +248,8 @@ private fun LoadAPIDataCharInfo(
     val height = if (enabled) 332.dp else 262.dp
     Box(
         modifier = Modifier
-        .fillMaxWidth()
-        .height(height)
+            .fillMaxWidth()
+            .height(height)
     ) {
         val characterImage = if (it.characterImage.isNullOrEmpty()) CharacterResourceMapper.getClassDefaultImg(it.characterClassName) else it.characterImage
 
@@ -271,13 +271,18 @@ private fun LoadAPIDataCharInfo(
 
             Extra(it)
 
-            Levels(it)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Levels(it)
 
-            if (enabled) {
-                ElevatedButton(
-                    onClick = { onGetClick() },
-                ) {
-                    Text(text = "가져오기")
+                if (enabled) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    ElevatedButton(
+                        onClick = { onGetClick() },
+                    ) {
+                        Text(text = "가져오기")
+                    }
                 }
             }
         }

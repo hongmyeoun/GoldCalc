@@ -18,13 +18,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -53,12 +50,12 @@ import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.ui.theme.RelicBG
+import com.hongmyeoun.goldcalc.ui.theme.VeryLightGrayTransBG
 import com.hongmyeoun.goldcalc.view.characterDetail.equipment.EquipmentDetailUI
 import com.hongmyeoun.goldcalc.view.goldCheck.setting.CharacterDetailSimpleUI
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
 import com.hongmyeoun.goldcalc.viewModel.charDetail.EquipmentDetailVM
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharacterDetailUI(
     charName: String,
@@ -293,7 +290,7 @@ fun Extra(characterDetail: CharacterDetail) {
 @Composable
 private fun ExtraInfo(extraTitle: String, extraDetail: String?) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        TextChip(text = extraTitle)
+        TextChip(text = extraTitle, borderless = true, customBGColor = VeryLightGrayTransBG)
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = extraDetail ?: "-",
@@ -321,9 +318,11 @@ fun TitleCharName(title: String?, name: String) {
 @Composable
 fun ServerClassName(serverName: String, className: String) {
     Row(verticalAlignment = Alignment.Bottom) {
-        Text(
+        TextChip(
             text = serverName,
-            style = titleBoldWhite12()
+            borderless = true,
+            customTextSize = 12.sp,
+            customBGColor = VeryLightGrayTransBG
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(

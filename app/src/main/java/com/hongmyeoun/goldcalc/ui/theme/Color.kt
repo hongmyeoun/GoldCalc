@@ -22,8 +22,9 @@ val LightBlue = Color(0xFF17C3CE)
 
 val MainBG = Color(0xFFE0F4A4)
 
-val BlackTransBG = Color(0x80000000)
-val LightGrayTransBG = Color(0x801C1F26)
+val BlackTransBG = Color(0x7F000000)
+val LightGrayTransBG = Color(0x7F1C1F26)
+val VeryLightGrayTransBG = Color(0x80646E6F)
 val LightGrayBG = Color(0xFF2B313A)
 
 val HigherUpgradeColor = Color(0xFFA8EA6C)
