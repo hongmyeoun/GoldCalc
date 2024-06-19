@@ -39,7 +39,7 @@ import androidx.navigation.compose.rememberNavController
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.ui.theme.MokokoGreen
-import com.hongmyeoun.goldcalc.view.characterDetail.CharacterDetailScreen
+import com.hongmyeoun.goldcalc.view.characterDetail.CharacterDetailUI
 import com.hongmyeoun.goldcalc.view.goldCheck.setting.GoldSetting
 import com.hongmyeoun.goldcalc.view.main.MainScreen
 import com.hongmyeoun.goldcalc.view.main.characterCard.CharacterCard
@@ -130,7 +130,7 @@ class MainActivity : ComponentActivity() {
 
                         charName?.let {
                             if (!isLoading) {
-                                CharacterDetailScreen(charName)
+                                CharacterDetailUI(charName, navController)
                             } else {
                                 LoadingScreen()
                             }
