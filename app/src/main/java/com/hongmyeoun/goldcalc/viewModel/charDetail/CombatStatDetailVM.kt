@@ -5,14 +5,22 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class CombatStatDetailVM: ViewModel() {
-    private val _showDialog = MutableStateFlow(false)
-    val showDialog: StateFlow<Boolean> = _showDialog
+    private val _showDefaultDialog = MutableStateFlow(false)
+    val showDefaultDialog: StateFlow<Boolean> = _showDefaultDialog
     fun onDismissRequest() {
-        _showDialog.value = false
+        _showDefaultDialog.value = false
+        _showCombatDialog.value = false
     }
 
-    fun onClicked() {
-        _showDialog.value = true
+    fun onDefaultClicked() {
+        _showDefaultDialog.value = true
+    }
+
+    private val _showCombatDialog = MutableStateFlow(false)
+    val showCombatDialog: StateFlow<Boolean> = _showCombatDialog
+
+    fun onCombatClicked() {
+        _showCombatDialog.value = true
     }
 
     // 물약 및 원정대 레벨로 추가된 스텟
@@ -30,4 +38,7 @@ class CombatStatDetailVM: ViewModel() {
         return 0
     }
 
+    fun removeHTMLTags(htmlStr: String): String {
+        return htmlStr.replace(Regex("<.*?>"), "").trim()
+    }
 }
