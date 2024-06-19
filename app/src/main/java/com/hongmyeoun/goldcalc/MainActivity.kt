@@ -115,8 +115,8 @@ class MainActivity : ComponentActivity() {
                         }
 
                         LaunchedEffect(Unit) {
-                            delay(1000) // 예시로 1초의 로딩 시간을 줍니다. 실제 필요한 시간에 맞게 조정하세요.
-                            isLoading = false // 데이터 로딩이 완료되면 로딩 상태를 false로 변경합니다.
+                            delay(1000)
+                            isLoading = false
                         }
 
                     }
@@ -124,9 +124,25 @@ class MainActivity : ComponentActivity() {
                         CharacterScreen(navController)
                     }
                     composable("CharDetail/{charName}") {
-                        val charName = it.arguments?.getString("charName") ?: "마일즈섬광"
-                        CharacterDetailScreen(charName)
+                        val charName = it.arguments?.getString("charName")
+
+                        var isLoading by remember { mutableStateOf(true) }
+
+                        charName?.let {
+                            if (!isLoading) {
+                                CharacterDetailScreen(charName)
+                            } else {
+                                LoadingScreen()
+                            }
+                        }
+
+                        LaunchedEffect(Unit) {
+                            delay(1000) // 예시로 1초의 로딩 시간을 줍니다. 실제 필요한 시간에 맞게 조정하세요.
+                            isLoading = false // 데이터 로딩이 완료되면 로딩 상태를 false로 변경합니다.
+                        }
+
                     }
+
                 }
             }
         }
