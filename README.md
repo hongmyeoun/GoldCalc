@@ -11,15 +11,21 @@
 - 로스트아크 API를 통해 캐릭별 주요 정보를 불러와 관리
 - 레이드 난이도와 더보기 여부에 따라 지정할 수 있는 커스텀 골드 관리
 - 한눈에 볼 수 있는 정산 현황
+- 자신의 캐릭터를 검색해 상세정보
 
 ## 시연영상
 |메인화면|골드세팅화면|검색(미완)|
 |:---:|:---:|:---:|
 |![메인gif](https://github.com/hongmyeoun/GoldCalc/assets/139526068/fc546f85-e1cd-4a4f-9275-e425004d9474)|![세팅gif](https://github.com/hongmyeoun/GoldCalc/assets/139526068/75beeb9d-c482-4f7e-8360-4aed99a70dc4)|![검색gif](https://github.com/hongmyeoun/GoldCalc/assets/139526068/21c06a71-e812-46ae-ae63-fd4f36cafb27)|
 
+### 캐릭터 검색 결과
+https://github.com/hongmyeoun/GoldCalc/assets/139526068/f494f8c4-169f-4a21-92b8-91fca598dd3b
+
+
+
 추가 기능으로 재료가 몇개 있는지 저장해서 언제 졸업 하는지 까지 해보기
 
 
 
 추가 : 로아 api 사용으로 사용자 정보를 이용해보기(api 정보를 얼마나 사용할지, 토큰은 어떻게 할지 생각), 항상 최신 자료 유지하기
-비공개 테스트 어떻게 할지 생각해보기
+비공개 테스트 어떻게 할지 생각해보기, 시즌3 이후 자료 최신화 준비하기
