@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -67,6 +68,7 @@ import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
+import com.hongmyeoun.goldcalc.view.characterDetail.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
 
 @Composable
@@ -89,6 +91,7 @@ fun SearchUI(
                 )
             }
             .background(ImageBG)
+            .padding(top = 8.dp)
         ,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
@@ -263,6 +266,7 @@ private fun SearchResults(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
+            .padding(8.dp)
     ) {
         if (characterList.isNotEmpty()) {
             stickyHeader { HeaderText("검색 결과") }
@@ -273,6 +277,7 @@ private fun SearchResults(
                     isFirstItem = true,
                     navController = navController
                 )
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
         if (characterList.size >= 2) {
@@ -293,11 +298,15 @@ private fun HeaderText(text: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.LightGray)
+            .background(
+                color = LightGrayBG,
+                shape = RoundedCornerShape(topStart = 2.dp, bottomStart = 2.dp, topEnd = 32.dp, bottomEnd = 4.dp)
+            )
+            .padding(8.dp)
     ) {
         Text(
-            modifier = Modifier.padding(4.dp),
-            text = text
+            text = text,
+            style = titleTextStyle(fontSize = 15.sp)
         )
     }
 }
@@ -331,7 +340,7 @@ fun CharacterListItem(
                 color = Color.White
             )
             Text(
-                text = "${character.itemMaxLevel} ${character.characterClassName}",
+                text = "${character.itemMaxLevel} ${character.characterClassName}(${character.serverName})",
                 fontSize = 12.sp,
                 color = Color.Gray
             )
