@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -26,7 +27,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -47,6 +52,7 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -57,10 +63,14 @@ import com.hongmyeoun.goldcalc.LoadingScreen
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterInfo
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
+import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
+import com.hongmyeoun.goldcalc.ui.theme.ImageBG
+import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
+import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
 
 @Composable
-fun CharacterScreen(
+fun SearchUI(
     navController: NavHostController,
     viewModel: SearchVM = viewModel()
 ) {
@@ -78,7 +88,7 @@ fun CharacterScreen(
                     }
                 )
             }
-            .background(MaterialTheme.colorScheme.background)
+            .background(ImageBG)
         ,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
@@ -107,6 +117,7 @@ private fun SearchTextField(
 
     OutlinedTextField(
         modifier = Modifier
+            .padding(8.dp)
             .fillMaxWidth()
             .onFocusChanged { isFocus = it.isFocused },
         value = characterName,
@@ -126,7 +137,18 @@ private fun SearchTextField(
             { SearchTrailingIcon(characterName, viewModel, context, keyboardController, focusState) }
         } else {
             null
-        }
+        },
+        shape = RoundedCornerShape(16.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = Color.White,
+            unfocusedTextColor = Color.White,
+
+            focusedContainerColor = LightGrayTransBG,
+            focusedBorderColor = CharacterEmblemBG,
+
+            unfocusedContainerColor = LightGrayTransBG,
+            unfocusedBorderColor = CharacterEmblemBG
+        ),
     )
 }
 
@@ -254,7 +276,7 @@ private fun SearchResults(
             }
         }
         if (characterList.size >= 2) {
-            stickyHeader { HeaderText("원정대 캐릭터") }
+            stickyHeader { HeaderText("같은 계정내 캐릭터") }
             items(characterList.drop(1), key = { item -> item.characterName }) {
                 CharacterListItem(
                     character = it,
@@ -282,14 +304,17 @@ private fun HeaderText(text: String) {
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun CharacterListItem(character: CharacterInfo, isFirstItem: Boolean, navController: NavHostController, isDark: Boolean = isSystemInDarkTheme()) {
-    val textColor = if (isDark) Color.White else Color.Black
-
+fun CharacterListItem(
+    character: CharacterInfo,
+    isFirstItem: Boolean,
+    navController: NavHostController,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { navController.navigate("CharDetail/${character.characterName}") }
             .padding(8.dp)
-            .clickable { navController.navigate("CharDetail/${character.characterName}") },
+        ,
         verticalAlignment = Alignment.CenterVertically
     ) {
         GlideImage(
@@ -303,7 +328,7 @@ fun CharacterListItem(character: CharacterInfo, isFirstItem: Boolean, navControl
             Text(
                 text = character.characterName,
                 fontWeight = if (isFirstItem) FontWeight.Bold else FontWeight.Normal,
-                color = textColor
+                color = Color.White
             )
             Text(
                 text = "${character.itemMaxLevel} ${character.characterClassName}",
@@ -312,4 +337,87 @@ fun CharacterListItem(character: CharacterInfo, isFirstItem: Boolean, navControl
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SearchPreview() {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(ImageBG)) {
+
+    }
+    var text by remember { mutableStateOf("") }
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusState = LocalFocusManager.current
+
+    var isFocus by remember { mutableStateOf(false) }
+
+    OutlinedTextField(
+        shape = RoundedCornerShape(16.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedContainerColor = LightGrayBG,
+            focusedBorderColor = CharacterEmblemBG,
+
+            unfocusedContainerColor = LightGrayBG,
+            unfocusedBorderColor = CharacterEmblemBG
+        ),
+//        colors = TextFieldDefaults.colors(
+//            focusedContainerColor = LightGrayBG,
+//            focusedIndicatorColor = Color.Transparent,
+//
+//            unfocusedContainerColor = LightGrayBG,
+//            unfocusedIndicatorColor = Color.Transparent
+//        ),
+        modifier = Modifier
+            .padding(12.dp)
+            .fillMaxWidth()
+            .onFocusChanged { isFocus = it.isFocused }
+        ,
+        value = text,
+        onValueChange = { text = it },
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                keyboardController?.hide()
+                focusState.clearFocus()
+            }
+        ),
+        placeholder = { SearchPlaceHolder(isFocus) },
+        trailingIcon = if (isFocus) {
+            {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (text.isNotEmpty()) {
+                        Image(
+                            modifier = Modifier.clickable { text = "" },
+                            painter = painterResource(id = R.drawable.baseline_cancel_24),
+                            contentDescription = "이름 초기화",
+                            contentScale = ContentScale.Crop
+                        )
+                    }
+                    IconButton(
+                        onClick = {
+//                            viewModel.onDone(context)
+                            keyboardController?.hide()
+                            focusState.clearFocus()
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "검색"
+                        )
+                    }
+                }
+
+            }
+        } else {
+            null
+        }
+    )
+
 }
