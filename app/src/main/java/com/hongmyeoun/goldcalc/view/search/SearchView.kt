@@ -6,26 +6,27 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -57,10 +58,16 @@ import com.hongmyeoun.goldcalc.LoadingScreen
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterInfo
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
+import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
+import com.hongmyeoun.goldcalc.ui.theme.ImageBG
+import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
+import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
+import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
+import com.hongmyeoun.goldcalc.view.characterDetail.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
 
 @Composable
-fun CharacterScreen(
+fun SearchUI(
     navController: NavHostController,
     viewModel: SearchVM = viewModel()
 ) {
@@ -78,7 +85,8 @@ fun CharacterScreen(
                     }
                 )
             }
-            .background(MaterialTheme.colorScheme.background)
+            .background(ImageBG)
+            .padding(top = 8.dp)
         ,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
@@ -107,6 +115,7 @@ private fun SearchTextField(
 
     OutlinedTextField(
         modifier = Modifier
+            .padding(8.dp)
             .fillMaxWidth()
             .onFocusChanged { isFocus = it.isFocused },
         value = characterName,
@@ -126,7 +135,18 @@ private fun SearchTextField(
             { SearchTrailingIcon(characterName, viewModel, context, keyboardController, focusState) }
         } else {
             null
-        }
+        },
+        shape = RoundedCornerShape(16.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = Color.White,
+            unfocusedTextColor = Color.White,
+
+            focusedContainerColor = LightGrayTransBG,
+            focusedBorderColor = CharacterEmblemBG,
+
+            unfocusedContainerColor = LightGrayTransBG,
+            unfocusedBorderColor = CharacterEmblemBG
+        ),
     )
 }
 
@@ -195,7 +215,7 @@ private fun SearchResult(viewModel: SearchVM, navController: NavHostController) 
 
     when {
         isLoading -> { LoadingScreen() }
-        errorMessage == "네트워크 오류" -> { NetworkError(errorMessage) }
+        errorMessage != null -> { NetworkError(errorMessage) }
         isSearch && characterList.isEmpty() -> { SearchError(viewModel) }
         else -> { SearchResults(characterList, navController) }
     }
@@ -208,10 +228,12 @@ private fun NetworkError(errorMessage: String?) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.baseline_wifi_off_24),
-            contentDescription = "Disconnect"
-        )
+        if (errorMessage == "네트워크 오류") {
+            Image(
+                painter = painterResource(id = R.drawable.baseline_wifi_off_24),
+                contentDescription = "Disconnect"
+            )
+        }
         Text(
             text = errorMessage!!,
             color = Color(0xFFCFCFCF)
@@ -228,6 +250,7 @@ private fun SearchError(viewModel: SearchVM) {
     ) {
         Text(
             text = "\"${viewModel.tempCharName.value}\"(은)는 없는 결과입니다.",
+            style = normalTextStyle(color = Color(0xFFCFCFCF), fontSize = 15.sp),
         )
     }
 }
@@ -241,6 +264,7 @@ private fun SearchResults(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
+            .padding(8.dp)
     ) {
         if (characterList.isNotEmpty()) {
             stickyHeader { HeaderText("검색 결과") }
@@ -251,10 +275,11 @@ private fun SearchResults(
                     isFirstItem = true,
                     navController = navController
                 )
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
         if (characterList.size >= 2) {
-            stickyHeader { HeaderText("원정대 캐릭터") }
+            stickyHeader { HeaderText("같은 계정내 캐릭터 (${characterList.size - 1})") }
             items(characterList.drop(1), key = { item -> item.characterName }) {
                 CharacterListItem(
                     character = it,
@@ -271,25 +296,32 @@ private fun HeaderText(text: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.LightGray)
+            .background(
+                color = LightGrayBG,
+                shape = RoundedCornerShape(topStart = 2.dp, bottomStart = 2.dp, topEnd = 32.dp, bottomEnd = 4.dp)
+            )
+            .padding(8.dp)
     ) {
         Text(
-            modifier = Modifier.padding(4.dp),
-            text = text
+            text = text,
+            style = titleTextStyle(fontSize = 15.sp)
         )
     }
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun CharacterListItem(character: CharacterInfo, isFirstItem: Boolean, navController: NavHostController, isDark: Boolean = isSystemInDarkTheme()) {
-    val textColor = if (isDark) Color.White else Color.Black
-
+fun CharacterListItem(
+    character: CharacterInfo,
+    isFirstItem: Boolean,
+    navController: NavHostController,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { navController.navigate("CharDetail/${character.characterName}") }
             .padding(8.dp)
-            .clickable { navController.navigate("CharDetail/${character.characterName}") },
+        ,
         verticalAlignment = Alignment.CenterVertically
     ) {
         GlideImage(
@@ -303,10 +335,10 @@ fun CharacterListItem(character: CharacterInfo, isFirstItem: Boolean, navControl
             Text(
                 text = character.characterName,
                 fontWeight = if (isFirstItem) FontWeight.Bold else FontWeight.Normal,
-                color = textColor
+                color = Color.White
             )
             Text(
-                text = "${character.itemMaxLevel} ${character.characterClassName}",
+                text = "${character.itemMaxLevel} ${character.characterClassName}(${character.serverName})",
                 fontSize = 12.sp,
                 color = Color.Gray
             )

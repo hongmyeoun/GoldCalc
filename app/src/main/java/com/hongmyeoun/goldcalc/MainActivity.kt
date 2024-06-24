@@ -43,7 +43,7 @@ import com.hongmyeoun.goldcalc.view.characterDetail.CharacterDetailUI
 import com.hongmyeoun.goldcalc.view.goldCheck.setting.GoldSetting
 import com.hongmyeoun.goldcalc.view.main.MainScreen
 import com.hongmyeoun.goldcalc.view.main.characterCard.CharacterCard
-import com.hongmyeoun.goldcalc.view.search.CharacterScreen
+import com.hongmyeoun.goldcalc.view.search.SearchUI
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
@@ -121,7 +121,7 @@ class MainActivity : ComponentActivity() {
 
                     }
                     composable("Search") {
-                        CharacterScreen(navController)
+                        SearchUI(navController)
                     }
                     composable("CharDetail/{charName}") {
                         val charName = it.arguments?.getString("charName")
