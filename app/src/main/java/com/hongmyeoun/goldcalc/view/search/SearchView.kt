@@ -6,7 +6,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,13 +25,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -53,7 +48,6 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -68,6 +62,7 @@ import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
+import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
 import com.hongmyeoun.goldcalc.view.characterDetail.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
 
@@ -220,7 +215,7 @@ private fun SearchResult(viewModel: SearchVM, navController: NavHostController) 
 
     when {
         isLoading -> { LoadingScreen() }
-        errorMessage == "네트워크 오류" -> { NetworkError(errorMessage) }
+        errorMessage != null -> { NetworkError(errorMessage) }
         isSearch && characterList.isEmpty() -> { SearchError(viewModel) }
         else -> { SearchResults(characterList, navController) }
     }
@@ -233,10 +228,12 @@ private fun NetworkError(errorMessage: String?) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.baseline_wifi_off_24),
-            contentDescription = "Disconnect"
-        )
+        if (errorMessage == "네트워크 오류") {
+            Image(
+                painter = painterResource(id = R.drawable.baseline_wifi_off_24),
+                contentDescription = "Disconnect"
+            )
+        }
         Text(
             text = errorMessage!!,
             color = Color(0xFFCFCFCF)
@@ -253,6 +250,7 @@ private fun SearchError(viewModel: SearchVM) {
     ) {
         Text(
             text = "\"${viewModel.tempCharName.value}\"(은)는 없는 결과입니다.",
+            style = normalTextStyle(color = Color(0xFFCFCFCF), fontSize = 15.sp),
         )
     }
 }
@@ -346,87 +344,4 @@ fun CharacterListItem(
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SearchPreview() {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(ImageBG)) {
-
-    }
-    var text by remember { mutableStateOf("") }
-
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val focusState = LocalFocusManager.current
-
-    var isFocus by remember { mutableStateOf(false) }
-
-    OutlinedTextField(
-        shape = RoundedCornerShape(16.dp),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = LightGrayBG,
-            focusedBorderColor = CharacterEmblemBG,
-
-            unfocusedContainerColor = LightGrayBG,
-            unfocusedBorderColor = CharacterEmblemBG
-        ),
-//        colors = TextFieldDefaults.colors(
-//            focusedContainerColor = LightGrayBG,
-//            focusedIndicatorColor = Color.Transparent,
-//
-//            unfocusedContainerColor = LightGrayBG,
-//            unfocusedIndicatorColor = Color.Transparent
-//        ),
-        modifier = Modifier
-            .padding(12.dp)
-            .fillMaxWidth()
-            .onFocusChanged { isFocus = it.isFocused }
-        ,
-        value = text,
-        onValueChange = { text = it },
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Done
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                keyboardController?.hide()
-                focusState.clearFocus()
-            }
-        ),
-        placeholder = { SearchPlaceHolder(isFocus) },
-        trailingIcon = if (isFocus) {
-            {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    if (text.isNotEmpty()) {
-                        Image(
-                            modifier = Modifier.clickable { text = "" },
-                            painter = painterResource(id = R.drawable.baseline_cancel_24),
-                            contentDescription = "이름 초기화",
-                            contentScale = ContentScale.Crop
-                        )
-                    }
-                    IconButton(
-                        onClick = {
-//                            viewModel.onDone(context)
-                            keyboardController?.hide()
-                            focusState.clearFocus()
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "검색"
-                        )
-                    }
-                }
-
-            }
-        } else {
-            null
-        }
-    )
-
 }
