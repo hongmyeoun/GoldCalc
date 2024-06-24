@@ -281,7 +281,7 @@ private fun SearchResults(
             }
         }
         if (characterList.size >= 2) {
-            stickyHeader { HeaderText("같은 계정내 캐릭터") }
+            stickyHeader { HeaderText("같은 계정내 캐릭터 (${characterList.size - 1})") }
             items(characterList.drop(1), key = { item -> item.characterName }) {
                 CharacterListItem(
                     character = it,
