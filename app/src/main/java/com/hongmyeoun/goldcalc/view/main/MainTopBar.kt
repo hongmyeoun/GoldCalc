@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.SpanStyle
@@ -336,10 +337,15 @@ private fun MainAppProgressBar(characterListVM: CharacterListVM) {
             modifier = Modifier
                 .height(24.dp)
                 .fillMaxWidth()
-                .border(0.5f.dp, Color.Gray),
+                .border(
+                    width = 0.5f.dp,
+                    color = Color.Gray,
+                    shape = RoundedCornerShape(16.dp)
+                ),
             progress = animatedProgress,
-            color = MokokoGreen,
+            color = CharacterEmblemBG,
             trackColor = Color.Transparent,
+            strokeCap = StrokeCap.Round
         )
 
         Text(
