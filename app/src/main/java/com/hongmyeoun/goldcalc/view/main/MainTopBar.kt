@@ -53,8 +53,9 @@ import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
 import com.hongmyeoun.goldcalc.ui.theme.DarkModeGray
-import com.hongmyeoun.goldcalc.ui.theme.MokokoBG
+import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.MokokoGreen
+import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
 import com.hongmyeoun.goldcalc.viewModel.main.CharacterListVM
 import java.text.NumberFormat
 
@@ -63,7 +64,7 @@ fun MainAppTopBar(navController: NavHostController, characterListVM: CharacterLi
     Column {
         Column(
             modifier = Modifier
-                .background(MokokoBG)
+                .background(LightGrayBG)
                 .padding(16.dp)
         ) {
             MainAppTop(navController, characterListVM)
@@ -105,7 +106,7 @@ fun MainAppProgressText(characterListVM: CharacterListVM) {
         ) {
             Text(
                 text = "숙제 진행도",
-                fontSize = 18.sp
+                style = normalTextStyle(fontSize = 18.sp)
             )
 
             Spacer(modifier = Modifier.width(4.dp))
@@ -116,6 +117,7 @@ fun MainAppProgressText(characterListVM: CharacterListVM) {
             ) {
                 Icon(
                     imageVector = Icons.Default.Info,
+                    tint = Color.White,
                     contentDescription = "전체 진행사항 한눈에 보기"
                 )
             }
@@ -123,7 +125,7 @@ fun MainAppProgressText(characterListVM: CharacterListVM) {
 
         Text(
             text = "주간 골드 :",
-            fontSize = 10.sp,
+            style = normalTextStyle(),
             fontWeight = FontWeight.Light
         )
 
@@ -131,9 +133,10 @@ fun MainAppProgressText(characterListVM: CharacterListVM) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = characterListVM.maxGold.formatWithCommas(),
-                fontSize = 16.sp
+                style = normalTextStyle(fontSize = 16.sp)
             )
             Spacer(modifier = Modifier.width(4.dp))
+
             GlideImage(
                 modifier = Modifier.size(18.dp),
                 model = R.drawable.gold_coins,
@@ -346,7 +349,8 @@ private fun MainAppProgressBar(characterListVM: CharacterListVM) {
                 .align(Alignment.CenterEnd)
                 .padding(end = 8.dp),
             text = characterListVM.progressPercentage.toPercentage(),
-            textAlign = TextAlign.End
+            textAlign = TextAlign.End,
+            color = Color.White
         )
     }
     Spacer(modifier = Modifier.height(8.dp))
@@ -362,7 +366,7 @@ private fun MainAppGoldCurrent(characterListVM: CharacterListVM) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = "얻은 골드",
-                fontSize = 10.sp,
+                style = normalTextStyle(),
                 fontWeight = FontWeight.Light
             )
 
@@ -374,16 +378,18 @@ private fun MainAppGoldCurrent(characterListVM: CharacterListVM) {
                     model = R.drawable.gold_coins,
                     contentDescription = "골드"
                 )
+                Spacer(modifier = Modifier.width(8.dp))
+
                 Text(
                     text = characterListVM.earnGold.formatWithCommas(),
-                    fontSize = 16.sp
+                    style = normalTextStyle(fontSize = 16.sp),
                 )
             }
         }
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = "남은 골드",
-                fontSize = 10.sp,
+                style = normalTextStyle(),
                 fontWeight = FontWeight.Light
             )
             Row(
@@ -394,9 +400,11 @@ private fun MainAppGoldCurrent(characterListVM: CharacterListVM) {
                     model = R.drawable.gold_coins,
                     contentDescription = "골드"
                 )
+                Spacer(modifier = Modifier.width(8.dp))
+
                 Text(
                     text = characterListVM.remainGold.formatWithCommas(),
-                    fontSize = 16.sp
+                    style = normalTextStyle(fontSize = 16.sp),
                 )
             }
         }
@@ -415,6 +423,7 @@ private fun MainMenuButtons(modifier: Modifier, navController: NavHostController
         ) {
             Icon(
                 imageVector = Icons.Default.Search,
+                tint = Color.White,
                 contentDescription = "검색/추가"
             )
         }
@@ -425,6 +434,7 @@ private fun MainMenuButtons(modifier: Modifier, navController: NavHostController
         ) {
             Icon(
                 imageVector = Icons.Default.Refresh,
+                tint = Color.White,
                 contentDescription = "새로고침"
             )
         }
@@ -435,6 +445,7 @@ private fun MainMenuButtons(modifier: Modifier, navController: NavHostController
         ) {
             Icon(
                 imageVector = Icons.Default.Settings,
+                tint = Color.White,
                 contentDescription = "설정"
             )
         }
@@ -448,7 +459,7 @@ fun MainAppNameText(modifier: Modifier) {
         buildAnnotatedString {
             withStyle(
                 style = SpanStyle(
-//                    color = Color.Red,
+                    color = Color.White,
                     fontSize = 30.sp
                 )
             ) {
@@ -466,7 +477,7 @@ fun MainAppNameText(modifier: Modifier) {
 
             withStyle(
                 style = SpanStyle(
-//                    color = Color(0xffA6FF4D),
+                    color = Color.White,
                     fontSize = 30.sp
                 )
             ) {
@@ -484,7 +495,7 @@ fun MainAppNameText(modifier: Modifier) {
 
             withStyle(
                 style = SpanStyle(
-//                    color = Color.Blue,
+                    color = Color.White,
                     fontSize = 30.sp
                 )
             ) {
