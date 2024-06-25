@@ -90,7 +90,6 @@ class MainActivity : ComponentActivity() {
                                             navController = navController,
                                             viewModel = characterCardVM,
                                         )
-                                        Divider(modifier = Modifier.height(8.dp))
                                     }
                                 }
                             }

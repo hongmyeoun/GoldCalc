@@ -36,11 +36,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
-import com.hongmyeoun.goldcalc.ui.theme.MokokoGreen
+import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
 import com.hongmyeoun.goldcalc.view.main.formatWithCommas
+import com.hongmyeoun.goldcalc.view.main.goldImage
 import com.hongmyeoun.goldcalc.view.main.toPercentage
 import com.hongmyeoun.goldcalc.viewModel.main.CharacterCardVM
 
@@ -100,7 +100,7 @@ fun SimpleCharacterInfo(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = character.serverName,
-                    fontSize = 10.sp
+                    style = normalTextStyle()
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 IconButton(
@@ -109,24 +109,28 @@ fun SimpleCharacterInfo(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Settings,
+                        tint = Color.White,
                         contentDescription = "설정",
                     )
                 }
             }
 
-            Text(text = character.name)
+            Text(
+                text = character.name,
+                color = Color.White
+            )
 
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = character.className,
-                    fontSize = 10.sp
+                    style = normalTextStyle()
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
                     text = character.itemLevel,
-                    fontSize = 10.sp
+                    style = normalTextStyle()
                 )
             }
         }
@@ -167,7 +171,7 @@ private fun ProgressGold(
             ) {
                 GlideImage(
                     modifier = Modifier.size(25.dp),
-                    model = R.drawable.gold_coins,
+                    model = goldImage(character.weeklyGold),
                     contentDescription = "골드"
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -175,7 +179,7 @@ private fun ProgressGold(
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.End,
                     text = character.weeklyGold.formatWithCommas(),
-                    fontSize = 16.sp
+                    style = normalTextStyle(fontSize = 16.sp),
                 )
             }
             Row(
@@ -183,7 +187,7 @@ private fun ProgressGold(
             ) {
                 GlideImage(
                     modifier = Modifier.size(25.dp),
-                    model = R.drawable.gold_coin,
+                    model = goldImage(viewModel.totalGold.value),
                     contentDescription = "골드"
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -191,7 +195,7 @@ private fun ProgressGold(
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.End,
                     text = viewModel.totalGold.value.formatWithCommas(),
-                    fontSize = 16.sp
+                    style = normalTextStyle(fontSize = 16.sp),
                 )
             }
         }
@@ -217,7 +221,7 @@ fun SimpleProgressBar(viewModel: CharacterCardVM) {
                 .height(12.dp)
                 .border(0.3f.dp, Color.Gray, RoundedCornerShape(8.dp)),
             progress = animatedProgress,
-            color = MokokoGreen,
+            color = CharacterEmblemBG,
             trackColor = Color.Transparent,
             strokeCap = StrokeCap.Round
         )
@@ -226,7 +230,7 @@ fun SimpleProgressBar(viewModel: CharacterCardVM) {
             modifier = Modifier
                 .align(Alignment.Center),
             text = "진행도",
-            fontSize = 8.sp
+            style = normalTextStyle(fontSize = 8.sp),
         )
 
         Text(
@@ -234,7 +238,7 @@ fun SimpleProgressBar(viewModel: CharacterCardVM) {
                 .align(Alignment.CenterEnd)
                 .padding(end = 2.dp),
             text = viewModel.progressPercentage.value.toPercentage(),
-            fontSize = 8.sp
+            style = normalTextStyle(fontSize = 8.sp),
         )
     }
 

@@ -72,7 +72,6 @@ fun MainAppTopBar(navController: NavHostController, characterListVM: CharacterLi
             MainAppProgressBar(characterListVM)
             MainAppGoldCurrent(characterListVM)
         }
-        Divider()
     }
 }
 
@@ -138,8 +137,8 @@ fun MainAppProgressText(characterListVM: CharacterListVM) {
             Spacer(modifier = Modifier.width(4.dp))
 
             GlideImage(
-                modifier = Modifier.size(18.dp),
-                model = R.drawable.gold_coins,
+                modifier = Modifier.size(25.dp),
+                model = goldImage(characterListVM.maxGold),
                 contentDescription = "골드"
             )
         }
@@ -375,7 +374,7 @@ private fun MainAppGoldCurrent(characterListVM: CharacterListVM) {
             ) {
                 GlideImage(
                     modifier = Modifier.size(25.dp),
-                    model = R.drawable.gold_coins,
+                    model = goldImage(characterListVM.earnGold),
                     contentDescription = "골드"
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -397,7 +396,7 @@ private fun MainAppGoldCurrent(characterListVM: CharacterListVM) {
             ) {
                 GlideImage(
                     modifier = Modifier.size(25.dp),
-                    model = R.drawable.gold_coins,
+                    model = goldImage(characterListVM.remainGold),
                     contentDescription = "골드"
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -521,4 +520,13 @@ fun String.formatWithCommas(): String {
 
 fun Float.toPercentage(): String {
     return "${(this * 100).toInt()}%"
+}
+
+fun goldImage(gold: Int): Int {
+    return when (gold) {
+        in 0 until 5000 -> R.drawable.gold_coins
+        in 5000 until 20000 -> R.drawable.gold_bar
+        in 20000 until 50000 -> R.drawable.gold_box
+        else -> R.drawable.gold_bar_many
+    }
 }
