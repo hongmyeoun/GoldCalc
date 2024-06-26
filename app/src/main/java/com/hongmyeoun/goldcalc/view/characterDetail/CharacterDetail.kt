@@ -46,6 +46,7 @@ import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
+import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
@@ -180,6 +181,17 @@ fun Levels(characterDetail: CharacterDetail) {
 }
 
 @Composable
+fun Levels(character: Character) {
+    Row {
+        CharLevel("전투", character.characterLevel.toString())
+        Spacer(modifier = Modifier.width(16.dp))
+
+        CharLevel("원정대", character.expeditionLevel.toString())
+    }
+}
+
+
+@Composable
 private fun CharLevel(title: String, level: String) {
     Column {
         Text(
@@ -284,6 +296,18 @@ fun Extra(characterDetail: CharacterDetail) {
     Spacer(modifier = Modifier.height(6.dp))
 
     ExtraInfo("PVP", characterDetail.pvpGradeName)
+    Spacer(modifier = Modifier.height(16.dp))
+}
+
+@Composable
+fun Extra(character: Character) {
+    ExtraInfo("길드", character.guildName)
+    Spacer(modifier = Modifier.height(6.dp))
+
+    ExtraInfo("영지", "Lv.${character.townLevel} ${character.townName}")
+    Spacer(modifier = Modifier.height(6.dp))
+
+    ExtraInfo("PVP", character.pvpGradeName)
     Spacer(modifier = Modifier.height(16.dp))
 }
 

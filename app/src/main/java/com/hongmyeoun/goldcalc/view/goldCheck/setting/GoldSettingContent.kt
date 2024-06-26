@@ -29,7 +29,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -61,7 +60,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -71,8 +69,8 @@ import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
-import com.hongmyeoun.goldcalc.ui.theme.DarkModeGray
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
+import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.characterDetail.Extra
 import com.hongmyeoun.goldcalc.view.characterDetail.ItemLevel
 import com.hongmyeoun.goldcalc.view.characterDetail.Levels
@@ -184,7 +182,7 @@ private fun LoadLocalDataCharInfo(
             GlideImage(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
-                    .height(320.dp),
+                    .height(300.dp),
                 model = it.characterImage,
                 contentDescription = "캐릭터 이미지"
             )
@@ -192,7 +190,7 @@ private fun LoadLocalDataCharInfo(
             GlideImage(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
-                    .height(320.dp),
+                    .height(300.dp),
                 contentScale = ContentScale.FillHeight,
                 model = CharacterResourceMapper.getClassDefaultImg(it.className),
                 contentDescription = "캐릭터 이미지"
@@ -200,19 +198,13 @@ private fun LoadLocalDataCharInfo(
         }
         Column(
             modifier = Modifier
-                .align(Alignment.CenterStart)
-                .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
+                .padding(start = 16.dp, top = 24.dp)
         ) {
-            DetailInfomation(detailMenu = "닉네임", detail = it.name)
-            DetailInfomation(detailMenu = "서    버", detail = it.serverName)
-            DetailInfomation(detailMenu = "클래스", detail = it.className)
-            DetailInfomation(detailMenu = "템레벨", detail = it.itemLevel)
-            DetailInfomation(detailMenu = "원정대", detail = it.expeditionLevel.toString())
-            DetailInfomation(detailMenu = "칭    호", detail = it.title)
-            DetailInfomation(detailMenu = "전투렙", detail = it.characterLevel.toString())
-            DetailInfomation(detailMenu = "길    드", detail = it.guildName ?: "-")
-            DetailInfomation(detailMenu = "P  V  P", detail = it.pvpGradeName)
-            DetailInfomation(detailMenu = "영    지", detail = "Lv.${it.townLevel} ${it.townName}")
+            ServerClassName(serverName = it.serverName, className = it.className)
+            TitleCharName(title = it.title, name = it.name)
+            ItemLevel(level = it.itemLevel)
+            Extra(character = it)
+            Levels(character = it)
         }
         Column(
             modifier = Modifier
@@ -228,7 +220,7 @@ private fun LoadLocalDataCharInfo(
                         isBlinking = false
                     }
                 },
-                containerColor = DarkModeGray
+                containerColor = LightGrayBG
             ) {
                 Icon(
                     imageVector = Icons.Default.Person,
@@ -238,7 +230,7 @@ private fun LoadLocalDataCharInfo(
             }
             SmallFloatingActionButton(
                 onClick = onReloadClick,
-                containerColor = DarkModeGray
+                containerColor = LightGrayBG
             ) {
                 Icon(
                     imageVector = Icons.Default.Refresh,
@@ -329,27 +321,6 @@ fun BlinkingText(isBlinking: Boolean, text: String, modifier: Modifier) {
         }
     }
 }
-
-@Composable
-private fun DetailInfomation(detailMenu: String, detail: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(
-            modifier = Modifier
-                .background(DarkModeGray, RoundedCornerShape(16.dp))
-                .width(80.dp),
-            text = "  $detailMenu  ",
-            color = Color.White,
-            textAlign = TextAlign.Center
-        )
-        Spacer(modifier = Modifier.width(10.dp))
-        Text(
-            text = detail,
-            color = Color.White
-        )
-    }
-    Spacer(modifier = Modifier.height(4.dp))
-}
-
 
 @Composable
 private fun RaidHeader(viewModel: GoldSettingVM, isDark: Boolean = isSystemInDarkTheme()) {

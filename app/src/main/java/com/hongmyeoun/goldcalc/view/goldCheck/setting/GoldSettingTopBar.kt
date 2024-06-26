@@ -94,7 +94,6 @@ fun GoldSettingTopBar(
                 )
             }
         }
-        Divider()
     }
 }
 
