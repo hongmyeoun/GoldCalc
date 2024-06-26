@@ -1,10 +1,15 @@
 package com.hongmyeoun.goldcalc.view.goldCheck.setting
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -103,6 +108,8 @@ fun GoldSettingContent(
     val screenHeight = configuration.screenHeightDp.dp
     val maxColumnHeight = (screenHeight * 0.93f) // 화면 높이의 80%
 
+    val showDetail by viewModel.showDetail.collectAsState()
+
     if (isLoading) {
         LoadingScreen()
     } else {
@@ -111,11 +118,17 @@ fun GoldSettingContent(
                 .padding(paddingValues)
         ) {
             item {
-                CharacterDetailSimpleUI(
-                    character = character,
-                    onReloadClick = { viewModel.onReloadClick(context, character?.name) },
-                    onAvatarClick = { viewModel.onAvatarClick(character) }
-                )
+                AnimatedVisibility(
+                    visible = showDetail,
+                    enter = expandVertically(animationSpec = tween(100, easing = LinearEasing)),
+                    exit = shrinkVertically(animationSpec = tween(100, easing = LinearEasing))
+                ) {
+                    CharacterDetailSimpleUI(
+                        character = character,
+                        onReloadClick = { viewModel.onReloadClick(context, character?.name) },
+                        onAvatarClick = { viewModel.onAvatarClick(character) }
+                    )
+                }
             }
             stickyHeader { RaidHeader(viewModel) }
             item { GoldSetting(viewModel, cbVM, adVM, kzVM, epVM) }
@@ -140,7 +153,7 @@ fun CharacterDetailSimpleUI(
     character: Character? = null,
     onReloadClick: () -> Unit = {},
     onAvatarClick: () -> Unit = {},
-    onGetClick:() -> Unit = {},
+    onGetClick: () -> Unit = {},
     getButtonEnabled: Boolean = false
 ) {
     character?.let {
@@ -251,7 +264,8 @@ private fun LoadAPIDataCharInfo(
             .fillMaxWidth()
             .height(height)
     ) {
-        val characterImage = if (it.characterImage.isNullOrEmpty()) CharacterResourceMapper.getClassDefaultImg(it.characterClassName) else it.characterImage
+        val characterImage =
+            if (it.characterImage.isNullOrEmpty()) CharacterResourceMapper.getClassDefaultImg(it.characterClassName) else it.characterImage
 
         GlideImage(
             modifier = Modifier

@@ -33,6 +33,13 @@ class GoldSettingVM @Inject constructor(
         _showDialog.value = true
     }
 
+    private val _showDetail = MutableStateFlow(false)
+    val showDetail: StateFlow<Boolean> = _showDetail
+
+    fun onShowDetailClicked() {
+        _showDetail.value = !_showDetail.value
+    }
+
     var plusGold by mutableStateOf("0")
     var minusGold by mutableStateOf("0")
 

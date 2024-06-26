@@ -12,7 +12,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,27 +39,41 @@ import com.hongmyeoun.goldcalc.view.characterDetail.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
 
 @Composable
-fun GoldSettingTopBar(viewModel: GoldSettingVM, navController: NavHostController) {
+fun GoldSettingTopBar(
+    viewModel: GoldSettingVM,
+    navController: NavHostController
+) {
     val showDialog by viewModel.showDialog.collectAsState()
+    val showDetail by viewModel.showDetail.collectAsState()
 
     if (showDialog) {
         DeleteCharacterDialog(viewModel, navController)
     }
 
-    Column(modifier = Modifier.background(LightGrayBG)) {
+    Column(
+        modifier = Modifier.background(LightGrayBG)
+    ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(
                 modifier = Modifier.weight(0.5f),
-                onClick = { navController.popBackStack() }
+                onClick = { viewModel.onShowDetailClicked() }
             ) {
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowLeft,
-                    tint = Color.White,
-                    contentDescription = "뒤로"
-                )
+                if (showDetail) {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowUp,
+                        tint = Color.White,
+                        contentDescription = "펼치기"
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowDown,
+                        tint = Color.White,
+                        contentDescription = "접기"
+                    )
+                }
             }
             Text(
                 modifier = Modifier
