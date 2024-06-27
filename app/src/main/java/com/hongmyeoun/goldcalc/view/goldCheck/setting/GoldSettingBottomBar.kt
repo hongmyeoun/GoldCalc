@@ -2,7 +2,6 @@ package com.hongmyeoun.goldcalc.view.goldCheck.setting
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,12 +17,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +28,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -42,6 +40,11 @@ import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.SimplephaseInfo
+import com.hongmyeoun.goldcalc.ui.theme.GreenQual
+import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
+import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
+import com.hongmyeoun.goldcalc.view.characterDetail.titleTextStyle
+import com.hongmyeoun.goldcalc.view.common.noRippleClickable
 import com.hongmyeoun.goldcalc.view.main.formatWithCommas
 import com.hongmyeoun.goldcalc.view.main.goldImage
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
@@ -427,41 +430,62 @@ private fun BottomBar(
     val borderPadding = if (viewModel.expanded) Modifier
         .border(1.dp, Color.LightGray)
         .padding(start = 16.dp, end = 8.dp, bottom = 16.dp, top = 16.dp) else Modifier.padding(start = 16.dp, end = 8.dp, bottom = 16.dp)
-    val arrowIcon = if (viewModel.expanded) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp
 
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                color = LightGrayBG,
+                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+            )
+            .clip(shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+            .noRippleClickable { viewModel.expand() }
+            .then(borderPadding)
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(top = 12.dp)
         ) {
-            Icon(
+            Box(
                 modifier = Modifier
-                    .height(20.dp)
-                    .align(Alignment.Center),
-                imageVector = arrowIcon,
-                contentDescription = "펼치기, 접기"
+                    .width(64.dp)
+                    .height(4.dp)
+                    .background(
+                        color = Color.LightGray,
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    .align(Alignment.Center)
             )
         }
+        Spacer(modifier = Modifier.height(16.dp))
+
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.background)
-                .clickable { viewModel.expand() }
-                .then(borderPadding),
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
                 modifier = Modifier.weight(3f),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                BottomGoldText(beforeOrAfter = "전", gold = character?.weeklyGold?:0)
+                BottomGoldText(beforeOrAfter = "전", gold = character?.weeklyGold ?: 0)
                 Spacer(modifier = Modifier.width(8.dp))
-                Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "화살표")
+
+                Icon(
+                    imageVector = Icons.Default.ArrowForward,
+                    tint = Color.White,
+                    contentDescription = "화살표"
+                )
                 Spacer(modifier = Modifier.width(12.dp))
+
                 BottomGoldText(beforeOrAfter = "후", gold = viewModel.totalGold)
             }
             Row(horizontalArrangement = Arrangement.End) {
                 OutlinedButton(
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = Color.White
+                    ),
                     onClick = {
                         navController.navigate("Main") {
                             popUpTo("Check/{charName}") {
@@ -474,6 +498,10 @@ private fun BottomBar(
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = GreenQual,
+                        contentColor = Color.White
+                    ),
                     onClick = {
                         onDoneClicked()
                         navController.navigate("Main") {
@@ -494,7 +522,10 @@ private fun BottomBar(
 @Composable
 fun BottomGoldText(beforeOrAfter: String, gold: Int) {
     Column {
-        Text(text = "변경 $beforeOrAfter")
+        Text(
+            text = "변경 $beforeOrAfter",
+            style = titleTextStyle(fontSize = 18.sp)
+        )
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -506,7 +537,7 @@ fun BottomGoldText(beforeOrAfter: String, gold: Int) {
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = gold.formatWithCommas(),
-                fontSize = 14.sp
+                style = normalTextStyle(fontSize = 14.sp)
             )
         }
     }
