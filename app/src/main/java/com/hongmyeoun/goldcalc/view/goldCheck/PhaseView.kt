@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.view.main.formatWithCommas
+import com.hongmyeoun.goldcalc.view.main.goldImage
 
 @Composable
 fun PhaseUI(
@@ -403,7 +403,7 @@ fun TotalGoldText(totalGold: Int, isDark: Boolean = isSystemInDarkTheme()) {
                 .weight(0.3f)
                 .size(16.dp),
             alignment = Alignment.Center,
-            model = R.drawable.gold_coin,
+            model = goldImage(totalGold),
             contentDescription = "골드 아이콘"
         )
     }
@@ -441,7 +441,7 @@ fun PhaseGoldText(
                 .weight(0.3f)
                 .size(16.dp),
             alignment = Alignment.Center,
-            model = R.drawable.gold_coin,
+            model = goldImage(phaseGold),
             contentDescription = "골드 아이콘"
         )
     }

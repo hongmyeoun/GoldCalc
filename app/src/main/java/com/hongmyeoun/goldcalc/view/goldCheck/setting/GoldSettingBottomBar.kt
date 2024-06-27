@@ -41,9 +41,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.SimplephaseInfo
 import com.hongmyeoun.goldcalc.view.main.formatWithCommas
+import com.hongmyeoun.goldcalc.view.main.goldImage
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
@@ -454,11 +454,11 @@ private fun BottomBar(
                 modifier = Modifier.weight(3f),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                BottomGoldText(beforeOrAfter = "전", gold = character?.weeklyGold?.formatWithCommas())
+                BottomGoldText(beforeOrAfter = "전", gold = character?.weeklyGold?:0)
                 Spacer(modifier = Modifier.width(8.dp))
                 Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "화살표")
                 Spacer(modifier = Modifier.width(12.dp))
-                BottomGoldText(beforeOrAfter = "후", gold = viewModel.totalGold.formatWithCommas())
+                BottomGoldText(beforeOrAfter = "후", gold = viewModel.totalGold)
             }
             Row(horizontalArrangement = Arrangement.End) {
                 OutlinedButton(
@@ -492,7 +492,7 @@ private fun BottomBar(
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun BottomGoldText(beforeOrAfter: String, gold: String?) {
+fun BottomGoldText(beforeOrAfter: String, gold: Int) {
     Column {
         Text(text = "변경 $beforeOrAfter")
         Row(
@@ -500,12 +500,12 @@ fun BottomGoldText(beforeOrAfter: String, gold: String?) {
         ) {
             GlideImage(
                 modifier = Modifier.size(18.dp),
-                model = R.drawable.gold_coins,
+                model = goldImage(gold),
                 contentDescription = "골드 이미지",
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = gold?:"0",
+                text = gold.formatWithCommas(),
                 fontSize = 14.sp
             )
         }
