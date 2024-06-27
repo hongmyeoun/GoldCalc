@@ -13,29 +13,23 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -44,7 +38,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -54,7 +47,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -68,6 +60,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.bottombar.AnimatedBottomBar
+import com.example.bottombar.model.IndicatorDirection
+import com.example.bottombar.model.IndicatorStyle
 import com.hongmyeoun.goldcalc.LoadingScreen
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
@@ -329,46 +324,23 @@ fun BlinkingText(isBlinking: Boolean, text: String, modifier: Modifier) {
 
 @Composable
 private fun RaidHeader(viewModel: GoldSettingVM) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(LightGrayBG)
-            .height(50.dp)
+    AnimatedBottomBar(
+        modifier = Modifier.fillMaxWidth(),
+        bottomBarHeight = 50.dp,
+        containerColor = LightGrayBG,
+        selectedItem = viewModel.selectedTab,
+        itemSize = viewModel.headerTitle.size,
+        indicatorColor = Color.LightGray,
+        indicatorStyle = IndicatorStyle.LINE,
+        indicatorDirection = IndicatorDirection.BOTTOM
     ) {
-        TopBarBox(
-            title = "군단장",
-            modifier = Modifier.weight(1f),
-            selectedHeader = viewModel.selectedTab,
-            onClick = { viewModel.moveCommandRaid() }
-        )
-
-        TopBarBox(
-            title = "어비스 던전",
-            modifier = Modifier.weight(1f),
-            onClick = { viewModel.moveAbyssDungeon() },
-            selectedHeader = viewModel.selectedTab
-        )
-
-        TopBarBox(
-            title = "카제로스",
-            modifier = Modifier.weight(1f),
-            onClick = { viewModel.moveKazeRaid() },
-            selectedHeader = viewModel.selectedTab
-        )
-
-        TopBarBox(
-            title = "에픽",
-            modifier = Modifier.weight(1f),
-            onClick = { viewModel.moveEpicRaid() },
-            selectedHeader = viewModel.selectedTab
-        )
-
-        TopBarBox(
-            title = "기타",
-            modifier = Modifier.weight(1f),
-            onClick = { viewModel.moveETC() },
-            selectedHeader = viewModel.selectedTab
-        )
+        viewModel.headerTitle.forEachIndexed { index, title ->
+            TopBarBox(
+                title = title,
+                modifier = Modifier.weight(1f),
+                onClick = { viewModel.moveHeader(index) }
+            )
+        }
     }
 }
 
@@ -377,16 +349,12 @@ private fun TopBarBox(
     title: String,
     modifier: Modifier,
     onClick: () -> Unit,
-    selectedHeader: String
 ) {
-    val selectedBGColor = if (selectedHeader != title) LightGrayBG else ImageBG
-
     Box(
         modifier = modifier
             .fillMaxSize()
             .clickable { onClick() }
-            .background(selectedBGColor, RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-            .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
+        ,
         contentAlignment = Alignment.Center
     ) {
         if (title == "어비스 던전") {
@@ -417,7 +385,7 @@ private fun GoldSetting(
             .fillMaxSize()
     ) {
         when (viewModel.selectedTab) {
-            "군단장" -> {
+            0 -> {
                 RaidCard(
                     raidImg = R.drawable.command_icon,
                     totalGold = cbVM.totalGold
@@ -426,7 +394,7 @@ private fun GoldSetting(
                 }
             }
 
-            "어비스 던전" -> {
+            1 -> {
                 RaidCard(
                     raidImg = R.drawable.abyss_dungeon_icon,
                     totalGold = adVM.totalGold,
@@ -435,7 +403,7 @@ private fun GoldSetting(
                 }
             }
 
-            "카제로스" -> {
+            2 -> {
                 RaidCard(
                     raidImg = R.drawable.kazeroth_icon,
                     totalGold = kzVM.totalGold
@@ -444,7 +412,7 @@ private fun GoldSetting(
                 }
             }
 
-            "에픽" -> {
+            3 -> {
                 RaidCard(
                     raidImg = R.drawable.epic_icon,
                     totalGold = epVM.totalGold
@@ -453,7 +421,7 @@ private fun GoldSetting(
                 }
             }
 
-            "기타" -> {
+            4 -> {
                 ETCGold(
                     viewModel = viewModel,
                     onDone = { viewModel.updateTotalGold(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold) },
