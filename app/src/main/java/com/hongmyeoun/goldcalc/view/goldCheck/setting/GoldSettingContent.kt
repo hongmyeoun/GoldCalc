@@ -29,6 +29,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -40,8 +41,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -51,6 +54,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -76,6 +80,7 @@ import com.hongmyeoun.goldcalc.view.characterDetail.ItemLevel
 import com.hongmyeoun.goldcalc.view.characterDetail.Levels
 import com.hongmyeoun.goldcalc.view.characterDetail.ServerClassName
 import com.hongmyeoun.goldcalc.view.characterDetail.TitleCharName
+import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
 import com.hongmyeoun.goldcalc.view.goldCheck.RaidCard
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.AbyssDungeon
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.CommandRaid
@@ -323,73 +328,48 @@ fun BlinkingText(isBlinking: Boolean, text: String, modifier: Modifier) {
 }
 
 @Composable
-private fun RaidHeader(viewModel: GoldSettingVM, isDark: Boolean = isSystemInDarkTheme()) {
-    val bgColor = if (isDark) ImageBG else Color.White
-    Column {
-        Divider()
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(bgColor)
-                .height(50.dp)
-        ) {
-            TopBarBox(
-                title = "군단장",
-                modifier = Modifier.weight(1f),
-                selectedHeader = viewModel.selectedTab,
-                onClick = { viewModel.moveCommandRaid() }
-            )
-            Divider(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(1.dp)
-            )
+private fun RaidHeader(viewModel: GoldSettingVM) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(LightGrayBG)
+            .height(50.dp)
+    ) {
+        TopBarBox(
+            title = "군단장",
+            modifier = Modifier.weight(1f),
+            selectedHeader = viewModel.selectedTab,
+            onClick = { viewModel.moveCommandRaid() }
+        )
 
-            TopBarBox(
-                title = "어비스 던전",
-                modifier = Modifier.weight(1f),
-                onClick = { viewModel.moveAbyssDungeon() },
-                selectedHeader = viewModel.selectedTab
-            )
-            Divider(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(1.dp)
-            )
+        TopBarBox(
+            title = "어비스 던전",
+            modifier = Modifier.weight(1f),
+            onClick = { viewModel.moveAbyssDungeon() },
+            selectedHeader = viewModel.selectedTab
+        )
 
-            TopBarBox(
-                title = "카제로스",
-                modifier = Modifier.weight(1f),
-                onClick = { viewModel.moveKazeRaid() },
-                selectedHeader = viewModel.selectedTab
-            )
-            Divider(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(1.dp)
-            )
+        TopBarBox(
+            title = "카제로스",
+            modifier = Modifier.weight(1f),
+            onClick = { viewModel.moveKazeRaid() },
+            selectedHeader = viewModel.selectedTab
+        )
 
-            TopBarBox(
-                title = "에픽",
-                modifier = Modifier.weight(1f),
-                onClick = { viewModel.moveEpicRaid() },
-                selectedHeader = viewModel.selectedTab
-            )
-            Divider(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(1.dp)
-            )
+        TopBarBox(
+            title = "에픽",
+            modifier = Modifier.weight(1f),
+            onClick = { viewModel.moveEpicRaid() },
+            selectedHeader = viewModel.selectedTab
+        )
 
-            TopBarBox(
-                title = "기타",
-                modifier = Modifier.weight(1f),
-                onClick = { viewModel.moveETC() },
-                selectedHeader = viewModel.selectedTab
-            )
-        }
+        TopBarBox(
+            title = "기타",
+            modifier = Modifier.weight(1f),
+            onClick = { viewModel.moveETC() },
+            selectedHeader = viewModel.selectedTab
+        )
     }
-    Divider()
 }
 
 @Composable
@@ -399,26 +379,25 @@ private fun TopBarBox(
     onClick: () -> Unit,
     selectedHeader: String
 ) {
-    val selectedBGColor = if (selectedHeader == title) Color.White else ImageBG
-    val selectedTextColor = if (selectedHeader == title) Color.Black else Color.White
+    val selectedBGColor = if (selectedHeader != title) LightGrayBG else ImageBG
 
     Box(
         modifier = modifier
             .fillMaxSize()
             .clickable { onClick() }
-            .background(selectedBGColor),
+            .background(selectedBGColor, RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+            .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
         contentAlignment = Alignment.Center
     ) {
         if (title == "어비스 던전") {
             Text(
                 text = title,
-                fontSize = 12.sp,
-                color = selectedTextColor
+                style = normalTextStyle(fontSize = 12.sp)
             )
         } else {
             Text(
                 text = title,
-                color = selectedTextColor
+                color = Color.White
             )
         }
     }
@@ -513,6 +492,16 @@ fun ETCGold(
                     keyboardController?.hide()
                     focusState.clearFocus()
                 }
+            ),
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = Color.White,
+                focusedBorderColor = Color.White,
+
+                unfocusedLabelColor = Color.White,
+                focusedLabelColor = Color.White,
+
+                unfocusedTextColor = Color.White,
+                focusedTextColor = Color.White
             )
         )
 
@@ -532,6 +521,16 @@ fun ETCGold(
                     keyboardController?.hide()
                     focusState.clearFocus()
                 }
+            ),
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = Color.White,
+                focusedBorderColor = Color.White,
+
+                unfocusedLabelColor = Color.White,
+                focusedLabelColor = Color.White,
+
+                unfocusedTextColor = Color.White,
+                focusedTextColor = Color.White
             )
         )
     }

@@ -2,6 +2,7 @@ package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.goldCheck.FourPhaseBoss
 import com.hongmyeoun.goldcalc.view.goldCheck.FourPhaseBossLastHard
 import com.hongmyeoun.goldcalc.view.goldCheck.ThreePhaseBoss
@@ -59,6 +61,7 @@ fun CommandRaid(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
+            .background(LightGrayBG, RoundedCornerShape(16.dp))
             .border(1.dp, Color.LightGray, RoundedCornerShape(16.dp)),
     ) {
         Row(
