@@ -1,7 +1,11 @@
 package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -25,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
+import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -47,6 +52,10 @@ fun RaidCardUI(
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
+        ),
+        colors = CardDefaults.cardColors(
+            containerColor = LightGrayBG,
+            contentColor = Color.White
         )
     ) {
         if (!isRotated) {
@@ -85,5 +94,23 @@ fun RaidBossCheck(
                 uncheckedColor = Color.White // 테두리 색 변경해줌
             )
         )
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun RaidCheckLists(
+    maxItem: Int,
+    checkList: @Composable (Modifier)-> Unit
+) {
+    FlowRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .background(LightGrayBG, RoundedCornerShape(16.dp))
+            .border(1.dp, Color.LightGray, RoundedCornerShape(16.dp)),
+        maxItemsInEachRow = maxItem
+    ) {
+        checkList(Modifier.weight(1f))
     }
 }
