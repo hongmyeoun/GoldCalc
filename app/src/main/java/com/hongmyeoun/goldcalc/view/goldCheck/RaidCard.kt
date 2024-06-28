@@ -18,8 +18,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.view.main.formatWithCommas
+import com.hongmyeoun.goldcalc.view.main.goldImage
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -48,7 +48,7 @@ fun RaidCard(
         ) {
             GlideImage(
                 modifier = Modifier.size(25.dp),
-                model = R.drawable.gold_coins,
+                model = goldImage(totalGold),
                 contentDescription = "골드 아이콘"
             )
             Spacer(modifier = Modifier.width(8.dp))

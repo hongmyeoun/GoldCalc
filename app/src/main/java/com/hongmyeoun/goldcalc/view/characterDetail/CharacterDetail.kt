@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -46,6 +47,7 @@ import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
+import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
@@ -87,7 +89,8 @@ fun CharacterDetailUI(
 
                 Spacer(modifier = Modifier.width(32.dp).weight(0.5f))
             }
-        }
+        },
+        contentWindowInsets = WindowInsets(0.dp)
     ) {
         CharacterDetailScreen(charName = charName, paddingValues = it)
     }
@@ -178,6 +181,17 @@ fun Levels(characterDetail: CharacterDetail) {
         CharLevel("원정대", characterDetail.expeditionLevel.toString())
     }
 }
+
+@Composable
+fun Levels(character: Character) {
+    Row {
+        CharLevel("전투", character.characterLevel.toString())
+        Spacer(modifier = Modifier.width(16.dp))
+
+        CharLevel("원정대", character.expeditionLevel.toString())
+    }
+}
+
 
 @Composable
 private fun CharLevel(title: String, level: String) {
@@ -284,6 +298,18 @@ fun Extra(characterDetail: CharacterDetail) {
     Spacer(modifier = Modifier.height(6.dp))
 
     ExtraInfo("PVP", characterDetail.pvpGradeName)
+    Spacer(modifier = Modifier.height(16.dp))
+}
+
+@Composable
+fun Extra(character: Character) {
+    ExtraInfo("길드", character.guildName)
+    Spacer(modifier = Modifier.height(6.dp))
+
+    ExtraInfo("영지", "Lv.${character.townLevel} ${character.townName}")
+    Spacer(modifier = Modifier.height(6.dp))
+
+    ExtraInfo("PVP", character.pvpGradeName)
     Spacer(modifier = Modifier.height(16.dp))
 }
 

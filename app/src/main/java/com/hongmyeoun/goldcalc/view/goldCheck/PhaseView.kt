@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DividerDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,8 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.ui.theme.GreenQual
+import com.hongmyeoun.goldcalc.ui.theme.ImageBG
+import com.hongmyeoun.goldcalc.ui.theme.RedQual
 import com.hongmyeoun.goldcalc.view.main.formatWithCommas
+import com.hongmyeoun.goldcalc.view.main.goldImage
 
 @Composable
 fun PhaseUI(
@@ -42,7 +45,7 @@ fun PhaseUI(
     onClearClicked: (Boolean) -> Unit,
     onMoreClicked: (Boolean) -> Unit
 ) {
-    val difficultyColor = if (difficulty == "하드") Color.Red else MaterialTheme.colorScheme.primary
+    val difficultyColor = if (difficulty == "하드") RedQual else GreenQual
 
     Row(
         modifier = Modifier
@@ -62,7 +65,8 @@ fun PhaseUI(
             onClick = { onLevelClicked() },
             enabled = clearCheck || moreCheck,
             colors = ButtonDefaults.outlinedButtonColors(
-                contentColor = difficultyColor
+                contentColor = difficultyColor,
+                disabledContentColor = Color.LightGray
             )
         ) {
             Text(text = difficulty)
@@ -80,7 +84,11 @@ fun PhaseUI(
         ) {
             Checkbox(
                 checked = clearCheck,
-                onCheckedChange = { onClearClicked(it) }
+                onCheckedChange = { onClearClicked(it) },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = ImageBG,
+                    uncheckedColor = Color.White
+                )
             )
             Text(text = "클리어")
         }
@@ -90,7 +98,11 @@ fun PhaseUI(
         ) {
             Checkbox(
                 checked = moreCheck,
-                onCheckedChange = { onMoreClicked(it) }
+                onCheckedChange = { onMoreClicked(it) },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = ImageBG,
+                    uncheckedColor = Color.White
+                )
             )
             Text(text = "더보기")
         }
@@ -403,7 +415,7 @@ fun TotalGoldText(totalGold: Int, isDark: Boolean = isSystemInDarkTheme()) {
                 .weight(0.3f)
                 .size(16.dp),
             alignment = Alignment.Center,
-            model = R.drawable.gold_coin,
+            model = goldImage(totalGold),
             contentDescription = "골드 아이콘"
         )
     }
@@ -441,7 +453,7 @@ fun PhaseGoldText(
                 .weight(0.3f)
                 .size(16.dp),
             alignment = Alignment.Center,
-            model = R.drawable.gold_coin,
+            model = goldImage(phaseGold),
             contentDescription = "골드 아이콘"
         )
     }
@@ -512,7 +524,7 @@ fun PhaseUIOneDifficulty(
     onClearClicked: (Boolean) -> Unit,
     onMoreClicked: (Boolean) -> Unit
 ) {
-    val difficultyColor = if (difficulty == "하드") Color.Red else MaterialTheme.colorScheme.primary
+    val difficultyColor = if (difficulty == "하드") RedQual else GreenQual
 
     Row(
         modifier = Modifier
@@ -533,6 +545,7 @@ fun PhaseUIOneDifficulty(
             enabled = clearCheck || moreCheck,
             colors = ButtonDefaults.outlinedButtonColors(
                 contentColor = difficultyColor,
+                disabledContentColor = Color.LightGray
             )
         ) {
             Text(text = difficulty)
@@ -550,7 +563,11 @@ fun PhaseUIOneDifficulty(
         ) {
             Checkbox(
                 checked = clearCheck,
-                onCheckedChange = { onClearClicked(it) }
+                onCheckedChange = { onClearClicked(it) },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = ImageBG,
+                    uncheckedColor = Color.White
+                )
             )
             Text(text = "클리어")
         }
@@ -560,7 +577,11 @@ fun PhaseUIOneDifficulty(
         ) {
             Checkbox(
                 checked = moreCheck,
-                onCheckedChange = { onMoreClicked(it) }
+                onCheckedChange = { onMoreClicked(it) },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = ImageBG,
+                    uncheckedColor = Color.White
+                )
             )
             Text(text = "더보기")
         }

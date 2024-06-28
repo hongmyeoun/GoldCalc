@@ -1,5 +1,6 @@
 package com.hongmyeoun.goldcalc.view.main.characterCard
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,6 +33,7 @@ import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.viewModel.main.CharacterCardVM
 import com.hongmyeoun.goldcalc.viewModel.main.GoldContentStateVM
 
@@ -42,7 +44,14 @@ fun CharacterCard(
     viewModel: CharacterCardVM,
 ) {
     Column(
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier
+            .padding(top = 8.dp, bottom = 8.dp, start = 16.dp, end = 16.dp)
+            .background(
+                color = BlackTransBG,
+                shape = RoundedCornerShape(16.dp)
+            )
+            .padding(top = 8.dp, bottom = 8.dp, start = 16.dp, end = 16.dp)
+        ,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CharacterCardTop(
@@ -52,8 +61,8 @@ fun CharacterCard(
         GoldContents(
             viewModel = viewModel,
         )
+        Spacer(modifier = Modifier.height(16.dp))
     }
-    Spacer(modifier = Modifier.height(16.dp))
 }
 
 
