@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.view.goldCheck.setting
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,6 +23,8 @@ fun GoldSetting(
     kzVM: KazerothRaidVM,
     epVM: EpicRaidVM,
 ) {
+    val scrollState = rememberLazyListState()
+
     LaunchedEffect(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold, viewModel.plusGold, viewModel.minusGold, viewModel.selectedTab) {
         viewModel.updateTotalGold(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold)
     }
@@ -30,10 +33,10 @@ fun GoldSetting(
         modifier = Modifier
             .fillMaxSize(),
         containerColor = ImageBG,
-        topBar = { GoldSettingTopBar(viewModel, navController) },
+        topBar = { GoldSettingTopBar(viewModel, navController, scrollState) },
         bottomBar = { GoldSettingBottomBar(viewModel, cbVM, adVM, kzVM, epVM, navController) }
     ) { paddingValues ->
-        GoldSettingContent(paddingValues, viewModel, cbVM, adVM, kzVM, epVM)
+        GoldSettingContent(paddingValues, viewModel, scrollState, cbVM, adVM, kzVM, epVM)
     }
 
 }

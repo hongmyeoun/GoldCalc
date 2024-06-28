@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -90,6 +91,7 @@ import kotlinx.coroutines.launch
 fun GoldSettingContent(
     paddingValues: PaddingValues,
     viewModel: GoldSettingVM,
+    scrollState: LazyListState,
     cbVM: CommandBossVM,
     adVM: AbyssDungeonVM,
     kzVM: KazerothRaidVM,
@@ -106,7 +108,8 @@ fun GoldSettingContent(
     } else {
         LazyColumn(
             modifier = Modifier
-                .padding(paddingValues)
+                .padding(paddingValues),
+            state = scrollState
         ) {
             item {
                 AnimatedVisibility(
