@@ -163,9 +163,6 @@ fun LoadingScreen() {
 }
 
 
-
-
-
 @Preview(showBackground = true)
 @Composable
 fun CharacterPreview() {
@@ -180,39 +177,3 @@ fun CharacterPreview() {
         strokeCap = StrokeCap.Round
     )
 }
-
-
-
-//                            val pagerState = rememberPagerState(pageCount = { characterList.size })
-
-//                                HorizontalPager(state = pagerState) { page ->
-//                                    val characterName = characterList[page].name
-//                                    val characterCardVM = remember { CharacterCardVM(characterRepository, characterName) }
-//                                    Column(
-//                                        modifier
-//                                            .padding(16.dp)
-//                                            .graphicsLayer {
-//                                                val pageOffset = (
-//                                                        (pagerState.currentPage - page) + pagerState
-//                                                            .currentPageOffsetFraction
-//                                                        ).absoluteValue
-//                                                alpha = lerp(
-//                                                    start = 0.5f,
-//                                                    stop = 1f,
-//                                                    fraction = 1f - pageOffset.coerceIn(0f, 1f)
-//                                                )
-//                                            }
-//                                    ) {
-//                                        val character by characterCardVM.character.collectAsState()
-//
-//                                        CharacterCard(
-//                                            navController = navController,
-//                                            viewModel = characterCardVM,
-//                                            onDelete = {
-//                                                characterListVM.delete(character)
-//                                                isLoading = true
-//                                            }
-//                                        ) { characterCardVM.enableDelay() }
-//
-//                                    }
-//                                }
