@@ -73,12 +73,12 @@ fun GoldSettingBottomBar(
 ) {
     if (viewModel.expanded) {
         SimpleSummary(viewModel, cbVM, adVM, kzVM, epVM, navController)
-    } else {
-        BottomBar(
-            viewModel = viewModel,
-            navController = navController
-        ) { viewModel.onDoneClick(cbVM, adVM, kzVM, epVM) }
     }
+
+    BottomBar(
+        viewModel = viewModel,
+        navController = navController
+    ) { viewModel.onDoneClick(cbVM, adVM, kzVM, epVM) }
 }
 
 @Composable
@@ -99,6 +99,7 @@ private fun SimpleSummary(
 
     ModalBottomSheet(
         modifier = Modifier
+            .fillMaxWidth()
             .heightIn(max = maxColumnHeight),
         onDismissRequest = { viewModel.close() },
         containerColor = LightGrayBG,
