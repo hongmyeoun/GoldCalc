@@ -99,4 +99,7 @@ dependencies {
     // Glide
     implementation ("com.github.bumptech.glide:compose:1.0.0-beta01")
 
+    // Navigation Bar Animation
+    implementation ("com.canopas.compose-animated-navigationbar:bottombar:1.0.1")
+
 }

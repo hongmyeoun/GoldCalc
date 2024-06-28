@@ -33,6 +33,13 @@ class GoldSettingVM @Inject constructor(
         _showDialog.value = true
     }
 
+    private val _showDetail = MutableStateFlow(false)
+    val showDetail: StateFlow<Boolean> = _showDetail
+
+    fun onShowDetailClicked() {
+        _showDetail.value = !_showDetail.value
+    }
+
     var plusGold by mutableStateOf("0")
     var minusGold by mutableStateOf("0")
 
@@ -112,25 +119,10 @@ class GoldSettingVM @Inject constructor(
         expanded = false
     }
 
-    var selectedTab by mutableStateOf("군단장")
-    fun moveCommandRaid() {
-        selectedTab = "군단장"
-    }
-
-    fun moveAbyssDungeon() {
-        selectedTab = "어비스 던전"
-    }
-
-    fun moveKazeRaid() {
-        selectedTab = "카제로스"
-    }
-
-    fun moveEpicRaid() {
-        selectedTab = "에픽"
-    }
-
-    fun moveETC() {
-        selectedTab = "기타"
+    val headerTitle = listOf("군단장", "어비스 던전", "카제로스", "에픽", "기타")
+    var selectedTab by mutableStateOf(0)
+    fun moveHeader(index: Int) {
+        selectedTab = index
     }
 
     private fun updateCharacterDetail(characterDetail: CharacterDetail) {

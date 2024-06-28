@@ -1,41 +1,39 @@
 package com.hongmyeoun.goldcalc.view.goldCheck.setting
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedButton
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -50,29 +48,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.bottombar.AnimatedBottomBar
+import com.example.bottombar.model.IndicatorDirection
+import com.example.bottombar.model.IndicatorStyle
 import com.hongmyeoun.goldcalc.LoadingScreen
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
-import com.hongmyeoun.goldcalc.ui.theme.DarkModeGray
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
+import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.characterDetail.Extra
 import com.hongmyeoun.goldcalc.view.characterDetail.ItemLevel
 import com.hongmyeoun.goldcalc.view.characterDetail.Levels
 import com.hongmyeoun.goldcalc.view.characterDetail.ServerClassName
 import com.hongmyeoun.goldcalc.view.characterDetail.TitleCharName
+import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
 import com.hongmyeoun.goldcalc.view.goldCheck.RaidCard
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.AbyssDungeon
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.CommandRaid
@@ -87,10 +87,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 fun GoldSettingContent(
     paddingValues: PaddingValues,
     viewModel: GoldSettingVM,
+    scrollState: LazyListState,
     cbVM: CommandBossVM,
     adVM: AbyssDungeonVM,
     kzVM: KazerothRaidVM,
@@ -99,37 +100,32 @@ fun GoldSettingContent(
     val character by viewModel.character.collectAsState()
     val context = LocalContext.current
     val isLoading by viewModel.isLoading.collectAsState()
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
-    val maxColumnHeight = (screenHeight * 0.93f) // 화면 높이의 80%
+
+    val showDetail by viewModel.showDetail.collectAsState()
 
     if (isLoading) {
         LoadingScreen()
     } else {
         LazyColumn(
             modifier = Modifier
-                .padding(paddingValues)
+                .padding(paddingValues),
+            state = scrollState
         ) {
             item {
-                CharacterDetailSimpleUI(
-                    character = character,
-                    onReloadClick = { viewModel.onReloadClick(context, character?.name) },
-                    onAvatarClick = { viewModel.onAvatarClick(character) }
-                )
+                AnimatedVisibility(
+                    visible = showDetail,
+                    enter = expandVertically(animationSpec = tween(100, easing = LinearEasing)),
+                    exit = shrinkVertically(animationSpec = tween(100, easing = LinearEasing))
+                ) {
+                    CharacterDetailSimpleUI(
+                        character = character,
+                        onReloadClick = { viewModel.onReloadClick(context, character?.name) },
+                        onAvatarClick = { viewModel.onAvatarClick(character) }
+                    )
+                }
             }
             stickyHeader { RaidHeader(viewModel) }
             item { GoldSetting(viewModel, cbVM, adVM, kzVM, epVM) }
-        }
-    }
-
-
-    if (viewModel.expanded) {
-        ModalBottomSheet(
-            modifier = Modifier
-                .heightIn(max = maxColumnHeight),
-            onDismissRequest = { viewModel.close() },
-        ) {
-            SimpleSummary(cbVM, adVM, kzVM, epVM, viewModel)
         }
     }
 }
@@ -140,7 +136,7 @@ fun CharacterDetailSimpleUI(
     character: Character? = null,
     onReloadClick: () -> Unit = {},
     onAvatarClick: () -> Unit = {},
-    onGetClick:() -> Unit = {},
+    onGetClick: () -> Unit = {},
     getButtonEnabled: Boolean = false
 ) {
     character?.let {
@@ -171,7 +167,7 @@ private fun LoadLocalDataCharInfo(
             GlideImage(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
-                    .height(320.dp),
+                    .height(300.dp),
                 model = it.characterImage,
                 contentDescription = "캐릭터 이미지"
             )
@@ -179,7 +175,7 @@ private fun LoadLocalDataCharInfo(
             GlideImage(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
-                    .height(320.dp),
+                    .height(300.dp),
                 contentScale = ContentScale.FillHeight,
                 model = CharacterResourceMapper.getClassDefaultImg(it.className),
                 contentDescription = "캐릭터 이미지"
@@ -187,19 +183,13 @@ private fun LoadLocalDataCharInfo(
         }
         Column(
             modifier = Modifier
-                .align(Alignment.CenterStart)
-                .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
+                .padding(start = 16.dp, top = 24.dp)
         ) {
-            DetailInfomation(detailMenu = "닉네임", detail = it.name)
-            DetailInfomation(detailMenu = "서    버", detail = it.serverName)
-            DetailInfomation(detailMenu = "클래스", detail = it.className)
-            DetailInfomation(detailMenu = "템레벨", detail = it.itemLevel)
-            DetailInfomation(detailMenu = "원정대", detail = it.expeditionLevel.toString())
-            DetailInfomation(detailMenu = "칭    호", detail = it.title)
-            DetailInfomation(detailMenu = "전투렙", detail = it.characterLevel.toString())
-            DetailInfomation(detailMenu = "길    드", detail = it.guildName ?: "-")
-            DetailInfomation(detailMenu = "P  V  P", detail = it.pvpGradeName)
-            DetailInfomation(detailMenu = "영    지", detail = "Lv.${it.townLevel} ${it.townName}")
+            ServerClassName(serverName = it.serverName, className = it.className)
+            TitleCharName(title = it.title, name = it.name)
+            ItemLevel(level = it.itemLevel)
+            Extra(character = it)
+            Levels(character = it)
         }
         Column(
             modifier = Modifier
@@ -215,7 +205,7 @@ private fun LoadLocalDataCharInfo(
                         isBlinking = false
                     }
                 },
-                containerColor = DarkModeGray
+                containerColor = LightGrayBG
             ) {
                 Icon(
                     imageVector = Icons.Default.Person,
@@ -225,7 +215,7 @@ private fun LoadLocalDataCharInfo(
             }
             SmallFloatingActionButton(
                 onClick = onReloadClick,
-                containerColor = DarkModeGray
+                containerColor = LightGrayBG
             ) {
                 Icon(
                     imageVector = Icons.Default.Refresh,
@@ -251,7 +241,8 @@ private fun LoadAPIDataCharInfo(
             .fillMaxWidth()
             .height(height)
     ) {
-        val characterImage = if (it.characterImage.isNullOrEmpty()) CharacterResourceMapper.getClassDefaultImg(it.characterClassName) else it.characterImage
+        val characterImage =
+            if (it.characterImage.isNullOrEmpty()) CharacterResourceMapper.getClassDefaultImg(it.characterClassName) else it.characterImage
 
         GlideImage(
             modifier = Modifier
@@ -317,94 +308,25 @@ fun BlinkingText(isBlinking: Boolean, text: String, modifier: Modifier) {
 }
 
 @Composable
-private fun DetailInfomation(detailMenu: String, detail: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(
-            modifier = Modifier
-                .background(DarkModeGray, RoundedCornerShape(16.dp))
-                .width(80.dp),
-            text = "  $detailMenu  ",
-            color = Color.White,
-            textAlign = TextAlign.Center
-        )
-        Spacer(modifier = Modifier.width(10.dp))
-        Text(
-            text = detail,
-            color = Color.White
-        )
-    }
-    Spacer(modifier = Modifier.height(4.dp))
-}
-
-
-@Composable
-private fun RaidHeader(viewModel: GoldSettingVM, isDark: Boolean = isSystemInDarkTheme()) {
-    val bgColor = if (isDark) ImageBG else Color.White
-    Column {
-        Divider()
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(bgColor)
-                .height(50.dp)
-        ) {
+private fun RaidHeader(viewModel: GoldSettingVM) {
+    AnimatedBottomBar(
+        modifier = Modifier.fillMaxWidth(),
+        bottomBarHeight = 50.dp,
+        containerColor = LightGrayBG,
+        selectedItem = viewModel.selectedTab,
+        itemSize = viewModel.headerTitle.size,
+        indicatorColor = Color.LightGray,
+        indicatorStyle = IndicatorStyle.LINE,
+        indicatorDirection = IndicatorDirection.BOTTOM
+    ) {
+        viewModel.headerTitle.forEachIndexed { index, title ->
             TopBarBox(
-                title = "군단장",
+                title = title,
                 modifier = Modifier.weight(1f),
-                selectedHeader = viewModel.selectedTab,
-                onClick = { viewModel.moveCommandRaid() }
-            )
-            Divider(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(1.dp)
-            )
-
-            TopBarBox(
-                title = "어비스 던전",
-                modifier = Modifier.weight(1f),
-                onClick = { viewModel.moveAbyssDungeon() },
-                selectedHeader = viewModel.selectedTab
-            )
-            Divider(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(1.dp)
-            )
-
-            TopBarBox(
-                title = "카제로스",
-                modifier = Modifier.weight(1f),
-                onClick = { viewModel.moveKazeRaid() },
-                selectedHeader = viewModel.selectedTab
-            )
-            Divider(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(1.dp)
-            )
-
-            TopBarBox(
-                title = "에픽",
-                modifier = Modifier.weight(1f),
-                onClick = { viewModel.moveEpicRaid() },
-                selectedHeader = viewModel.selectedTab
-            )
-            Divider(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(1.dp)
-            )
-
-            TopBarBox(
-                title = "기타",
-                modifier = Modifier.weight(1f),
-                onClick = { viewModel.moveETC() },
-                selectedHeader = viewModel.selectedTab
+                onClick = { viewModel.moveHeader(index) }
             )
         }
     }
-    Divider()
 }
 
 @Composable
@@ -412,28 +334,23 @@ private fun TopBarBox(
     title: String,
     modifier: Modifier,
     onClick: () -> Unit,
-    selectedHeader: String
 ) {
-    val selectedBGColor = if (selectedHeader == title) Color.White else ImageBG
-    val selectedTextColor = if (selectedHeader == title) Color.Black else Color.White
-
     Box(
         modifier = modifier
             .fillMaxSize()
             .clickable { onClick() }
-            .background(selectedBGColor),
+        ,
         contentAlignment = Alignment.Center
     ) {
         if (title == "어비스 던전") {
             Text(
                 text = title,
-                fontSize = 12.sp,
-                color = selectedTextColor
+                style = normalTextStyle(fontSize = 12.sp)
             )
         } else {
             Text(
                 text = title,
-                color = selectedTextColor
+                color = Color.White
             )
         }
     }
@@ -453,7 +370,7 @@ private fun GoldSetting(
             .fillMaxSize()
     ) {
         when (viewModel.selectedTab) {
-            "군단장" -> {
+            0 -> {
                 RaidCard(
                     raidImg = R.drawable.command_icon,
                     totalGold = cbVM.totalGold
@@ -462,7 +379,7 @@ private fun GoldSetting(
                 }
             }
 
-            "어비스 던전" -> {
+            1 -> {
                 RaidCard(
                     raidImg = R.drawable.abyss_dungeon_icon,
                     totalGold = adVM.totalGold,
@@ -471,7 +388,7 @@ private fun GoldSetting(
                 }
             }
 
-            "카제로스" -> {
+            2 -> {
                 RaidCard(
                     raidImg = R.drawable.kazeroth_icon,
                     totalGold = kzVM.totalGold
@@ -480,7 +397,7 @@ private fun GoldSetting(
                 }
             }
 
-            "에픽" -> {
+            3 -> {
                 RaidCard(
                     raidImg = R.drawable.epic_icon,
                     totalGold = epVM.totalGold
@@ -489,7 +406,7 @@ private fun GoldSetting(
                 }
             }
 
-            "기타" -> {
+            4 -> {
                 ETCGold(
                     viewModel = viewModel,
                     onDone = { viewModel.updateTotalGold(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold) },
@@ -528,6 +445,16 @@ fun ETCGold(
                     keyboardController?.hide()
                     focusState.clearFocus()
                 }
+            ),
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = Color.White,
+                focusedBorderColor = Color.White,
+
+                unfocusedLabelColor = Color.White,
+                focusedLabelColor = Color.White,
+
+                unfocusedTextColor = Color.White,
+                focusedTextColor = Color.White
             )
         )
 
@@ -547,6 +474,16 @@ fun ETCGold(
                     keyboardController?.hide()
                     focusState.clearFocus()
                 }
+            ),
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = Color.White,
+                focusedBorderColor = Color.White,
+
+                unfocusedLabelColor = Color.White,
+                focusedLabelColor = Color.White,
+
+                unfocusedTextColor = Color.White,
+                focusedTextColor = Color.White
             )
         )
     }

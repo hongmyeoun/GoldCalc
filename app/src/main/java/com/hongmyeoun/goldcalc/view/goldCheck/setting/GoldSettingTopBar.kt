@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -21,6 +23,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,29 +39,52 @@ import com.hongmyeoun.goldcalc.ui.theme.LightBlue
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.characterDetail.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
+import kotlinx.coroutines.launch
 
 @Composable
-fun GoldSettingTopBar(viewModel: GoldSettingVM, navController: NavHostController) {
+fun GoldSettingTopBar(
+    viewModel: GoldSettingVM,
+    navController: NavHostController,
+    scrollState: LazyListState
+) {
     val showDialog by viewModel.showDialog.collectAsState()
+    val showDetail by viewModel.showDetail.collectAsState()
+
+    val scope = rememberCoroutineScope()
 
     if (showDialog) {
         DeleteCharacterDialog(viewModel, navController)
     }
 
-    Column(modifier = Modifier.background(LightGrayBG)) {
+    Column(
+        modifier = Modifier.background(LightGrayBG)
+    ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(
                 modifier = Modifier.weight(0.5f),
-                onClick = { navController.popBackStack() }
+                onClick = {
+                    viewModel.onShowDetailClicked()
+                    scope.launch {
+                        scrollState.animateScrollToItem(0)
+                    }
+                }
             ) {
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowLeft,
-                    tint = Color.White,
-                    contentDescription = "뒤로"
-                )
+                if (showDetail) {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowUp,
+                        tint = Color.White,
+                        contentDescription = "펼치기"
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowDown,
+                        tint = Color.White,
+                        contentDescription = "접기"
+                    )
+                }
             }
             Text(
                 modifier = Modifier
@@ -79,7 +105,6 @@ fun GoldSettingTopBar(viewModel: GoldSettingVM, navController: NavHostController
                 )
             }
         }
-        Divider()
     }
 }
 
