@@ -3,12 +3,14 @@ package com.hongmyeoun.goldcalc
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -59,89 +61,90 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        WindowCompat.setDecorFitsSystemWindows(window, false)
+        enableEdgeToEdge()
 
         setContent {
             GoldCalcTheme {
                 val navController = rememberNavController()
 
-                NavHost(navController = navController, startDestination = "Main") {
-                    composable("Main") {
-                        val characterListVM: CharacterListVM = hiltViewModel()
+                Box(modifier = Modifier.safeDrawingPadding()) {
+                    NavHost(navController = navController, startDestination = "Main") {
+                        composable("Main") {
+                            val characterListVM: CharacterListVM = hiltViewModel()
 
-                        MainScreen(
-                            characterListVM = characterListVM,
-                            navController = navController
-                        ) { modifier ->
-                            val characterList by characterListVM.characters.collectAsState()
-                            val isLoading by characterListVM.isLoading.collectAsState()
+                            MainScreen(
+                                characterListVM = characterListVM,
+                                navController = navController
+                            ) { modifier ->
+                                val characterList by characterListVM.characters.collectAsState()
+                                val isLoading by characterListVM.isLoading.collectAsState()
+
+                                if (isLoading) {
+                                    LoadingScreen()
+                                } else {
+                                    LazyColumn(modifier = modifier) {
+                                        items(characterList, key = { item -> item.name }) {
+                                            val characterName = it.name
+                                            val characterCardVM = remember { CharacterCardVM(characterRepository, characterName) }
+
+                                            CharacterCard(
+                                                navController = navController,
+                                                viewModel = characterCardVM,
+                                            )
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                        composable("Check/{charName}") {
+                            val charName = it.arguments?.getString("charName") ?: "ERROR"
+                            val gSVM = remember { GoldSettingVM(characterRepository, charName) }
+                            val character by gSVM.character.collectAsState()
+
+                            var isLoading by remember { mutableStateOf(true) }
 
                             if (isLoading) {
                                 LoadingScreen()
                             } else {
-                                LazyColumn(modifier = modifier) {
-                                    items(characterList, key = { item -> item.name }) {
-                                        val characterName = it.name
-                                        val characterCardVM = remember { CharacterCardVM(characterRepository, characterName) }
+                                val cbVM = remember { CommandBossVM(character) }
+                                val adVM = remember { AbyssDungeonVM(character) }
+                                val kzVM = remember { KazerothRaidVM(character) }
+                                val epVM = remember { EpicRaidVM(character) }
+                                GoldSetting(navController, gSVM, cbVM, adVM, kzVM, epVM)
+                            }
 
-                                        CharacterCard(
-                                            navController = navController,
-                                            viewModel = characterCardVM,
-                                        )
-                                    }
+                            LaunchedEffect(Unit) {
+                                delay(1000)
+                                isLoading = false
+                            }
+
+                        }
+                        composable("Search") {
+                            SearchUI(navController)
+                        }
+                        composable("CharDetail/{charName}") {
+                            val charName = it.arguments?.getString("charName")
+
+                            var isLoading by remember { mutableStateOf(true) }
+
+                            charName?.let {
+                                if (!isLoading) {
+                                    CharacterDetailUI(charName, navController)
+                                } else {
+                                    LoadingScreen()
                                 }
                             }
 
-                        }
-                    }
-                    composable("Check/{charName}") {
-                        val charName = it.arguments?.getString("charName") ?: "ERROR"
-                        val gSVM = remember { GoldSettingVM(characterRepository, charName) }
-                        val character by gSVM.character.collectAsState()
-
-                        var isLoading by remember { mutableStateOf(true) }
-
-                        if (isLoading) {
-                            LoadingScreen()
-                        } else {
-                            val cbVM = remember { CommandBossVM(character) }
-                            val adVM = remember { AbyssDungeonVM(character) }
-                            val kzVM = remember { KazerothRaidVM(character) }
-                            val epVM = remember { EpicRaidVM(character) }
-                            GoldSetting(navController, gSVM, cbVM, adVM, kzVM, epVM)
-                        }
-
-                        LaunchedEffect(Unit) {
-                            delay(1000)
-                            isLoading = false
-                        }
-
-                    }
-                    composable("Search") {
-                        SearchUI(navController)
-                    }
-                    composable("CharDetail/{charName}") {
-                        val charName = it.arguments?.getString("charName")
-
-                        var isLoading by remember { mutableStateOf(true) }
-
-                        charName?.let {
-                            if (!isLoading) {
-                                CharacterDetailUI(charName, navController)
-                            } else {
-                                LoadingScreen()
+                            LaunchedEffect(Unit) {
+                                delay(1000) // 예시로 1초의 로딩 시간을 줍니다. 실제 필요한 시간에 맞게 조정하세요.
+                                isLoading = false // 데이터 로딩이 완료되면 로딩 상태를 false로 변경합니다.
                             }
-                        }
 
-                        LaunchedEffect(Unit) {
-                            delay(1000) // 예시로 1초의 로딩 시간을 줍니다. 실제 필요한 시간에 맞게 조정하세요.
-                            isLoading = false // 데이터 로딩이 완료되면 로딩 상태를 false로 변경합니다.
                         }
 
                     }
-
-                }
-            }
+                }            }
         }
     }
 }
