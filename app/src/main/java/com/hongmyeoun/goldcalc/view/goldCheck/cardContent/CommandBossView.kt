@@ -2,23 +2,12 @@ package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.goldCheck.FourPhaseBoss
 import com.hongmyeoun.goldcalc.view.goldCheck.FourPhaseBossLastHard
 import com.hongmyeoun.goldcalc.view.goldCheck.ThreePhaseBoss
@@ -56,36 +45,48 @@ fun CommandRaid(
         targetValue = if (kamenRotated) 180f else 0f, animationSpec = tween(500)
     )
 
+    RaidCheckLists(maxItem = 3) { modifier ->
+        RaidBossCheck(
+            name = "발탄",
+            modifier = modifier,
+            checked = viewModel.valtanCheck,
+            onCheckedChange = { viewModel.onValtanCheck() }
+        )
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .background(LightGrayBG, RoundedCornerShape(16.dp))
-            .border(1.dp, Color.LightGray, RoundedCornerShape(16.dp)),
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            RaidBossCheck(
-                name = "발탄",
-                modifier = Modifier.weight(1f),
-                checked = viewModel.valtanCheck,
-                onCheckedChange = { viewModel.onValtanCheck() })
+        RaidBossCheck(
+            name = "비아",
+            modifier = modifier,
+            checked = viewModel.biaCheck,
+            onCheckedChange = { viewModel.onBiaCheck() }
+        )
 
-            RaidBossCheck(name = "비아", modifier = Modifier.weight(1f), checked = viewModel.biaCheck, onCheckedChange = { viewModel.onBiaCheck() })
+        RaidBossCheck(
+            name = "쿠크",
+            modifier = modifier,
+            checked = viewModel.koukuCheck,
+            onCheckedChange = { viewModel.onKoukuCheck() }
+        )
 
-            RaidBossCheck(name = "쿠크", modifier = Modifier.weight(1f), checked = viewModel.koukuCheck, onCheckedChange = { viewModel.onKoukuCheck() })
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            RaidBossCheck(name = "아브", modifier = Modifier.weight(1f), checked = viewModel.abreCheck, onCheckedChange = { viewModel.onAbreCheck() })
+        RaidBossCheck(
+            name = "아브",
+            modifier = modifier,
+            checked = viewModel.abreCheck,
+            onCheckedChange = { viewModel.onAbreCheck() }
+        )
 
-            RaidBossCheck(name = "일리", modifier = Modifier.weight(1f), checked = viewModel.illiCheck, onCheckedChange = { viewModel.onIlliCheck() })
+        RaidBossCheck(
+            name = "일리",
+            modifier = modifier,
+            checked = viewModel.illiCheck,
+            onCheckedChange = { viewModel.onIlliCheck() }
+        )
 
-            RaidBossCheck(name = "카멘", modifier = Modifier.weight(1f), checked = viewModel.kamenCheck, onCheckedChange = { viewModel.onKamenCheck() })
-        }
+        RaidBossCheck(
+            name = "카멘",
+            modifier = modifier,
+            checked = viewModel.kamenCheck,
+            onCheckedChange = { viewModel.onKamenCheck() }
+        )
     }
 
     if (viewModel.valtanCheck) {
