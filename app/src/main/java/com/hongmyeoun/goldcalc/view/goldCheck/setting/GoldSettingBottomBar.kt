@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -53,10 +52,8 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
-import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
 import com.hongmyeoun.goldcalc.view.characterDetail.titleTextStyle
-import com.hongmyeoun.goldcalc.view.common.noRippleClickable
 import com.hongmyeoun.goldcalc.view.main.formatWithCommas
 import com.hongmyeoun.goldcalc.view.main.goldImage
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
@@ -65,7 +62,6 @@ import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GoldSettingBottomBar(
     viewModel: GoldSettingVM,
@@ -76,61 +72,7 @@ fun GoldSettingBottomBar(
     navController: NavHostController
 ) {
     if (viewModel.expanded) {
-        val configuration = LocalConfiguration.current
-        val screenHeight = configuration.screenHeightDp.dp
-        val maxColumnHeight = (screenHeight * 0.80f)
-
-        val character by viewModel.character.collectAsState()
-
-        ModalBottomSheet(
-            modifier = Modifier
-                .heightIn(max = maxColumnHeight),
-            onDismissRequest = { viewModel.close() },
-            containerColor = LightGrayBG,
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Column(
-                    modifier = Modifier
-                        .heightIn(max = maxColumnHeight)
-                        .wrapContentHeight()
-                        .verticalScroll(rememberScrollState())
-                ) {
-
-                    if (cbVM.valtanCheck || cbVM.biaCheck || cbVM.koukuCheck || cbVM.abreCheck || cbVM.illiCheck || cbVM.kamenCheck) {
-                        SimpleCommandRaidInfo(cbVM)
-                    }
-
-                    if (adVM.kayangelCheck || adVM.ivoryCheck) {
-                        SimpleAbyssDungeonInfo(adVM)
-                    }
-
-                    if (kzVM.echiCheck) {
-                        SimpleKazerothRaidInfo(kzVM)
-                    }
-
-                    if (epVM.beheCheck) {
-                        SimpleEpicRaidInfo(epVM)
-                    }
-
-                    if ((viewModel.plusGold.toIntOrNull() ?: 0) > 0) {
-                        SimpleETCInfo(viewModel)
-                    }
-
-                    Box(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
-                        BottomBarTexts(
-                            character = character,
-                            viewModel = viewModel,
-                            navController = navController,
-                            onDoneClicked = { viewModel.onDoneClick(cbVM, adVM, kzVM, epVM) }
-                        )
-                    }
-                }
-
-            }
-
-        }
+        SimpleSummary(viewModel, cbVM, adVM, kzVM, epVM, navController)
     } else {
         BottomBar(
             viewModel = viewModel,
@@ -140,37 +82,33 @@ fun GoldSettingBottomBar(
 }
 
 @Composable
-fun SimpleSummary(
+@OptIn(ExperimentalMaterial3Api::class)
+private fun SimpleSummary(
+    viewModel: GoldSettingVM,
     cbVM: CommandBossVM,
     adVM: AbyssDungeonVM,
     kzVM: KazerothRaidVM,
     epVM: EpicRaidVM,
-    navController: NavHostController,
-    viewModel: GoldSettingVM
+    navController: NavHostController
 ) {
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val maxColumnHeight = (screenHeight * 0.80f)
+
     val character by viewModel.character.collectAsState()
 
-    Column(modifier = Modifier.background(LightGrayTransBG)) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(1f)
-                .noRippleClickable { viewModel.close() }
-        )
-
+    ModalBottomSheet(
+        modifier = Modifier
+            .heightIn(max = maxColumnHeight),
+        onDismissRequest = { viewModel.close() },
+        containerColor = LightGrayBG,
+        dragHandle = {
+            DragDerivationIcon()
+        }
+    ) {
         Column(
-            modifier = Modifier
-                .background(
-                    color = LightGrayBG,
-                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-                ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            DragDerivationIcon()
-
             Column(
                 modifier = Modifier
                     .heightIn(max = maxColumnHeight)
@@ -203,12 +141,16 @@ fun SimpleSummary(
                         character = character,
                         viewModel = viewModel,
                         navController = navController,
-                        onDoneClicked = { viewModel.onDoneClick(cbVM, adVM, kzVM, epVM) }
+                        onDoneClicked = {
+                            viewModel.close()
+                            viewModel.onDoneClick(cbVM, adVM, kzVM, epVM)
+                        }
                     )
                 }
             }
 
         }
+
     }
 }
 
@@ -511,7 +453,6 @@ private fun BottomBar(
                 shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
             )
             .clip(shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-//            .noRippleClickable { viewModel.expand() }
             .pointerInput(Unit) {
                 detectDragGestures(
                     onDrag = { change, dragAmount ->
