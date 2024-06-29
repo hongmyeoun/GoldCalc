@@ -46,6 +46,25 @@ class SettingVM @Inject constructor(
         _showDeleteDialog.value = false
     }
 
+    private val _editOrderPage = MutableStateFlow(false)
+    val editOrderPage: StateFlow<Boolean> = _editOrderPage
+
+    fun openEditOrderPage() {
+        _editOrderPage.value = true
+    }
+
+    private fun closeEditOrderPage() {
+        _editOrderPage.value = false
+    }
+
+    private val _newList = MutableStateFlow<List<Character>>(emptyList())
+
+    fun dragStopSave(reorderedList: List<Character>) {
+        if (reorderedList != _characters.value) {
+            _newList.value = reorderedList
+        }
+    }
+
     fun onHomeworkReset() {
         viewModelScope.launch(Dispatchers.IO) {
             val resetData = _characters.value.map {
@@ -66,6 +85,20 @@ class SettingVM @Inject constructor(
             }
         }
         onDissmissRequest()
+    }
+
+    fun onSave() {
+        closeEditOrderPage()
+        if (_newList.value.isNotEmpty()) {
+            viewModelScope.launch(Dispatchers.IO) {
+                _characters.value.forEach {
+                    characterRepository.delete(it)
+                }
+                _newList.value.forEach {
+                    characterRepository.insertAll(it)
+                }
+            }
+        }
     }
 
     init {
