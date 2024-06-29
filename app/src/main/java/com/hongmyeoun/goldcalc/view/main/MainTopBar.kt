@@ -457,7 +457,7 @@ private fun MainMenuButtons(modifier: Modifier, navController: NavHostController
 
         IconButton(
             modifier = Modifier.size(35.dp),
-            onClick = { /*TODO*/ }
+            onClick = { navController.navigate("Setting") }
         ) {
             Icon(
                 imageVector = Icons.Default.Settings,
