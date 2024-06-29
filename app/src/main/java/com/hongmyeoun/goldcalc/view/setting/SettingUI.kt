@@ -21,14 +21,21 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -41,31 +48,40 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.hongmyeoun.goldcalc.BuildConfig
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.setting.SettingModel.clearAppCache
+import com.hongmyeoun.goldcalc.model.setting.SettingModel.getCacheSize
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightBlue
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
 import com.hongmyeoun.goldcalc.view.characterDetail.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.setting.SettingVM
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun SettingUI(
     navController: NavHostController,
     viewModel: SettingVM = hiltViewModel()
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
     Scaffold(
         topBar = { SettingTopBar(navController) },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         contentWindowInsets = WindowInsets(0.dp),
         containerColor = ImageBG
     ) {
-        SettingContent(it, viewModel)
+        SettingContent(it, viewModel, snackbarHostState)
     }
 }
 
 @Composable
-private fun SettingContent(it: PaddingValues, viewModel: SettingVM) {
+private fun SettingContent(it: PaddingValues, viewModel: SettingVM, snackbarHostState: SnackbarHostState) {
     val showResetDialog by viewModel.showResetDialog.collectAsState()
     val showDeleteDialog by viewModel.showDeleteDialog.collectAsState()
+
 
     if (showResetDialog) {
         Dialog(
@@ -119,10 +135,9 @@ private fun SettingContent(it: PaddingValues, viewModel: SettingVM) {
             SettingItemBox(
                 title = "앱 설정"
             ) {
-                SettingItem(
-                    itemTitle = "캐쉬 삭제",
+                SettingItemCacheClear(
                     icon = R.drawable.outline_cleaning_services,
-                    onClicked = { }
+                    snackbarHostState = snackbarHostState
                 )
 
                 SettingItem(
@@ -184,7 +199,7 @@ private fun SettingItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClicked() }
-            .padding(top = 8.dp, bottom = 8.dp, start = 16.dp, end = 16.dp)
+            .padding(top = 12.dp, bottom = 12.dp, start = 16.dp, end = 16.dp)
         ,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -198,6 +213,57 @@ private fun SettingItem(
         Text(
             text = itemTitle,
             style = normalTextStyle(fontSize = 15.sp)
+        )
+    }
+}
+
+@Composable
+private fun SettingItemCacheClear(
+    icon: Int,
+    snackbarHostState: SnackbarHostState
+) {
+    val context = LocalContext.current
+    var cacheSize by remember { mutableStateOf(getCacheSize(context)) }
+    val scope = rememberCoroutineScope()
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(enabled = cacheSize > 0) {
+                clearAppCache(context) {
+                    doneSnackbar(
+                        snackbarHostState = snackbarHostState,
+                        scope = scope,
+                        text = "캐쉬가 정리되었습니다."
+                    )
+                    cacheSize = getCacheSize(context)
+                }
+            }
+            .padding(top = 12.dp, bottom = 12.dp, start = 16.dp, end = 16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(
+            modifier = Modifier
+                .weight(2f),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(id = icon),
+                tint = Color.White,
+                contentDescription = "아이콘"
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Text(
+                text = "캐쉬 삭제",
+                style = normalTextStyle(fontSize = 15.sp)
+            )
+        }
+
+        Text(
+            text = "${cacheSize / 1024} KB",
+            style = normalTextStyle(color = Color.Gray, fontSize = 13.sp),
+            textAlign = TextAlign.End
         )
     }
 }
@@ -337,5 +403,20 @@ private fun Dialog(
 
             }
         }
+    }
+}
+
+
+fun doneSnackbar(
+    snackbarHostState: SnackbarHostState,
+    text: String,
+    scope: CoroutineScope
+) {
+    scope.launch {
+        val job = launch {
+            snackbarHostState.showSnackbar(message = text)
+        }
+        delay(2000L)
+        job.cancel()
     }
 }
