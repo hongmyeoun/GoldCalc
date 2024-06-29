@@ -103,4 +103,6 @@ dependencies {
     // Navigation Bar Animation
     implementation ("com.canopas.compose-animated-navigationbar:bottombar:1.0.1")
 
+    // Reorderable List : Drag N Drop
+    implementation("sh.calvin.reorderable:reorderable:2.1.1")
 }
