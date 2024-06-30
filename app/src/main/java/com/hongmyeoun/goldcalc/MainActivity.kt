@@ -8,6 +8,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -18,7 +24,6 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,8 +44,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
+import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.MokokoGreen
 import com.hongmyeoun.goldcalc.view.characterDetail.CharacterDetailUI
 import com.hongmyeoun.goldcalc.view.goldCheck.setting.GoldSetting
@@ -163,15 +172,30 @@ class MainActivity : ComponentActivity() {
 }
 
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun LoadingScreen() {
+    val transition = rememberInfiniteTransition()
+    val tintColor by transition.animateColor(
+        initialValue = Color.White,
+        targetValue = MokokoGreen,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Transparent),
+            .background(ImageBG),
         contentAlignment = Alignment.Center
     ) {
-        CircularProgressIndicator() // 프로그레스 바를 사용하여 로딩 상태를 표시합니다.
+        GlideImage(
+            model = R.drawable.mokoko_white,
+            colorFilter = ColorFilter.tint(tintColor),
+            contentDescription = "로딩 이미지"
+        )
     }
 }
 
