@@ -88,7 +88,7 @@ fun CharacterDetailUI(
                 Text(
                     modifier = Modifier.fillMaxWidth().weight(3f),
                     text = "캐릭터 상세",
-                    style = titleTextStyle(fontSize = 13.sp),
+                    style = titleTextStyle(),
                     textAlign = TextAlign.Center
                 )
 
