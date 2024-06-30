@@ -1,12 +1,16 @@
 package com.hongmyeoun.goldcalc.viewModel.setting
 
+import android.content.Context
+import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.model.roomDB.character.RaidPhaseInfo
+import com.hongmyeoun.goldcalc.model.setting.SettingModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -46,15 +50,15 @@ class SettingVM @Inject constructor(
         _showDeleteDialog.value = false
     }
 
-    private val _editOrderPage = MutableStateFlow(false)
-    val editOrderPage: StateFlow<Boolean> = _editOrderPage
+    private val _reorderPage = MutableStateFlow(false)
+    val reorderPage: StateFlow<Boolean> = _reorderPage
 
-    fun openEditOrderPage() {
-        _editOrderPage.value = true
+    fun openRerderPage() {
+        _reorderPage.value = true
     }
 
-    private fun closeEditOrderPage() {
-        _editOrderPage.value = false
+    fun closeRerderPage() {
+        _reorderPage.value = false
     }
 
     private val _newList = MutableStateFlow<List<Character>>(emptyList())
@@ -87,8 +91,8 @@ class SettingVM @Inject constructor(
         onDissmissRequest()
     }
 
-    fun onSave() {
-        closeEditOrderPage()
+    fun onSave(snackbarHostState: SnackbarHostState,) {
+        closeRerderPage()
         if (_newList.value.isNotEmpty()) {
             viewModelScope.launch(Dispatchers.IO) {
                 _characters.value.forEach {
@@ -98,6 +102,40 @@ class SettingVM @Inject constructor(
                     characterRepository.insertAll(it)
                 }
             }
+        }
+        doneSnackbar(
+            snackbarHostState = snackbarHostState,
+            text = "변경사항이 저장되었습니다."
+        )
+    }
+
+    fun doneSnackbar(
+        snackbarHostState: SnackbarHostState,
+        text: String,
+    ) {
+        viewModelScope.launch {
+            val job = launch {
+                snackbarHostState.showSnackbar(message = text)
+            }
+            delay(2000L)
+            job.cancel()
+        }
+    }
+
+    private val _cacheSize = MutableStateFlow(0L)
+    val cacheSize: StateFlow<Long> = _cacheSize
+
+    fun getCacheSize(context: Context) {
+        _cacheSize.value = SettingModel.getCacheSize(context)
+    }
+
+    fun cacheDelete(context: Context, snackbarHostState: SnackbarHostState,) {
+        SettingModel.clearAppCache(context) {
+            doneSnackbar(
+                snackbarHostState = snackbarHostState,
+                text = "캐쉬가 정리되었습니다."
+            )
+            _cacheSize.value = SettingModel.getCacheSize(context)
         }
     }
 

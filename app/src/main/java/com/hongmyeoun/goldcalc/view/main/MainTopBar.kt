@@ -529,6 +529,11 @@ fun Int.formatWithCommas(): String {
     return numberFormat.format(this)
 }
 
+fun Long.formatWithCommas(): String {
+    val numberFormat = NumberFormat.getNumberInstance()
+    return numberFormat.format(this)
+}
+
 fun String.formatWithCommas(): String {
     val number = this.toIntOrNull() ?: return this
     val numberFormat = NumberFormat.getNumberInstance()

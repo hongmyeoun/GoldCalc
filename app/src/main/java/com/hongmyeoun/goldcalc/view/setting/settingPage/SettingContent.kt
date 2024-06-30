@@ -17,12 +17,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,12 +30,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hongmyeoun.goldcalc.BuildConfig
 import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.model.setting.SettingModel
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
 import com.hongmyeoun.goldcalc.view.characterDetail.titleTextStyle
+import com.hongmyeoun.goldcalc.view.main.formatWithCommas
 import com.hongmyeoun.goldcalc.view.setting.common.Dialog
-import com.hongmyeoun.goldcalc.view.setting.common.doneSnackbar
 import com.hongmyeoun.goldcalc.viewModel.setting.SettingVM
 
 @Composable
@@ -88,7 +84,7 @@ fun SettingContent(
                 SettingItem(
                     itemTitle = "캐릭터 순서 변경",
                     icon = R.drawable.baseline_sort,
-                    onClicked = { viewModel.openEditOrderPage() }
+                    onClicked = { viewModel.openRerderPage() }
                 )
 
                 SettingItem(
@@ -105,7 +101,8 @@ fun SettingContent(
             ) {
                 SettingItemCacheClear(
                     icon = R.drawable.outline_cleaning_services,
-                    snackbarHostState = snackbarHostState
+                    snackbarHostState = snackbarHostState,
+                    viewModel = viewModel
                 )
 
                 SettingItem(
@@ -187,25 +184,21 @@ private fun SettingItem(
 @Composable
 private fun SettingItemCacheClear(
     icon: Int,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    viewModel: SettingVM
 ) {
     val context = LocalContext.current
-    var cacheSize by remember { mutableStateOf(SettingModel.getCacheSize(context)) }
-    val scope = rememberCoroutineScope()
+
+    val cacheSize by viewModel.cacheSize.collectAsState()
+
+    LaunchedEffect(cacheSize) {
+        viewModel.getCacheSize(context)
+    }
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(enabled = cacheSize > 0) {
-                SettingModel.clearAppCache(context) {
-                    doneSnackbar(
-                        snackbarHostState = snackbarHostState,
-                        scope = scope,
-                        text = "캐쉬가 정리되었습니다."
-                    )
-                    cacheSize = SettingModel.getCacheSize(context)
-                }
-            }
+            .clickable(enabled = cacheSize > 0) { viewModel.cacheDelete(context, snackbarHostState) }
             .padding(top = 12.dp, bottom = 12.dp, start = 16.dp, end = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -228,7 +221,7 @@ private fun SettingItemCacheClear(
         }
 
         Text(
-            text = "${cacheSize / 1024} KB",
+            text = "${(cacheSize / 1024).formatWithCommas()} KB",
             style = normalTextStyle(color = Color.Gray, fontSize = 13.sp),
             textAlign = TextAlign.End
         )

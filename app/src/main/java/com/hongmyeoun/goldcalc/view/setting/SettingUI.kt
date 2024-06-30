@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
+import com.hongmyeoun.goldcalc.view.setting.reorderPage.ReorderBottomBar
 import com.hongmyeoun.goldcalc.view.setting.reorderPage.ReorderPageContent
 import com.hongmyeoun.goldcalc.view.setting.reorderPage.ReorderPageTopBar
 import com.hongmyeoun.goldcalc.view.setting.settingPage.SettingContent
@@ -28,10 +29,11 @@ fun SettingUI(
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val editOderPage by viewModel.editOrderPage.collectAsState()
+    val editOderPage by viewModel.reorderPage.collectAsState()
 
     Scaffold(
         topBar = { if (editOderPage) ReorderPageTopBar(viewModel = viewModel) else SettingTopBar(navController) },
+        bottomBar = { if (editOderPage) ReorderBottomBar(viewModel, snackbarHostState) },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         contentWindowInsets = WindowInsets(0.dp),
         containerColor = ImageBG

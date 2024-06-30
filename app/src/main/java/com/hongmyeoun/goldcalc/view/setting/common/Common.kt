@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -26,9 +25,6 @@ import androidx.compose.ui.unit.sp
 import com.hongmyeoun.goldcalc.ui.theme.LightBlue
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.viewModel.setting.SettingVM
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun Dialog(
@@ -123,20 +119,5 @@ fun Dialog(
 
             }
         }
-    }
-}
-
-
-fun doneSnackbar(
-    snackbarHostState: SnackbarHostState,
-    text: String,
-    scope: CoroutineScope
-) {
-    scope.launch {
-        val job = launch {
-            snackbarHostState.showSnackbar(message = text)
-        }
-        delay(2000L)
-        job.cancel()
     }
 }
