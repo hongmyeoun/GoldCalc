@@ -1,0 +1,236 @@
+package com.hongmyeoun.goldcalc.view.setting.settingPage
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.hongmyeoun.goldcalc.BuildConfig
+import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.setting.SettingModel
+import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
+import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
+import com.hongmyeoun.goldcalc.view.characterDetail.titleTextStyle
+import com.hongmyeoun.goldcalc.view.setting.common.Dialog
+import com.hongmyeoun.goldcalc.view.setting.common.doneSnackbar
+import com.hongmyeoun.goldcalc.viewModel.setting.SettingVM
+
+@Composable
+fun SettingContent(
+    it: PaddingValues,
+    viewModel: SettingVM,
+    snackbarHostState: SnackbarHostState,
+) {
+    val showResetDialog by viewModel.showResetDialog.collectAsState()
+    val showDeleteDialog by viewModel.showDeleteDialog.collectAsState()
+
+
+    if (showResetDialog) {
+        Dialog(
+            title = "숙제",
+            action = "초기화",
+            viewModel = viewModel,
+            onConfirm = { viewModel.onHomeworkReset() }
+        )
+    }
+
+    if (showDeleteDialog) {
+        Dialog(
+            title = "캐릭터",
+            action = "일괄 삭제",
+            viewModel = viewModel,
+            onConfirm = { viewModel.onDeleteAll() }
+        )
+    }
+
+    LazyColumn(
+        modifier = Modifier
+            .padding(it)
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        item {
+            SettingItemBox(
+                title = "캐릭터"
+            ) {
+                SettingItem(
+                    itemTitle = "숙제 초기화",
+                    icon = R.drawable.baseline_settings_backup_restore_24,
+                    onClicked = { viewModel.showResetDailog() }
+                )
+
+                SettingItem(
+                    itemTitle = "캐릭터 순서 변경",
+                    icon = R.drawable.baseline_sort,
+                    onClicked = { viewModel.openEditOrderPage() }
+                )
+
+                SettingItem(
+                    itemTitle = "캐릭터 일괄 삭제",
+                    icon = R.drawable.baseline_delete_sweep,
+                    onClicked = { viewModel.showDeleteDialog() }
+                )
+            }
+        }
+
+        item {
+            SettingItemBox(
+                title = "앱 설정"
+            ) {
+                SettingItemCacheClear(
+                    icon = R.drawable.outline_cleaning_services,
+                    snackbarHostState = snackbarHostState
+                )
+
+                SettingItem(
+                    itemTitle = "업데이트 확인",
+                    icon = R.drawable.outline_restore,
+                    onClicked = { }
+                )
+            }
+        }
+
+        item {
+            SettingItemBox(
+                title = "앱 버전"
+            ) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp, bottom = 8.dp, start = 16.dp, end = 16.dp),
+                    text = BuildConfig.VERSION_NAME,
+                    style = normalTextStyle(fontSize = 15.sp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SettingItemBox(
+    title: String,
+    content: @Composable () -> Unit
+) {
+    Text(
+        text = title,
+        style = titleTextStyle(fontSize = 15.sp)
+    )
+    Spacer(modifier = Modifier.height(8.dp))
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                color = LightGrayBG,
+                shape = RoundedCornerShape(8.dp)
+            )
+    ) {
+        content()
+    }
+
+    Spacer(modifier = Modifier.height(16.dp))
+}
+
+@Composable
+private fun SettingItem(
+    itemTitle: String,
+    icon: Int,
+    onClicked: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClicked() }
+            .padding(top = 12.dp, bottom = 12.dp, start = 16.dp, end = 16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            painter = painterResource(id = icon),
+            tint = Color.White,
+            contentDescription = "아이콘"
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Text(
+            text = itemTitle,
+            style = normalTextStyle(fontSize = 15.sp)
+        )
+    }
+}
+
+@Composable
+private fun SettingItemCacheClear(
+    icon: Int,
+    snackbarHostState: SnackbarHostState
+) {
+    val context = LocalContext.current
+    var cacheSize by remember { mutableStateOf(SettingModel.getCacheSize(context)) }
+    val scope = rememberCoroutineScope()
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(enabled = cacheSize > 0) {
+                SettingModel.clearAppCache(context) {
+                    doneSnackbar(
+                        snackbarHostState = snackbarHostState,
+                        scope = scope,
+                        text = "캐쉬가 정리되었습니다."
+                    )
+                    cacheSize = SettingModel.getCacheSize(context)
+                }
+            }
+            .padding(top = 12.dp, bottom = 12.dp, start = 16.dp, end = 16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(
+            modifier = Modifier
+                .weight(2f),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(id = icon),
+                tint = Color.White,
+                contentDescription = "아이콘"
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Text(
+                text = "캐쉬 삭제",
+                style = normalTextStyle(fontSize = 15.sp)
+            )
+        }
+
+        Text(
+            text = "${cacheSize / 1024} KB",
+            style = normalTextStyle(color = Color.Gray, fontSize = 13.sp),
+            textAlign = TextAlign.End
+        )
+    }
+}
