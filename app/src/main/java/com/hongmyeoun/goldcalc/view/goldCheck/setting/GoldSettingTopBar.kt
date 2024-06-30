@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -161,7 +162,7 @@ private fun DeleteCharacterDialog(
             )
             Spacer(modifier = Modifier.height(20.dp))
 
-            Divider()
+            Divider(thickness = 0.5.dp)
 
             Row(
                 modifier = Modifier
@@ -174,6 +175,9 @@ private fun DeleteCharacterDialog(
                     onClick = {
                         viewModel.onDissmissRequest()
                     },
+                    colors = ButtonDefaults.textButtonColors(
+                        contentColor = Color.LightGray
+                    )
                 ) {
                     Text(text = "취소")
                 }
@@ -181,7 +185,7 @@ private fun DeleteCharacterDialog(
                 Divider(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .width(1.dp)
+                        .width(0.5.dp)
                 )
 
                 TextButton(
