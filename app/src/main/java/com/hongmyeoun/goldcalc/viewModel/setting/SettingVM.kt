@@ -59,7 +59,7 @@ class SettingVM @Inject constructor(
 
     private val _newList = MutableStateFlow<List<Character>>(emptyList())
 
-    fun dragStopSave(reorderedList: List<Character>) {
+    fun saveReorderList(reorderedList: List<Character>) {
         if (reorderedList != _characters.value) {
             _newList.value = reorderedList
         }

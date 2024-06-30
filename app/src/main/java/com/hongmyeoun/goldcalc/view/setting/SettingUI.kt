@@ -27,15 +27,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.DismissDirection
+import androidx.compose.material3.DismissValue
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -492,7 +497,7 @@ fun doneSnackbar(
 }
 
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun EditOrderPageContent(it: PaddingValues, viewModel: SettingVM) {
     val view = LocalView.current
@@ -513,52 +518,96 @@ fun EditOrderPageContent(it: PaddingValues, viewModel: SettingVM) {
         modifier = Modifier
             .fillMaxSize()
             .padding(it)
-            .padding(top = 12.dp)
-        ,
+            .padding(top = 12.dp),
         state = lazyListState,
-        contentPadding = PaddingValues(8.dp),
+        contentPadding = PaddingValues(12.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(list, key = { item -> item.name }) {
-            ReorderableItem(reorderableLazyListState, key = it.name) { isDragging ->
-                val elevation by animateDpAsState(if (isDragging) 4.dp else 0.dp)
+        items(items = list, key = { item -> item.name }) { character ->
+            ReorderableItem(state = reorderableLazyListState, key = character.name) { isDragging ->
 
-                Surface(
-                    shape = RoundedCornerShape(16.dp),
-                    color = LightGrayBG,
-                    shadowElevation = elevation
-                ) {
-                    CharacterListItem(character = it) { modifier ->
-                        IconButton(
-                            modifier = modifier.draggableHandle(
-                                onDragStarted = {
-                                    view.performHapticFeedback(HapticFeedbackConstants.DRAG_START)
-                                },
-                                onDragStopped = {
-                                    view.performHapticFeedback(HapticFeedbackConstants.GESTURE_END)
-                                    viewModel.dragStopSave(list)
-                                },
-                            ),
-                            onClick = {  },
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Menu,
-                                tint = Color.White,
-                                contentDescription = "Reorder"
-                            )
+                SwipeDeleteAndDraggableList(
+                    isDragging = isDragging,
+                    onSwipeDelete = {
+                        list = list.toMutableList().apply {
+                            remove(character)
                         }
-                    }
-                }
+                        viewModel.saveReorderList(list)
+                                    },
+                    modifier = Modifier.animateItemPlacement(),
+                    draggableHandlerModifier = Modifier
+                        .draggableHandle(
+                            onDragStarted = {
+                                view.performHapticFeedback(HapticFeedbackConstants.DRAG_START)
+                            },
+                            onDragStopped = {
+                                view.performHapticFeedback(HapticFeedbackConstants.GESTURE_END)
+                                viewModel.saveReorderList(list)
+                            },
+                        ),
+                    character = character
+                )
             }
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SwipeDeleteAndDraggableList(
+    isDragging: Boolean,
+    onSwipeDelete: () -> Unit,
+    modifier: Modifier,
+    draggableHandlerModifier: Modifier,
+    character: Character
+) {
+    val elevation by animateDpAsState(if (isDragging) 4.dp else 0.dp)
+
+    val dismissState = rememberDismissState(
+        positionalThreshold = { it * 0.50f },
+        confirmValueChange = { dismissValue ->
+            when (dismissValue) {
+                DismissValue.Default -> {
+                    false
+                }
+
+                DismissValue.DismissedToEnd -> {
+                    false
+                }
+
+                DismissValue.DismissedToStart -> {
+                    onSwipeDelete()
+                    true
+                }
+            }
+        }
+    )
+
+    SwipeToDismiss(
+        modifier = modifier,
+        state = dismissState,
+        directions = setOf(DismissDirection.EndToStart),
+        background = { },
+        dismissContent = {
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                color = LightGrayBG,
+                shadowElevation = elevation
+            ) {
+                CharacterListItem(
+                    character = character,
+                    modifier = draggableHandlerModifier
+                )
+            }
+        }
+    )
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun CharacterListItem(
     character: Character,
-    iconUI: @Composable (Modifier) -> Unit
+    modifier: Modifier,
 ) {
     Row(
         modifier = Modifier
@@ -592,7 +641,17 @@ fun CharacterListItem(
             }
         }
 
-        iconUI(Modifier.weight(0.3f))
+        IconButton(
+            modifier = modifier.weight(0.3f),
+            onClick = { },
+        ) {
+            Icon(
+                imageVector = Icons.Default.Menu,
+                tint = Color.White,
+                contentDescription = "Reorder"
+            )
+        }
+
     }
 }
 
