@@ -2,6 +2,7 @@ package com.hongmyeoun.goldcalc.view.setting
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -29,19 +30,21 @@ fun SettingUI(
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val editOderPage by viewModel.reorderPage.collectAsState()
+    val reorderPage by viewModel.reorderPage.collectAsState()
 
     Scaffold(
-        topBar = { if (editOderPage) ReorderPageTopBar(viewModel = viewModel) else SettingTopBar(navController) },
-        bottomBar = { if (editOderPage) ReorderBottomBar(viewModel, snackbarHostState) },
+        topBar = { if (reorderPage) ReorderPageTopBar(viewModel = viewModel) else SettingTopBar(navController) },
+        bottomBar = { if (reorderPage) ReorderBottomBar(viewModel, snackbarHostState) },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         contentWindowInsets = WindowInsets(0.dp),
         containerColor = ImageBG
     ) {
-        if (editOderPage) {
-            ReorderPageContent(it, viewModel)
-        } else {
-            SettingContent(it, viewModel, snackbarHostState)
+        Crossfade(targetState = reorderPage) { isReorderPage ->
+            if (isReorderPage) {
+                ReorderPageContent(it, viewModel)
+            } else {
+                SettingContent(it, viewModel, snackbarHostState)
+            }
         }
     }
 }
