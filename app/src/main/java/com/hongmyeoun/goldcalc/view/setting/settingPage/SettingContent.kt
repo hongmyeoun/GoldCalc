@@ -1,5 +1,7 @@
 package com.hongmyeoun.goldcalc.view.setting.settingPage
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -46,6 +48,7 @@ fun SettingContent(
     val showResetDialog by viewModel.showResetDialog.collectAsState()
     val showDeleteDialog by viewModel.showDeleteDialog.collectAsState()
 
+    val context = LocalContext.current
 
     if (showResetDialog) {
         Dialog(
@@ -108,7 +111,10 @@ fun SettingContent(
                 SettingItem(
                     itemTitle = "업데이트 확인",
                     icon = R.drawable.outline_restore,
-                    onClicked = { }
+                    onClicked = {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + context.packageName))
+                        context.startActivity(intent)
+                    }
                 )
             }
         }
