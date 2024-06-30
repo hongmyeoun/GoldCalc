@@ -50,7 +50,6 @@ import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
-import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.ui.theme.RelicBG
 import com.hongmyeoun.goldcalc.ui.theme.VeryLightGrayTransBG
 import com.hongmyeoun.goldcalc.view.characterDetail.equipment.EquipmentDetailUI
@@ -71,7 +70,13 @@ fun CharacterDetailUI(
             ) {
                 IconButton(
                     modifier = Modifier.weight(0.5f),
-                    onClick = { navController.popBackStack() }
+                    onClick = {
+                        navController.navigate("Search") {
+                            popUpTo("CharDetail/{charName}") {
+                                inclusive = true
+                            }
+                        }
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowLeft,
