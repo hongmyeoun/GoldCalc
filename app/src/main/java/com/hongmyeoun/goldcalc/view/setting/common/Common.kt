@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -81,7 +82,7 @@ fun Dialog(
             )
             Spacer(modifier = Modifier.height(20.dp))
 
-            Divider()
+            Divider(thickness = 0.5.dp)
 
             Row(
                 modifier = Modifier
@@ -94,6 +95,9 @@ fun Dialog(
                     onClick = {
                         viewModel.onDissmissRequest()
                     },
+                    colors = ButtonDefaults.textButtonColors(
+                        contentColor = Color.LightGray
+                    )
                 ) {
                     Text(text = "취소")
                 }
@@ -101,7 +105,7 @@ fun Dialog(
                 Divider(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .width(1.dp)
+                        .width(0.5.dp)
                 )
 
                 TextButton(
