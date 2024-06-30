@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.view.goldCheck.setting
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -340,8 +341,7 @@ private fun TopBarBox(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .clickable { onClick() }
-        ,
+            .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
         if (title == "어비스 던전") {
@@ -367,52 +367,54 @@ private fun GoldSetting(
     kzVM: KazerothRaidVM,
     epVM: EpicRaidVM,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        when (viewModel.selectedTab) {
-            0 -> {
-                RaidCard(
-                    raidImg = R.drawable.command_icon,
-                    totalGold = cbVM.totalGold
-                ) {
-                    CommandRaid(viewModel = cbVM)
+    Crossfade(targetState = viewModel.selectedTab) { selectedTab ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            when (selectedTab) {
+                0 -> {
+                    RaidCard(
+                        raidImg = R.drawable.command_icon,
+                        totalGold = cbVM.totalGold
+                    ) {
+                        CommandRaid(viewModel = cbVM)
+                    }
                 }
-            }
 
-            1 -> {
-                RaidCard(
-                    raidImg = R.drawable.abyss_dungeon_icon,
-                    totalGold = adVM.totalGold,
-                ) {
-                    AbyssDungeon(viewModel = adVM)
+                1 -> {
+                    RaidCard(
+                        raidImg = R.drawable.abyss_dungeon_icon,
+                        totalGold = adVM.totalGold,
+                    ) {
+                        AbyssDungeon(viewModel = adVM)
+                    }
                 }
-            }
 
-            2 -> {
-                RaidCard(
-                    raidImg = R.drawable.kazeroth_icon,
-                    totalGold = kzVM.totalGold
-                ) {
-                    KazerothRaid(viewModel = kzVM)
+                2 -> {
+                    RaidCard(
+                        raidImg = R.drawable.kazeroth_icon,
+                        totalGold = kzVM.totalGold
+                    ) {
+                        KazerothRaid(viewModel = kzVM)
+                    }
                 }
-            }
 
-            3 -> {
-                RaidCard(
-                    raidImg = R.drawable.epic_icon,
-                    totalGold = epVM.totalGold
-                ) {
-                    EpicRaid(viewModel = epVM)
+                3 -> {
+                    RaidCard(
+                        raidImg = R.drawable.epic_icon,
+                        totalGold = epVM.totalGold
+                    ) {
+                        EpicRaid(viewModel = epVM)
+                    }
                 }
-            }
 
-            4 -> {
-                ETCGold(
-                    viewModel = viewModel,
-                    onDone = { viewModel.updateTotalGold(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold) },
-                )
+                4 -> {
+                    ETCGold(
+                        viewModel = viewModel,
+                        onDone = { viewModel.updateTotalGold(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold) },
+                    )
+                }
             }
         }
     }
