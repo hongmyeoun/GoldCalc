@@ -35,6 +35,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -92,6 +93,7 @@ fun GoldSettingContent(
     paddingValues: PaddingValues,
     viewModel: GoldSettingVM,
     scrollState: LazyListState,
+    snackbarHostState: SnackbarHostState,
     cbVM: CommandBossVM,
     adVM: AbyssDungeonVM,
     kzVM: KazerothRaidVM,
@@ -119,7 +121,7 @@ fun GoldSettingContent(
                 ) {
                     CharacterDetailSimpleUI(
                         character = character,
-                        onReloadClick = { viewModel.onReloadClick(context, character?.name) },
+                        onReloadClick = { viewModel.onReloadClick(context, character?.name, snackbarHostState) },
                         onAvatarClick = { viewModel.onAvatarClick(character) }
                     )
                 }
