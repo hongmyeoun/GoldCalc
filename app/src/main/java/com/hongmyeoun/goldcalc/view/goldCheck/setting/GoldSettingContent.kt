@@ -111,6 +111,7 @@ fun GoldSettingContent(
     } else {
         LazyColumn(
             modifier = Modifier
+                .fillMaxSize()
                 .padding(paddingValues),
             state = scrollState
         ) {

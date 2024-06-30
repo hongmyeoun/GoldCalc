@@ -1,5 +1,6 @@
 package com.hongmyeoun.goldcalc.view.goldCheck.setting
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
@@ -41,6 +43,7 @@ fun GoldSetting(
         topBar = { GoldSettingTopBar(viewModel, navController, scrollState) },
         bottomBar = { GoldSettingBottomBar(viewModel, cbVM, adVM, kzVM, epVM, navController) },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        contentWindowInsets = WindowInsets(0.dp)
     ) { paddingValues ->
         GoldSettingContent(paddingValues, viewModel, scrollState, snackbarHostState, cbVM, adVM, kzVM, epVM)
     }

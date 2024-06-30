@@ -1,5 +1,7 @@
 package com.hongmyeoun.goldcalc
 
+import android.app.Activity
+import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -29,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -68,7 +71,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
+            LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
             GoldCalcTheme {
+
                 val navController = rememberNavController()
 
                 Box(modifier = Modifier.safeDrawingPadding()) {
@@ -169,6 +175,13 @@ fun LoadingScreen() {
     }
 }
 
+// 화면 세로 고정
+@Composable
+fun LockScreenOrientation(orientation: Int) {
+    val context = LocalContext.current
+    val activity = context as? Activity
+    activity?.requestedOrientation = orientation
+}
 
 @Preview(showBackground = true)
 @Composable
