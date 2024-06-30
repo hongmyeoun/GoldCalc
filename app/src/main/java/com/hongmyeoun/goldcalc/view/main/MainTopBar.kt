@@ -166,7 +166,7 @@ private fun ShowSimpleCurrent(characterListVM: CharacterListVM) {
 
         Column(
             modifier = Modifier
-                .background(ImageBG, RoundedCornerShape(16.dp))
+                .background(LightGrayBG, RoundedCornerShape(16.dp))
                 .heightIn(max = maxColumnHeight)
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -204,7 +204,7 @@ private fun SimpleTotal(character: Character) {
     Column(
         modifier = Modifier
             .background(
-                color = LightGrayBG,
+                color = ImageBG,
                 shape = RoundedCornerShape(16.dp)
             )
             .padding(8.dp),
