@@ -1,5 +1,6 @@
 package com.hongmyeoun.goldcalc.viewModel.main
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -67,7 +68,29 @@ class CharacterListVM @Inject constructor(
     var earnGold by mutableStateOf(0)
     var remainGold by mutableStateOf(0)
 
-    fun onReset() {
+    private var clickPressedTime = 0L
+
+    // 두번 클릭해야 초기화가 진행됨
+    fun onReset(snackbarHostState: SnackbarHostState) {
+        val currentTime = System.currentTimeMillis()
+
+        if (currentTime - clickPressedTime <= 2000L) {
+            reset()
+            doneSnackbar(
+                snackbarHostState = snackbarHostState,
+                text = "숙제가 초기화 되었습니다."
+            )
+            clickPressedTime = 0L // 초기화 후 한번더 초기화 할때 오류가 안나게 하기 위해 초기화
+        } else {
+            doneSnackbar(
+                snackbarHostState = snackbarHostState,
+                text = "한 번 더 누르시면 숙제가 초기화 됩니다."
+            )
+        }
+        clickPressedTime = currentTime
+    }
+
+    private fun reset() {
         viewModelScope.launch(Dispatchers.IO) {
             val resetData = _characters.value.map {
                 it.copy(
@@ -78,6 +101,16 @@ class CharacterListVM @Inject constructor(
             characterRepository.updateAll(resetData)
             _isLoading.value = true
             mainScreenloading()
+        }
+    }
+
+    private fun doneSnackbar(snackbarHostState: SnackbarHostState, text: String) {
+        viewModelScope.launch {
+            val job = launch {
+                snackbarHostState.showSnackbar(message = text)
+            }
+            delay(2000L)
+            job.cancel()
         }
     }
 

@@ -20,13 +20,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ProgressIndicatorDefaults
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -61,14 +62,18 @@ import com.hongmyeoun.goldcalc.viewModel.main.CharacterListVM
 import java.text.NumberFormat
 
 @Composable
-fun MainAppTopBar(navController: NavHostController, characterListVM: CharacterListVM) {
+fun MainAppTopBar(
+    navController: NavHostController,
+    characterListVM: CharacterListVM,
+    snackbarHostState: SnackbarHostState
+) {
     Column {
         Column(
             modifier = Modifier
                 .background(LightGrayBG)
                 .padding(16.dp)
         ) {
-            MainAppTop(navController, characterListVM)
+            MainAppTop(navController, characterListVM, snackbarHostState)
             MainAppProgressText(characterListVM)
             MainAppProgressBar(characterListVM)
             MainAppGoldCurrent(characterListVM)
@@ -77,12 +82,16 @@ fun MainAppTopBar(navController: NavHostController, characterListVM: CharacterLi
 }
 
 @Composable
-private fun MainAppTop(navController: NavHostController, characterListVM: CharacterListVM) {
+private fun MainAppTop(
+    navController: NavHostController,
+    characterListVM: CharacterListVM,
+    snackbarHostState: SnackbarHostState
+) {
     Box(
         modifier = Modifier.fillMaxWidth(),
     ) {
         MainAppNameText(modifier = Modifier.align(Alignment.CenterStart))
-        MainMenuButtons(modifier = Modifier.align(Alignment.CenterEnd), navController, characterListVM)
+        MainMenuButtons(modifier = Modifier.align(Alignment.CenterEnd), navController, characterListVM, snackbarHostState)
     }
     Spacer(modifier = Modifier.height(16.dp))
 }
@@ -428,7 +437,12 @@ private fun MainAppGoldCurrent(characterListVM: CharacterListVM) {
 }
 
 @Composable
-private fun MainMenuButtons(modifier: Modifier, navController: NavHostController, characterListVM: CharacterListVM) {
+private fun MainMenuButtons(
+    modifier: Modifier,
+    navController: NavHostController,
+    characterListVM: CharacterListVM,
+    snackbarHostState: SnackbarHostState
+) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
@@ -446,10 +460,10 @@ private fun MainMenuButtons(modifier: Modifier, navController: NavHostController
 
         IconButton(
             modifier = Modifier.size(35.dp),
-            onClick = { characterListVM.onReset() }
+            onClick = { characterListVM.onReset(snackbarHostState) }
         ) {
             Icon(
-                imageVector = Icons.Default.Refresh,
+                painter = painterResource(id = R.drawable.baseline_settings_backup_restore_24),
                 tint = Color.White,
                 contentDescription = "새로고침"
             )

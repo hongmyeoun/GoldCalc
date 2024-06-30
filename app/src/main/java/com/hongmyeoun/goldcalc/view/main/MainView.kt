@@ -32,7 +32,7 @@ fun MainScreen(
     BackOnPressed(snackbarHostState)
 
     Scaffold(
-        topBar = { MainAppTopBar(navController, characterListVM) },
+        topBar = { MainAppTopBar(navController, characterListVM, snackbarHostState) },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         contentWindowInsets = WindowInsets(0.dp)
     ) {
