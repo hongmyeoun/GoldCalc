@@ -1,9 +1,11 @@
 package com.hongmyeoun.goldcalc
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -41,6 +43,7 @@ import com.hongmyeoun.goldcalc.view.goldCheck.setting.GoldSetting
 import com.hongmyeoun.goldcalc.view.main.MainScreen
 import com.hongmyeoun.goldcalc.view.main.characterCard.CharacterCard
 import com.hongmyeoun.goldcalc.view.search.SearchUI
+import com.hongmyeoun.goldcalc.view.setting.SettingUI
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
@@ -58,6 +61,7 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var characterRepository: CharacterRepository
 
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -142,9 +146,12 @@ class MainActivity : ComponentActivity() {
                             }
 
                         }
-
+                        composable("Setting") {
+                            SettingUI(navController)
+                        }
                     }
-                }            }
+                }
+            }
         }
     }
 }
