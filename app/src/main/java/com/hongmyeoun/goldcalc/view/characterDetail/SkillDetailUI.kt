@@ -33,6 +33,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
 import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
+import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Tripods
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
@@ -100,10 +101,6 @@ private fun SkillDetail(
     Column(
         modifier = Modifier
             .padding(4.dp)
-            .background(
-                color = Color.Black,
-                shape = RoundedCornerShape(4.dp)
-            )
     ) {
         Box(
             modifier = Modifier
@@ -211,9 +208,13 @@ private fun SkillIcon(it: Skills, isSimple: Boolean = false) {
                         }
                     }
                 }
-                Spacer(modifier = Modifier.width(10.dp))
+                if (isSimple) {
+                    Spacer(modifier = Modifier.width(10.dp))
+                }
             }
-            Spacer(modifier = Modifier.height(6.dp))
+            if (isSimple) {
+                Spacer(modifier = Modifier.height(6.dp))
+            }
         }
         if (isSimple) {
             Box(modifier = Modifier.align(Alignment.BottomEnd)) {
@@ -272,23 +273,13 @@ private fun SkillTripods(it: Skills, viewModel: SkillDetailVM) {
 
         FlowRow(
             verticalArrangement = Arrangement.Center,
-            maxItemsInEachRow = 12
+            maxItemsInEachRow = 3
         ) {
             it.tripods.let { tripods ->
                 var selectedIndex = 0
                 tripods.forEach { tripod ->
                     if (tripod.isSelected) {
-                        TextChip(
-                            text = "${tripod.level}",
-                            borderless = true,
-                            customBGColor = viewModel.getIndexColor(selectedIndex)
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = tripod.name,
-                            style = normalTextStyle(color = viewModel.getIndexColor(selectedIndex), fontSize = 12.sp)
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
+                        TripodInfo(tripod, viewModel, selectedIndex)
                         selectedIndex++
                     }
                 }
@@ -296,6 +287,28 @@ private fun SkillTripods(it: Skills, viewModel: SkillDetailVM) {
         }
     }
 }
+
+@Composable
+private fun TripodInfo(
+    tripod: Tripods,
+    viewModel: SkillDetailVM,
+    selectedIndex: Int
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        TextChip(
+            text = "${tripod.level}",
+            borderless = true,
+            customBGColor = viewModel.getIndexColor(selectedIndex)
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            text = tripod.name,
+            style = normalTextStyle(color = viewModel.getIndexColor(selectedIndex), fontSize = 12.sp)
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+    }
+}
+
 
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -424,7 +437,7 @@ private fun SkillSimple(skills: List<Skills>, gemList: List<Gem>?, viewModel: Sk
                         modifier = Modifier
                             .padding(4.dp)
                             .background(
-                                color = LightGrayBG ,
+                                color = LightGrayBG,
                                 shape = RoundedCornerShape(8.dp)
                             )
                             .padding(4.dp)

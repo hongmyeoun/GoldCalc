@@ -88,13 +88,14 @@ fun CharacterDetailUI(
                 Text(
                     modifier = Modifier.fillMaxWidth().weight(3f),
                     text = "캐릭터 상세",
-                    style = titleTextStyle(fontSize = 13.sp),
+                    style = titleTextStyle(),
                     textAlign = TextAlign.Center
                 )
 
                 Spacer(modifier = Modifier.width(32.dp).weight(0.5f))
             }
         },
+        containerColor = ImageBG,
         contentWindowInsets = WindowInsets(0.dp)
     ) {
         CharacterDetailScreen(charName = charName, paddingValues = it)

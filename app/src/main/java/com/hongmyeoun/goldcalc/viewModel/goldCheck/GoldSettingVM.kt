@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.viewModel.goldCheck
 
 import android.content.Context
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,6 +12,7 @@ import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -142,7 +144,7 @@ class GoldSettingVM @Inject constructor(
         }
     }
 
-    fun onReloadClick(context: Context, characterName: String?) {
+    fun onReloadClick(context: Context, characterName: String?, snackbarHostState: SnackbarHostState) {
         characterName?.let {
             viewModelScope.launch(Dispatchers.IO) {
                 val characterDetail = getCharDetail(context, characterName)
@@ -151,6 +153,23 @@ class GoldSettingVM @Inject constructor(
                 }
             }
             getCharacter(characterName)
+        }
+        doneSnackbar(
+            snackbarHostState = snackbarHostState,
+            text = "캐릭터 정보를 갱신했습니다."
+        )
+    }
+
+    fun doneSnackbar(
+        snackbarHostState: SnackbarHostState,
+        text: String,
+    ) {
+        viewModelScope.launch {
+            val job = launch {
+                snackbarHostState.showSnackbar(message = text)
+            }
+            delay(2000L)
+            job.cancel()
         }
     }
 

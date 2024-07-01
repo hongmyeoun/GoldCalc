@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.view.search
 
 import android.content.Context
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -74,6 +75,14 @@ fun SearchUI(
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusState = LocalFocusManager.current
 
+    BackHandler {
+        navController.navigate("Main") {
+            popUpTo("Search") {
+                inclusive = true
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -86,8 +95,7 @@ fun SearchUI(
                 )
             }
             .background(ImageBG)
-            .padding(top = 8.dp)
-        ,
+            .padding(top = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
@@ -320,8 +328,7 @@ fun CharacterListItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { navController.navigate("CharDetail/${character.characterName}") }
-            .padding(8.dp)
-        ,
+            .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         GlideImage(

@@ -1,11 +1,19 @@
 package com.hongmyeoun.goldcalc
 
+import android.app.Activity
+import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -16,7 +24,6 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,15 +35,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
+import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.MokokoGreen
 import com.hongmyeoun.goldcalc.view.characterDetail.CharacterDetailUI
 import com.hongmyeoun.goldcalc.view.goldCheck.setting.GoldSetting
@@ -68,11 +81,17 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
+            LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
             GoldCalcTheme {
+
                 val navController = rememberNavController()
 
                 Box(modifier = Modifier.safeDrawingPadding()) {
-                    NavHost(navController = navController, startDestination = "Main") {
+                    NavHost(
+                        navController = navController,
+                        startDestination = "Main",
+                    ) {
                         composable("Main") {
                             val characterListVM: CharacterListVM = hiltViewModel()
 
@@ -85,17 +104,17 @@ class MainActivity : ComponentActivity() {
 
                                 if (isLoading) {
                                     LoadingScreen()
-                                } else {
-                                    LazyColumn(modifier = modifier) {
-                                        items(characterList, key = { item -> item.name }) {
-                                            val characterName = it.name
-                                            val characterCardVM = remember { CharacterCardVM(characterRepository, characterName) }
+                                }
 
-                                            CharacterCard(
-                                                navController = navController,
-                                                viewModel = characterCardVM,
-                                            )
-                                        }
+                                LazyColumn(modifier = modifier) {
+                                    items(characterList, key = { item -> item.name }) {
+                                        val characterName = it.name
+                                        val characterCardVM = remember { CharacterCardVM(characterRepository, characterName) }
+
+                                        CharacterCard(
+                                            navController = navController,
+                                            viewModel = characterCardVM,
+                                        )
                                     }
                                 }
 
@@ -110,13 +129,13 @@ class MainActivity : ComponentActivity() {
 
                             if (isLoading) {
                                 LoadingScreen()
-                            } else {
-                                val cbVM = remember { CommandBossVM(character) }
-                                val adVM = remember { AbyssDungeonVM(character) }
-                                val kzVM = remember { KazerothRaidVM(character) }
-                                val epVM = remember { EpicRaidVM(character) }
-                                GoldSetting(navController, gSVM, cbVM, adVM, kzVM, epVM)
                             }
+
+                            val cbVM = remember { CommandBossVM(character) }
+                            val adVM = remember { AbyssDungeonVM(character) }
+                            val kzVM = remember { KazerothRaidVM(character) }
+                            val epVM = remember { EpicRaidVM(character) }
+                            GoldSetting(navController, gSVM, cbVM, adVM, kzVM, epVM)
 
                             LaunchedEffect(Unit) {
                                 delay(1000)
@@ -132,19 +151,19 @@ class MainActivity : ComponentActivity() {
 
                             var isLoading by remember { mutableStateOf(true) }
 
+
+                            if (isLoading) {
+                                LoadingScreen()
+                            }
+
                             charName?.let {
-                                if (!isLoading) {
-                                    CharacterDetailUI(charName, navController)
-                                } else {
-                                    LoadingScreen()
-                                }
+                                CharacterDetailUI(charName, navController)
                             }
 
                             LaunchedEffect(Unit) {
-                                delay(1000) // 예시로 1초의 로딩 시간을 줍니다. 실제 필요한 시간에 맞게 조정하세요.
-                                isLoading = false // 데이터 로딩이 완료되면 로딩 상태를 false로 변경합니다.
+                                delay(1000)
+                                isLoading = false
                             }
-
                         }
                         composable("Setting") {
                             SettingUI(navController)
@@ -157,18 +176,43 @@ class MainActivity : ComponentActivity() {
 }
 
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun LoadingScreen() {
+    val transition = rememberInfiniteTransition(label = "색 변경")
+    val tintColor by transition.animateColor(
+        initialValue = Color.White,
+        targetValue = MokokoGreen,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "색이 바뀌는 애니메이션"
+    )
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Transparent),
+            .background(ImageBG.copy(alpha = 0.5f))
+            .zIndex(1f),
         contentAlignment = Alignment.Center
     ) {
-        CircularProgressIndicator() // 프로그레스 바를 사용하여 로딩 상태를 표시합니다.
+        GlideImage(
+            model = R.drawable.mokoko_white,
+            colorFilter = ColorFilter.tint(tintColor),
+            contentDescription = "로딩 이미지"
+        )
     }
+
 }
 
+// 화면 세로 고정
+@Composable
+fun LockScreenOrientation(orientation: Int) {
+    val context = LocalContext.current
+    val activity = context as? Activity
+    activity?.requestedOrientation = orientation
+}
 
 @Preview(showBackground = true)
 @Composable

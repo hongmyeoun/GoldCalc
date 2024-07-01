@@ -48,6 +48,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
+import com.hongmyeoun.goldcalc.ui.theme.DarkModeGray
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.viewModel.setting.SettingVM
 import sh.calvin.reorderable.ReorderableItem
@@ -119,6 +120,7 @@ private fun SwipeDeleteAndDraggableList(
     character: Character
 ) {
     val elevation by animateDpAsState(if (isDragging) 4.dp else 0.dp)
+    val surfaceBGColor = if (isDragging) DarkModeGray else LightGrayBG
 
     val dismissState = rememberDismissState(
         positionalThreshold = { it * 0.50f },
@@ -148,12 +150,12 @@ private fun SwipeDeleteAndDraggableList(
         dismissContent = {
             Surface(
                 shape = RoundedCornerShape(16.dp),
-                color = LightGrayBG,
+                color = surfaceBGColor,
                 shadowElevation = elevation
             ) {
                 CharacterListItem(
                     character = character,
-                    modifier = draggableHandlerModifier
+                    modifier = draggableHandlerModifier,
                 )
             }
         }
