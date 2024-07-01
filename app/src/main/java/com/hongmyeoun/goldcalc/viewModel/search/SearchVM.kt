@@ -71,4 +71,14 @@ class SearchVM : ViewModel() {
         _isSearch.value = true
         _tempCharName.value = _characterName.value
     }
+
+    private val _showDialog = MutableStateFlow(false)
+    val showDialog: StateFlow<Boolean> = _showDialog
+    fun onDissmissRequest() {
+        _showDialog.value = false
+    }
+
+    fun showDialog() {
+        _showDialog.value = true
+    }
 }
