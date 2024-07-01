@@ -100,10 +100,6 @@ private fun SkillDetail(
     Column(
         modifier = Modifier
             .padding(4.dp)
-            .background(
-                color = Color.Black,
-                shape = RoundedCornerShape(4.dp)
-            )
     ) {
         Box(
             modifier = Modifier
