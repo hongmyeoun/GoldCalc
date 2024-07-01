@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.view.setting
 
 import android.os.Build
+import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.WindowInsets
@@ -32,6 +33,12 @@ fun SettingUI(
 
     val reorderPage by viewModel.reorderPage.collectAsState()
 
+    if (reorderPage) {
+        BackHandler {
+            viewModel.closeRerderPage()
+        }
+    }
+
     Scaffold(
         topBar = { if (reorderPage) ReorderPageTopBar(viewModel = viewModel) else SettingTopBar(navController) },
         bottomBar = { if (reorderPage) ReorderBottomBar(viewModel, snackbarHostState) },
@@ -39,7 +46,10 @@ fun SettingUI(
         contentWindowInsets = WindowInsets(0.dp),
         containerColor = ImageBG
     ) {
-        Crossfade(targetState = reorderPage) { isReorderPage ->
+        Crossfade(
+            targetState = reorderPage,
+            label = "화면 전환"
+        ) { isReorderPage ->
             if (isReorderPage) {
                 ReorderPageContent(it, viewModel)
             } else {
