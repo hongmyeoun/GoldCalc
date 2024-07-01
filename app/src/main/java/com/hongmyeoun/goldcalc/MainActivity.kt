@@ -40,6 +40,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -87,7 +88,10 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
 
                 Box(modifier = Modifier.safeDrawingPadding()) {
-                    NavHost(navController = navController, startDestination = "Main") {
+                    NavHost(
+                        navController = navController,
+                        startDestination = "Main",
+                    ) {
                         composable("Main") {
                             val characterListVM: CharacterListVM = hiltViewModel()
 
@@ -100,17 +104,17 @@ class MainActivity : ComponentActivity() {
 
                                 if (isLoading) {
                                     LoadingScreen()
-                                } else {
-                                    LazyColumn(modifier = modifier) {
-                                        items(characterList, key = { item -> item.name }) {
-                                            val characterName = it.name
-                                            val characterCardVM = remember { CharacterCardVM(characterRepository, characterName) }
+                                }
 
-                                            CharacterCard(
-                                                navController = navController,
-                                                viewModel = characterCardVM,
-                                            )
-                                        }
+                                LazyColumn(modifier = modifier) {
+                                    items(characterList, key = { item -> item.name }) {
+                                        val characterName = it.name
+                                        val characterCardVM = remember { CharacterCardVM(characterRepository, characterName) }
+
+                                        CharacterCard(
+                                            navController = navController,
+                                            viewModel = characterCardVM,
+                                        )
                                     }
                                 }
 
@@ -125,13 +129,13 @@ class MainActivity : ComponentActivity() {
 
                             if (isLoading) {
                                 LoadingScreen()
-                            } else {
-                                val cbVM = remember { CommandBossVM(character) }
-                                val adVM = remember { AbyssDungeonVM(character) }
-                                val kzVM = remember { KazerothRaidVM(character) }
-                                val epVM = remember { EpicRaidVM(character) }
-                                GoldSetting(navController, gSVM, cbVM, adVM, kzVM, epVM)
                             }
+
+                            val cbVM = remember { CommandBossVM(character) }
+                            val adVM = remember { AbyssDungeonVM(character) }
+                            val kzVM = remember { KazerothRaidVM(character) }
+                            val epVM = remember { EpicRaidVM(character) }
+                            GoldSetting(navController, gSVM, cbVM, adVM, kzVM, epVM)
 
                             LaunchedEffect(Unit) {
                                 delay(1000)
@@ -147,19 +151,19 @@ class MainActivity : ComponentActivity() {
 
                             var isLoading by remember { mutableStateOf(true) }
 
+
+                            if (isLoading) {
+                                LoadingScreen()
+                            }
+
                             charName?.let {
-                                if (!isLoading) {
-                                    CharacterDetailUI(charName, navController)
-                                } else {
-                                    LoadingScreen()
-                                }
+                                CharacterDetailUI(charName, navController)
                             }
 
                             LaunchedEffect(Unit) {
                                 delay(1000) // 예시로 1초의 로딩 시간을 줍니다. 실제 필요한 시간에 맞게 조정하세요.
                                 isLoading = false // 데이터 로딩이 완료되면 로딩 상태를 false로 변경합니다.
                             }
-
                         }
                         composable("Setting") {
                             SettingUI(navController)
@@ -175,20 +179,22 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun LoadingScreen() {
-    val transition = rememberInfiniteTransition()
+    val transition = rememberInfiniteTransition(label = "색 변경")
     val tintColor by transition.animateColor(
         initialValue = Color.White,
         targetValue = MokokoGreen,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 1000, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
-        )
+        ),
+        label = "색이 바뀌는 애니메이션"
     )
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(ImageBG),
+            .background(ImageBG.copy(alpha = 0.5f))
+            .zIndex(1f),
         contentAlignment = Alignment.Center
     ) {
         GlideImage(
@@ -197,6 +203,7 @@ fun LoadingScreen() {
             contentDescription = "로딩 이미지"
         )
     }
+
 }
 
 // 화면 세로 고정

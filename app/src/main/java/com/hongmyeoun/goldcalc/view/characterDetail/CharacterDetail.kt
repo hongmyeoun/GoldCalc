@@ -95,6 +95,7 @@ fun CharacterDetailUI(
                 Spacer(modifier = Modifier.width(32.dp).weight(0.5f))
             }
         },
+        containerColor = ImageBG,
         contentWindowInsets = WindowInsets(0.dp)
     ) {
         CharacterDetailScreen(charName = charName, paddingValues = it)

@@ -108,30 +108,31 @@ fun GoldSettingContent(
 
     if (isLoading) {
         LoadingScreen()
-    } else {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            state = scrollState
-        ) {
-            item {
-                AnimatedVisibility(
-                    visible = showDetail,
-                    enter = expandVertically(animationSpec = tween(100, easing = LinearEasing)),
-                    exit = shrinkVertically(animationSpec = tween(100, easing = LinearEasing))
-                ) {
-                    CharacterDetailSimpleUI(
-                        character = character,
-                        onReloadClick = { viewModel.onReloadClick(context, character?.name, snackbarHostState) },
-                        onAvatarClick = { viewModel.onAvatarClick(character) }
-                    )
-                }
-            }
-            stickyHeader { RaidHeader(viewModel) }
-            item { GoldSetting(viewModel, cbVM, adVM, kzVM, epVM) }
-        }
     }
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues),
+        state = scrollState
+    ) {
+        item {
+            AnimatedVisibility(
+                visible = showDetail,
+                enter = expandVertically(animationSpec = tween(100, easing = LinearEasing)),
+                exit = shrinkVertically(animationSpec = tween(100, easing = LinearEasing))
+            ) {
+                CharacterDetailSimpleUI(
+                    character = character,
+                    onReloadClick = { viewModel.onReloadClick(context, character?.name, snackbarHostState) },
+                    onAvatarClick = { viewModel.onAvatarClick(character) }
+                )
+            }
+        }
+        stickyHeader { RaidHeader(viewModel) }
+        item { GoldSetting(viewModel, cbVM, adVM, kzVM, epVM) }
+    }
+
 }
 
 @Composable
