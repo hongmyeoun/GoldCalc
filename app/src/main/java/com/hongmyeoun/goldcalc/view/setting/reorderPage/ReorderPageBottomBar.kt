@@ -35,7 +35,7 @@ fun ReorderBottomBar(
     ) {
         OutlinedButton(
             modifier = Modifier.weight(1f),
-            onClick = { viewModel.closeRerderPage() },
+            onClick = { viewModel.closeReorderPage() },
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.outlinedButtonColors(
                 contentColor = Color.White

@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.model.roomDB.character.RaidPhaseInfo
+import com.hongmyeoun.goldcalc.model.roomDB.searchHistory.SearchHistory
+import com.hongmyeoun.goldcalc.model.roomDB.searchHistory.SearchHistoryRepository
 import com.hongmyeoun.goldcalc.model.setting.SettingModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingVM @Inject constructor(
-    private val characterRepository: CharacterRepository
+    private val characterRepository: CharacterRepository,
+    private val searchHistoryRepository: SearchHistoryRepository,
 ): ViewModel() {
     private val _characters = MutableStateFlow<List<Character>>(emptyList())
     val characters: StateFlow<List<Character>> = _characters
@@ -31,33 +34,51 @@ class SettingVM @Inject constructor(
         }
     }
 
+    private val _histories = MutableStateFlow<List<SearchHistory>>(emptyList())
+
+    private fun getHistories() {
+        viewModelScope.launch(Dispatchers.IO) {
+            searchHistoryRepository.getAll().collect {
+                _histories.value = it
+            }
+        }
+    }
+
     private val _showResetDialog = MutableStateFlow(false)
     val showResetDialog: StateFlow<Boolean> = _showResetDialog
 
-    fun showResetDailog() {
+    fun showResetDialog() {
         _showResetDialog.value = true
     }
 
-    private val _showDeleteDialog = MutableStateFlow(false)
-    val showDeleteDialog: StateFlow<Boolean> = _showDeleteDialog
+    private val _showDeleteCharListDialog = MutableStateFlow(false)
+    val showDeleteCharListDialog: StateFlow<Boolean> = _showDeleteCharListDialog
 
-    fun showDeleteDialog() {
-        _showDeleteDialog.value = true
+    fun showDeleteCharListDialog() {
+        _showDeleteCharListDialog.value = true
+    }
+
+    private val _showDeleteHistoryDialog = MutableStateFlow(false)
+    val showDeleteHistoryDialog: StateFlow<Boolean> = _showDeleteHistoryDialog
+
+    fun showDeleteHistoryDialog() {
+        _showDeleteHistoryDialog.value = true
     }
 
     fun onDissmissRequest() {
         _showResetDialog.value = false
-        _showDeleteDialog.value = false
+        _showDeleteCharListDialog.value = false
+        _showDeleteHistoryDialog.value = false
     }
 
     private val _reorderPage = MutableStateFlow(false)
     val reorderPage: StateFlow<Boolean> = _reorderPage
 
-    fun openRerderPage() {
+    fun openReorderPage() {
         _reorderPage.value = true
     }
 
-    fun closeRerderPage() {
+    fun closeReorderPage() {
         _reorderPage.value = false
     }
 
@@ -82,7 +103,7 @@ class SettingVM @Inject constructor(
         onDissmissRequest()
     }
 
-    fun onDeleteAll() {
+    fun onDeleteAllCharList() {
         viewModelScope.launch(Dispatchers.IO) {
             _characters.value.forEach {
                 characterRepository.delete(it)
@@ -91,8 +112,17 @@ class SettingVM @Inject constructor(
         onDissmissRequest()
     }
 
+    fun onDeleteAllHistories() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _histories.value.forEach {
+                searchHistoryRepository.delete(it)
+            }
+        }
+        onDissmissRequest()
+    }
+
     fun onSave(snackbarHostState: SnackbarHostState,) {
-        closeRerderPage()
+        closeReorderPage()
         if (_newList.value.isNotEmpty()) {
             viewModelScope.launch(Dispatchers.IO) {
                 _characters.value.forEach {
@@ -141,5 +171,6 @@ class SettingVM @Inject constructor(
 
     init {
         getCharacters()
+        getHistories()
     }
 }

@@ -46,7 +46,8 @@ fun SettingContent(
     snackbarHostState: SnackbarHostState,
 ) {
     val showResetDialog by viewModel.showResetDialog.collectAsState()
-    val showDeleteDialog by viewModel.showDeleteDialog.collectAsState()
+    val showDeleteCharListDialog by viewModel.showDeleteCharListDialog.collectAsState()
+    val showDeleteHistoriesDialog by viewModel.showDeleteHistoryDialog.collectAsState()
 
     val context = LocalContext.current
 
@@ -59,12 +60,21 @@ fun SettingContent(
         )
     }
 
-    if (showDeleteDialog) {
+    if (showDeleteCharListDialog) {
         Dialog(
             title = "캐릭터",
             action = "일괄 삭제",
             viewModel = viewModel,
-            onConfirm = { viewModel.onDeleteAll() }
+            onConfirm = { viewModel.onDeleteAllCharList() }
+        )
+    }
+
+    if (showDeleteHistoriesDialog) {
+        Dialog(
+            title = "검색기록",
+            action = "일괄 삭제",
+            viewModel = viewModel,
+            onConfirm = { viewModel.onDeleteAllHistories() }
         )
     }
 
@@ -81,19 +91,31 @@ fun SettingContent(
                 SettingItem(
                     itemTitle = "숙제 초기화",
                     icon = R.drawable.baseline_settings_backup_restore_24,
-                    onClicked = { viewModel.showResetDailog() }
+                    onClicked = { viewModel.showResetDialog() }
                 )
 
                 SettingItem(
                     itemTitle = "캐릭터 순서 변경",
                     icon = R.drawable.baseline_sort,
-                    onClicked = { viewModel.openRerderPage() }
+                    onClicked = { viewModel.openReorderPage() }
                 )
+            }
+        }
 
+        item {
+            SettingItemBox(
+                title = "삭제"
+            ) {
                 SettingItem(
                     itemTitle = "캐릭터 일괄 삭제",
                     icon = R.drawable.baseline_delete_sweep,
-                    onClicked = { viewModel.showDeleteDialog() }
+                    onClicked = { viewModel.showDeleteCharListDialog() }
+                )
+
+                SettingItem(
+                    itemTitle = "검색기록 일괄 삭제",
+                    icon = R.drawable.baseline_delete_sweep,
+                    onClicked = { viewModel.showDeleteHistoryDialog() }
                 )
             }
         }
@@ -204,7 +226,10 @@ private fun SettingItemCacheClear(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(enabled = cacheSize > 0) { viewModel.cacheDelete(context, snackbarHostState) }
+            .clickable(enabled = cacheSize > 0) {
+                viewModel.onDeleteAllHistories()
+                viewModel.cacheDelete(context, snackbarHostState)
+            }
             .padding(top = 12.dp, bottom = 12.dp, start = 16.dp, end = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
