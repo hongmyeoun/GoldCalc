@@ -28,7 +28,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -48,6 +50,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -86,6 +89,7 @@ import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
 import com.hongmyeoun.goldcalc.view.characterDetail.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
+import kotlinx.coroutines.launch
 
 @Composable
 fun SearchUI(
@@ -110,11 +114,14 @@ fun SearchUI(
         }
     }
 
+    val scrollState = rememberLazyListState()
+
     Scaffold(
         topBar = {
             SearchTextField(
                 viewModel = viewModel,
                 isFocus = isFocus,
+                scrollState = scrollState,
                 keyboardController = keyboardController,
                 focusState = focusState
             )
@@ -140,7 +147,8 @@ fun SearchUI(
         ) {
             SearchResult(
                 viewModel = viewModel,
-                navController = navController
+                navController = navController,
+                scrollState = scrollState
             )
         }
     }
@@ -150,24 +158,22 @@ fun SearchUI(
 private fun SearchTextField(
     viewModel: SearchVM,
     isFocus: Boolean,
+    scrollState: LazyListState,
     keyboardController: SoftwareKeyboardController?,
     focusState: FocusManager
 ) {
-    val characterName by viewModel.characterName.collectAsState()
-    val context = LocalContext.current
-
     var textFieldSize by remember { mutableStateOf(androidx.compose.ui.geometry.Rect.Zero) }
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
+    val characterName by viewModel.characterName.collectAsState()
     val selectedName by viewModel.longPressName.collectAsState()
-
     val histories by viewModel.hisotries.collectAsState()
+    val showDialog by viewModel.showDialog.collectAsState()
 
     val bottomStart by animateDpAsState(targetValue = if (isFocus) 0.dp else 16.dp, animationSpec = tween(durationMillis = 300), label = "")
     val bottomEnd by animateDpAsState(targetValue = if (isFocus) 0.dp else 16.dp, animationSpec = tween(durationMillis = 300), label = "")
-
     val borderShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomStart = bottomStart, bottomEnd = bottomEnd)
-
-    val showDialog by viewModel.showDialog.collectAsState()
 
     if (showDialog) {
         DeleteSearchHistoryDialog(
@@ -200,6 +206,7 @@ private fun SearchTextField(
             keyboardActions = KeyboardActions(
                 onDone = {
                     viewModel.onDone(context)
+                    scope.launch { scrollState.animateScrollToItem(0) } // 검색결과를 0으로
                     keyboardController?.hide()
                     focusState.clearFocus()
                 }
@@ -356,7 +363,11 @@ private fun SearchTrailingIcon(
 }
 
 @Composable
-private fun SearchResult(viewModel: SearchVM, navController: NavHostController) {
+private fun SearchResult(
+    viewModel: SearchVM,
+    navController: NavHostController,
+    scrollState: LazyListState,
+) {
     val isLoading by viewModel.isLoading.collectAsState()
     val isSearch by viewModel.isSearch.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
@@ -376,7 +387,7 @@ private fun SearchResult(viewModel: SearchVM, navController: NavHostController) 
         }
 
         else -> {
-            SearchResults(characterList, navController)
+            SearchResults(characterList, navController, scrollState)
         }
     }
 }
@@ -419,12 +430,14 @@ private fun SearchError(viewModel: SearchVM) {
 @OptIn(ExperimentalFoundationApi::class)
 private fun SearchResults(
     characterList: List<CharacterInfo>,
-    navController: NavHostController
+    navController: NavHostController,
+    scrollState: LazyListState,
 ) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)
+            .padding(8.dp),
+        state = scrollState
     ) {
         if (characterList.isNotEmpty()) {
             stickyHeader { HeaderText("검색 결과") }
