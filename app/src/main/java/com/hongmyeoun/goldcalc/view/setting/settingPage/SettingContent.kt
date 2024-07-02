@@ -246,7 +246,7 @@ private fun SettingItemCacheClear(
             Spacer(modifier = Modifier.width(8.dp))
 
             Text(
-                text = "캐쉬 삭제",
+                text = "캐시 삭제",
                 style = normalTextStyle(fontSize = 15.sp)
             )
         }

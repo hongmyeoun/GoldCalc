@@ -163,7 +163,7 @@ class SettingVM @Inject constructor(
         SettingModel.clearAppCache(context) {
             doneSnackbar(
                 snackbarHostState = snackbarHostState,
-                text = "캐쉬가 정리되었습니다."
+                text = "캐시가 정리되었습니다."
             )
             _cacheSize.value = SettingModel.getCacheSize(context)
         }
