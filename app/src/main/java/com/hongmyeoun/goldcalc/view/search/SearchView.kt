@@ -278,7 +278,7 @@ private fun SearchTextField(
                             Text(
                                 modifier = Modifier.weight(1f),
                                 text = history.charName,
-                                style = normalTextStyle(fontSize = 12.sp)
+                                style = normalTextStyle(fontSize = 14.sp)
                             )
 
                             IconButton(
