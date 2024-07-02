@@ -35,7 +35,7 @@ fun SettingUI(
 
     if (reorderPage) {
         BackHandler {
-            viewModel.closeRerderPage()
+            viewModel.closeReorderPage()
         }
     }
 

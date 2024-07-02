@@ -32,7 +32,7 @@ fun ReorderPageTopBar(
     ) {
         IconButton(
             modifier = Modifier.weight(0.5f),
-            onClick = { viewModel.closeRerderPage() }
+            onClick = { viewModel.closeReorderPage() }
         ) {
             Icon(
                 imageVector = Icons.Default.KeyboardArrowLeft,
