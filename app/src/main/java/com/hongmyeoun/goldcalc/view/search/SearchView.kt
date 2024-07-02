@@ -265,6 +265,7 @@ private fun SearchTextField(
                                             focusState.clearFocus()
                                             viewModel.onCharacterNameValueChange(history.charName)
                                             viewModel.onDone(context)
+                                            scope.launch { scrollState.animateScrollToItem(0) }
                                         },
                                         onLongPress = {
                                             viewModel.showDialog(history.charName)
