@@ -107,14 +107,14 @@ fun SettingContent(
                 title = "삭제"
             ) {
                 SettingItem(
-                    itemTitle = "캐릭터 일괄 삭제",
+                    itemTitle = "캐릭터",
                     icon = R.drawable.baseline_delete_sweep,
                     onClicked = { viewModel.showDeleteCharListDialog() }
                 )
 
                 SettingItem(
-                    itemTitle = "검색기록 일괄 삭제",
-                    icon = R.drawable.baseline_delete_sweep,
+                    itemTitle = "검색기록",
+                    icon = R.drawable.baseline_manage_history,
                     onClicked = { viewModel.showDeleteHistoryDialog() }
                 )
             }
