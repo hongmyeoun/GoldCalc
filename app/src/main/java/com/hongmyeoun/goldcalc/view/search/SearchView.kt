@@ -2,46 +2,66 @@ package com.hongmyeoun.goldcalc.view.search
 
 import android.content.Context
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.boundsInParent
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -49,9 +69,12 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.Popup
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -66,96 +89,222 @@ import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
 import com.hongmyeoun.goldcalc.view.characterDetail.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun SearchUI(
     navController: NavHostController,
-    viewModel: SearchVM = viewModel()
+    viewModel: SearchVM = hiltViewModel()
 ) {
+    val isFocus by viewModel.isFocus.collectAsState()
+
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusState = LocalFocusManager.current
 
     BackHandler {
-        navController.navigate("Main") {
-            popUpTo("Search") {
-                inclusive = true
+        if (isFocus) {
+            keyboardController?.hide()
+            focusState.clearFocus()
+        } else {
+            navController.navigate("Main") {
+                popUpTo("Search") {
+                    inclusive = true
+                }
             }
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onTap = {
-                        keyboardController?.hide()
-                        focusState.clearFocus()
-                    }
-                )
-            }
-            .background(ImageBG)
-            .padding(top = 8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
+    val scrollState = rememberLazyListState()
+
+    Scaffold(
+        topBar = {
+            SearchTextField(
+                viewModel = viewModel,
+                isFocus = isFocus,
+                scrollState = scrollState,
+                keyboardController = keyboardController,
+                focusState = focusState
+            )
+        },
+        containerColor = ImageBG
     ) {
-        SearchTextField(
-            viewModel = viewModel,
-            keyboardController = keyboardController,
-            focusState = focusState
-        )
-        SearchResult(
-            viewModel = viewModel,
-            navController = navController
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onTap = {
+                            keyboardController?.hide()
+                            focusState.clearFocus()
+                        }
+                    )
+                }
+                .background(ImageBG)
+                .padding(top = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
+            SearchResult(
+                viewModel = viewModel,
+                navController = navController,
+                scrollState = scrollState
+            )
+        }
     }
 }
 
 @Composable
 private fun SearchTextField(
     viewModel: SearchVM,
+    isFocus: Boolean,
+    scrollState: LazyListState,
     keyboardController: SoftwareKeyboardController?,
     focusState: FocusManager
 ) {
-    val characterName by viewModel.characterName.collectAsState()
-    var isFocus by remember { mutableStateOf(false) }
+    var textFieldSize by remember { mutableStateOf(androidx.compose.ui.geometry.Rect.Zero) }
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
-    OutlinedTextField(
+    val characterName by viewModel.characterName.collectAsState()
+    val selectedName by viewModel.longPressName.collectAsState()
+    val histories by viewModel.hisotries.collectAsState()
+    val showDialog by viewModel.showDialog.collectAsState()
+
+    val bottomStart by animateDpAsState(targetValue = if (isFocus) 0.dp else 16.dp, animationSpec = tween(durationMillis = 300), label = "")
+    val bottomEnd by animateDpAsState(targetValue = if (isFocus) 0.dp else 16.dp, animationSpec = tween(durationMillis = 300), label = "")
+    val borderShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomStart = bottomStart, bottomEnd = bottomEnd)
+
+    if (showDialog) {
+        DeleteSearchHistoryDialog(
+            viewModel = viewModel,
+            title = selectedName
+        )
+    }
+
+    Column(
         modifier = Modifier
-            .padding(8.dp)
-            .fillMaxWidth()
-            .onFocusChanged { isFocus = it.isFocused },
-        value = characterName,
-        onValueChange = { viewModel.onCharacterNameValueChange(it) },
-        keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Done
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                viewModel.onDone(context)
-                keyboardController?.hide()
-                focusState.clearFocus()
+            .padding(top = 16.dp, bottom = 4.dp, start = 8.dp, end = 8.dp)
+    ) {
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = CharacterEmblemBG,
+                    shape = borderShape
+                )
+                .onFocusChanged { viewModel.focusChange(it.isFocused) }
+                .onGloballyPositioned { coordinates ->
+                    textFieldSize = coordinates.boundsInParent()
+                },
+            value = characterName,
+            onValueChange = { viewModel.onCharacterNameValueChange(it) },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    viewModel.onDone(context)
+                    scope.launch { scrollState.animateScrollToItem(0) } // 검색결과를 0으로
+                    keyboardController?.hide()
+                    focusState.clearFocus()
+                }
+            ),
+            placeholder = { SearchPlaceHolder(isFocus) },
+            trailingIcon = if (isFocus) {
+                { SearchTrailingIcon(characterName, viewModel, context, keyboardController, focusState, scrollState, scope) }
+            } else {
+                null
+            },
+            shape = borderShape,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.White,
+                unfocusedTextColor = Color.White,
+
+                focusedContainerColor = LightGrayTransBG,
+                focusedBorderColor = Color.Unspecified,
+
+                unfocusedContainerColor = LightGrayTransBG,
+                unfocusedBorderColor = Color.Unspecified
+            ),
+        )
+
+        Popup(
+            offset = IntOffset(x = 0, y = textFieldSize.height.toInt()),
+        ) {
+            AnimatedVisibility(
+                visible = isFocus,
+                enter = fadeIn(animationSpec = tween(durationMillis = 100)) + expandVertically(animationSpec = tween(durationMillis = 250)),
+                exit = fadeOut(animationSpec = tween(durationMillis = 100)) + shrinkVertically(animationSpec = tween(durationMillis = 250))
+            ) {
+                LazyColumn(
+                    modifier = Modifier
+                        .heightIn(max = 360.dp)
+                        .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+                        .background(
+                            color = ImageBG.copy(alpha = 0.95f),
+                            shape = RoundedCornerShape(topStart = 0.dp, topEnd = 0.dp, bottomStart = 16.dp, bottomEnd = 16.dp)
+                        )
+                        .border(
+                            width = 1.dp,
+                            color = CharacterEmblemBG,
+                            shape = RoundedCornerShape(topStart = 0.dp, topEnd = 0.dp, bottomStart = 16.dp, bottomEnd = 16.dp)
+                        )
+                        .clip(shape = RoundedCornerShape(topStart = 0.dp, topEnd = 0.dp, bottomStart = 16.dp, bottomEnd = 16.dp))
+                ) {
+                    items(histories, key = { item -> item.charName }) { history ->
+                        Row(
+                            modifier = Modifier
+                                .pointerInput(Unit) {
+                                    detectTapGestures(
+                                        onTap = {
+                                            viewModel.unFocus()
+                                            viewModel.onCharacterNameValueChange(history.charName)
+                                            viewModel.onDone(context)
+                                            scope.launch { scrollState.animateScrollToItem(0) }
+                                            keyboardController?.hide()
+                                            focusState.clearFocus()
+                                        },
+                                        onLongPress = {
+                                            viewModel.showDialog(history.charName)
+                                        }
+                                    )
+                                }
+                                .padding(8.dp)
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                modifier = Modifier.weight(0.2f),
+                                painter = painterResource(id = R.drawable.outline_restore),
+                                tint = Color.White,
+                                contentDescription = "기록"
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Text(
+                                modifier = Modifier.weight(1f),
+                                text = history.charName,
+                                style = normalTextStyle(fontSize = 14.sp)
+                            )
+
+                            IconButton(
+                                onClick = { viewModel.onCharacterNameValueChange(history.charName) }
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.baseline_north_west),
+                                    tint = Color.White,
+                                    contentDescription = "text 변환"
+                                )
+                            }
+                        }
+                    }
+                }
             }
-        ),
-        placeholder = { SearchPlaceHolder(isFocus) },
-        trailingIcon = if (isFocus) {
-            { SearchTrailingIcon(characterName, viewModel, context, keyboardController, focusState) }
-        } else {
-            null
-        },
-        shape = RoundedCornerShape(16.dp),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedTextColor = Color.White,
-            unfocusedTextColor = Color.White,
-
-            focusedContainerColor = LightGrayTransBG,
-            focusedBorderColor = CharacterEmblemBG,
-
-            unfocusedContainerColor = LightGrayTransBG,
-            unfocusedBorderColor = CharacterEmblemBG
-        ),
-    )
+        }
+    }
 }
 
 @Composable
@@ -186,7 +335,9 @@ private fun SearchTrailingIcon(
     viewModel: SearchVM,
     context: Context,
     keyboardController: SoftwareKeyboardController?,
-    focusState: FocusManager
+    focusState: FocusManager,
+    scrollState: LazyListState,
+    scope: CoroutineScope
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -202,12 +353,14 @@ private fun SearchTrailingIcon(
         IconButton(
             onClick = {
                 viewModel.onDone(context)
+                scope.launch { scrollState.animateScrollToItem(0) }
                 keyboardController?.hide()
                 focusState.clearFocus()
             }
         ) {
             Icon(
                 imageVector = Icons.Default.Search,
+                tint = Color.White,
                 contentDescription = "검색"
             )
         }
@@ -215,17 +368,32 @@ private fun SearchTrailingIcon(
 }
 
 @Composable
-private fun SearchResult(viewModel: SearchVM, navController: NavHostController) {
+private fun SearchResult(
+    viewModel: SearchVM,
+    navController: NavHostController,
+    scrollState: LazyListState,
+) {
     val isLoading by viewModel.isLoading.collectAsState()
     val isSearch by viewModel.isSearch.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
     val characterList by viewModel.characterList.collectAsState()
 
     when {
-        isLoading -> { LoadingScreen() }
-        errorMessage != null -> { NetworkError(errorMessage) }
-        isSearch && characterList.isEmpty() -> { SearchError(viewModel) }
-        else -> { SearchResults(characterList, navController) }
+        isLoading -> {
+            LoadingScreen()
+        }
+
+        errorMessage != null -> {
+            NetworkError(errorMessage)
+        }
+
+        isSearch && characterList.isEmpty() -> {
+            SearchError(viewModel)
+        }
+
+        else -> {
+            SearchResults(characterList, navController, scrollState)
+        }
     }
 }
 
@@ -267,12 +435,14 @@ private fun SearchError(viewModel: SearchVM) {
 @OptIn(ExperimentalFoundationApi::class)
 private fun SearchResults(
     characterList: List<CharacterInfo>,
-    navController: NavHostController
+    navController: NavHostController,
+    scrollState: LazyListState,
 ) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp)
+            .padding(8.dp),
+        state = scrollState
     ) {
         if (characterList.isNotEmpty()) {
             stickyHeader { HeaderText("검색 결과") }
@@ -349,6 +519,67 @@ fun CharacterListItem(
                 fontSize = 12.sp,
                 color = Color.Gray
             )
+        }
+    }
+}
+
+@Composable
+private fun DeleteSearchHistoryDialog(
+    viewModel: SearchVM,
+    title: String,
+) {
+    Dialog(onDismissRequest = { viewModel.onDismissRequest() }) {
+
+        Column(
+            modifier = Modifier.background(LightGrayBG, RoundedCornerShape(16.dp)),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(text = title, style = titleTextStyle())
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(text = "검색 기록에서 삭제하시겠습니까?", color = Color.White)
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Divider(thickness = 0.5.dp)
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TextButton(
+                    modifier = Modifier.weight(1f),
+                    onClick = {
+                        viewModel.onDismissRequest()
+                    },
+                    colors = ButtonDefaults.textButtonColors(
+                        contentColor = Color.LightGray
+                    )
+                ) {
+                    Text(text = "취소")
+                }
+
+                Divider(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .width(0.5.dp)
+                )
+
+                TextButton(
+                    modifier = Modifier.weight(1f),
+                    onClick = {
+                        viewModel.deleteHistory()
+                    },
+                ) {
+                    Text(
+                        text = "삭제",
+                        color = Color.Red
+                    )
+                }
+
+            }
         }
     }
 }
