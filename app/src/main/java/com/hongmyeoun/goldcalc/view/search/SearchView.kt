@@ -261,11 +261,11 @@ private fun SearchTextField(
                                     detectTapGestures(
                                         onTap = {
                                             viewModel.unFocus()
-                                            keyboardController?.hide()
-                                            focusState.clearFocus()
                                             viewModel.onCharacterNameValueChange(history.charName)
                                             viewModel.onDone(context)
                                             scope.launch { scrollState.animateScrollToItem(0) }
+                                            keyboardController?.hide()
+                                            focusState.clearFocus()
                                         },
                                         onLongPress = {
                                             viewModel.showDialog(history.charName)
