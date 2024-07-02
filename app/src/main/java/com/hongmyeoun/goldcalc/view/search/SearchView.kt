@@ -5,6 +5,10 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -222,7 +226,11 @@ private fun SearchTextField(
         Popup(
             offset = IntOffset(x = 0, y = textFieldSize.height.toInt()),
         ) {
-            AnimatedVisibility(visible = isFocus) {
+            AnimatedVisibility(
+                visible = isFocus,
+                enter = fadeIn(animationSpec = tween(durationMillis = 100)) + expandVertically(animationSpec = tween(durationMillis = 250)),
+                exit = fadeOut(animationSpec = tween(durationMillis = 100)) + shrinkVertically(animationSpec = tween(durationMillis = 250))
+            ) {
                 LazyColumn(
                     modifier = Modifier
                         .heightIn(max = 360.dp)
