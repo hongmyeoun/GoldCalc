@@ -89,6 +89,7 @@ import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
 import com.hongmyeoun.goldcalc.view.characterDetail.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
@@ -213,7 +214,7 @@ private fun SearchTextField(
             ),
             placeholder = { SearchPlaceHolder(isFocus) },
             trailingIcon = if (isFocus) {
-                { SearchTrailingIcon(characterName, viewModel, context, keyboardController, focusState) }
+                { SearchTrailingIcon(characterName, viewModel, context, keyboardController, focusState, scrollState, scope) }
             } else {
                 null
             },
@@ -333,7 +334,9 @@ private fun SearchTrailingIcon(
     viewModel: SearchVM,
     context: Context,
     keyboardController: SoftwareKeyboardController?,
-    focusState: FocusManager
+    focusState: FocusManager,
+    scrollState: LazyListState,
+    scope: CoroutineScope
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -349,6 +352,7 @@ private fun SearchTrailingIcon(
         IconButton(
             onClick = {
                 viewModel.onDone(context)
+                scope.launch { scrollState.animateScrollToItem(0) }
                 keyboardController?.hide()
                 focusState.clearFocus()
             }
