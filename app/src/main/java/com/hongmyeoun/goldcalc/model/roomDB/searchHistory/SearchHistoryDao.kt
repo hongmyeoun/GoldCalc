@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SearchHistoryDao {
-    @Query("SELECT * FROM searchhistory")
+    @Query("SELECT * FROM searchhistory ORDER BY TimeStamp DESC")
     fun getAll(): Flow<List<SearchHistory>>
 
     @Insert

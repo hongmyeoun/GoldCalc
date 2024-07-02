@@ -42,7 +42,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -68,7 +67,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.Popup
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -87,15 +86,22 @@ import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
 @Composable
 fun SearchUI(
     navController: NavHostController,
-    viewModel: SearchVM = viewModel()
+    viewModel: SearchVM = hiltViewModel()
 ) {
+    val isFocus by viewModel.isFocus.collectAsState()
+
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusState = LocalFocusManager.current
 
     BackHandler {
-        navController.navigate("Main") {
-            popUpTo("Search") {
-                inclusive = true
+        if (isFocus) {
+            keyboardController?.hide()
+            focusState.clearFocus()
+        } else {
+            navController.navigate("Main") {
+                popUpTo("Search") {
+                    inclusive = true
+                }
             }
         }
     }
@@ -104,6 +110,7 @@ fun SearchUI(
         topBar = {
             SearchTextField(
                 viewModel = viewModel,
+                isFocus = isFocus,
                 keyboardController = keyboardController,
                 focusState = focusState
             )
@@ -138,33 +145,30 @@ fun SearchUI(
 @Composable
 private fun SearchTextField(
     viewModel: SearchVM,
+    isFocus: Boolean,
     keyboardController: SoftwareKeyboardController?,
     focusState: FocusManager
 ) {
     val characterName by viewModel.characterName.collectAsState()
-    var isFocus by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     var textFieldSize by remember { mutableStateOf(androidx.compose.ui.geometry.Rect.Zero) }
 
-    var item = remember { mutableStateListOf("이홍면", "이다", "카아안", "조복순", "광야", "집으로", "테스트") }
+    val selectedName by viewModel.longPressName.collectAsState()
+
+    val histories by viewModel.hisotries.collectAsState()
 
     val bottomStart by animateDpAsState(targetValue = if (isFocus) 0.dp else 16.dp, animationSpec = tween(durationMillis = 300), label = "")
     val bottomEnd by animateDpAsState(targetValue = if (isFocus) 0.dp else 16.dp, animationSpec = tween(durationMillis = 300), label = "")
 
     val borderShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomStart = bottomStart, bottomEnd = bottomEnd)
 
-    BackHandler {
-        keyboardController?.hide()
-        focusState.clearFocus()
-    }
-
     val showDialog by viewModel.showDialog.collectAsState()
 
     if (showDialog) {
         DeleteSearchHistoryDialog(
             viewModel = viewModel,
-            title = "대충 제목"
+            title = selectedName
         )
     }
 
@@ -180,7 +184,7 @@ private fun SearchTextField(
                     color = CharacterEmblemBG,
                     shape = borderShape
                 )
-                .onFocusChanged { isFocus = it.isFocused }
+                .onFocusChanged { viewModel.focusChange(it.isFocused) }
                 .onGloballyPositioned { coordinates ->
                     textFieldSize = coordinates.boundsInParent()
                 },
@@ -192,9 +196,6 @@ private fun SearchTextField(
             keyboardActions = KeyboardActions(
                 onDone = {
                     viewModel.onDone(context)
-                    if (characterName !in item || characterName.isNotEmpty()) {
-                        item.add(characterName)
-                    }
                     keyboardController?.hide()
                     focusState.clearFocus()
                 }
@@ -237,21 +238,20 @@ private fun SearchTextField(
                         )
                         .clip(shape = RoundedCornerShape(topStart = 0.dp, topEnd = 0.dp, bottomStart = 16.dp, bottomEnd = 16.dp))
                 ) {
-                    items(item, key = null) { charName ->
+                    items(histories, key = { item -> item.charName }) { history ->
                         Row(
                             modifier = Modifier
                                 .pointerInput(Unit) {
                                     detectTapGestures(
                                         onTap = {
-                                            isFocus = false
+                                            viewModel.unFocus()
                                             keyboardController?.hide()
                                             focusState.clearFocus()
-                                            viewModel.onCharacterNameValueChange(charName)
+                                            viewModel.onCharacterNameValueChange(history.charName)
                                             viewModel.onDone(context)
                                         },
                                         onLongPress = {
-                                            viewModel.showDialog()
-//                                            item.remove(charName)
+                                            viewModel.showDialog(history.charName)
                                         }
                                     )
                                 }
@@ -269,12 +269,12 @@ private fun SearchTextField(
 
                             Text(
                                 modifier = Modifier.weight(1f),
-                                text = charName,
+                                text = history.charName,
                                 style = normalTextStyle(fontSize = 12.sp)
                             )
 
                             IconButton(
-                                onClick = { viewModel.onCharacterNameValueChange(charName) }
+                                onClick = { viewModel.onCharacterNameValueChange(history.charName) }
                             ) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.baseline_north_west),
@@ -289,54 +289,6 @@ private fun SearchTextField(
         }
     }
 }
-
-
-//@Composable
-//private fun SearchTextField(
-//    viewModel: SearchVM,
-//    keyboardController: SoftwareKeyboardController?,
-//    focusState: FocusManager
-//) {
-//    val characterName by viewModel.characterName.collectAsState()
-//    var isFocus by remember { mutableStateOf(false) }
-//    val context = LocalContext.current
-//
-//    OutlinedTextField(
-//        modifier = Modifier
-//            .padding(8.dp)
-//            .fillMaxWidth()
-//            .onFocusChanged { isFocus = it.isFocused },
-//        value = characterName,
-//        onValueChange = { viewModel.onCharacterNameValueChange(it) },
-//        keyboardOptions = KeyboardOptions(
-//            imeAction = ImeAction.Done
-//        ),
-//        keyboardActions = KeyboardActions(
-//            onDone = {
-//                viewModel.onDone(context)
-//                keyboardController?.hide()
-//                focusState.clearFocus()
-//            }
-//        ),
-//        placeholder = { SearchPlaceHolder(isFocus) },
-//        trailingIcon = if (isFocus) {
-//            { SearchTrailingIcon(characterName, viewModel, context, keyboardController, focusState) }
-//        } else {
-//            null
-//        },
-//        shape = RoundedCornerShape(16.dp),
-//        colors = OutlinedTextFieldDefaults.colors(
-//            focusedTextColor = Color.White,
-//            unfocusedTextColor = Color.White,
-//
-//            focusedContainerColor = LightGrayTransBG,
-//            focusedBorderColor = CharacterEmblemBG,
-//
-//            unfocusedContainerColor = LightGrayTransBG,
-//            unfocusedBorderColor = CharacterEmblemBG
-//        ),
-//    )
-//}
 
 @Composable
 private fun SearchPlaceHolder(isFocus: Boolean) {
@@ -550,7 +502,7 @@ private fun DeleteSearchHistoryDialog(
     viewModel: SearchVM,
     title: String,
 ) {
-    Dialog(onDismissRequest = { viewModel.onDissmissRequest() }) {
+    Dialog(onDismissRequest = { viewModel.onDismissRequest() }) {
 
         Column(
             modifier = Modifier.background(LightGrayBG, RoundedCornerShape(16.dp)),
@@ -574,7 +526,7 @@ private fun DeleteSearchHistoryDialog(
                 TextButton(
                     modifier = Modifier.weight(1f),
                     onClick = {
-                        viewModel.onDissmissRequest()
+                        viewModel.onDismissRequest()
                     },
                     colors = ButtonDefaults.textButtonColors(
                         contentColor = Color.LightGray
@@ -592,9 +544,7 @@ private fun DeleteSearchHistoryDialog(
                 TextButton(
                     modifier = Modifier.weight(1f),
                     onClick = {
-                        viewModel.onDissmissRequest()
-//                        navController.popBackStack()
-//                        viewModel.onDelete()
+                        viewModel.deleteHistory()
                     },
                 ) {
                     Text(
