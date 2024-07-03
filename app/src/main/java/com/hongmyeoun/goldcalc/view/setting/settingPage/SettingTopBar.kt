@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.characterDetail.titleTextStyle
 
@@ -33,8 +34,8 @@ fun SettingTopBar(
         IconButton(
             modifier = Modifier.weight(0.5f),
             onClick = {
-                navController.navigate("Main") {
-                    popUpTo("Setting") {
+                navController.navigate(Screen.Main.route) {
+                    popUpTo(Screen.Setting.route) {
                         inclusive = true
                     }
                 }

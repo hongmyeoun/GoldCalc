@@ -166,7 +166,7 @@ class MainActivity : ComponentActivity() {
                                 isLoading = false
                             }
                         }
-                        composable("Setting") {
+                        composable(Screen.Setting.route) {
                             SettingUI(navController)
                         }
                     }
