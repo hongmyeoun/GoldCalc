@@ -37,6 +37,7 @@ import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
+import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
 import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
 import com.hongmyeoun.goldcalc.view.main.formatWithCommas
@@ -105,7 +106,7 @@ fun SimpleCharacterInfo(
                 Spacer(modifier = Modifier.width(4.dp))
                 IconButton(
                     modifier = Modifier.size(15.dp),
-                    onClick = { navController.navigate("Check/${character.name}") }
+                    onClick = { navController.navigate(Screen.Homework.moveWithName(character.name)) }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Settings,
