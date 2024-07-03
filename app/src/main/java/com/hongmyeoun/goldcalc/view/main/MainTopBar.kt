@@ -53,6 +53,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
+import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
@@ -449,7 +450,7 @@ private fun MainMenuButtons(
     ) {
         IconButton(
             modifier = Modifier.size(35.dp),
-            onClick = { navController.navigate("Search") }
+            onClick = { navController.navigate(Screen.Search.route) }
         ) {
             Icon(
                 imageVector = Icons.Default.Search,

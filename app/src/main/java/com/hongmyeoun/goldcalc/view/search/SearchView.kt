@@ -82,6 +82,7 @@ import com.hongmyeoun.goldcalc.LoadingScreen
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterInfo
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
+import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
@@ -107,8 +108,8 @@ fun SearchUI(
             keyboardController?.hide()
             focusState.clearFocus()
         } else {
-            navController.navigate("Main") {
-                popUpTo("Search") {
+            navController.navigate(Screen.Main.route) {
+                popUpTo(Screen.Search.route) {
                     inclusive = true
                 }
             }

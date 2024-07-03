@@ -144,7 +144,7 @@ class MainActivity : ComponentActivity() {
                             }
 
                         }
-                        composable("Search") {
+                        composable(Screen.Search.route) {
                             SearchUI(navController)
                         }
                         composable("CharDetail/{charName}") {

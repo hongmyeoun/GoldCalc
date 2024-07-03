@@ -48,6 +48,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
+import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.RelicBG
@@ -71,7 +72,7 @@ fun CharacterDetailUI(
                 IconButton(
                     modifier = Modifier.weight(0.5f),
                     onClick = {
-                        navController.navigate("Search") {
+                        navController.navigate(Screen.Search.route) {
                             popUpTo("CharDetail/{charName}") {
                                 inclusive = true
                             }
