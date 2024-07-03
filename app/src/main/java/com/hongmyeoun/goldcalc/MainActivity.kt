@@ -48,6 +48,7 @@ import androidx.navigation.compose.rememberNavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
+import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.MokokoGreen
@@ -92,7 +93,7 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         startDestination = "Main",
                     ) {
-                        composable("Main") {
+                        composable(Screen.Main.route) {
                             val characterListVM: CharacterListVM = hiltViewModel()
 
                             MainScreen(
@@ -120,7 +121,7 @@ class MainActivity : ComponentActivity() {
 
                             }
                         }
-                        composable("Check/{charName}") {
+                        composable(Screen.Homework.route) {
                             val charName = it.arguments?.getString("charName") ?: "ERROR"
                             val gSVM = remember { GoldSettingVM(characterRepository, charName) }
                             val character by gSVM.character.collectAsState()

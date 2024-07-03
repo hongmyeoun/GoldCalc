@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
+import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.LightBlue
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.characterDetail.titleTextStyle
@@ -192,7 +193,11 @@ private fun DeleteCharacterDialog(
                     modifier = Modifier.weight(1f),
                     onClick = {
                         viewModel.onDissmissRequest()
-                        navController.popBackStack()
+                        navController.navigate(Screen.Main.route) {
+                            popUpTo(Screen.Homework.route) {
+                                inclusive = true
+                            }
+                        }
                         viewModel.onDelete()
                     },
                 ) {

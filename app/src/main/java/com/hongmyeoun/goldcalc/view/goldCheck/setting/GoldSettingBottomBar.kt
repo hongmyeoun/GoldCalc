@@ -50,6 +50,7 @@ import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
+import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
@@ -508,8 +509,8 @@ private fun BottomBarTexts(
                     contentColor = Color.White
                 ),
                 onClick = {
-                    navController.navigate("Main") {
-                        popUpTo("Check/{charName}") {
+                    navController.navigate(Screen.Main.route) {
+                        popUpTo(Screen.Homework.route) {
                             inclusive = true
                         }
                     }
@@ -525,8 +526,8 @@ private fun BottomBarTexts(
                 ),
                 onClick = {
                     onDoneClicked()
-                    navController.navigate("Main") {
-                        popUpTo("Check/{charName}") {
+                    navController.navigate(Screen.Main.route) {
+                        popUpTo(Screen.Homework.route) {
                             inclusive = true
                         }
                     }
