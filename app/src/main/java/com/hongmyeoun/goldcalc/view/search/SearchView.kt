@@ -498,7 +498,7 @@ fun CharacterListItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { navController.navigate("CharDetail/${character.characterName}") }
+            .clickable { navController.navigate(Screen.Profile.moveWithName(character.characterName)) }
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

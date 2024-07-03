@@ -73,7 +73,7 @@ fun CharacterDetailUI(
                     modifier = Modifier.weight(0.5f),
                     onClick = {
                         navController.navigate(Screen.Search.route) {
-                            popUpTo("CharDetail/{charName}") {
+                            popUpTo(Screen.Profile.route) {
                                 inclusive = true
                             }
                         }

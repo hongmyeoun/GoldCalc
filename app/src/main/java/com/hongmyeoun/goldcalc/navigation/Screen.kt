@@ -7,7 +7,9 @@ sealed class Screen(val route: String) {
         fun moveWithName(charName: String) = "Homework/$charName"
     }
 
-    object Search: Screen("Search")
+    object Search : Screen("Search")
 
-
+    object Profile : Screen("Profile/{charName}") {
+        fun moveWithName(charName: String) = "Profile/$charName"
+    }
 }

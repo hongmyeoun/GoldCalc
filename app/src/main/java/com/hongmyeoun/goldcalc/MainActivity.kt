@@ -147,7 +147,7 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.Search.route) {
                             SearchUI(navController)
                         }
-                        composable("CharDetail/{charName}") {
+                        composable(Screen.Profile.route) {
                             val charName = it.arguments?.getString("charName")
 
                             var isLoading by remember { mutableStateOf(true) }
