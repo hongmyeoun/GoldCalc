@@ -62,7 +62,6 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.example.bottombar.AnimatedBottomBar
 import com.example.bottombar.model.IndicatorDirection
 import com.example.bottombar.model.IndicatorStyle
-import com.hongmyeoun.goldcalc.LoadingScreen
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
@@ -75,6 +74,7 @@ import com.hongmyeoun.goldcalc.view.characterDetail.Levels
 import com.hongmyeoun.goldcalc.view.characterDetail.ServerClassName
 import com.hongmyeoun.goldcalc.view.characterDetail.TitleCharName
 import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
+import com.hongmyeoun.goldcalc.view.common.LoadingScreen
 import com.hongmyeoun.goldcalc.view.goldCheck.RaidCard
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.AbyssDungeon
 import com.hongmyeoun.goldcalc.view.goldCheck.cardContent.CommandRaid
