@@ -18,7 +18,7 @@ import com.hongmyeoun.goldcalc.view.characterDetail.CharacterDetailUI
 import com.hongmyeoun.goldcalc.view.common.LoadingScreen
 import com.hongmyeoun.goldcalc.view.goldCheck.setting.GoldSetting
 import com.hongmyeoun.goldcalc.view.home.HomeView
-import com.hongmyeoun.goldcalc.view.search.SearchUI
+import com.hongmyeoun.goldcalc.view.search.SearchView
 import com.hongmyeoun.goldcalc.view.setting.SettingUI
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
@@ -70,7 +70,7 @@ fun NavControl(characterRepository: CharacterRepository) {
             }
         }
         composable(Screen.Search.route) {
-            SearchUI(navController)
+            SearchView(navController)
         }
         composable(Screen.Profile.route) {
             val charName = it.arguments?.getString("charName")
