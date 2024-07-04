@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.setting.settingPage
+package com.hongmyeoun.goldcalc.view.profile.topbar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -22,9 +22,7 @@ import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 
 @Composable
-fun SettingTopBar(
-    navController: NavHostController
-) {
+fun ProfileTopBar(navController: NavHostController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -34,8 +32,8 @@ fun SettingTopBar(
         IconButton(
             modifier = Modifier.weight(0.5f),
             onClick = {
-                navController.navigate(Screen.Home.route) {
-                    popUpTo(Screen.Setting.route) {
+                navController.navigate(Screen.Search.route) {
+                    popUpTo(Screen.Profile.route) {
                         inclusive = true
                     }
                 }
@@ -52,15 +50,13 @@ fun SettingTopBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(3f),
-            text = "설정",
+            text = "캐릭터 상세",
             style = titleTextStyle(),
             textAlign = TextAlign.Center
         )
 
-        Spacer(
-            modifier = Modifier
-                .width(32.dp)
-                .weight(0.5f)
-        )
+        Spacer(modifier = Modifier
+            .width(32.dp)
+            .weight(0.5f))
     }
 }

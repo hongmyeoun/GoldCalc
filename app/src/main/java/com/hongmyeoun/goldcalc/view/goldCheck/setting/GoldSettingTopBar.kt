@@ -39,7 +39,7 @@ import androidx.navigation.NavHostController
 import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.LightBlue
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
-import com.hongmyeoun.goldcalc.view.characterDetail.titleTextStyle
+import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
 import kotlinx.coroutines.launch
 

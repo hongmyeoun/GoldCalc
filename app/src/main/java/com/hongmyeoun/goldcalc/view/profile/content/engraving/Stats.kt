@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.characterDetail
+package com.hongmyeoun.goldcalc.view.profile.content.engraving
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -40,27 +40,29 @@ import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.ui.theme.OrangeQual
+import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
+import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.view.common.noRippleClickable
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CombatStatDetailVM
 
 @Composable
-fun CombatStatDetailUI(
+fun Stats(
     modifier: Modifier,
-    charDetail: CharacterDetail,
+    profile: CharacterDetail,
     viewModel: CombatStatDetailVM = viewModel()
 ) {
     val showDefaultDialog by viewModel.showDefaultDialog.collectAsState()
     val showCombatDialog by viewModel.showCombatDialog.collectAsState()
 
     if (showDefaultDialog) {
-        StatsDetails(
-            charDetail = charDetail,
+        Details(
+            profile = profile,
             viewModel = viewModel,
             default = true
         )
     } else if (showCombatDialog) {
-        StatsDetails(
-            charDetail = charDetail,
+        Details(
+            profile = profile,
             viewModel = viewModel,
             default = false
         )
@@ -71,24 +73,25 @@ fun CombatStatDetailUI(
             .clip(RoundedCornerShape(8.dp)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CombatStatSimple(
-            charDetail = charDetail,
+        Simple(
+            charDetail = profile,
             default = true,
             onClick = { viewModel.onDefaultClicked() }
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        CombatStatSimple(
-            charDetail = charDetail,
+        Simple(
+            charDetail = profile,
             default = false,
             onClick = { viewModel.onCombatClicked() }
         )
     }
 }
 
+// TODO: STRING
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun CombatStatSimple(
+private fun Simple(
     charDetail: CharacterDetail,
     default: Boolean,
     onClick: () -> Unit
@@ -164,9 +167,10 @@ private fun CombatStatSimple(
     }
 }
 
+// TODO: STRING
 @Composable
-fun StatsDetails(
-    charDetail: CharacterDetail,
+fun Details(
+    profile: CharacterDetail,
     viewModel: CombatStatDetailVM,
     default: Boolean
 ) {
@@ -197,7 +201,7 @@ fun StatsDetails(
             Divider()
             Spacer(modifier = Modifier.height(16.dp))
 
-            charDetail.stats.forEach { stat ->
+            profile.stats.forEach { stat ->
                 if (stat.type in typeList) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically

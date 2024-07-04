@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.characterDetail.equipment
+package com.hongmyeoun.goldcalc.view.profile.content.equipment
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -23,9 +23,9 @@ import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.AbilityStone
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.RedQual
-import com.hongmyeoun.goldcalc.view.characterDetail.TextChip
-import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
-import com.hongmyeoun.goldcalc.view.characterDetail.titleBoldWhite12
+import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
+import com.hongmyeoun.goldcalc.view.profile.titleBoldWhite12
+import com.hongmyeoun.goldcalc.view.common.TextChip
 import com.hongmyeoun.goldcalc.viewModel.charDetail.EquipmentDetailVM
 
 @Composable

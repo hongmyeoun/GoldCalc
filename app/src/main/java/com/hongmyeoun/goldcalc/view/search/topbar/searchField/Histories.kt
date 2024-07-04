@@ -43,7 +43,7 @@ import androidx.compose.ui.window.Popup
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
-import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
+import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
 import kotlinx.coroutines.launch
 

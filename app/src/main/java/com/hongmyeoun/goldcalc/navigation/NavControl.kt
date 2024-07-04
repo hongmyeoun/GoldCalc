@@ -14,7 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
-import com.hongmyeoun.goldcalc.view.characterDetail.CharacterDetailUI
+import com.hongmyeoun.goldcalc.view.profile.ProfileView
 import com.hongmyeoun.goldcalc.view.common.LoadingScreen
 import com.hongmyeoun.goldcalc.view.goldCheck.setting.GoldSetting
 import com.hongmyeoun.goldcalc.view.home.HomeView
@@ -73,23 +73,9 @@ fun NavControl(characterRepository: CharacterRepository) {
             SearchView(navController)
         }
         composable(Screen.Profile.route) {
-            val charName = it.arguments?.getString("charName")
+            val charName = it.arguments?.getString("charName")!!
 
-            var isLoading by remember { mutableStateOf(true) }
-
-
-            if (isLoading) {
-                LoadingScreen()
-            }
-
-            charName?.let {
-                CharacterDetailUI(charName, navController)
-            }
-
-            LaunchedEffect(Unit) {
-                delay(1000)
-                isLoading = false
-            }
+            ProfileView(charName, navController)
         }
         composable(Screen.Setting.route) {
             SettingView(navController)

@@ -74,7 +74,7 @@ class CharDetailVM @Inject constructor(
 
     // API로 받아올 캐릭터 형식
     private val _characterDetail = MutableStateFlow<CharacterDetail?>(null)
-    val characterDetail: StateFlow<CharacterDetail?> = _characterDetail
+    val charProfile: StateFlow<CharacterDetail?> = _characterDetail
 
     private val _engravings = MutableStateFlow<List<SkillEngravings>?>(null)
     val engravings: StateFlow<List<SkillEngravings>?> = _engravings

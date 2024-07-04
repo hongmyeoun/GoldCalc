@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.characterDetail.equipment
+package com.hongmyeoun.goldcalc.view.profile.content.equipment
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -30,8 +30,8 @@ import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterEquipment
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
-import com.hongmyeoun.goldcalc.view.characterDetail.TextChip
-import com.hongmyeoun.goldcalc.view.characterDetail.titleTextStyle
+import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
+import com.hongmyeoun.goldcalc.view.common.TextChip
 import com.hongmyeoun.goldcalc.view.common.noRippleClickable
 import com.hongmyeoun.goldcalc.viewModel.charDetail.EquipmentDetailVM
 

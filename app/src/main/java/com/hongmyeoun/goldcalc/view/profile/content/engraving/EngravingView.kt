@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.characterDetail
+package com.hongmyeoun.goldcalc.view.profile.content.engraving
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -29,12 +29,14 @@ import com.hongmyeoun.goldcalc.model.searchedInfo.engravings.SkillEngravings
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
+import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
+import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.view.common.noRippleClickable
 import com.hongmyeoun.goldcalc.viewModel.charDetail.EngravingDetailVM
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun EngravingDetailUI(
+fun EngravingView(
     modifier: Modifier,
     skillEngravings: List<SkillEngravings>,
     viewModel: EngravingDetailVM = viewModel()
@@ -42,7 +44,7 @@ fun EngravingDetailUI(
     val showDialog by viewModel.showDialog.collectAsState()
 
     if (showDialog) {
-        EngravingDescription(skillEngravings, viewModel)
+        Description(skillEngravings, viewModel)
     }
 
     Column(
@@ -94,7 +96,7 @@ fun EngravingDetailUI(
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun EngravingDescription(
+fun Description(
     skillEngravings: List<SkillEngravings>,
     viewModel: EngravingDetailVM
 ) {
@@ -154,5 +156,4 @@ fun EngravingDescription(
             }
         }
     }
-
 }
