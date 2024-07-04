@@ -19,13 +19,13 @@ import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.view.setting.reorderPage.ReorderBottomBar
 import com.hongmyeoun.goldcalc.view.setting.reorderPage.ReorderPageContent
 import com.hongmyeoun.goldcalc.view.setting.reorderPage.ReorderPageTopBar
-import com.hongmyeoun.goldcalc.view.setting.settingPage.SettingContent
+import com.hongmyeoun.goldcalc.view.setting.settingPage.content.SettingContent
 import com.hongmyeoun.goldcalc.view.setting.settingPage.SettingTopBar
 import com.hongmyeoun.goldcalc.viewModel.setting.SettingVM
 
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 @Composable
-fun SettingUI(
+fun SettingView(
     navController: NavHostController,
     viewModel: SettingVM = hiltViewModel()
 ) {
@@ -33,11 +33,7 @@ fun SettingUI(
 
     val reorderPage by viewModel.reorderPage.collectAsState()
 
-    if (reorderPage) {
-        BackHandler {
-            viewModel.closeReorderPage()
-        }
-    }
+    BackOnPress(reorderPage, viewModel)
 
     Scaffold(
         topBar = { if (reorderPage) ReorderPageTopBar(viewModel = viewModel) else SettingTopBar(navController) },
@@ -55,6 +51,15 @@ fun SettingUI(
             } else {
                 SettingContent(it, viewModel, snackbarHostState)
             }
+        }
+    }
+}
+
+@Composable
+fun BackOnPress(reorderPage: Boolean, viewModel: SettingVM) {
+    if (reorderPage) {
+        BackHandler {
+            viewModel.closeReorderPage()
         }
     }
 }

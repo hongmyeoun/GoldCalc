@@ -19,7 +19,7 @@ import com.hongmyeoun.goldcalc.view.common.LoadingScreen
 import com.hongmyeoun.goldcalc.view.goldCheck.setting.GoldSetting
 import com.hongmyeoun.goldcalc.view.home.HomeView
 import com.hongmyeoun.goldcalc.view.search.SearchView
-import com.hongmyeoun.goldcalc.view.setting.SettingUI
+import com.hongmyeoun.goldcalc.view.setting.SettingView
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
@@ -92,7 +92,7 @@ fun NavControl(characterRepository: CharacterRepository) {
             }
         }
         composable(Screen.Setting.route) {
-            SettingUI(navController)
+            SettingView(navController)
         }
     }
 
