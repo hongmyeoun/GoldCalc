@@ -108,7 +108,7 @@ fun SearchUI(
             keyboardController?.hide()
             focusState.clearFocus()
         } else {
-            navController.navigate(Screen.Main.route) {
+            navController.navigate(Screen.Home.route) {
                 popUpTo(Screen.Search.route) {
                     inclusive = true
                 }

@@ -34,7 +34,7 @@ fun SettingTopBar(
         IconButton(
             modifier = Modifier.weight(0.5f),
             onClick = {
-                navController.navigate(Screen.Main.route) {
+                navController.navigate(Screen.Home.route) {
                     popUpTo(Screen.Setting.route) {
                         inclusive = true
                     }

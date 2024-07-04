@@ -1,46 +1,51 @@
-package com.hongmyeoun.goldcalc.view.main
+package com.hongmyeoun.goldcalc.view.home
 
 import android.app.Activity
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
+import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
+import com.hongmyeoun.goldcalc.view.home.content.HomeContent
+import com.hongmyeoun.goldcalc.view.home.topbar.HomeTopBar
 import com.hongmyeoun.goldcalc.viewModel.main.CharacterListVM
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun MainScreen(
-    characterListVM: CharacterListVM,
+fun HomeView(
+    viewModel: CharacterListVM = hiltViewModel(),
     navController: NavHostController,
-    content: @Composable (Modifier) -> Unit
+    characterRepository: CharacterRepository,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
+
+    val characterList by viewModel.characters.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
 
     BackOnPressed(snackbarHostState)
 
     Scaffold(
-        topBar = { MainAppTopBar(navController, characterListVM, snackbarHostState) },
+        topBar = { HomeTopBar(navController, viewModel, snackbarHostState) },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         contentWindowInsets = WindowInsets(0.dp)
-    ) {
-        content(
-            Modifier
-                .fillMaxSize()
-                .background(LightGrayBG)
-                .padding(it)
+    ) { paddingValues ->
+        HomeContent(
+            paddingValues = paddingValues,
+            characterList = characterList,
+            characterRepository = characterRepository,
+            navController = navController,
+            isLoading = isLoading,
         )
     }
 }
@@ -52,7 +57,7 @@ fun BackOnPressed(snackbarHostState: SnackbarHostState) {
     val scope = rememberCoroutineScope()
 
     BackHandler {
-        if(System.currentTimeMillis() - backPressedTime <= 2000L) {
+        if (System.currentTimeMillis() - backPressedTime <= 2000L) {
             // 앱 종료
             (context as Activity).finish()
         } else {

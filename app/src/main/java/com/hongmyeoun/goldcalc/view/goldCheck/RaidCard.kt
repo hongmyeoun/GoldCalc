@@ -18,8 +18,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.view.main.formatWithCommas
-import com.hongmyeoun.goldcalc.view.main.goldImage
+import com.hongmyeoun.goldcalc.model.common.ImageReturn.goldImage
+import com.hongmyeoun.goldcalc.model.common.formatWithCommas
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable

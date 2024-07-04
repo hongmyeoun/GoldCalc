@@ -1,7 +1,5 @@
-package com.hongmyeoun.goldcalc.view.main.characterCard
+package com.hongmyeoun.goldcalc.view.home.content
 
-import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -30,58 +27,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
-import com.hongmyeoun.goldcalc.view.common.LoadingScreen
 import com.hongmyeoun.goldcalc.viewModel.main.CharacterCardVM
 import com.hongmyeoun.goldcalc.viewModel.main.GoldContentStateVM
 
-
 @Composable
-fun CharacterCard(
-    navController: NavHostController,
-    cardViewModel: CharacterCardVM,
-    isLoading: Boolean
-) {
-    Column(
-        modifier = Modifier
-            .padding(top = 8.dp, bottom = 8.dp, start = 16.dp, end = 16.dp)
-            .background(
-                color = BlackTransBG,
-                shape = RoundedCornerShape(16.dp)
-            )
-            .padding(top = 8.dp, bottom = 8.dp, start = 16.dp, end = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Crossfade(
-            targetState = isLoading,
-            label = "로딩 Crossfade"
-        ) {
-            Column {
-                if (it) {
-                    LoadingScreen(isBackground = false)
-                } else {
-                    CharacterCardTop(
-                        navController = navController,
-                        viewModel = cardViewModel
-                    )
-                    GoldContents(
-                        viewModel = cardViewModel,
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
-            }
-        }
-
-    }
-}
-
-
-@Composable
-fun GoldContents(
+fun HomeworkProgress(
     viewModel: CharacterCardVM,
 ) {
     val character by viewModel.character.collectAsState()
@@ -100,7 +53,7 @@ fun GoldContents(
             item {
                 val behemothVM = remember { GoldContentStateVM(character.raidPhaseInfo.behemothPhase) }
 
-                GoldContentStateUI(
+                ProgressState(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.epic[0].phases),
                     raidImg = R.drawable.epic_behemoth,
@@ -114,7 +67,7 @@ fun GoldContents(
             item {
                 val echidnaVM = remember { GoldContentStateVM(character.raidPhaseInfo.echidnaPhase) }
 
-                GoldContentStateUI(
+                ProgressState(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.kazeroth[0].phases),
                     raidImg = R.drawable.kazeroth_echidna,
@@ -128,7 +81,7 @@ fun GoldContents(
             item {
                 val kamenVM = remember { GoldContentStateVM(character.raidPhaseInfo.kamenPhase) }
 
-                GoldContentStateUI(
+                ProgressState(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.command[5].phases),
                     raidImg = R.drawable.command_kamen,
@@ -142,7 +95,7 @@ fun GoldContents(
             item {
                 val ivoryTowerVM = remember { GoldContentStateVM(character.raidPhaseInfo.ivoryPhase) }
 
-                GoldContentStateUI(
+                ProgressState(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.abyssDungeon[1].phases),
                     raidImg = R.drawable.abyss_dungeon_ivory_tower,
@@ -156,7 +109,7 @@ fun GoldContents(
             item {
                 val illiakanVM = remember { GoldContentStateVM(character.raidPhaseInfo.illiakanPhase) }
 
-                GoldContentStateUI(
+                ProgressState(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.command[4].phases),
                     raidImg = R.drawable.command_illiakan,
@@ -170,7 +123,7 @@ fun GoldContents(
             item {
                 val kayangelVM = remember { GoldContentStateVM(character.raidPhaseInfo.kayangelPhase) }
 
-                GoldContentStateUI(
+                ProgressState(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.abyssDungeon[0].phases),
                     raidImg = R.drawable.abyss_dungeon_kayangel,
@@ -184,7 +137,7 @@ fun GoldContents(
             item {
                 val abrelshudVM = remember { GoldContentStateVM(character.raidPhaseInfo.abrelPhase) }
 
-                GoldContentStateUI(
+                ProgressState(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.command[3].phases),
                     raidImg = R.drawable.command_abrelshud,
@@ -198,7 +151,7 @@ fun GoldContents(
             item {
                 val koukuSatonVM = remember { GoldContentStateVM(character.raidPhaseInfo.koukuPhase) }
 
-                GoldContentStateUI(
+                ProgressState(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.command[2].phases),
                     raidImg = R.drawable.command_kouku,
@@ -212,7 +165,7 @@ fun GoldContents(
             item {
                 val biackissVM = remember { GoldContentStateVM(character.raidPhaseInfo.biackissPhase) }
 
-                GoldContentStateUI(
+                ProgressState(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.command[1].phases),
                     raidImg = R.drawable.command_biackiss,
@@ -226,7 +179,7 @@ fun GoldContents(
             item {
                 val valtanVM = remember { GoldContentStateVM(character.raidPhaseInfo.valtanPhase) }
 
-                GoldContentStateUI(
+                ProgressState(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.command[0].phases),
                     raidImg = R.drawable.command_valtan,
@@ -241,7 +194,7 @@ fun GoldContents(
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun GoldContentStateUI(
+fun ProgressState(
     enabled: Boolean,
     phase: Int,
     raidImg: Int,
@@ -288,165 +241,4 @@ fun GoldContentStateUI(
             )
         }
     }
-
 }
-
-
-// 1열로 나타낼때
-//    if (character.checkList.epic[0].phases[0].isClear) {
-//        val behemothVM = remember { GoldContentStateVM(character.raidPhaseInfo.behemothPhase) }
-//
-//        GoldContentStateUI(
-//            enabled = viewModel.enabled,
-//            phase = viewModel.phaseCalc(character.checkList.epic[0].phases),
-//            raidImg = R.drawable.epic_behemoth,
-//            raidName = "베히모스",
-//            viewModel = behemothVM,
-//            onClicked = {
-//                viewModel.beheGoldCalc(it)
-//                onClick()
-//            }
-//        )
-//    }
-//    if (character.checkList.kazeroth[0].phases[0].isClear) {
-//        val echidnaVM = remember { GoldContentStateVM(character.raidPhaseInfo.echidnaPhase) }
-//
-//        GoldContentStateUI(
-//            enabled = viewModel.enabled,
-//            phase = viewModel.phaseCalc(character.checkList.kazeroth[0].phases),
-//            raidImg = R.drawable.kazeroth_echidna,
-//            raidName = "에키드나",
-//            viewModel = echidnaVM,
-//            onClicked = {
-//                viewModel.echiGoldCalc(it)
-//                onClick()
-//            }
-//        )
-//    }
-//    if (character.checkList.command[5].phases[0].isClear) {
-//        val kamenVM = remember { GoldContentStateVM(character.raidPhaseInfo.kamenPhase) }
-//
-//        GoldContentStateUI(
-//            enabled = viewModel.enabled,
-//            phase = viewModel.phaseCalc(character.checkList.command[5].phases),
-//            raidImg = R.drawable.command_kamen,
-//            raidName = "카멘",
-//            viewModel = kamenVM,
-//            onClicked = {
-//                viewModel.kamenGoldCalc(it)
-//                onClick()
-//            }
-//        )
-//
-//    }
-//    if (character.checkList.abyssDungeon[1].phases[0].isClear) {
-//        val ivoryTowerVM = remember { GoldContentStateVM(character.raidPhaseInfo.ivoryPhase) }
-//
-//        GoldContentStateUI(
-//            enabled = viewModel.enabled,
-//            phase = viewModel.phaseCalc(character.checkList.abyssDungeon[1].phases),
-//            raidImg = R.drawable.abyss_dungeon_ivory_tower,
-//            raidName = "혼돈의 상아탑",
-//            viewModel = ivoryTowerVM,
-//            onClicked = {
-//                viewModel.iTGoldCalc(it)
-//                onClick()
-//            }
-//        )
-//
-//    }
-//    if (character.checkList.command[4].phases[0].isClear) {
-//        val illiakanVM = remember { GoldContentStateVM(character.raidPhaseInfo.illiakanPhase) }
-//
-//        GoldContentStateUI(
-//            enabled = viewModel.enabled,
-//            phase = viewModel.phaseCalc(character.checkList.command[4].phases),
-//            raidImg = R.drawable.command_illiakan,
-//            raidName = "일리아칸",
-//            viewModel = illiakanVM,
-//            onClicked = {
-//                viewModel.illiGoldCalc(it)
-//                onClick()
-//            }
-//        )
-//
-//    }
-//    if (character.checkList.abyssDungeon[0].phases[0].isClear) {
-//        val kayangelVM = remember { GoldContentStateVM(character.raidPhaseInfo.kayangelPhase) }
-//
-//        GoldContentStateUI(
-//            enabled = viewModel.enabled,
-//            phase = viewModel.phaseCalc(character.checkList.abyssDungeon[0].phases),
-//            raidImg = R.drawable.abyss_dungeon_kayangel,
-//            raidName = "카양겔",
-//            viewModel = kayangelVM,
-//            onClicked = {
-//                viewModel.kayanGoldCalc(it)
-//                onClick()
-//            }
-//        )
-//
-//    }
-//    if (character.checkList.command[3].phases[0].isClear) {
-//        val abrelshudVM = remember { GoldContentStateVM(character.raidPhaseInfo.abrelPhase) }
-//
-//        GoldContentStateUI(
-//            enabled = viewModel.enabled,
-//            phase = viewModel.phaseCalc(character.checkList.command[3].phases),
-//            raidImg = R.drawable.command_abrelshud,
-//            raidName = "아브렐슈드",
-//            viewModel = abrelshudVM,
-//            onClicked = {
-//                viewModel.abrelGoldCalc(it)
-//                onClick()
-//            }
-//        )
-//
-//    }
-//    if (character.checkList.command[2].phases[0].isClear) {
-//        val koukuSatonVM = remember { GoldContentStateVM(character.raidPhaseInfo.koukuPhase) }
-//
-//        GoldContentStateUI(
-//            enabled = viewModel.enabled,
-//            phase = viewModel.phaseCalc(character.checkList.command[2].phases),
-//            raidImg = R.drawable.command_kouku,
-//            raidName = "쿠크세이튼",
-//            viewModel = koukuSatonVM,
-//            onClicked = {
-//                viewModel.kokuGoldCalc(it)
-//                onClick()
-//            }
-//        )
-//
-//    }
-//    if (character.checkList.command[1].phases[0].isClear) {
-//        val biackissVM = remember { GoldContentStateVM(character.raidPhaseInfo.biackissPhase) }
-//
-//        GoldContentStateUI(
-//            enabled = viewModel.enabled,
-//            phase = viewModel.phaseCalc(character.checkList.command[1].phases),
-//            raidImg = R.drawable.command_biackiss,
-//            raidName = "비아키스",
-//            viewModel = biackissVM,
-//            onClicked = {
-//                viewModel.biaGoldCalc(it)
-//                onClick()
-//            }
-//        )
-//
-//    }
-//    if (character.checkList.command[0].phases[0].isClear) {
-//        val valtanVM = remember { GoldContentStateVM(character.raidPhaseInfo.valtanPhase) }
-//
-//        GoldContentStateUI(
-//            enabled = viewModel.enabled,
-//            phase = viewModel.phaseCalc(character.checkList.command[0].phases),
-//            raidImg = R.drawable.command_valtan,
-//            raidName = "발탄",
-//            viewModel = valtanVM,
-//            onClicked = {
-//                viewModel.valGoldCalc(it)
-//                onClick()
-//            }
-//        )
-//    }

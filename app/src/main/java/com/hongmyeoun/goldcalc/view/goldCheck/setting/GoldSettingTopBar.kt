@@ -193,7 +193,7 @@ private fun DeleteCharacterDialog(
                     modifier = Modifier.weight(1f),
                     onClick = {
                         viewModel.onDissmissRequest()
-                        navController.navigate(Screen.Main.route) {
+                        navController.navigate(Screen.Home.route) {
                             popUpTo(Screen.Homework.route) {
                                 inclusive = true
                             }

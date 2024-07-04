@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.main.characterCard
+package com.hongmyeoun.goldcalc.view.home.content
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -36,29 +36,29 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.model.common.ImageReturn.goldImage
+import com.hongmyeoun.goldcalc.model.common.formatWithCommas
+import com.hongmyeoun.goldcalc.model.common.toPercentage
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
 import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
-import com.hongmyeoun.goldcalc.view.main.formatWithCommas
-import com.hongmyeoun.goldcalc.view.main.goldImage
-import com.hongmyeoun.goldcalc.view.main.toPercentage
 import com.hongmyeoun.goldcalc.viewModel.main.CharacterCardVM
 
 @Composable
-fun CharacterCardTop(
+fun ContentItemTop(
     navController: NavHostController,
     viewModel: CharacterCardVM
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
-        SimpleCharacterInfo(
+        ClassAndName(
             navController = navController,
             modifier = Modifier.weight(2.5f),
             viewModel = viewModel
         )
-        SimpleProgressInfo(
+        GoldProgress(
             modifier = Modifier.weight(1.3f),
             viewModel = viewModel
         )
@@ -67,7 +67,7 @@ fun CharacterCardTop(
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun SimpleCharacterInfo(
+fun ClassAndName(
     navController: NavHostController,
     modifier: Modifier,
     viewModel: CharacterCardVM
@@ -139,25 +139,25 @@ fun SimpleCharacterInfo(
 }
 
 @Composable
-fun SimpleProgressInfo(
+fun GoldProgress(
     modifier: Modifier,
     viewModel: CharacterCardVM
 ) {
     Column(
         modifier = modifier.padding(8.dp)
     ) {
-        ProgressGold(viewModel)
+        ProgressText(viewModel)
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        SimpleProgressBar(viewModel)
+        ProgressBar(viewModel)
     }
 
 }
 
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
-private fun ProgressGold(
+private fun ProgressText(
     viewModel: CharacterCardVM
 ) {
     val character by viewModel.character.collectAsState()
@@ -205,7 +205,7 @@ private fun ProgressGold(
 
 
 @Composable
-fun SimpleProgressBar(viewModel: CharacterCardVM) {
+fun ProgressBar(viewModel: CharacterCardVM) {
     val progressPercentage by viewModel.progressPercentage.collectAsState()
     val animatedProgress = animateFloatAsState(
         targetValue = progressPercentage,

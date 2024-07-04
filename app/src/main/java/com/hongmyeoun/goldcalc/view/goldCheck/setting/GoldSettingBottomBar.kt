@@ -49,14 +49,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.model.common.ImageReturn.goldImage
+import com.hongmyeoun.goldcalc.model.common.formatWithCommas
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.characterDetail.normalTextStyle
 import com.hongmyeoun.goldcalc.view.characterDetail.titleTextStyle
-import com.hongmyeoun.goldcalc.view.main.formatWithCommas
-import com.hongmyeoun.goldcalc.view.main.goldImage
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
@@ -509,7 +509,7 @@ private fun BottomBarTexts(
                     contentColor = Color.White
                 ),
                 onClick = {
-                    navController.navigate(Screen.Main.route) {
+                    navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Homework.route) {
                             inclusive = true
                         }
@@ -526,7 +526,7 @@ private fun BottomBarTexts(
                 ),
                 onClick = {
                     onDoneClicked()
-                    navController.navigate(Screen.Main.route) {
+                    navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Homework.route) {
                             inclusive = true
                         }
