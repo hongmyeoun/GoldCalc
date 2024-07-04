@@ -2,6 +2,7 @@ package com.hongmyeoun.goldcalc.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -73,14 +74,19 @@ fun NavControl(characterRepository: CharacterRepository) {
 
             var isLoading by remember { mutableStateOf(true) }
 
-            if (isLoading) {
-                LoadingScreen()
-            } else {
-                val cbVM = remember { CommandBossVM(character) }
-                val adVM = remember { AbyssDungeonVM(character) }
-                val kzVM = remember { KazerothRaidVM(character) }
-                val epVM = remember { EpicRaidVM(character) }
-                GoldSetting(navController, gSVM, cbVM, adVM, kzVM, epVM)
+            Crossfade(
+                targetState = isLoading,
+                label = "로딩 crossfade"
+            ) { loading ->
+                if (loading) {
+                    LoadingScreen()
+                } else {
+                    val cbVM = remember { CommandBossVM(character) }
+                    val adVM = remember { AbyssDungeonVM(character) }
+                    val kzVM = remember { KazerothRaidVM(character) }
+                    val epVM = remember { EpicRaidVM(character) }
+                    GoldSetting(navController, gSVM, cbVM, adVM, kzVM, epVM)
+                }
             }
 
             LaunchedEffect(Unit) {
