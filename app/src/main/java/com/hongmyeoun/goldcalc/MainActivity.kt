@@ -91,7 +91,7 @@ class MainActivity : ComponentActivity() {
                 Box(modifier = Modifier.safeDrawingPadding()) {
                     NavHost(
                         navController = navController,
-                        startDestination = "Main",
+                        startDestination = Screen.Main.route,
                     ) {
                         composable(Screen.Main.route) {
                             val characterListVM: CharacterListVM = hiltViewModel()
@@ -130,13 +130,13 @@ class MainActivity : ComponentActivity() {
 
                             if (isLoading) {
                                 LoadingScreen()
+                            } else {
+                                val cbVM = remember { CommandBossVM(character) }
+                                val adVM = remember { AbyssDungeonVM(character) }
+                                val kzVM = remember { KazerothRaidVM(character) }
+                                val epVM = remember { EpicRaidVM(character) }
+                                GoldSetting(navController, gSVM, cbVM, adVM, kzVM, epVM)
                             }
-
-                            val cbVM = remember { CommandBossVM(character) }
-                            val adVM = remember { AbyssDungeonVM(character) }
-                            val kzVM = remember { KazerothRaidVM(character) }
-                            val epVM = remember { EpicRaidVM(character) }
-                            GoldSetting(navController, gSVM, cbVM, adVM, kzVM, epVM)
 
                             LaunchedEffect(Unit) {
                                 delay(1000)
