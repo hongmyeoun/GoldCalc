@@ -1,120 +1,101 @@
-package com.hongmyeoun.goldcalc.view.profile.content.equipment
+package com.hongmyeoun.goldcalc.view.profile.content.equipments.accessory
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.AbilityStone
+import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
-import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
-import com.hongmyeoun.goldcalc.ui.theme.RedQual
-import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
-import com.hongmyeoun.goldcalc.view.profile.titleBoldWhite12
+import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.view.common.TextChip
+import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.viewModel.charDetail.EquipmentDetailVM
 
-@Composable
-fun AccessorySimple(
-    abilityStone: AbilityStone,
-    viewModel: EquipmentDetailVM,
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        EquipmentIcon(
-            abilityStone = abilityStone,
-            viewModel = viewModel
-        )
-
-        Spacer(modifier = Modifier.width(4.dp))
-        Column(
-            horizontalAlignment = Alignment.Start,
-        ) {
-            Text(
-                text = abilityStone.engraving1Op,
-                style = normalTextStyle()
-            )
-            Text(
-                text = abilityStone.engraving2Op,
-                style = normalTextStyle()
-            )
-            Text(
-                text = abilityStone.engraving3Op,
-                style = normalTextStyle(RedQual)
-            )
-        }
-
-    }
-    Spacer(modifier = Modifier.height(4.dp))
-}
-
-@Composable
-fun AccessoryDetail(
-    abilityStone: AbilityStone,
-    viewModel: EquipmentDetailVM
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        EquipmentIcon(
-            abilityStone = abilityStone,
-            viewModel = viewModel
-        )
-
-        Spacer(modifier = Modifier.width(8.dp))
-        Column {
-            Text(
-                text = abilityStone.name,
-                style = titleBoldWhite12()
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = abilityStone.hpBonus,
-                style = normalTextStyle(fontSize = 12.sp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Row {
-                TextChip(
-                    text = "${viewModel.getSimpleEngraving(abilityStone.engraving1Op)} ${abilityStone.engraving1Lv}",
-                    customBGColor = LightGrayBG,
-                    borderless = true
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                TextChip(
-                    text = "${viewModel.getSimpleEngraving(abilityStone.engraving2Op)} ${abilityStone.engraving2Lv}",
-                    customBGColor = LightGrayBG,
-                    borderless = true
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                TextChip(
-                    text = "${abilityStone.engraving3Op} ${abilityStone.engraving3Lv}",
-                    customBGColor = RedQual,
-                    borderless = true
-                )
-            }
-        }
-    }
-    Spacer(modifier = Modifier.height(16.dp))
-}
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-private fun EquipmentIcon(
+fun EquipmentIcon(
+    accessory: CharacterAccessory,
+    viewModel: EquipmentDetailVM,
+) {
+    Box(
+        modifier = Modifier
+            .size(56.dp)
+            .background(
+                brush = viewModel.getItemBG(accessory.grade),
+                shape = RoundedCornerShape(8.dp)
+            )
+            .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+    ) {
+        GlideImage(
+            modifier = Modifier
+                .size(56.dp),
+            model = accessory.itemIcon,
+            contentDescription = "장비 아이콘",
+        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(2.dp)
+        ) {
+            TextChip(
+                text = accessory.type,
+                borderless = true,
+                customBGColor = BlackTransBG,
+                customRoundedCornerSize = 8.dp,
+                customTextSize = 8.sp
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+        ) {
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(14.dp)
+                    .clip(RoundedCornerShape(4.dp))
+                    .align(Alignment.BottomCenter),
+                progress = accessory.itemQuality * 0.01f,
+                color = viewModel.getQualityColor(accessory.itemQuality.toString()),
+                trackColor = ImageBG
+            )
+
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter),
+                text = "${accessory.itemQuality}",
+                style = normalTextStyle(),
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun EquipmentIcon(
     abilityStone: AbilityStone,
     viewModel: EquipmentDetailVM,
 ) {

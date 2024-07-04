@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.profile.content.equipment
+package com.hongmyeoun.goldcalc.view.profile.content.equipments.equipment
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,8 +15,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,29 +26,39 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterEquipment
+import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
-import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.common.TextChip
-import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
+import com.hongmyeoun.goldcalc.view.profile.content.equipments.UpgradeQualityRow
+import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.viewModel.charDetail.EquipmentDetailVM
 
 @Composable
 fun Equipment(
-    viewModel: CharDetailVM
+    modifier: Modifier,
+    characterEquipment: List<CharacterItem>,
+    viewModel: EquipmentDetailVM
 ) {
-    // 장비
-    val equipment by viewModel.equipments.collectAsState()
-
-    equipment?.let { equipmentList ->
-        val equipmentVM = EquipmentDetailVM(equipmentList)
-        EquipmentDetailUI(equipmentList, equipmentVM)
+    Column(
+        modifier = modifier
+    ) {
+        characterEquipment.forEach {
+            when (it) {
+                is CharacterEquipment -> {
+                    EquipmentUI(
+                        equipment = it,
+                        viewModel = viewModel
+                    )
+                }
+            }
+        }
     }
 }
 
 @Composable
-fun EquipmentDetails(
+fun EquipmentUI(
     equipment: CharacterEquipment,
     viewModel: EquipmentDetailVM,
 ) {
@@ -247,5 +255,4 @@ private fun EquipmentIcon(
             )
         }
     }
-
 }

@@ -20,7 +20,7 @@ import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.ProfileTemplate
 import com.hongmyeoun.goldcalc.view.profile.content.card.Card
 import com.hongmyeoun.goldcalc.view.profile.content.engraving.Engraving
-import com.hongmyeoun.goldcalc.view.profile.content.equipment.Equipment
+import com.hongmyeoun.goldcalc.view.profile.content.equipments.Equipments
 import com.hongmyeoun.goldcalc.view.profile.content.gem.Gem
 import com.hongmyeoun.goldcalc.view.profile.content.skill.Skill
 import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
@@ -80,7 +80,7 @@ fun ProfileDetails(
             viewModel = viewModel,
             profile = profile
         )
-        Equipment(viewModel = viewModel)
+        Equipments(viewModel = viewModel)
         Gem(viewModel = viewModel)
         Card(viewModel = viewModel)
         Skill(
