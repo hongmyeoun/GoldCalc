@@ -25,7 +25,7 @@ import com.hongmyeoun.goldcalc.ui.theme.MokokoGreen
 // 로딩
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun LoadingScreen() {
+fun LoadingScreen(isBackground: Boolean = true) {
     val transition = rememberInfiniteTransition(label = "색 변경")
     val tintColor by transition.animateColor(
         initialValue = Color.White,
@@ -37,10 +37,12 @@ fun LoadingScreen() {
         label = "색이 바뀌는 애니메이션"
     )
 
+    val bgColor = if (isBackground) ImageBG.copy(alpha = 0.5f) else ImageBG
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(ImageBG.copy(alpha = 0.5f))
+            .background(bgColor)
             .zIndex(1f),
         contentAlignment = Alignment.Center
     ) {

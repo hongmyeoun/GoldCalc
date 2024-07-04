@@ -51,10 +51,6 @@ fun NavControl(characterRepository: CharacterRepository) {
                 val characterList by characterListVM.characters.collectAsState()
                 val isLoading by characterListVM.isLoading.collectAsState()
 
-                if (isLoading) {
-                    LoadingScreen()
-                }
-
                 LazyColumn(modifier = modifier) {
                     items(characterList, key = { item -> item.name }) {
                         val characterName = it.name
@@ -62,7 +58,8 @@ fun NavControl(characterRepository: CharacterRepository) {
 
                         CharacterCard(
                             navController = navController,
-                            viewModel = characterCardVM,
+                            cardViewModel = characterCardVM,
+                            isLoading = isLoading
                         )
                     }
                 }

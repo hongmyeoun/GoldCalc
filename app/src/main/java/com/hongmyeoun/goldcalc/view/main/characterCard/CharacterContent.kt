@@ -1,5 +1,6 @@
 package com.hongmyeoun.goldcalc.view.main.characterCard
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -34,6 +35,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
+import com.hongmyeoun.goldcalc.view.common.LoadingScreen
 import com.hongmyeoun.goldcalc.viewModel.main.CharacterCardVM
 import com.hongmyeoun.goldcalc.viewModel.main.GoldContentStateVM
 
@@ -41,7 +43,8 @@ import com.hongmyeoun.goldcalc.viewModel.main.GoldContentStateVM
 @Composable
 fun CharacterCard(
     navController: NavHostController,
-    viewModel: CharacterCardVM,
+    cardViewModel: CharacterCardVM,
+    isLoading: Boolean
 ) {
     Column(
         modifier = Modifier
@@ -50,18 +53,29 @@ fun CharacterCard(
                 color = BlackTransBG,
                 shape = RoundedCornerShape(16.dp)
             )
-            .padding(top = 8.dp, bottom = 8.dp, start = 16.dp, end = 16.dp)
-        ,
+            .padding(top = 8.dp, bottom = 8.dp, start = 16.dp, end = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CharacterCardTop(
-            navController = navController,
-            viewModel = viewModel
-        )
-        GoldContents(
-            viewModel = viewModel,
-        )
-        Spacer(modifier = Modifier.height(16.dp))
+        Crossfade(
+            targetState = isLoading,
+            label = "로딩 Crossfade"
+        ) {
+            Column {
+                if (it) {
+                    LoadingScreen(isBackground = false)
+                } else {
+                    CharacterCardTop(
+                        navController = navController,
+                        viewModel = cardViewModel
+                    )
+                    GoldContents(
+                        viewModel = cardViewModel,
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            }
+        }
+
     }
 }
 
