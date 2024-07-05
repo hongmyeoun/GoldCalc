@@ -27,12 +27,12 @@ import com.hongmyeoun.goldcalc.view.common.TextChip
 import com.hongmyeoun.goldcalc.view.common.noRippleClickable
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
-import com.hongmyeoun.goldcalc.viewModel.charDetail.EquipmentDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.EquipmentVM
 
 @Composable
 fun Extra(
     characterEquipment: List<CharacterItem>,
-    viewModel: EquipmentDetailVM
+    viewModel: EquipmentVM
 ) {
     Row(
         modifier = Modifier
@@ -82,7 +82,7 @@ fun Extra(
 fun ExtraBracelet(
     modifier: Modifier,
     characterEquipment: List<CharacterItem>,
-    viewModel: EquipmentDetailVM
+    viewModel: EquipmentVM
 ) {
     Column(
         modifier = modifier.noRippleClickable { viewModel.onBraClicked() }
@@ -149,7 +149,7 @@ fun ExtraBracelet(
 fun ExtraElixir(
     modifier: Modifier,
     characterEquipment: List<CharacterItem>,
-    viewModel: EquipmentDetailVM
+    viewModel: EquipmentVM
 ) {
     Column(modifier = modifier) {
         Text(
@@ -182,7 +182,7 @@ fun ExtraElixir(
 fun ExtraTrans(
     modifier: Modifier,
     characterEquipment: List<CharacterItem>,
-    viewModel: EquipmentDetailVM
+    viewModel: EquipmentVM
 ) {
     Column(modifier = modifier) {
         Text(

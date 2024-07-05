@@ -23,13 +23,13 @@ import com.hongmyeoun.goldcalc.view.profile.content.engraving.Engraving
 import com.hongmyeoun.goldcalc.view.profile.content.equipments.Equipments
 import com.hongmyeoun.goldcalc.view.profile.content.gem.Gem
 import com.hongmyeoun.goldcalc.view.profile.content.skill.Skill
-import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.ProfileVM
 
 @Composable
 fun ProfileContent(
     charName: String,
     paddingValues: PaddingValues,
-    viewModel: CharDetailVM = hiltViewModel()
+    viewModel: ProfileVM = hiltViewModel()
 ) {
     val context = LocalContext.current
     val verticalScrollState = rememberScrollState()
@@ -68,7 +68,7 @@ fun ProfileContent(
 
 @Composable
 fun ProfileDetails(
-    viewModel: CharDetailVM,
+    viewModel: ProfileVM,
     profile: CharacterDetail
 ) {
     Column(

@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.viewModel.charDetail
+package com.hongmyeoun.goldcalc.viewModel.profile
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -27,7 +27,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class CharDetailVM @Inject constructor(
+class ProfileVM @Inject constructor(
     private val characterRepository: CharacterRepository,
 ): ViewModel() {
     // DB에 저장되어 있는지 여부

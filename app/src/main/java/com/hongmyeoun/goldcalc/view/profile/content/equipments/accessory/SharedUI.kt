@@ -27,14 +27,14 @@ import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.view.common.TextChip
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
-import com.hongmyeoun.goldcalc.viewModel.charDetail.EquipmentDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.EquipmentVM
 
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun EquipmentIcon(
     accessory: CharacterAccessory,
-    viewModel: EquipmentDetailVM,
+    viewModel: EquipmentVM,
 ) {
     Box(
         modifier = Modifier
@@ -97,7 +97,7 @@ fun EquipmentIcon(
 @Composable
 fun EquipmentIcon(
     abilityStone: AbilityStone,
-    viewModel: EquipmentDetailVM,
+    viewModel: EquipmentVM,
 ) {
     Box(
         modifier = Modifier

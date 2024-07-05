@@ -16,12 +16,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.view.profile.Title
-import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
-import com.hongmyeoun.goldcalc.viewModel.charDetail.GemDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.ProfileVM
+import com.hongmyeoun.goldcalc.viewModel.profile.GemVM
 
 @Composable
 fun Gem(
-    viewModel: CharDetailVM
+    viewModel: ProfileVM
 ) {
     // 보석
     val gems by viewModel.gems.collectAsState()
@@ -34,7 +34,7 @@ fun Gem(
 @Composable
 fun GemView(
     gemList: List<Gem>,
-    viewModel: GemDetailVM = viewModel()
+    viewModel: GemVM = viewModel()
 ) {
     val isDetail by viewModel.isDetail.collectAsState()
 

@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.viewModel.charDetail
+package com.hongmyeoun.goldcalc.viewModel.profile
 
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -25,7 +25,7 @@ import com.hongmyeoun.goldcalc.ui.theme.YellowQual
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class EquipmentDetailVM(characterEquipment: List<CharacterItem>) : ViewModel() {
+class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
     private val _accessoryAvgQuality = MutableStateFlow(0.0)
     val accessoryAvgQuality: StateFlow<Double> = _accessoryAvgQuality
 

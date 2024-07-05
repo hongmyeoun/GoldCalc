@@ -21,12 +21,12 @@ import com.hongmyeoun.goldcalc.model.searchedInfo.card.Cards
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.view.profile.Title
 import com.hongmyeoun.goldcalc.view.common.TextChip
-import com.hongmyeoun.goldcalc.viewModel.charDetail.CardDetailVM
-import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.CardVM
+import com.hongmyeoun.goldcalc.viewModel.profile.ProfileVM
 
 @Composable
 fun Card(
-    viewModel: CharDetailVM
+    viewModel: ProfileVM
 ) {
     // 카드
     val cards by viewModel.cards.collectAsState()
@@ -43,7 +43,7 @@ fun Card(
 fun CardView(
     characterCardsEffects: List<CardEffects>?,
     cardList: List<Cards>,
-    viewModel: CardDetailVM = viewModel()
+    viewModel: CardVM = viewModel()
 ) {
     val isDetail by viewModel.isDetail.collectAsState()
 
@@ -83,7 +83,7 @@ fun CardView(
 @Composable
 fun SetOption(
     characterCardsEffects: List<CardEffects>?,
-    viewModel: CardDetailVM,
+    viewModel: CardVM,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth()

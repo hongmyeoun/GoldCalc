@@ -25,14 +25,14 @@ import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleBoldWhite12
 import com.hongmyeoun.goldcalc.view.common.TextChip
-import com.hongmyeoun.goldcalc.viewModel.charDetail.CardDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.CardVM
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun Detail(
     characterCardsEffects: List<CardEffects>?,
     cardList: List<Cards>,
-    viewModel: CardDetailVM
+    viewModel: CardVM
 ) {
     // 카드 이미지
     FlowRow(

@@ -36,13 +36,13 @@ import com.hongmyeoun.goldcalc.ui.theme.PurpleQual
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.view.common.TextChip
-import com.hongmyeoun.goldcalc.viewModel.charDetail.SkillDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.SkillVM
 
 @Composable
 fun Detail(
     skills: List<Skills>,
     gemList: List<Gem>?,
-    viewModel: SkillDetailVM
+    viewModel: SkillVM
 ) {
     Column(
         modifier = Modifier
@@ -75,7 +75,7 @@ fun Detail(
 private fun DetailRow(
     it: Skills,
     gemList: List<Gem>?,
-    viewModel: SkillDetailVM
+    viewModel: SkillVM
 ) {
     Column(
         modifier = Modifier
@@ -107,7 +107,7 @@ private fun DetailRow(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun Tripods(it: Skills, viewModel: SkillDetailVM) {
+private fun Tripods(it: Skills, viewModel: SkillVM) {
     Column(horizontalAlignment = Alignment.Start) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -172,7 +172,7 @@ private fun Tripods(it: Skills, viewModel: SkillDetailVM) {
 @Composable
 private fun TripodInfo(
     tripod: Tripods,
-    viewModel: SkillDetailVM,
+    viewModel: SkillVM,
     selectedIndex: Int
 ) {
     Row(
@@ -198,7 +198,7 @@ private fun TripodInfo(
 private fun RuneAndGem(
     it: Skills,
     gemList: List<Gem>,
-    viewModel: SkillDetailVM
+    viewModel: SkillVM
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),

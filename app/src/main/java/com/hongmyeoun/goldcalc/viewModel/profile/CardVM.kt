@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.viewModel.charDetail
+package com.hongmyeoun.goldcalc.viewModel.profile
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.Modifier
@@ -9,7 +9,7 @@ import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardEffects
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class CardDetailVM: ViewModel() {
+class CardVM: ViewModel() {
     private val _isDetail = MutableStateFlow(false)
     val isDetail: StateFlow<Boolean> = _isDetail
 

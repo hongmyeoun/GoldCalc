@@ -1,10 +1,10 @@
-package com.hongmyeoun.goldcalc.viewModel.charDetail
+package com.hongmyeoun.goldcalc.viewModel.profile
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class CombatStatDetailVM: ViewModel() {
+class StatVM: ViewModel() {
     private val _showDefaultDialog = MutableStateFlow(false)
     val showDefaultDialog: StateFlow<Boolean> = _showDefaultDialog
     fun onDismissRequest() {

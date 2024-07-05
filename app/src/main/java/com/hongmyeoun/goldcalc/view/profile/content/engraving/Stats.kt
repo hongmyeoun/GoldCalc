@@ -40,16 +40,16 @@ import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.ui.theme.OrangeQual
+import com.hongmyeoun.goldcalc.view.common.noRippleClickable
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
-import com.hongmyeoun.goldcalc.view.common.noRippleClickable
-import com.hongmyeoun.goldcalc.viewModel.charDetail.CombatStatDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.StatVM
 
 @Composable
 fun Stats(
     modifier: Modifier,
     profile: CharacterDetail,
-    viewModel: CombatStatDetailVM = viewModel()
+    viewModel: StatVM = viewModel()
 ) {
     val showDefaultDialog by viewModel.showDefaultDialog.collectAsState()
     val showCombatDialog by viewModel.showCombatDialog.collectAsState()
@@ -171,7 +171,7 @@ private fun Simple(
 @Composable
 fun Details(
     profile: CharacterDetail,
-    viewModel: CombatStatDetailVM,
+    viewModel: StatVM,
     default: Boolean
 ) {
     val configuration = LocalConfiguration.current

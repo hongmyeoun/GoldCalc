@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.viewModel.charDetail
+package com.hongmyeoun.goldcalc.viewModel.profile
 
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -19,7 +19,7 @@ import com.hongmyeoun.goldcalc.ui.theme.UncommonBG
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class SkillDetailVM: ViewModel() {
+class SkillVM: ViewModel() {
     private val _isDetail = MutableStateFlow(false)
     val isDetail: StateFlow<Boolean> = _isDetail
 

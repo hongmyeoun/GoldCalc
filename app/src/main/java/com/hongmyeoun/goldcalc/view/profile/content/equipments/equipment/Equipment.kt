@@ -33,13 +33,13 @@ import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.view.common.TextChip
 import com.hongmyeoun.goldcalc.view.profile.content.equipments.UpgradeQualityRow
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
-import com.hongmyeoun.goldcalc.viewModel.charDetail.EquipmentDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.EquipmentVM
 
 @Composable
 fun Equipment(
     modifier: Modifier,
     characterEquipment: List<CharacterItem>,
-    viewModel: EquipmentDetailVM
+    viewModel: EquipmentVM
 ) {
     Column(
         modifier = modifier
@@ -60,7 +60,7 @@ fun Equipment(
 @Composable
 fun EquipmentUI(
     equipment: CharacterEquipment,
-    viewModel: EquipmentDetailVM,
+    viewModel: EquipmentVM,
 ) {
     val setOptionName = viewModel.setOptionName(equipment)
 
@@ -152,7 +152,7 @@ private fun TranscendenceLevelRow(level: String, upgrade: String, setOption: Str
 private fun ElixirLevelOptionRow(
     level: String,
     option: String,
-    viewModel: EquipmentDetailVM
+    viewModel: EquipmentVM
 ) {
     Row(
         modifier = Modifier.height(24.dp),
@@ -176,7 +176,7 @@ private fun ElixirLevelOptionRow(
 @Composable
 private fun EquipmentIcon(
     equipment: CharacterEquipment,
-    viewModel: EquipmentDetailVM,
+    viewModel: EquipmentVM,
 ) {
     Box(
         modifier = Modifier

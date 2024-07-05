@@ -10,11 +10,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
-import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.ProfileVM
 
 @Composable
 fun Engraving(
-    viewModel: CharDetailVM,
+    viewModel: ProfileVM,
     profile: CharacterDetail
 ) {
     // 각인

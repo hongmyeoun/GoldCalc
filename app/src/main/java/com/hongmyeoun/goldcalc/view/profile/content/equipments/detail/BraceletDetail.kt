@@ -30,11 +30,11 @@ import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.common.TextChip
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
-import com.hongmyeoun.goldcalc.viewModel.charDetail.EquipmentDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.EquipmentVM
 
 @Composable
 fun BraceletDetail(
-    viewModel: EquipmentDetailVM,
+    viewModel: EquipmentVM,
     characterEquipment: List<CharacterItem>
 ) {
     Dialog(
@@ -78,7 +78,7 @@ fun BraceletDetail(
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
 private fun IconAndName(
-    viewModel: EquipmentDetailVM,
+    viewModel: EquipmentVM,
     it: Bracelet
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {

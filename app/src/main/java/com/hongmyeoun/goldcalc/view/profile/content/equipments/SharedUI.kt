@@ -15,11 +15,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hongmyeoun.goldcalc.view.common.TextChip
-import com.hongmyeoun.goldcalc.viewModel.charDetail.EquipmentDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.EquipmentVM
 
 @Composable
 fun UpgradeQualityRow(
-    viewModel: EquipmentDetailVM,
+    viewModel: EquipmentVM,
     grade: String,
     upgrade: String = "",
     itemLevel: String = "",

@@ -14,7 +14,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.view.profile.titleBoldWhite12
-import com.hongmyeoun.goldcalc.viewModel.charDetail.CardDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.CardVM
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -22,7 +22,7 @@ fun CardImage(
     grade: String,
     icon: String,
     awakeCount: Int,
-    viewModel: CardDetailVM,
+    viewModel: CardVM,
     name: String = "",
     detail: Boolean = false
 ) {

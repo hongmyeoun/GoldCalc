@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.viewModel.charDetail
+package com.hongmyeoun.goldcalc.viewModel.profile
 
 import androidx.compose.ui.graphics.Brush
 import androidx.lifecycle.ViewModel
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.absoluteValue
 
-class GemDetailVM: ViewModel() {
+class GemVM: ViewModel() {
     private val _isDetail = MutableStateFlow(false)
     val isDetail: StateFlow<Boolean> = _isDetail
 

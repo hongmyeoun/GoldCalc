@@ -29,11 +29,11 @@ import com.hongmyeoun.goldcalc.view.profile.content.equipments.accessory.Equipme
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleBoldWhite12
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
-import com.hongmyeoun.goldcalc.viewModel.charDetail.EquipmentDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.EquipmentVM
 
 @Composable
 fun AccessoryDetail(
-    viewModel: EquipmentDetailVM,
+    viewModel: EquipmentVM,
     characterEquipment: List<CharacterItem>
 ) {
     Dialog(
@@ -79,7 +79,7 @@ fun AccessoryDetail(
 @Composable
 private fun DetailUI(
     accessory: CharacterAccessory,
-    viewModel: EquipmentDetailVM
+    viewModel: EquipmentVM
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -136,7 +136,7 @@ private fun DetailUI(
 @Composable
 fun DetailUI(
     abilityStone: AbilityStone,
-    viewModel: EquipmentDetailVM
+    viewModel: EquipmentVM
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically

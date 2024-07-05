@@ -8,12 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hongmyeoun.goldcalc.model.searchedInfo.card.Cards
-import com.hongmyeoun.goldcalc.viewModel.charDetail.CardDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.CardVM
 
 @Composable
 fun Simple(
     cardList: List<Cards>,
-    viewModel: CardDetailVM
+    viewModel: CardVM
 ) {
     Row(
         modifier = Modifier

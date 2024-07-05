@@ -17,13 +17,13 @@ import com.hongmyeoun.goldcalc.ui.theme.RedQual
 import com.hongmyeoun.goldcalc.view.common.noRippleClickable
 import com.hongmyeoun.goldcalc.view.profile.content.equipments.UpgradeQualityRow
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
-import com.hongmyeoun.goldcalc.viewModel.charDetail.EquipmentDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.EquipmentVM
 
 @Composable
 fun Accessory(
     modifier: Modifier,
     characterEquipment: List<CharacterItem>,
-    viewModel: EquipmentDetailVM
+    viewModel: EquipmentVM
 ) {
     Column(
         modifier = modifier
@@ -52,7 +52,7 @@ fun Accessory(
 @Composable
 fun AccessoryUI(
     accessory: CharacterAccessory,
-    viewModel: EquipmentDetailVM,
+    viewModel: EquipmentVM,
 ) {
     Row {
         EquipmentIcon(
@@ -88,7 +88,7 @@ fun AccessoryUI(
 @Composable
 fun AbilityStoneUI(
     abilityStone: AbilityStone,
-    viewModel: EquipmentDetailVM,
+    viewModel: EquipmentVM,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically

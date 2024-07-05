@@ -24,13 +24,13 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.common.TextChip
-import com.hongmyeoun.goldcalc.viewModel.charDetail.GemDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.GemVM
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun Simple(
     gemList: List<Gem>,
-    viewModel: GemDetailVM,
+    viewModel: GemVM,
 ) {
     val (annihilation, crimsonFlame) = viewModel.countAnnihilationGem(gemList)
     Row(
@@ -68,7 +68,7 @@ fun Simple(
 
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
-private fun GemSimple(it: Gem, viewModel: GemDetailVM) {
+private fun GemSimple(it: Gem, viewModel: GemVM) {
     Column(
         modifier = Modifier
             .padding(4.dp)

@@ -1,11 +1,11 @@
-package com.hongmyeoun.goldcalc.viewModel.charDetail
+package com.hongmyeoun.goldcalc.viewModel.profile
 
 import androidx.lifecycle.ViewModel
 import com.hongmyeoun.goldcalc.model.searchedInfo.engravings.SkillEngravings
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class EngravingDetailVM: ViewModel() {
+class EngravingVM: ViewModel() {
     private val _showDialog = MutableStateFlow(false)
     val showDialog: StateFlow<Boolean> = _showDialog
     fun onDismissRequest() {

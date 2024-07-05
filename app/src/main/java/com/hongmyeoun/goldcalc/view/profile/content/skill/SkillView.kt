@@ -23,12 +23,12 @@ import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.view.profile.Title
 import com.hongmyeoun.goldcalc.view.common.TextChip
 import com.hongmyeoun.goldcalc.view.common.noRippleClickable
-import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
-import com.hongmyeoun.goldcalc.viewModel.charDetail.SkillDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.ProfileVM
+import com.hongmyeoun.goldcalc.viewModel.profile.SkillVM
 
 @Composable
 fun Skill(
-    viewModel: CharDetailVM,
+    viewModel: ProfileVM,
     profile: CharacterDetail
 ) {
     // 스킬
@@ -47,7 +47,7 @@ fun SkillView(
     characterDetail: CharacterDetail?,
     skills: List<Skills>,
     gemList: List<Gem>?,
-    viewModel: SkillDetailVM = viewModel()
+    viewModel: SkillVM = viewModel()
 ) {
     val isDetail by viewModel.isDetail.collectAsState()
 
@@ -108,7 +108,7 @@ fun SkillView(
 fun SkillPoint(
     characterDetail: CharacterDetail?,
     skills: List<Skills>,
-    viewModel: SkillDetailVM,
+    viewModel: SkillVM,
 ) {
     Row(
         modifier = Modifier

@@ -32,14 +32,14 @@ import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.view.common.noRippleClickable
-import com.hongmyeoun.goldcalc.viewModel.charDetail.EngravingDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.EngravingVM
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun EngravingView(
     modifier: Modifier,
     skillEngravings: List<SkillEngravings>,
-    viewModel: EngravingDetailVM = viewModel()
+    viewModel: EngravingVM = viewModel()
 ) {
     val showDialog by viewModel.showDialog.collectAsState()
 
@@ -98,7 +98,7 @@ fun EngravingView(
 @Composable
 fun Description(
     skillEngravings: List<SkillEngravings>,
-    viewModel: EngravingDetailVM
+    viewModel: EngravingVM
 ) {
     val engraving = viewModel.getEngraving(skillEngravings)
 

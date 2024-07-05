@@ -22,11 +22,11 @@ import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.titleBoldWhite12
 import com.hongmyeoun.goldcalc.view.common.TextChip
-import com.hongmyeoun.goldcalc.viewModel.charDetail.SkillDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.SkillVM
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun Simple(skills: List<Skills>, gemList: List<Gem>?, viewModel: SkillDetailVM) {
+fun Simple(skills: List<Skills>, gemList: List<Gem>?, viewModel: SkillVM) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -81,7 +81,7 @@ fun Simple(skills: List<Skills>, gemList: List<Gem>?, viewModel: SkillDetailVM) 
 private fun RuneAndGem(
     it: Skills,
     gemList: List<Gem>,
-    viewModel: SkillDetailVM
+    viewModel: SkillVM
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically

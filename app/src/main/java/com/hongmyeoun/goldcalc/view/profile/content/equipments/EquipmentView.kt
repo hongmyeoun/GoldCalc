@@ -24,18 +24,18 @@ import com.hongmyeoun.goldcalc.view.profile.content.equipments.detail.AccessoryD
 import com.hongmyeoun.goldcalc.view.profile.content.equipments.detail.BraceletDetail
 import com.hongmyeoun.goldcalc.view.profile.content.equipments.equipment.Equipment
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
-import com.hongmyeoun.goldcalc.viewModel.charDetail.CharDetailVM
-import com.hongmyeoun.goldcalc.viewModel.charDetail.EquipmentDetailVM
+import com.hongmyeoun.goldcalc.viewModel.profile.ProfileVM
+import com.hongmyeoun.goldcalc.viewModel.profile.EquipmentVM
 
 @Composable
 fun Equipments(
-    viewModel: CharDetailVM
+    viewModel: ProfileVM
 ) {
     // 장비
     val equipment by viewModel.equipments.collectAsState()
 
     equipment?.let { equipmentList ->
-        val equipmentVM = EquipmentDetailVM(equipmentList)
+        val equipmentVM = EquipmentVM(equipmentList)
         EquipmentView(equipmentList, equipmentVM)
     }
 }
@@ -43,7 +43,7 @@ fun Equipments(
 @Composable
 fun EquipmentView(
     characterEquipment: List<CharacterItem>,
-    viewModel: EquipmentDetailVM
+    viewModel: EquipmentVM
 ) {
     val showAccDialog by viewModel.showAccDialog.collectAsState()
     val showBraDialog by viewModel.showBraDialog.collectAsState()
@@ -69,7 +69,7 @@ fun EquipmentView(
 @Composable
 private fun EquipmentAndAccessory(
     characterEquipment: List<CharacterItem>,
-    viewModel: EquipmentDetailVM
+    viewModel: EquipmentVM
 ) {
     Text(
         text = "장비",
@@ -99,7 +99,7 @@ private fun EquipmentAndAccessory(
 // 세트, 악세 품질 요약
 @Composable
 fun Summary(
-    viewModel: EquipmentDetailVM
+    viewModel: EquipmentVM
 ) {
     val accessoryQualityAvg by viewModel.accessoryAvgQuality.collectAsState()
     val setOption by viewModel.setOption.collectAsState()
