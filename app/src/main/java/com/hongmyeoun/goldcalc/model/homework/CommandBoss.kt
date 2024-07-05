@@ -43,23 +43,23 @@ enum class CommandBoss(
     ABRELSHUD(
         boss = "아브렐슈드",
         seeMoreGold = mapOf(
-            "normal" to listOf(400, 600, 800, 1500),
-            "hard" to listOf(700, 900, 1100, 1800)
+            "normal" to listOf(250, 300, 400, 600),
+            "hard" to listOf(400, 400, 500, 800)
         ),
         clearGold = mapOf(
-            "normal" to listOf(1500, 1500, 1500, 2500),
-            "hard" to listOf(2000, 2000, 2000, 3000)
+            "normal" to listOf(1000, 1000, 1000, 1600),
+            "hard" to listOf(1200, 1200, 1200, 2000)
         )
     ),
     ILLIAKAN(
         boss = "일리아칸",
         seeMoreGold = mapOf(
-            "normal" to listOf(900, 1100, 1500),
-            "hard" to listOf(1200, 1400, 1900)
+            "normal" to listOf(450, 550, 750),
+            "hard" to listOf(600, 700, 950)
         ),
         clearGold = mapOf(
-            "normal" to listOf(1500, 2000, 4000),
-            "hard" to listOf(1750, 2500, 5750)
+            "normal" to listOf(1000, 1800, 2600),
+            "hard" to listOf(1500, 2500, 3500)
         )
     ),
     KAMEN(

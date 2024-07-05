@@ -10,23 +10,23 @@ enum class AbyssDungeon(
     KAYANGEL(
         boss = "카양겔",
         seeMoreGold = mapOf(
-            "normal" to listOf(600, 800, 1000),
-            "hard" to listOf(700, 900, 1100)
+            "normal" to listOf(300, 400, 500),
+            "hard" to listOf(350, 500, 700)
         ),
         clearGold = mapOf(
-            "normal" to listOf(1000, 1500, 2000),
-            "hard" to listOf(1500, 2000, 3000)
+            "normal" to listOf(800, 1200, 1600),
+            "hard" to listOf(1000, 1600, 2200)
         )
     ),
     IVORY_TOWER(
         boss = "상아탑",
         seeMoreGold = mapOf(
-            "normal" to listOf(700, 800, 900, 1100),
-            "hard" to listOf(1000, 1000, 1500, 2000)
+            "normal" to listOf(600, 650, 1000),
+            "hard" to listOf(1200, 1450, 2000)
         ),
         clearGold = mapOf(
-            "normal" to listOf(1500, 1750, 2500, 3250),
-            "hard" to listOf(2000, 2500, 4000, 6000)
+            "normal" to listOf(1500, 2000, 3000),
+            "hard" to listOf(3000, 4000, 6000)
         )
     );
 
@@ -141,9 +141,9 @@ class IvoryTower(character: Character?) {
         moreCheck = onePhaseMCheck,
         isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[0],
-        seeMoreGoldH = seeMoreGold[4],
+        seeMoreGoldH = seeMoreGold[3],
         clearGoldN = clearGold[0],
-        clearGoldH = clearGold[4]
+        clearGoldH = clearGold[3]
     )
 
     private val getTwoPhase = character?.checkList?.abyssDungeon?.get(1)?.phases?.get(1)
@@ -158,9 +158,9 @@ class IvoryTower(character: Character?) {
         moreCheck = twoPhaseMCheck,
         isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[1],
-        seeMoreGoldH = seeMoreGold[5],
+        seeMoreGoldH = seeMoreGold[4],
         clearGoldN = clearGold[1],
-        clearGoldH = clearGold[5]
+        clearGoldH = clearGold[4]
     )
 
     private val getThreePhase = character?.checkList?.abyssDungeon?.get(1)?.phases?.get(2)
@@ -174,38 +174,21 @@ class IvoryTower(character: Character?) {
         moreCheck = threePhaseMCheck,
         isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[2],
-        seeMoreGoldH = seeMoreGold[6],
+        seeMoreGoldH = seeMoreGold[5],
         clearGoldN = clearGold[2],
-        clearGoldH = clearGold[6]
+        clearGoldH = clearGold[5]
     )
 
-    private val getFourPhase = character?.checkList?.abyssDungeon?.get(1)?.phases?.get(3)
-    private val fourPhaseDifficulty = getFourPhase?.difficulty?:"노말"
-    private val fourPhaseIsClear = getFourPhase?.isClear?:false
-    private val fourPhaseMCheck = getFourPhase?.mCheck?:false
-
-    val fourPhase = PhaseInfo(
-        difficulty = fourPhaseDifficulty,
-        isClearCheck = fourPhaseIsClear,
-        moreCheck = fourPhaseMCheck,
-        isChecked = isChecked,
-        seeMoreGoldN = seeMoreGold[3],
-        seeMoreGoldH = seeMoreGold[7],
-        clearGoldN = clearGold[3],
-        clearGoldH = clearGold[7]
-    )
-
-    var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold + fourPhase.totalGold
+    var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
 
     fun totalGold() {
-        totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold + fourPhase.totalGold
+        totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
     }
 
     fun onShowChecked() {
         onePhase.onShowChecked()
         twoPhase.onShowChecked()
         threePhase.onShowChecked()
-        fourPhase.onShowChecked()
     }
 
 }
