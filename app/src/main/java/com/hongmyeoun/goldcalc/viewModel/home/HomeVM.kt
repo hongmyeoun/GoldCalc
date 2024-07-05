@@ -78,13 +78,15 @@ class HomeVM @Inject constructor(
             reset()
             doneSnackbar(
                 snackbarHostState = snackbarHostState,
-                text = "숙제가 초기화 되었습니다."
+                text = "숙제가 초기화 되었습니다.",
+                delay = 1500L
             )
             clickPressedTime = 0L // 초기화 후 한번더 초기화 할때 오류가 안나게 하기 위해 초기화
         } else {
             doneSnackbar(
                 snackbarHostState = snackbarHostState,
-                text = "한 번 더 누르시면 숙제가 초기화 됩니다."
+                text = "한 번 더 누르시면 숙제가 초기화 됩니다.",
+                delay = 750L
             )
         }
         clickPressedTime = currentTime
@@ -104,12 +106,12 @@ class HomeVM @Inject constructor(
         }
     }
 
-    private fun doneSnackbar(snackbarHostState: SnackbarHostState, text: String) {
+    private fun doneSnackbar(snackbarHostState: SnackbarHostState, text: String, delay: Long = 2000L) {
         viewModelScope.launch {
             val job = launch {
                 snackbarHostState.showSnackbar(message = text)
             }
-            delay(2000L)
+            delay(delay)
             job.cancel()
         }
     }
