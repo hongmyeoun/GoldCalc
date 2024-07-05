@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
+package com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidContents
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -8,19 +8,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.view.goldCheck.TwoPhaseBossNoHard
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckBox
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCard
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckLists
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.TwoPhaseNoHard
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
 
 @Composable
-fun EpicRaid(viewModel: EpicRaidVM) {
+fun Epic(viewModel: EpicRaidVM) {
     var behemothRotated by remember { mutableStateOf(false) }
     val behemothRotaR by animateFloatAsState(
         targetValue = if (behemothRotated) 180f else 0f,
-        animationSpec = tween(500)
+        animationSpec = tween(500),
+        label = "회전 애니메이션"
     )
 
     RaidCheckLists(maxItem = 2) { modifier ->
-        RaidBossCheck(
+        RaidCheckBox(
             name = "베히모스",
             modifier = modifier,
             checked = viewModel.beheCheck,
@@ -29,13 +33,13 @@ fun EpicRaid(viewModel: EpicRaidVM) {
     }
 
     if (viewModel.beheCheck) {
-        RaidCardUI(
+        RaidCard(
             bossImg = R.drawable.epic_behemoth,
             isRotated = behemothRotated,
             rotaR = behemothRotaR,
             onClick = { behemothRotated = !behemothRotated },
             phaseCard = {
-                TwoPhaseBossNoHard(
+                TwoPhaseNoHard(
                     rotaR = behemothRotaR,
 
                     name = viewModel.behemoth.name,

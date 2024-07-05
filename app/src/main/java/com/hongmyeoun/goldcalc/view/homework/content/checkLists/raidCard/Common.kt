@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
+package com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -33,7 +33,7 @@ import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun RaidCardUI(
+fun RaidCard(
     bossImg: Int,
     isRotated: Boolean,
     rotaR: Float,
@@ -73,7 +73,7 @@ fun RaidCardUI(
 }
 
 @Composable
-fun RaidBossCheck(
+fun RaidCheckBox(
     name: String,
     modifier: Modifier,
     checked: Boolean,
@@ -84,14 +84,20 @@ fun RaidBossCheck(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        Text(text = name, fontWeight = FontWeight.Bold, color = Color.White)
+        Text(
+            text = name,
+            fontWeight = FontWeight.Bold,
+            color = Color.White
+        )
         Spacer(modifier = Modifier.width(8.dp))
+
         Checkbox(
             checked = checked,
             onCheckedChange = { onCheckedChange() },
             colors = CheckboxDefaults.colors(
                 checkedColor = ImageBG,
-                uncheckedColor = Color.White // 테두리 색 변경해줌
+                uncheckedColor = Color.White, // 테두리 색 변경해줌
+                checkmarkColor = Color.White
             )
         )
     }
@@ -101,7 +107,7 @@ fun RaidBossCheck(
 @Composable
 fun RaidCheckLists(
     maxItem: Int,
-    checkList: @Composable (Modifier)-> Unit
+    checkList: @Composable (Modifier) -> Unit
 ) {
     FlowRow(
         modifier = Modifier

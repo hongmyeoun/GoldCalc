@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class GoldSettingVM @Inject constructor(
+class HomeworkVM @Inject constructor(
     private val characterRepository: CharacterRepository,
     charName: String
 ) : ViewModel() {

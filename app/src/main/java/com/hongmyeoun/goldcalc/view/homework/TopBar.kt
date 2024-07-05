@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.goldCheck.setting
+package com.hongmyeoun.goldcalc.view.homework
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -40,12 +40,12 @@ import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.LightBlue
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
-import com.hongmyeoun.goldcalc.viewModel.goldCheck.GoldSettingVM
+import com.hongmyeoun.goldcalc.viewModel.goldCheck.HomeworkVM
 import kotlinx.coroutines.launch
 
 @Composable
-fun GoldSettingTopBar(
-    viewModel: GoldSettingVM,
+fun HomeworkTopBar(
+    viewModel: HomeworkVM,
     navController: NavHostController,
     scrollState: LazyListState
 ) {
@@ -55,7 +55,7 @@ fun GoldSettingTopBar(
     val scope = rememberCoroutineScope()
 
     if (showDialog) {
-        DeleteCharacterDialog(viewModel, navController)
+        DeleteDialog(viewModel, navController)
     }
 
     Column(
@@ -88,6 +88,8 @@ fun GoldSettingTopBar(
                     )
                 }
             }
+
+
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -96,6 +98,8 @@ fun GoldSettingTopBar(
                 style = titleTextStyle(fontSize = 20.sp),
                 textAlign = TextAlign.Center,
             )
+
+
             IconButton(
                 modifier = Modifier.weight(0.5f),
                 onClick = { viewModel.onClicked() }
@@ -111,12 +115,13 @@ fun GoldSettingTopBar(
 }
 
 @Composable
-private fun DeleteCharacterDialog(
-    viewModel: GoldSettingVM,
+private fun DeleteDialog(
+    viewModel: HomeworkVM,
     navController: NavHostController,
 ) {
-    Dialog(onDismissRequest = { viewModel.onDissmissRequest() }) {
-
+    Dialog(
+        onDismissRequest = { viewModel.onDissmissRequest() }
+    ) {
         Column(
             modifier = Modifier.background(LightGrayBG, RoundedCornerShape(16.dp)),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -206,7 +211,6 @@ private fun DeleteCharacterDialog(
                         color = Color.Red
                     )
                 }
-
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
+package com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidContents
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -8,20 +8,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.view.goldCheck.TwoPhaseBoss
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckBox
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCard
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckLists
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.TwoPhase
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
 
 @Composable
-fun KazerothRaid(viewModel: KazerothRaidVM) {
+fun Kazeroth(viewModel: KazerothRaidVM) {
 
     var roatated by remember { mutableStateOf(false) }
     val rotaR by animateFloatAsState(
         targetValue = if (roatated) 180f else 0f,
-        animationSpec = tween(500)
+        animationSpec = tween(500),
+        label = "회전 애니메이션"
     )
 
     RaidCheckLists(maxItem = 2) { modifier ->
-        RaidBossCheck(
+        RaidCheckBox(
             name = "에키드나",
             modifier = modifier,
             checked = viewModel.echiCheck,
@@ -30,13 +34,13 @@ fun KazerothRaid(viewModel: KazerothRaidVM) {
     }
 
     if (viewModel.echiCheck) {
-        RaidCardUI(
+        RaidCard(
             bossImg = R.drawable.kazeroth_echidna,
             isRotated = roatated,
             rotaR = rotaR,
             onClick = { roatated = !roatated },
             phaseCard = {
-                TwoPhaseBoss(
+                TwoPhase(
                     rotaR = rotaR,
 
                     name = viewModel.echidna.name,

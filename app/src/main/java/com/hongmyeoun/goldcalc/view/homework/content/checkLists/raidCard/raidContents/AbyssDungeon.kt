@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
+package com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidContents
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -8,32 +8,38 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.view.goldCheck.FourPhaseBoss
-import com.hongmyeoun.goldcalc.view.goldCheck.ThreePhaseBoss
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckBox
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCard
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckLists
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.FourPhase
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.ThreePhase
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
 
 @Composable
 fun AbyssDungeon(viewModel: AbyssDungeonVM) {
     var kayangelRotated by remember { mutableStateOf(false) }
     var ivoryTowerRotated by remember { mutableStateOf(false) }
+
     val kayangelRotaR by animateFloatAsState(
         targetValue = if (kayangelRotated) 180f else 0f,
-        animationSpec = tween(500)
+        animationSpec = tween(500),
+        label = "회전 애니메이션"
     )
     val ivoryTowerRotaR by animateFloatAsState(
         targetValue = if (ivoryTowerRotated) 180f else 0f,
-        animationSpec = tween(500)
+        animationSpec = tween(500),
+        label = "회전 애니메이션"
     )
 
     RaidCheckLists(maxItem = 2) { modifier ->
-        RaidBossCheck(
+        RaidCheckBox(
             name = "카양겔",
             modifier = modifier,
             checked = viewModel.kayangelCheck,
             onCheckedChange = { viewModel.onKayangelCheck() }
         )
 
-        RaidBossCheck(
+        RaidCheckBox(
             name = "상아탑",
             modifier = modifier,
             checked = viewModel.ivoryCheck,
@@ -42,13 +48,13 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
     }
 
     if (viewModel.kayangelCheck) {
-        RaidCardUI(
+        RaidCard(
             bossImg = R.drawable.abyss_dungeon_kayangel,
             isRotated = kayangelRotated,
             rotaR = kayangelRotaR,
             onClick = { kayangelRotated = !kayangelRotated },
             phaseCard = {
-                ThreePhaseBoss(
+                ThreePhase(
                     rotaR = kayangelRotaR,
 
                     name = viewModel.kayangel.name,
@@ -112,13 +118,13 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
     }
 
     if (viewModel.ivoryCheck) {
-        RaidCardUI(
+        RaidCard(
             bossImg = R.drawable.abyss_dungeon_ivory_tower,
             isRotated = ivoryTowerRotated,
             rotaR = ivoryTowerRotaR,
             onClick = { ivoryTowerRotated = !ivoryTowerRotated },
             phaseCard = {
-                FourPhaseBoss(
+                FourPhase(
                     rotaR = ivoryTowerRotaR,
 
                     name = viewModel.ivoryTower.name,

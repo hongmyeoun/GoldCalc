@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.goldCheck.cardContent
+package com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidContents
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -8,15 +8,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.view.goldCheck.FourPhaseBoss
-import com.hongmyeoun.goldcalc.view.goldCheck.FourPhaseBossLastHard
-import com.hongmyeoun.goldcalc.view.goldCheck.ThreePhaseBoss
-import com.hongmyeoun.goldcalc.view.goldCheck.ThreePhaseBossNoHard
-import com.hongmyeoun.goldcalc.view.goldCheck.TwoPhaseBoss
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckBox
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCard
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckLists
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.FourPhase
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.FourPhaseLastHard
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.ThreePhase
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.ThreePhaseNoHard
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.TwoPhase
 import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
 
 @Composable
-fun CommandRaid(
+fun Command(
     viewModel: CommandBossVM,
 ) {
     var valtanRotated by remember { mutableStateOf(false) }
@@ -27,61 +30,73 @@ fun CommandRaid(
     var kamenRotated by remember { mutableStateOf(false) }
 
     val valtanRotaR by animateFloatAsState(
-        targetValue = if (valtanRotated) 180f else 0f, animationSpec = tween(500)
+        targetValue = if (valtanRotated) 180f else 0f,
+        animationSpec = tween(500),
+        label = "회전 애니메이션"
     )
     val biackissRotaR by animateFloatAsState(
-        targetValue = if (biackissRotated) 180f else 0f, animationSpec = tween(500)
+        targetValue = if (biackissRotated) 180f else 0f,
+        animationSpec = tween(500),
+        label = "회전 애니메이션"
     )
     val koukuSatonRotaR by animateFloatAsState(
-        targetValue = if (koukuSatonRotated) 180f else 0f, animationSpec = tween(500)
+        targetValue = if (koukuSatonRotated) 180f else 0f,
+        animationSpec = tween(500),
+        label = "회전 애니메이션"
     )
     val abrelshudRotaR by animateFloatAsState(
-        targetValue = if (abrelshudRotated) 180f else 0f, animationSpec = tween(500)
+        targetValue = if (abrelshudRotated) 180f else 0f,
+        animationSpec = tween(500),
+        label = "회전 애니메이션"
     )
     val illiakanRotaR by animateFloatAsState(
-        targetValue = if (illiakanRotated) 180f else 0f, animationSpec = tween(500)
+        targetValue = if (illiakanRotated) 180f else 0f,
+        animationSpec = tween(500),
+        label = "회전 애니메이션"
     )
     val kamenRotaR by animateFloatAsState(
-        targetValue = if (kamenRotated) 180f else 0f, animationSpec = tween(500)
+        targetValue = if (kamenRotated) 180f else 0f,
+        animationSpec = tween(500),
+        label = "회전 애니메이션"
     )
 
     RaidCheckLists(maxItem = 3) { modifier ->
-        RaidBossCheck(
+        RaidCheckBox(
             name = "발탄",
             modifier = modifier,
             checked = viewModel.valtanCheck,
             onCheckedChange = { viewModel.onValtanCheck() }
         )
 
-        RaidBossCheck(
+        RaidCheckBox(
             name = "비아",
             modifier = modifier,
             checked = viewModel.biaCheck,
             onCheckedChange = { viewModel.onBiaCheck() }
         )
 
-        RaidBossCheck(
+        RaidCheckBox(
             name = "쿠크",
             modifier = modifier,
             checked = viewModel.koukuCheck,
             onCheckedChange = { viewModel.onKoukuCheck() }
         )
 
-        RaidBossCheck(
+        RaidCheckBox(
             name = "아브",
             modifier = modifier,
             checked = viewModel.abreCheck,
             onCheckedChange = { viewModel.onAbreCheck() }
         )
 
-        RaidBossCheck(
+        RaidCheckBox(
             name = "일리",
             modifier = modifier,
             checked = viewModel.illiCheck,
             onCheckedChange = { viewModel.onIlliCheck() }
         )
 
-        RaidBossCheck(
+        RaidCheckBox(
             name = "카멘",
             modifier = modifier,
             checked = viewModel.kamenCheck,
@@ -90,13 +105,13 @@ fun CommandRaid(
     }
 
     if (viewModel.valtanCheck) {
-        RaidCardUI(
+        RaidCard(
             bossImg = R.drawable.command_valtan,
             isRotated = valtanRotated,
             rotaR = valtanRotaR,
             onClick = { valtanRotated = !valtanRotated },
             phaseCard = {
-                TwoPhaseBoss(
+                TwoPhase(
                     rotaR = valtanRotaR,
 
                     name = viewModel.valtan.name,
@@ -144,13 +159,13 @@ fun CommandRaid(
 
 
     if (viewModel.biaCheck) {
-        RaidCardUI(
+        RaidCard(
             bossImg = R.drawable.command_biackiss,
             isRotated = biackissRotated,
             rotaR = biackissRotaR,
             onClick = { biackissRotated = !biackissRotated },
             phaseCard = {
-                TwoPhaseBoss(
+                TwoPhase(
                     rotaR = biackissRotaR,
 
                     name = viewModel.biackiss.name,
@@ -198,13 +213,13 @@ fun CommandRaid(
 
     if (viewModel.koukuCheck) {
 
-        RaidCardUI(
+        RaidCard(
             bossImg = R.drawable.command_kouku,
             isRotated = koukuSatonRotated,
             rotaR = koukuSatonRotaR,
             onClick = { koukuSatonRotated = !koukuSatonRotated },
             phaseCard = {
-                ThreePhaseBossNoHard(
+                ThreePhaseNoHard(
                     rotaR = koukuSatonRotaR,
 
                     name = viewModel.koukuSaton.name,
@@ -252,13 +267,13 @@ fun CommandRaid(
     }
 
     if (viewModel.abreCheck) {
-        RaidCardUI(
+        RaidCard(
             bossImg = R.drawable.command_abrelshud,
             isRotated = abrelshudRotated,
             rotaR = abrelshudRotaR,
             onClick = { abrelshudRotated = !abrelshudRotated },
             phaseCard = {
-                FourPhaseBoss(
+                FourPhase(
                     rotaR = abrelshudRotaR,
 
                     name = viewModel.abrelshud.name,
@@ -338,13 +353,13 @@ fun CommandRaid(
     }
 
     if (viewModel.illiCheck) {
-        RaidCardUI(
+        RaidCard(
             bossImg = R.drawable.command_illiakan,
             isRotated = illiakanRotated,
             rotaR = illiakanRotaR,
             onClick = { illiakanRotated = !illiakanRotated },
             phaseCard = {
-                ThreePhaseBoss(
+                ThreePhase(
                     rotaR = illiakanRotaR,
 
                     name = viewModel.illiakan.name,
@@ -407,13 +422,13 @@ fun CommandRaid(
     }
 
     if (viewModel.kamenCheck) {
-        RaidCardUI(
+        RaidCard(
             bossImg = R.drawable.command_kamen,
             isRotated = kamenRotated,
             rotaR = kamenRotaR,
             onClick = { kamenRotated = !kamenRotated },
             phaseCard = {
-                FourPhaseBossLastHard(
+                FourPhaseLastHard(
                     rotaR = kamenRotaR,
 
                     name = viewModel.kamen.name,

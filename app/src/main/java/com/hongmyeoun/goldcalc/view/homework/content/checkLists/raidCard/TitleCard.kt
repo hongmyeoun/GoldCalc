@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.goldCheck
+package com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,12 +18,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.model.common.ImageReturn.goldImage
+import com.hongmyeoun.goldcalc.model.common.ImageReturn
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun RaidCard(
+fun TitleCard(
     raidImg: Int,
     totalGold: Int,
     raidContent: @Composable () -> Unit
@@ -48,7 +48,7 @@ fun RaidCard(
         ) {
             GlideImage(
                 modifier = Modifier.size(25.dp),
-                model = goldImage(totalGold),
+                model = ImageReturn.goldImage(totalGold),
                 contentDescription = "골드 아이콘"
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -61,5 +61,4 @@ fun RaidCard(
     }
 
     raidContent()
-
 }

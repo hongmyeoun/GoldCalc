@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.logolgiMain
+package com.hongmyeoun.goldcalc.view.mainApp
 
 import android.app.Activity
 import androidx.compose.runtime.Composable

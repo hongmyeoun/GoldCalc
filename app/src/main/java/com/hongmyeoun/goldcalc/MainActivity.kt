@@ -7,7 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
-import com.hongmyeoun.goldcalc.view.logolgiMain.LoGolGi
+import com.hongmyeoun.goldcalc.view.mainApp.LoGolGi
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
