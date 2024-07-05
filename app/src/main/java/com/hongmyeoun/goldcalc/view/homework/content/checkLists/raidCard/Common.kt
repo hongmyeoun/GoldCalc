@@ -69,7 +69,6 @@ fun RaidCard(
             phaseCard()
         }
     }
-
 }
 
 @Composable

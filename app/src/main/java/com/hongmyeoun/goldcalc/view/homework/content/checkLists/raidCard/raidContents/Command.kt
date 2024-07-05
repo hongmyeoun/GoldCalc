@@ -8,13 +8,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckBox
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCard
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckBox
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckLists
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.FourPhase
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.FourPhaseLastHard
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.ThreePhase
-import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.ThreePhaseNoHard
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.TwoPhase
 import com.hongmyeoun.goldcalc.viewModel.homework.CommandBossVM
 
@@ -152,7 +151,6 @@ fun Command(
                         viewModel.sumGold()
                     },
                 )
-
             }
         )
     }
@@ -206,29 +204,32 @@ fun Command(
                         viewModel.sumGold()
                     },
                 )
-
             }
         )
     }
 
     if (viewModel.koukuCheck) {
-
         RaidCard(
             bossImg = R.drawable.command_kouku,
             isRotated = koukuSatonRotated,
             rotaR = koukuSatonRotaR,
             onClick = { koukuSatonRotated = !koukuSatonRotated },
             phaseCard = {
-                ThreePhaseNoHard(
+                ThreePhase(
                     rotaR = koukuSatonRotaR,
 
                     name = viewModel.koukuSaton.name,
                     raidBossImg = R.drawable.logo_saton,
                     totalGold = viewModel.koukuSaton.totalGold,
 
+                    phaseOneLevel = viewModel.koukuSaton.onePhase.level,
                     phaseOneGold = viewModel.koukuSaton.onePhase.totalGold,
                     phaseOneSMC = viewModel.koukuSaton.onePhase.seeMoreCheck,
                     phaseOneCC = viewModel.koukuSaton.onePhase.clearCheck,
+                    onOnePhaseLevelClicked = {
+                        viewModel.koukuSaton.onePhase.onLevelClicked()
+                        viewModel.sumGold()
+                    },
                     onOnePhaseClearCheckBoxChecked = {
                         viewModel.koukuSaton.onePhase.onClearCheckBoxClicked(it)
                         viewModel.sumGold()
@@ -238,9 +239,14 @@ fun Command(
                         viewModel.sumGold()
                     },
 
+                    phaseTwoLevel = viewModel.koukuSaton.twoPhase.level,
                     phaseTwoGold = viewModel.koukuSaton.twoPhase.totalGold,
                     phaseTwoSMC = viewModel.koukuSaton.twoPhase.seeMoreCheck,
                     phaseTwoCC = viewModel.koukuSaton.twoPhase.clearCheck,
+                    onTwoPhaseLevelClicked = {
+                        viewModel.koukuSaton.twoPhase.onLevelClicked()
+                        viewModel.sumGold()
+                    },
                     onTwoPhaseClearCheckBoxChecked = {
                         viewModel.koukuSaton.twoPhase.onClearCheckBoxClicked(it)
                         viewModel.sumGold()
@@ -250,9 +256,14 @@ fun Command(
                         viewModel.sumGold()
                     },
 
+                    phaseThreeLevel = viewModel.koukuSaton.threePhase.level,
                     phaseThreeGold = viewModel.koukuSaton.threePhase.totalGold,
                     phaseThreeSMC = viewModel.koukuSaton.threePhase.seeMoreCheck,
                     phaseThreeCC = viewModel.koukuSaton.threePhase.clearCheck,
+                    onThreePhaseLevelClicked = {
+                        viewModel.koukuSaton.threePhase.onLevelClicked()
+                        viewModel.sumGold()
+                    },
                     onThreePhaseClearCheckBoxChecked = {
                         viewModel.koukuSaton.threePhase.onClearCheckBoxClicked(it)
                         viewModel.sumGold()

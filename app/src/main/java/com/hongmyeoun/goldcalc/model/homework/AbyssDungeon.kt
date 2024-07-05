@@ -11,22 +11,26 @@ enum class AbyssDungeon(
         boss = "카양겔",
         seeMoreGold = mapOf(
             "normal" to listOf(300, 400, 500),
-            "hard" to listOf(350, 500, 700)
+            "hard" to listOf(350, 500, 700),
+            "solo" to listOf(1, 2, 3)
         ),
         clearGold = mapOf(
             "normal" to listOf(800, 1200, 1600),
-            "hard" to listOf(1000, 1600, 2200)
+            "hard" to listOf(1000, 1600, 2200),
+            "solo" to listOf(1, 2, 3)
         )
     ),
     IVORY_TOWER(
         boss = "상아탑",
         seeMoreGold = mapOf(
             "normal" to listOf(600, 650, 1000),
-            "hard" to listOf(1200, 1450, 2000)
+            "hard" to listOf(1200, 1450, 2000),
+            "solo" to listOf(1, 2, 3)
         ),
         clearGold = mapOf(
             "normal" to listOf(1500, 2000, 3000),
-            "hard" to listOf(3000, 4000, 6000)
+            "hard" to listOf(3000, 4000, 6000),
+            "solo" to listOf(1, 2, 3)
         )
     );
 
@@ -53,8 +57,8 @@ class AbyssDungeonModel(character: Character?) {
 
 class Kayangel(character: Character?) {
     val name = AbyssDungeon.KAYANGEL.boss
-    private val seeMoreGold = AbyssDungeon.KAYANGEL.getBossInfo("normal").first + AbyssDungeon.KAYANGEL.getBossInfo("hard").first
-    private val clearGold = AbyssDungeon.KAYANGEL.getBossInfo("normal").second + AbyssDungeon.KAYANGEL.getBossInfo("hard").second
+    private val seeMoreGold = AbyssDungeon.KAYANGEL.getBossInfo("normal").first + AbyssDungeon.KAYANGEL.getBossInfo("hard").first + AbyssDungeon.KAYANGEL.getBossInfo("solo").first
+    private val clearGold = AbyssDungeon.KAYANGEL.getBossInfo("normal").second + AbyssDungeon.KAYANGEL.getBossInfo("hard").second + AbyssDungeon.KAYANGEL.getBossInfo("solo").second
 
     var isChecked = character?.checkList?.abyssDungeon?.get(0)?.isCheck?:false
 
@@ -71,8 +75,10 @@ class Kayangel(character: Character?) {
         isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[3],
+        seeMoreGoldS = seeMoreGold[6],
         clearGoldN = clearGold[0],
-        clearGoldH = clearGold[3]
+        clearGoldH = clearGold[3],
+        clearGoldS = clearGold[6]
     )
 
     private val getTwoPhase = character?.checkList?.abyssDungeon?.get(0)?.phases?.get(1)
@@ -88,8 +94,10 @@ class Kayangel(character: Character?) {
         isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[4],
+        seeMoreGoldS = seeMoreGold[7],
         clearGoldN = clearGold[1],
-        clearGoldH = clearGold[4]
+        clearGoldH = clearGold[4],
+        clearGoldS = clearGold[7]
     )
 
     private val getThreePhase = character?.checkList?.abyssDungeon?.get(0)?.phases?.get(2)
@@ -104,8 +112,10 @@ class Kayangel(character: Character?) {
         isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[2],
         seeMoreGoldH = seeMoreGold[5],
+        seeMoreGoldS = seeMoreGold[8],
         clearGoldN = clearGold[2],
-        clearGoldH = clearGold[5]
+        clearGoldH = clearGold[5],
+        clearGoldS = clearGold[8]
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
@@ -119,13 +129,12 @@ class Kayangel(character: Character?) {
         twoPhase.onShowChecked()
         threePhase.onShowChecked()
     }
-
 }
 
 class IvoryTower(character: Character?) {
     val name = AbyssDungeon.IVORY_TOWER.boss
-    private val seeMoreGold = AbyssDungeon.IVORY_TOWER.getBossInfo("normal").first + AbyssDungeon.IVORY_TOWER.getBossInfo("hard").first
-    private val clearGold = AbyssDungeon.IVORY_TOWER.getBossInfo("normal").second + AbyssDungeon.IVORY_TOWER.getBossInfo("hard").second
+    private val seeMoreGold = AbyssDungeon.IVORY_TOWER.getBossInfo("normal").first + AbyssDungeon.IVORY_TOWER.getBossInfo("hard").first + AbyssDungeon.IVORY_TOWER.getBossInfo("solo").first
+    private val clearGold = AbyssDungeon.IVORY_TOWER.getBossInfo("normal").second + AbyssDungeon.IVORY_TOWER.getBossInfo("hard").second + AbyssDungeon.IVORY_TOWER.getBossInfo("solo").second
 
     var isChecked = character?.checkList?.abyssDungeon?.get(1)?.isCheck?:false
 
@@ -142,8 +151,10 @@ class IvoryTower(character: Character?) {
         isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[3],
+        seeMoreGoldS = seeMoreGold[6],
         clearGoldN = clearGold[0],
-        clearGoldH = clearGold[3]
+        clearGoldH = clearGold[3],
+        clearGoldS = clearGold[6]
     )
 
     private val getTwoPhase = character?.checkList?.abyssDungeon?.get(1)?.phases?.get(1)
@@ -159,8 +170,10 @@ class IvoryTower(character: Character?) {
         isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[4],
+        seeMoreGoldS = seeMoreGold[7],
         clearGoldN = clearGold[1],
-        clearGoldH = clearGold[4]
+        clearGoldH = clearGold[4],
+        clearGoldS = clearGold[7]
     )
 
     private val getThreePhase = character?.checkList?.abyssDungeon?.get(1)?.phases?.get(2)
@@ -175,8 +188,10 @@ class IvoryTower(character: Character?) {
         isChecked = isChecked,
         seeMoreGoldN = seeMoreGold[2],
         seeMoreGoldH = seeMoreGold[5],
+        seeMoreGoldS = seeMoreGold[8],
         clearGoldN = clearGold[2],
-        clearGoldH = clearGold[5]
+        clearGoldH = clearGold[5],
+        clearGoldS = clearGold[8]
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
@@ -190,5 +205,4 @@ class IvoryTower(character: Character?) {
         twoPhase.onShowChecked()
         threePhase.onShowChecked()
     }
-
 }
