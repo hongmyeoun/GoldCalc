@@ -33,6 +33,7 @@ import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.RedQual
 import com.hongmyeoun.goldcalc.ui.theme.YellowQual
+import com.hongmyeoun.goldcalc.view.common.noRippleClickable
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -220,7 +221,7 @@ fun ClearMoreCheckBox(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).noRippleClickable {  },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(
@@ -236,7 +237,7 @@ fun ClearMoreCheckBox(
         }
 
         Row(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).noRippleClickable {  },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(
@@ -267,6 +268,7 @@ fun Level(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .noRippleClickable {  }
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
