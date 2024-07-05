@@ -19,11 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.ProfileTemplate
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.CheckLists
-import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
-import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
-import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
-import com.hongmyeoun.goldcalc.viewModel.goldCheck.HomeworkVM
-import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
+import com.hongmyeoun.goldcalc.viewModel.homework.AbyssDungeonVM
+import com.hongmyeoun.goldcalc.viewModel.homework.CommandBossVM
+import com.hongmyeoun.goldcalc.viewModel.homework.EpicRaidVM
+import com.hongmyeoun.goldcalc.viewModel.homework.HomeworkVM
+import com.hongmyeoun.goldcalc.viewModel.homework.KazerothRaidVM
 
 @Composable
 @OptIn(ExperimentalFoundationApi::class)

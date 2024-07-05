@@ -18,13 +18,13 @@ import androidx.navigation.NavHostController
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.view.home.content.HomeContent
 import com.hongmyeoun.goldcalc.view.home.topbar.HomeTopBar
-import com.hongmyeoun.goldcalc.viewModel.main.CharacterListVM
+import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun HomeView(
-    viewModel: CharacterListVM = hiltViewModel(),
+    viewModel: HomeVM = hiltViewModel(),
     navController: NavHostController,
     characterRepository: CharacterRepository,
 ) {

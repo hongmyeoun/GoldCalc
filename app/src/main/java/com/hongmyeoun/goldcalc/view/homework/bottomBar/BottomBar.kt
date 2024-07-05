@@ -44,11 +44,11 @@ import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
-import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
-import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
-import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
-import com.hongmyeoun.goldcalc.viewModel.goldCheck.HomeworkVM
-import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
+import com.hongmyeoun.goldcalc.viewModel.homework.AbyssDungeonVM
+import com.hongmyeoun.goldcalc.viewModel.homework.CommandBossVM
+import com.hongmyeoun.goldcalc.viewModel.homework.EpicRaidVM
+import com.hongmyeoun.goldcalc.viewModel.homework.HomeworkVM
+import com.hongmyeoun.goldcalc.viewModel.homework.KazerothRaidVM
 
 @Composable
 fun HomeworkBottomBar(

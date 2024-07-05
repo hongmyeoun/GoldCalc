@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.viewModel.main
+package com.hongmyeoun.goldcalc.viewModel.home
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.getValue
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CharacterListVM @Inject constructor(
+class HomeVM @Inject constructor(
     val characterRepository: CharacterRepository,
 ): ViewModel() {
     private val _characters = MutableStateFlow<List<Character>>(emptyList())

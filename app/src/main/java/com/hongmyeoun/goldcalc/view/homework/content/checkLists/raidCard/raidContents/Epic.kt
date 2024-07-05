@@ -12,7 +12,7 @@ import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidChe
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCard
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckLists
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.TwoPhaseNoHard
-import com.hongmyeoun.goldcalc.viewModel.goldCheck.EpicRaidVM
+import com.hongmyeoun.goldcalc.viewModel.homework.EpicRaidVM
 
 @Composable
 fun Epic(viewModel: EpicRaidVM) {

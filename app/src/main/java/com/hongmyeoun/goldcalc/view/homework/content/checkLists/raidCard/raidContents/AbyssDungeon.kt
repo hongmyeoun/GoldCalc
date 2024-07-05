@@ -13,7 +13,7 @@ import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCar
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckLists
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.FourPhase
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.ThreePhase
-import com.hongmyeoun.goldcalc.viewModel.goldCheck.AbyssDungeonVM
+import com.hongmyeoun.goldcalc.viewModel.homework.AbyssDungeonVM
 
 @Composable
 fun AbyssDungeon(viewModel: AbyssDungeonVM) {

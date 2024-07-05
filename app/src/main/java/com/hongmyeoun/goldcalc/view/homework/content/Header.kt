@@ -16,7 +16,7 @@ import com.example.bottombar.model.IndicatorDirection
 import com.example.bottombar.model.IndicatorStyle
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
-import com.hongmyeoun.goldcalc.viewModel.goldCheck.HomeworkVM
+import com.hongmyeoun.goldcalc.viewModel.homework.HomeworkVM
 
 @Composable
 fun RaidHeader(viewModel: HomeworkVM) {

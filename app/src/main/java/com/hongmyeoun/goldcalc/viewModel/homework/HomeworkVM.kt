@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.viewModel.goldCheck
+package com.hongmyeoun.goldcalc.viewModel.homework
 
 import android.content.Context
 import androidx.compose.material3.SnackbarHostState

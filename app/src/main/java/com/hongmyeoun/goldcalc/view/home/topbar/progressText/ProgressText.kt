@@ -26,11 +26,11 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.common.ImageReturn
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
-import com.hongmyeoun.goldcalc.viewModel.main.CharacterListVM
+import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ProgressText(viewModel: CharacterListVM) {
+fun ProgressText(viewModel: HomeVM) {
     val showDialog by viewModel.showDialog.collectAsState()
 
     if (showDialog) {

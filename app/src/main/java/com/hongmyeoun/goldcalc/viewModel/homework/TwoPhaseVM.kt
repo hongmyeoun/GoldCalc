@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.viewModel.goldCheck
+package com.hongmyeoun.goldcalc.viewModel.homework
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

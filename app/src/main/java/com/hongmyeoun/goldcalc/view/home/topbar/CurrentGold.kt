@@ -18,11 +18,11 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.common.ImageReturn
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
-import com.hongmyeoun.goldcalc.viewModel.main.CharacterListVM
+import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
 
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
-fun CurrentGold(viewModel: CharacterListVM) {
+fun CurrentGold(viewModel: HomeVM) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically

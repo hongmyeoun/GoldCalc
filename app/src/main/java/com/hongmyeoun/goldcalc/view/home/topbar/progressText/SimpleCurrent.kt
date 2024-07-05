@@ -44,10 +44,10 @@ import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
-import com.hongmyeoun.goldcalc.viewModel.main.CharacterListVM
+import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
 
 @Composable
-fun SimpleCurrent(viewModel: CharacterListVM) {
+fun SimpleCurrent(viewModel: HomeVM) {
     Dialog(onDismissRequest = { viewModel.onDissmissRequest() }) {
         val configuration = LocalConfiguration.current
         val screenHeight = configuration.screenHeightDp.dp
@@ -78,7 +78,7 @@ private fun CurrentTop() {
 }
 
 @Composable
-private fun CurrentContents(viewModel: CharacterListVM) {
+private fun CurrentContents(viewModel: HomeVM) {
     val characterList by viewModel.characters.collectAsState()
     LazyColumn {
         items(characterList, key = { item -> item.name }) {

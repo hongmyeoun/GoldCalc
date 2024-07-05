@@ -10,12 +10,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.home.topbar.progressText.ProgressText
-import com.hongmyeoun.goldcalc.viewModel.main.CharacterListVM
+import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
 
 @Composable
 fun HomeTopBar(
     navController: NavHostController,
-    viewModel: CharacterListVM,
+    viewModel: HomeVM,
     snackbarHostState: SnackbarHostState
 ) {
     Column(

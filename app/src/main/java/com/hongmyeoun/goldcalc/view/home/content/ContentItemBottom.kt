@@ -30,12 +30,12 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.viewModel.main.CharacterCardVM
-import com.hongmyeoun.goldcalc.viewModel.main.GoldContentStateVM
+import com.hongmyeoun.goldcalc.viewModel.home.HomeContentVM
+import com.hongmyeoun.goldcalc.viewModel.home.GoldContentStateVM
 
 @Composable
 fun HomeworkProgress(
-    viewModel: CharacterCardVM,
+    viewModel: HomeContentVM,
 ) {
     val character by viewModel.character.collectAsState()
 

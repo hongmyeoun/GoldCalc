@@ -12,7 +12,7 @@ import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidChe
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCard
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckLists
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.TwoPhase
-import com.hongmyeoun.goldcalc.viewModel.goldCheck.KazerothRaidVM
+import com.hongmyeoun.goldcalc.viewModel.homework.KazerothRaidVM
 
 @Composable
 fun Kazeroth(viewModel: KazerothRaidVM) {

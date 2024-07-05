@@ -16,7 +16,7 @@ import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.F
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.ThreePhase
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.ThreePhaseNoHard
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.TwoPhase
-import com.hongmyeoun.goldcalc.viewModel.goldCheck.CommandBossVM
+import com.hongmyeoun.goldcalc.viewModel.homework.CommandBossVM
 
 @Composable
 fun Command(

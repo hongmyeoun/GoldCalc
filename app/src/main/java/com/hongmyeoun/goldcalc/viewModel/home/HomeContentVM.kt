@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.viewModel.main
+package com.hongmyeoun.goldcalc.viewModel.home
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class CharacterCardVM @Inject constructor(
+class HomeContentVM @Inject constructor(
     private val characterRepository: CharacterRepository,
     private val charName: String
 ): ViewModel() {

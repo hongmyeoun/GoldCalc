@@ -26,12 +26,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.navigation.Screen
-import com.hongmyeoun.goldcalc.viewModel.main.CharacterListVM
+import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
 
 @Composable
 fun TitleAndMenu(
     navController: NavHostController,
-    viewModel: CharacterListVM,
+    viewModel: HomeVM,
     snackbarHostState: SnackbarHostState
 ) {
     Box(
@@ -101,7 +101,7 @@ fun Title(modifier: Modifier) {
 private fun Menus(
     modifier: Modifier,
     navController: NavHostController,
-    viewModel: CharacterListVM,
+    viewModel: HomeVM,
     snackbarHostState: SnackbarHostState
 ) {
     Row(

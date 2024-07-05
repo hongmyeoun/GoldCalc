@@ -14,12 +14,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.view.common.LoadingScreen
-import com.hongmyeoun.goldcalc.viewModel.main.CharacterCardVM
+import com.hongmyeoun.goldcalc.viewModel.home.HomeContentVM
 
 @Composable
 fun ContentItem(
     navController: NavHostController,
-    cardViewModel: CharacterCardVM,
+    cardViewModel: HomeContentVM,
     isLoading: Boolean
 ) {
     Column(

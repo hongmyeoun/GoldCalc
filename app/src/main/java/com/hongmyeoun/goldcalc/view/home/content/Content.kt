@@ -13,7 +13,7 @@ import androidx.navigation.NavHostController
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
-import com.hongmyeoun.goldcalc.viewModel.main.CharacterCardVM
+import com.hongmyeoun.goldcalc.viewModel.home.HomeContentVM
 
 @Composable
 fun HomeContent(
@@ -31,7 +31,7 @@ fun HomeContent(
     ) {
         items(characterList, key = { item -> item.name }) {
             val characterName = it.name
-            val characterCardVM = remember { CharacterCardVM(characterRepository, characterName) }
+            val characterCardVM = remember { HomeContentVM(characterRepository, characterName) }
 
             ContentItem(
                 navController = navController,

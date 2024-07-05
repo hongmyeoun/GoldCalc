@@ -40,7 +40,7 @@ import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.LightBlue
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
-import com.hongmyeoun.goldcalc.viewModel.goldCheck.HomeworkVM
+import com.hongmyeoun.goldcalc.viewModel.homework.HomeworkVM
 import kotlinx.coroutines.launch
 
 @Composable

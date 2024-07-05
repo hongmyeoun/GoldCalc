@@ -43,12 +43,12 @@ import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
-import com.hongmyeoun.goldcalc.viewModel.main.CharacterCardVM
+import com.hongmyeoun.goldcalc.viewModel.home.HomeContentVM
 
 @Composable
 fun ContentItemTop(
     navController: NavHostController,
-    viewModel: CharacterCardVM
+    viewModel: HomeContentVM
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -70,7 +70,7 @@ fun ContentItemTop(
 fun ClassAndName(
     navController: NavHostController,
     modifier: Modifier,
-    viewModel: CharacterCardVM
+    viewModel: HomeContentVM
 ) {
     val character by viewModel.character.collectAsState()
 
@@ -141,7 +141,7 @@ fun ClassAndName(
 @Composable
 fun GoldProgress(
     modifier: Modifier,
-    viewModel: CharacterCardVM
+    viewModel: HomeContentVM
 ) {
     Column(
         modifier = modifier.padding(8.dp)
@@ -158,7 +158,7 @@ fun GoldProgress(
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
 private fun ProgressText(
-    viewModel: CharacterCardVM
+    viewModel: HomeContentVM
 ) {
     val character by viewModel.character.collectAsState()
 
@@ -205,7 +205,7 @@ private fun ProgressText(
 
 
 @Composable
-fun ProgressBar(viewModel: CharacterCardVM) {
+fun ProgressBar(viewModel: HomeContentVM) {
     val progressPercentage by viewModel.progressPercentage.collectAsState()
     val animatedProgress = animateFloatAsState(
         targetValue = progressPercentage,
