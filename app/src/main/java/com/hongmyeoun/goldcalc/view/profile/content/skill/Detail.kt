@@ -33,9 +33,9 @@ import com.hongmyeoun.goldcalc.model.profile.skills.Tripods
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.ui.theme.PurpleQual
+import com.hongmyeoun.goldcalc.view.common.TextChip
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
-import com.hongmyeoun.goldcalc.view.common.TextChip
 import com.hongmyeoun.goldcalc.viewModel.profile.SkillVM
 
 @Composable
@@ -205,7 +205,9 @@ private fun RuneAndGem(
         horizontalAlignment = Alignment.End
     ) {
         it.rune?.let { rune ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.Top
+            ) {
                 GlideImage(
                     modifier = Modifier
                         .size(54.dp)
@@ -225,10 +227,22 @@ private fun RuneAndGem(
                 )
 
                 Column {
-                    Row {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Spacer(modifier = Modifier.width(8.dp))
-                        TextChip(text = rune.grade, customTextSize = 12.sp, borderless = true, customBGColor = viewModel.getGradeBG(rune.grade))
-                        TextChip(text = rune.name, customTextSize = 12.sp, borderless = true, customBGColor = LightGrayTransBG)
+                        TextChip(
+                            text = rune.grade,
+                            customTextSize = 12.sp,
+                            borderless = true,
+                            customBGColor = viewModel.getGradeBG(rune.grade)
+                        )
+                        TextChip(
+                            text = rune.name,
+                            customTextSize = 12.sp,
+                            borderless = true,
+                            customBGColor = LightGrayTransBG
+                        )
                     }
                     it.runeTooltip?.let { tooltip ->
                         Box(
