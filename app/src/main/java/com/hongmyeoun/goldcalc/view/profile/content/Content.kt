@@ -49,7 +49,7 @@ fun ProfileContent(
                 .padding(paddingValues)
                 .fillMaxSize()
                 .background(ImageBG)
-                .padding(8.dp)
+                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
                 .verticalScroll(verticalScrollState)
         ) {
             ProfileTemplate(
