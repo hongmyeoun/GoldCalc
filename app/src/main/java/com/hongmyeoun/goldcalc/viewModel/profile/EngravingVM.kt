@@ -1,7 +1,7 @@
 package com.hongmyeoun.goldcalc.viewModel.profile
 
 import androidx.lifecycle.ViewModel
-import com.hongmyeoun.goldcalc.model.searchedInfo.engravings.SkillEngravings
+import com.hongmyeoun.goldcalc.model.profile.engravings.SkillEngravings
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

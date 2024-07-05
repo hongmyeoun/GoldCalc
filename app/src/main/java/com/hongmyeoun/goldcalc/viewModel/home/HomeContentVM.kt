@@ -5,10 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hongmyeoun.goldcalc.model.goldCheck.AbyssDungeonModel
-import com.hongmyeoun.goldcalc.model.goldCheck.CommandBossModel
-import com.hongmyeoun.goldcalc.model.goldCheck.EpicRaidModel
-import com.hongmyeoun.goldcalc.model.goldCheck.KazerothRaidModel
+import com.hongmyeoun.goldcalc.model.homework.AbyssDungeonModel
+import com.hongmyeoun.goldcalc.model.homework.CommandBossModel
+import com.hongmyeoun.goldcalc.model.homework.EpicRaidModel
+import com.hongmyeoun.goldcalc.model.homework.KazerothRaidModel
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.model.roomDB.character.Phase

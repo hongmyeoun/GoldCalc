@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.model.searchedInfo.engravings
+package com.hongmyeoun.goldcalc.model.profile.engravings
 
 import com.google.gson.annotations.SerializedName
 

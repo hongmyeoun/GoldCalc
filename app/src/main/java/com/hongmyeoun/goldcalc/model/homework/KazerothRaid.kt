@@ -1,21 +1,21 @@
-package com.hongmyeoun.goldcalc.model.goldCheck
+package com.hongmyeoun.goldcalc.model.homework
 
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 
-enum class EpicRaid(
+enum class KazerothRaid(
     val boss: String,
     val seeMoreGold: Map<String, List<Int>>,
     val clearGold: Map<String, List<Int>>
 ) {
-    BEHEMOTH(
-        boss = "베히모스",
+    ECHIDNA(
+        boss = "에키드나",
         seeMoreGold = mapOf(
-            "normal" to listOf(3100, 4900),
-            "hard" to listOf(3100, 4900)
+            "normal" to listOf(2200, 3400),
+            "hard" to listOf(2800, 4100)
         ),
         clearGold = mapOf(
-            "normal" to listOf(7000, 14500),
-            "hard" to listOf(7000, 14500)
+            "normal" to listOf(5000, 9500),
+            "hard" to listOf(6000, 12500)
         )
     );
 
@@ -26,22 +26,22 @@ enum class EpicRaid(
     }
 }
 
-class EpicRaidModel(character: Character?) {
-    val behemoth: Behemoth = if (character != null) {
-        Behemoth(character)
+class KazerothRaidModel(character: Character?) {
+    val echidna: Echidna = if (character != null) {
+        Echidna(character)
     } else {
-        Behemoth(null)
+        Echidna(null)
     }
 }
 
-class Behemoth(character: Character?) {
-    val name = EpicRaid.BEHEMOTH.boss
-    private val seeMoreGold = EpicRaid.BEHEMOTH.getBossInfo("normal").first + EpicRaid.BEHEMOTH.getBossInfo("hard").first
-    private val clearGold = EpicRaid.BEHEMOTH.getBossInfo("normal").second + EpicRaid.BEHEMOTH.getBossInfo("hard").second
+class Echidna(character: Character?) {
+    val name = KazerothRaid.ECHIDNA.boss
+    private val seeMoreGold = KazerothRaid.ECHIDNA.getBossInfo("normal").first + KazerothRaid.ECHIDNA.getBossInfo("hard").first
+    private val clearGold = KazerothRaid.ECHIDNA.getBossInfo("normal").second + KazerothRaid.ECHIDNA.getBossInfo("hard").second
 
-    var isChecked = character?.checkList?.epic?.get(0)?.isCheck?:false
+    var isChecked = character?.checkList?.kazeroth?.get(0)?.isCheck?:false
 
-    private val getOnePhase = character?.checkList?.epic?.get(0)?.phases?.get(0)
+    private val getOnePhase = character?.checkList?.kazeroth?.get(0)?.phases?.get(0)
 
     private val onePhaseDifficulty = getOnePhase?.difficulty?:"노말"
     private val onePhaseIsClear = getOnePhase?.isClear?:false
@@ -58,7 +58,7 @@ class Behemoth(character: Character?) {
         clearGoldH = clearGold[2]
     )
 
-    private val getTwoPhase = character?.checkList?.epic?.get(0)?.phases?.get(1)
+    private val getTwoPhase = character?.checkList?.kazeroth?.get(0)?.phases?.get(1)
 
     private val twoPhaseDifficulty = getTwoPhase?.difficulty?:"노말"
     private val twoPhaseIsClear = getTwoPhase?.isClear?:false
@@ -85,4 +85,8 @@ class Behemoth(character: Character?) {
         onePhase.onShowChecked()
         twoPhase.onShowChecked()
     }
+
 }
+
+
+

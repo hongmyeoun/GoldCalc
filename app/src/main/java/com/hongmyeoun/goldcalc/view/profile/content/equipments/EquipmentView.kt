@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
+import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.view.common.TextChip
 import com.hongmyeoun.goldcalc.view.profile.content.equipments.accessory.Accessory

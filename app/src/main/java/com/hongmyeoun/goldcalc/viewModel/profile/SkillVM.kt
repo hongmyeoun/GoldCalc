@@ -4,8 +4,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.util.fastSumBy
 import androidx.lifecycle.ViewModel
-import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
-import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
+import com.hongmyeoun.goldcalc.model.profile.gem.Gem
+import com.hongmyeoun.goldcalc.model.profile.skills.Skills
 import com.hongmyeoun.goldcalc.ui.theme.BlueQual
 import com.hongmyeoun.goldcalc.ui.theme.EpicBG
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual

@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterEquipment
-import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
+import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterEquipment
+import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG

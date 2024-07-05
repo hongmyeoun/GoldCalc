@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.model.searchedInfo.card
+package com.hongmyeoun.goldcalc.model.profile.card
 
 class CardDetail(private val cardsWithEffects: CardsWithEffects) {
     fun getCardsDetails(): List<Cards> {

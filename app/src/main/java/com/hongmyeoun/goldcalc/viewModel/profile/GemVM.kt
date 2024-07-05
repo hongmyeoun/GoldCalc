@@ -2,7 +2,7 @@ package com.hongmyeoun.goldcalc.viewModel.profile
 
 import androidx.compose.ui.graphics.Brush
 import androidx.lifecycle.ViewModel
-import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
+import com.hongmyeoun.goldcalc.model.profile.gem.Gem
 import com.hongmyeoun.goldcalc.ui.theme.EpicBG
 import com.hongmyeoun.goldcalc.ui.theme.LegendaryBG
 import com.hongmyeoun.goldcalc.ui.theme.RareBG

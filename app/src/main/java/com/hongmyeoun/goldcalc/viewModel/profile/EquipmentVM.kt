@@ -4,9 +4,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.util.fastSumBy
 import androidx.lifecycle.ViewModel
-import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterAccessory
-import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterEquipment
-import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
+import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterAccessory
+import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterEquipment
+import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.ui.theme.AncientBG
 import com.hongmyeoun.goldcalc.ui.theme.AncientColor
 import com.hongmyeoun.goldcalc.ui.theme.AncientMiddle

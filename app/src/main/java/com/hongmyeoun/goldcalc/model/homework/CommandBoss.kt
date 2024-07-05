@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.model.goldCheck
+package com.hongmyeoun.goldcalc.model.homework
 
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 

@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.model.searchedInfo.skills
+package com.hongmyeoun.goldcalc.model.profile.skills
 
 import com.google.gson.annotations.SerializedName
 

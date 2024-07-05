@@ -10,9 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.AbilityStone
-import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterAccessory
-import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.CharacterItem
+import com.hongmyeoun.goldcalc.model.profile.equipment.AbilityStone
+import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterAccessory
+import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.ui.theme.RedQual
 import com.hongmyeoun.goldcalc.view.common.noRippleClickable
 import com.hongmyeoun.goldcalc.view.profile.content.equipments.UpgradeQualityRow

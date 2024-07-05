@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardEffects
+import com.hongmyeoun.goldcalc.model.profile.card.CardEffects
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

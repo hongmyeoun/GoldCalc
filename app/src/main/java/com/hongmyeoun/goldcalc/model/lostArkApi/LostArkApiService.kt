@@ -1,10 +1,10 @@
 package com.hongmyeoun.goldcalc.model.lostArkApi
 
-import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardsWithEffects
-import com.hongmyeoun.goldcalc.model.searchedInfo.engravings.SkillEngravingsAndEffects
-import com.hongmyeoun.goldcalc.model.searchedInfo.equipment.Equipment
-import com.hongmyeoun.goldcalc.model.searchedInfo.gem.GemAndEffect
-import com.hongmyeoun.goldcalc.model.searchedInfo.skills.CombatSkills
+import com.hongmyeoun.goldcalc.model.profile.card.CardsWithEffects
+import com.hongmyeoun.goldcalc.model.profile.engravings.SkillEngravingsAndEffects
+import com.hongmyeoun.goldcalc.model.profile.equipment.Equipment
+import com.hongmyeoun.goldcalc.model.profile.gem.GemAndEffect
+import com.hongmyeoun.goldcalc.model.profile.skills.CombatSkills
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

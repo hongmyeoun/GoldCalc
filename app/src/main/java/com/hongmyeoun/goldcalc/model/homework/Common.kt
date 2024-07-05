@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.model.goldCheck
+package com.hongmyeoun.goldcalc.model.homework
 
 class PhaseInfo(
     difficulty: String,

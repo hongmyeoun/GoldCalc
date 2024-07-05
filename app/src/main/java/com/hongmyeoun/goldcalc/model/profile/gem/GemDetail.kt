@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.model.searchedInfo.gem
+package com.hongmyeoun.goldcalc.model.profile.gem
 
 class GemDetail(private val gemAndEffect: GemAndEffect) {
     fun getCharacterGemDetails(): List<Gem> {

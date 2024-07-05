@@ -27,9 +27,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
-import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
-import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Tripods
+import com.hongmyeoun.goldcalc.model.profile.gem.Gem
+import com.hongmyeoun.goldcalc.model.profile.skills.Skills
+import com.hongmyeoun.goldcalc.model.profile.skills.Tripods
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.ui.theme.PurpleQual

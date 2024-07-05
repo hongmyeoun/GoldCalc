@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.hongmyeoun.goldcalc.model.searchedInfo.card.CardEffects
-import com.hongmyeoun.goldcalc.model.searchedInfo.card.Cards
+import com.hongmyeoun.goldcalc.model.profile.card.CardEffects
+import com.hongmyeoun.goldcalc.model.profile.card.Cards
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.view.profile.Title
 import com.hongmyeoun.goldcalc.view.common.TextChip

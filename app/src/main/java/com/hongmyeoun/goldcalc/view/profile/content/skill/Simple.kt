@@ -17,8 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.hongmyeoun.goldcalc.model.searchedInfo.gem.Gem
-import com.hongmyeoun.goldcalc.model.searchedInfo.skills.Skills
+import com.hongmyeoun.goldcalc.model.profile.gem.Gem
+import com.hongmyeoun.goldcalc.model.profile.skills.Skills
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.titleBoldWhite12
 import com.hongmyeoun.goldcalc.view.common.TextChip
