@@ -1,6 +1,12 @@
 package com.hongmyeoun.goldcalc.viewModel.search
 
 import android.content.Context
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharacter
@@ -22,7 +28,7 @@ class SearchVM @Inject constructor(
     private val searchHistoryRepository: SearchHistoryRepository,
 ) : ViewModel() {
     private val _histories = MutableStateFlow<List<SearchHistory>>(emptyList())
-    val hisotries: StateFlow<List<SearchHistory>> = _histories
+    val histories: StateFlow<List<SearchHistory>> = _histories
 
     private fun getHistories() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -80,18 +86,6 @@ class SearchVM @Inject constructor(
             addHistory()
         }
         loadingFalse()
-        searchedTrue()
-    }
-
-    private val _isSearch = MutableStateFlow(false)
-    val isSearch: StateFlow<Boolean> = _isSearch
-
-    private val _tempCharName = MutableStateFlow("")
-    val tempCharName: StateFlow<String> = _tempCharName
-
-    private fun searchedTrue() {
-        _isSearch.value = true
-        _tempCharName.value = _characterName.value
     }
 
     private val _isFocus = MutableStateFlow(false)
@@ -161,5 +155,12 @@ class SearchVM @Inject constructor(
 
     init {
         getHistories()
+    }
+
+    @Composable
+    fun animatedShape(isFocus: Boolean): RoundedCornerShape {
+        val bottomStart by animateDpAsState(targetValue = if (isFocus) 0.dp else 16.dp, animationSpec = tween(durationMillis = 300), label = "")
+        val bottomEnd by animateDpAsState(targetValue = if (isFocus) 0.dp else 16.dp, animationSpec = tween(durationMillis = 300), label = "")
+        return RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomStart = bottomStart, bottomEnd = bottomEnd)
     }
 }

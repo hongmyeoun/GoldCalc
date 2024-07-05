@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.setting.reorderPage
+package com.hongmyeoun.goldcalc.view.setting.settingPage
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -16,13 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
-import com.hongmyeoun.goldcalc.viewModel.setting.SettingVM
 
 @Composable
-fun ReorderPageTopBar(
-    viewModel: SettingVM
+fun SettingTopBar(
+    navController: NavHostController
 ) {
     Row(
         modifier = Modifier
@@ -32,7 +33,13 @@ fun ReorderPageTopBar(
     ) {
         IconButton(
             modifier = Modifier.weight(0.5f),
-            onClick = { viewModel.closeReorderPage() }
+            onClick = {
+                navController.navigate(Screen.Home.route) {
+                    popUpTo(Screen.Setting.route) {
+                        inclusive = true
+                    }
+                }
+            }
         ) {
             Icon(
                 imageVector = Icons.Default.KeyboardArrowLeft,
@@ -45,7 +52,7 @@ fun ReorderPageTopBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(3f),
-            text = "캐릭터 순서 변경",
+            text = "설정",
             style = titleTextStyle(),
             textAlign = TextAlign.Center
         )
