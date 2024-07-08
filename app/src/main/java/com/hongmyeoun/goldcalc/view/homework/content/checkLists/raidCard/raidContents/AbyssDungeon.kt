@@ -8,10 +8,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckBox
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCard
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckBox
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckLists
-import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.FourPhase
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.ThreePhase
 import com.hongmyeoun.goldcalc.viewModel.homework.AbyssDungeonVM
 
@@ -124,7 +123,7 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
             rotaR = ivoryTowerRotaR,
             onClick = { ivoryTowerRotated = !ivoryTowerRotated },
             phaseCard = {
-                FourPhase(
+                ThreePhase(
                     rotaR = ivoryTowerRotaR,
 
                     name = viewModel.ivoryTower.name,
@@ -179,23 +178,6 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
                     },
                     onThreePhaseSeeMoreCheckBoxChecked = {
                         viewModel.ivoryTower.threePhase.onSeeMoreCheckBoxClicked(it)
-                        viewModel.sumGold()
-                    },
-
-                    phaseFourLevel = viewModel.ivoryTower.fourPhase.level,
-                    phaseFourGold = viewModel.ivoryTower.fourPhase.totalGold,
-                    phaseFourSMC = viewModel.ivoryTower.fourPhase.seeMoreCheck,
-                    phaseFourCC = viewModel.ivoryTower.fourPhase.clearCheck,
-                    onFourPhaseLevelClicked = {
-                        viewModel.ivoryTower.fourPhase.onLevelClicked()
-                        viewModel.sumGold()
-                    },
-                    onFourPhaseClearCheckBoxChecked = {
-                        viewModel.ivoryTower.fourPhase.onClearCheckBoxClicked(it)
-                        viewModel.sumGold()
-                    },
-                    onFourPhaseSeeMoreCheckBoxChecked = {
-                        viewModel.ivoryTower.fourPhase.onSeeMoreCheckBoxClicked(it)
                         viewModel.sumGold()
                     }
                 )

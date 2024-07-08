@@ -32,6 +32,8 @@ import com.hongmyeoun.goldcalc.model.common.formatWithCommas
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.RedQual
+import com.hongmyeoun.goldcalc.ui.theme.YellowQual
+import com.hongmyeoun.goldcalc.view.common.noRippleClickable
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -219,7 +221,7 @@ fun ClearMoreCheckBox(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).noRippleClickable {  },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(
@@ -235,7 +237,7 @@ fun ClearMoreCheckBox(
         }
 
         Row(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).noRippleClickable {  },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(
@@ -261,11 +263,12 @@ fun Level(
     onLevelClicked: () -> Unit = {},
     oneDifficult: Boolean = false
 ) {
-    val difficultyColor = if (difficulty == "하드") RedQual else GreenQual
+    val difficultyColor = if (difficulty == "하드") RedQual else if (difficulty == "노말") GreenQual else YellowQual
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .noRippleClickable {  }
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

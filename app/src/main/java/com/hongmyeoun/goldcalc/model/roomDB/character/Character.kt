@@ -98,7 +98,7 @@ data class CheckList(
         ),
         RaidList(
             name = "상아탑",
-            phases = listOf(Phase(), Phase(), Phase(), Phase())
+            phases = listOf(Phase(), Phase(), Phase())
         ),
     ),
     @ColumnInfo("Kazeroth") val kazeroth: List<RaidList> = listOf(

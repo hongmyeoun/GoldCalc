@@ -358,11 +358,6 @@ class HomeworkVM @Inject constructor(
                                 isClear =  if (abyssDungeon.ivoryCheck) abyssDungeon.ivoryTower.threePhase.clearCheck else false,
                                 mCheck = if (abyssDungeon.ivoryCheck) abyssDungeon.ivoryTower.threePhase.seeMoreCheck else false,
                             ),
-                            originalCheckList.abyssDungeon[1].phases[3].copy( // 4페
-                                difficulty = abyssDungeon.ivoryTower.fourPhase.level,
-                                isClear =  if (abyssDungeon.ivoryCheck) abyssDungeon.ivoryTower.fourPhase.clearCheck else false,
-                                mCheck = if (abyssDungeon.ivoryCheck) abyssDungeon.ivoryTower.fourPhase.seeMoreCheck else false,
-                            ),
                         ),
                         isCheck = abyssDungeon.ivoryCheck
                     )

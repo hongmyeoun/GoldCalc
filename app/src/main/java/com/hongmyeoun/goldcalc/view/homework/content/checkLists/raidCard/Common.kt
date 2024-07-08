@@ -2,7 +2,6 @@ package com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -30,6 +29,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
+import com.hongmyeoun.goldcalc.view.common.noRippleClickable
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -48,7 +48,7 @@ fun RaidCard(
                 rotationY = rotaR
                 cameraDistance = 8 * density
             }
-            .clickable { onClick() },
+            .noRippleClickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -69,7 +69,6 @@ fun RaidCard(
             phaseCard()
         }
     }
-
 }
 
 @Composable

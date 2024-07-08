@@ -5,10 +5,13 @@ class PhaseInfo(
     isClearCheck: Boolean,
     moreCheck: Boolean,
     isChecked: Boolean,
+    private val noHardWithSolo: Boolean = false,
     private val seeMoreGoldN: Int,
     private val seeMoreGoldH: Int,
+    private val seeMoreGoldS: Int? = null,
     private val clearGoldN: Int,
-    private val clearGoldH: Int
+    private val clearGoldH: Int,
+    private val clearGoldS: Int? = null
 ) {
     var level = difficulty
     var seeMoreCheck = moreCheck
@@ -21,27 +24,27 @@ class PhaseInfo(
 
     init {
         // 객체가 생성될 때 초기값 설정
-        seeMoreGold = GoldCalcFunction.smgCalculator(seeMoreCheck, level, seeMoreGoldN, seeMoreGoldH)
-        clearGold = GoldCalcFunction.cgCalculator(clearCheck, level, clearGoldN, clearGoldH)
+        seeMoreGold = GoldCalcFunction.smgCalculator(seeMoreCheck, level, seeMoreGoldN, seeMoreGoldH, seeMoreGoldS)
+        clearGold = GoldCalcFunction.cgCalculator(clearCheck, level, clearGoldN, clearGoldH, clearGoldS)
         totalGold = GoldCalcFunction.totalCGCalculator(clearGold, seeMoreGold)
     }
 
     fun onLevelClicked() {
         levelClicked()
-        seeMoreGoldCalculate(seeMoreGoldN, seeMoreGoldH)
-        clearGoldCalculate(clearGoldN, clearGoldH)
+        seeMoreGoldCalculate(seeMoreGoldN, seeMoreGoldH, seeMoreGoldS)
+        clearGoldCalculate(clearGoldN, clearGoldH, clearGoldS)
         totalClearGoldCalculate()
     }
 
     fun onClearCheckBoxClicked(phaseChecked: Boolean) {
         updateClearCheck(phaseChecked)
-        clearGoldCalculate(clearGoldN, clearGoldH)
+        clearGoldCalculate(clearGoldN, clearGoldH, clearGoldS)
         totalClearGoldCalculate()
     }
 
     fun onSeeMoreCheckBoxClicked(phaseChecked: Boolean) {
         updateSeeMoreCheck(phaseChecked)
-        seeMoreGoldCalculate(seeMoreGoldN, seeMoreGoldH)
+        seeMoreGoldCalculate(seeMoreGoldN, seeMoreGoldH, seeMoreGoldS)
         totalClearGoldCalculate()
     }
 
@@ -50,22 +53,22 @@ class PhaseInfo(
         if (!showCheck) {
             clearCheck = false
             seeMoreCheck = false
-            seeMoreGoldCalculate(seeMoreGoldN, seeMoreGoldH)
-            clearGoldCalculate(clearGoldN, clearGoldH)
+            seeMoreGoldCalculate(seeMoreGoldN, seeMoreGoldH, seeMoreGoldS)
+            clearGoldCalculate(clearGoldN, clearGoldH, clearGoldS)
             totalClearGoldCalculate()
         }
     }
 
     private fun levelClicked() {
-        level = GoldCalcFunction.levelDetector(level)
+        level = GoldCalcFunction.levelDetector(level, noHardWithSolo)
     }
 
-    private fun seeMoreGoldCalculate(seeMoreGoldN: Int, seeMoreGoldH: Int) {
-        seeMoreGold = GoldCalcFunction.smgCalculator(seeMoreCheck, level, seeMoreGoldN, seeMoreGoldH)
+    private fun seeMoreGoldCalculate(seeMoreGoldN: Int, seeMoreGoldH: Int, seeMoreGoldS: Int?) {
+        seeMoreGold = GoldCalcFunction.smgCalculator(seeMoreCheck, level, seeMoreGoldN, seeMoreGoldH, seeMoreGoldS)
     }
 
-    private fun clearGoldCalculate(clearGoldN: Int, clearGoldH: Int) {
-        clearGold = GoldCalcFunction.cgCalculator(clearCheck, level, clearGoldN, clearGoldH)
+    private fun clearGoldCalculate(clearGoldN: Int, clearGoldH: Int, clearGoldS: Int?) {
+        clearGold = GoldCalcFunction.cgCalculator(clearCheck, level, clearGoldN, clearGoldH, clearGoldS)
     }
 
     private fun totalClearGoldCalculate() {
@@ -82,16 +85,34 @@ class PhaseInfo(
 }
 
 object GoldCalcFunction {
-    fun levelDetector(level: String): String {
-        return if (level == "노말") "하드" else "노말"
+    fun levelDetector(level: String, noHardWithSolo: Boolean): String {
+        return if (noHardWithSolo) {
+            if (level == "노말") {
+                "솔로잉"
+            } else {
+                "노말"
+            }
+        } else {
+            when (level) {
+                "노말" -> {
+                    "하드"
+                }
+                "하드" -> {
+                    "솔로잉"
+                }
+                else -> {
+                    "노말"
+                }
+            }
+        }
     }
 
-    fun smgCalculator(isChecked: Boolean, level: String, seeMoreGoldN: Int, seeMoreGoldH: Int): Int {
-        return if (isChecked && level == "노말") seeMoreGoldN else if (isChecked && level == "하드") seeMoreGoldH else 0
+    fun smgCalculator(isChecked: Boolean, level: String, seeMoreGoldN: Int, seeMoreGoldH: Int, seeMoreGoldS: Int?): Int {
+        return if (isChecked && level == "노말") seeMoreGoldN else if (isChecked && level == "하드") seeMoreGoldH else if (isChecked && seeMoreGoldS != null && level == "솔로잉") seeMoreGoldS else 0
     }
 
-    fun cgCalculator(isChecked: Boolean, level: String, clearGoldN: Int, clearGoldH: Int): Int {
-        return if (isChecked && level == "노말") clearGoldN else if (isChecked) clearGoldH else 0
+    fun cgCalculator(isChecked: Boolean, level: String, clearGoldN: Int, clearGoldH: Int, clearGoldS: Int?): Int {
+        return if (isChecked && level == "노말") clearGoldN else if (isChecked && level == "하드") clearGoldH else if (isChecked && clearGoldS != null && level == "솔로잉") clearGoldS else 0
     }
 
     fun totalCGCalculator(cg: Int, smg: Int): Int {
@@ -101,5 +122,4 @@ object GoldCalcFunction {
     fun phaseChecked(phaseCheck: Boolean): Boolean {
         return phaseCheck
     }
-
 }

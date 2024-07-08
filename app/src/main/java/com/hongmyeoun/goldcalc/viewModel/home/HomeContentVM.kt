@@ -236,8 +236,7 @@ class HomeContentVM @Inject constructor(
         _ivoryTowerTG.value = when (nowPhase) {
             1 -> { _abModel.value.ivoryTower.onePhase.totalGold }
             2 -> { _abModel.value.ivoryTower.onePhase.totalGold + _abModel.value.ivoryTower.twoPhase.totalGold }
-            3 -> { _abModel.value.ivoryTower.onePhase.totalGold + _abModel.value.ivoryTower.twoPhase.totalGold + _abModel.value.ivoryTower.threePhase.totalGold }
-            4 -> { _abModel.value.ivoryTower.totalGold }
+            3 -> { _abModel.value.ivoryTower.totalGold }
             else -> { 0 }
         }
 

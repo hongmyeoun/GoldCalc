@@ -270,14 +270,9 @@ private fun Script(adVM: AbyssDungeonVM) {
                         text = "3관문 ${adVM.ivoryTower.threePhase.level} : ${adVM.ivoryTower.threePhase.totalGold.formatWithCommas()} G",
                         color = Color.White
                     )
-                    Text(
-                        text = "4관문 ${adVM.ivoryTower.fourPhase.level} : ${adVM.ivoryTower.fourPhase.totalGold.formatWithCommas()} G",
-                        color = Color.White
-                    )
                 }
             )
         }
-
     }
 }
 
