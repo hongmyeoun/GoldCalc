@@ -12,12 +12,12 @@ enum class CommandBoss(
         seeMoreGold = mapOf(
             "normal" to listOf(300, 400),
             "hard" to listOf(450, 600),
-            "solo" to listOf(1, 2)
+            "solo" to listOf(0, 0)
         ),
         clearGold = mapOf(
             "normal" to listOf(500, 700),
             "hard" to listOf(700, 1100),
-            "solo" to listOf(1, 2)
+            "solo" to listOf(100, 150)
         )
     ),
     BIACKISS(
@@ -25,12 +25,12 @@ enum class CommandBoss(
         seeMoreGold = mapOf(
             "normal" to listOf(300, 450),
             "hard" to listOf(500, 650),
-            "solo" to listOf(1, 2)
+            "solo" to listOf(0, 0)
         ),
         clearGold = mapOf(
             "normal" to listOf(600, 1000),
             "hard" to listOf(900, 1500),
-            "solo" to listOf(1, 2)
+            "solo" to listOf(150, 275)
         )
     ),
     KOUKU_SATON(
@@ -38,12 +38,12 @@ enum class CommandBoss(
         seeMoreGold = mapOf(
             "normal" to listOf(300, 500, 600),
             "hard" to listOf(300, 500, 600),
-            "solo" to listOf(1, 2, 3)
+            "solo" to listOf(0, 0, 0)
         ),
         clearGold = mapOf(
             "normal" to listOf(600, 900, 1500),
             "hard" to listOf(600, 900, 1500),
-            "solo" to listOf(1, 2, 3)
+            "solo" to listOf(150, 200, 450)
         )
     ),
     ABRELSHUD(
@@ -51,12 +51,12 @@ enum class CommandBoss(
         seeMoreGold = mapOf(
             "normal" to listOf(250, 300, 400, 600),
             "hard" to listOf(400, 400, 500, 800),
-            "solo" to listOf(1, 2, 3, 4)
+            "solo" to listOf(0, 0, 0, 0)
         ),
         clearGold = mapOf(
             "normal" to listOf(1000, 1000, 1000, 1600),
             "hard" to listOf(1200, 1200, 1200, 2000),
-            "solo" to listOf(1, 2, 3, 4)
+            "solo" to listOf(375, 350, 300, 500)
         )
     ),
     ILLIAKAN(
@@ -64,12 +64,12 @@ enum class CommandBoss(
         seeMoreGold = mapOf(
             "normal" to listOf(450, 550, 750),
             "hard" to listOf(600, 700, 950),
-            "solo" to listOf(1, 2, 3)
+            "solo" to listOf(0, 0, 0)
         ),
         clearGold = mapOf(
             "normal" to listOf(1000, 1800, 2600),
             "hard" to listOf(1500, 2500, 3500),
-            "solo" to listOf(1, 2, 3)
+            "solo" to listOf(275, 575, 975)
         )
     ),
     KAMEN(

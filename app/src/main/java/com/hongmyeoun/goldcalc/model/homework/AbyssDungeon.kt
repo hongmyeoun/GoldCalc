@@ -12,12 +12,12 @@ enum class AbyssDungeon(
         seeMoreGold = mapOf(
             "normal" to listOf(300, 400, 500),
             "hard" to listOf(350, 500, 700),
-            "solo" to listOf(1, 2, 3)
+            "solo" to listOf(0, 0, 0)
         ),
         clearGold = mapOf(
             "normal" to listOf(800, 1200, 1600),
             "hard" to listOf(1000, 1600, 2200),
-            "solo" to listOf(1, 2, 3)
+            "solo" to listOf(250, 400, 550)
         )
     ),
     IVORY_TOWER(
@@ -25,12 +25,12 @@ enum class AbyssDungeon(
         seeMoreGold = mapOf(
             "normal" to listOf(600, 650, 1000),
             "hard" to listOf(1200, 1450, 2000),
-            "solo" to listOf(1, 2, 3)
+            "solo" to listOf(0, 0, 0)
         ),
         clearGold = mapOf(
             "normal" to listOf(1500, 2000, 3000),
             "hard" to listOf(3000, 4000, 6000),
-            "solo" to listOf(1, 2, 3)
+            "solo" to listOf(450, 675, 1000)
         )
     );
 
