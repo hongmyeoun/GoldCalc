@@ -33,7 +33,6 @@ import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
@@ -56,7 +55,6 @@ fun Histories(
     keyboardController: SoftwareKeyboardController?,
     focusState: FocusManager
 ) {
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     val histories by viewModel.histories.collectAsState()
@@ -92,7 +90,7 @@ fun Histories(
                                     onTap = {
                                         viewModel.unFocus()
                                         viewModel.onCharacterNameValueChange(history.charName)
-                                        viewModel.onDone(context)
+                                        viewModel.onDone()
                                         scope.launch { scrollState.animateScrollToItem(0) }
                                         keyboardController?.hide()
                                         focusState.clearFocus()

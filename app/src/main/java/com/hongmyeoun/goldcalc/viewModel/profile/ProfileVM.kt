@@ -97,15 +97,15 @@ class ProfileVM @Inject constructor(
     // API에서 character 정보들을 받아옴
     fun getCharDetails(context: Context, charName: String) {
         viewModelScope.launch {
-            _characterDetail.value = getCharDetail(context, charName)
-            _engravings.value = getCharEngravings(context, charName)
-            _equipments.value = getCharEquipment(context, charName)
-            _gems.value = getCharGem(context, charName)
-            getCharCard(context, charName)?.let { (cards, effects) ->
+            _characterDetail.value = getCharDetail(charName)
+            _engravings.value = getCharEngravings(charName)
+            _equipments.value = getCharEquipment(charName)
+            _gems.value = getCharGem(charName)
+            getCharCard(charName)?.let { (cards, effects) ->
                 _cards.value = cards
                 _cardsEffects.value = effects
             }
-            _skills.value = getCharSkill(context, charName)
+            _skills.value = getCharSkill(charName)
         }
     }
 }

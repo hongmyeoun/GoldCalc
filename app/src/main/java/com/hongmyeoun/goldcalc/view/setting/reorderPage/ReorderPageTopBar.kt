@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Setting
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.setting.SettingVM
@@ -45,7 +46,7 @@ fun ReorderPageTopBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(3f),
-            text = "캐릭터 순서 변경",
+            text = Setting.CHARACTER_REORDER,
             style = titleTextStyle(),
             textAlign = TextAlign.Center
         )

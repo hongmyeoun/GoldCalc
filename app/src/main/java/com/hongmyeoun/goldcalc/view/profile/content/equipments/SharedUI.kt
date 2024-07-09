@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hongmyeoun.goldcalc.model.constants.TooltipStrings
 import com.hongmyeoun.goldcalc.view.common.TextChip
 import com.hongmyeoun.goldcalc.viewModel.profile.EquipmentVM
 
@@ -41,8 +42,8 @@ fun UpgradeQualityRow(
             Spacer(modifier = Modifier.width(4.dp))
         }
         if (itemLevel.isNotEmpty()) {
-            if (itemLevel.contains("</FONT>")) {
-                TextChip(itemLevel.substringBefore("</FONT>"))
+            if (itemLevel.contains(TooltipStrings.SubStringBefore.FONT_END)) {
+                TextChip(itemLevel.substringBefore(TooltipStrings.SubStringBefore.FONT_END))
             } else {
                 TextChip(itemLevel)
             }

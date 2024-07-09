@@ -31,6 +31,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
+import com.hongmyeoun.goldcalc.model.constants.Labels
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
@@ -46,7 +48,7 @@ fun HomeworkProfile(
 ) {
     var isBlinking by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    val characterImgText = if (it.avatarImage) "아바타" else "기본"
+    val characterImgText = if (it.avatarImage) Homework.AVATAR else Homework.DEFAULT_IMAGE
 
     Box(
         modifier = Modifier
@@ -177,18 +179,18 @@ private fun BlinkingText(
         modifier = modifier.padding(top = 24.dp, end = 16.dp)
     ) {
         if (isBlinking) {
-            val infiniteTransition = rememberInfiniteTransition(label = "깜빡임")
+            val infiniteTransition = rememberInfiniteTransition(label = Labels.Animation.FLICKER)
 
             val alpha by infiniteTransition.animateFloat(
                 initialValue = 1f,
                 targetValue = 0f,
                 animationSpec = infiniteRepeatable(
                     animation = keyframes {
-                        durationMillis = 750 // 1초 동안 깜빡이도록 수정
+                        durationMillis = 750
                     },
                     repeatMode = RepeatMode.Reverse
                 ),
-                label = "깜빡임"
+                label = Labels.Animation.FLICKER
             )
 
             Text(

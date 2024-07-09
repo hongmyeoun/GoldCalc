@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -20,6 +22,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("String", "API_KEY", getApiKey("apiKey"))
     }
 
     buildTypes {
@@ -105,4 +109,8 @@ dependencies {
 
     // Reorderable List : Drag N Drop
     implementation("sh.calvin.reorderable:reorderable:2.1.1")
+}
+
+fun getApiKey(propertyKey: String): String {
+    return gradleLocalProperties(rootDir).getProperty(propertyKey)
 }

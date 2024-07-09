@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.constants.ErrorMessage
+import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
 
 @Composable
 fun Error(errorMessage: String?) {
@@ -19,7 +21,7 @@ fun Error(errorMessage: String?) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (errorMessage == "네트워크 오류") {
+        if (errorMessage == NetworkConfig.NETWORK_ERROR) {
             Image(
                 painter = painterResource(id = R.drawable.baseline_wifi_off_24),
                 contentDescription = "Disconnect"
@@ -28,12 +30,12 @@ fun Error(errorMessage: String?) {
                 text = errorMessage,
                 color = Color(0xFFCFCFCF)
             )
-        } else if (errorMessage == "서버 응답 실패: 503") {
+        } else if (errorMessage == ErrorMessage.ERROR_503) {
             Text(
-                text = "서버 점검중 입니다~ㅠㅠ",
+                text = ErrorMessage.ERROR_503_MESSAGE,
                 color = Color(0xFFCFCFCF)
             )
-        } else if (errorMessage != null && errorMessage.contains("없는")) {
+        } else if (errorMessage != null && errorMessage.contains(ErrorMessage.NO)) {
             Text(
                 text = errorMessage,
                 color = Color(0xFFCFCFCF)

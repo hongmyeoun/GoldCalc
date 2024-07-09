@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hongmyeoun.goldcalc.model.constants.viewConst.SnackbarMessage
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.model.roomDB.character.RaidPhaseInfo
@@ -135,7 +136,7 @@ class SettingVM @Inject constructor(
         }
         doneSnackbar(
             snackbarHostState = snackbarHostState,
-            text = "변경사항이 저장되었습니다."
+            text = SnackbarMessage.SAVE
         )
     }
 
@@ -163,7 +164,7 @@ class SettingVM @Inject constructor(
         SettingModel.clearAppCache(context) {
             doneSnackbar(
                 snackbarHostState = snackbarHostState,
-                text = "캐시가 정리되었습니다."
+                text = SnackbarMessage.CACHE_CLEAR
             )
             _cacheSize.value = SettingModel.getCacheSize(context)
         }

@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.hongmyeoun.goldcalc.model.constants.viewConst.ButtonText
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.viewModel.setting.SettingVM
@@ -41,7 +42,7 @@ fun ReorderBottomBar(
                 contentColor = Color.White
             )
         ) {
-            Text(text = "취소")
+            Text(text = ButtonText.CANCEL)
         }
 
         Spacer(modifier = Modifier.width(24.dp))
@@ -57,7 +58,7 @@ fun ReorderBottomBar(
                 contentColor = Color.White
             )
         ) {
-            Text(text = "수정")
+            Text(text = ButtonText.FIX)
         }
     }
 }

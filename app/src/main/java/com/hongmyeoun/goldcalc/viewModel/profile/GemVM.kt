@@ -2,6 +2,7 @@ package com.hongmyeoun.goldcalc.viewModel.profile
 
 import androidx.compose.ui.graphics.Brush
 import androidx.lifecycle.ViewModel
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.profile.gem.Gem
 import com.hongmyeoun.goldcalc.ui.theme.EpicBG
 import com.hongmyeoun.goldcalc.ui.theme.LegendaryBG
@@ -21,7 +22,7 @@ class GemVM: ViewModel() {
     }
 
     fun countAnnihilationGem(gemList: List<Gem>): Pair<Int, Int> {
-        val annihilation = gemList.count { it.type == "멸화" }
+        val annihilation = gemList.count { it.type == EquipmentConsts.DEAL_GEM_3_TIER }
         val crimsonFlame = gemList.size - annihilation
 
         return Pair(annihilation, crimsonFlame)
@@ -39,10 +40,10 @@ class GemVM: ViewModel() {
 
     fun getItemBG(grade: String): Brush {
         val itemBG = when (grade) {
-            "유물" -> RelicBG
-            "전설" -> LegendaryBG
-            "영웅" -> EpicBG
-            "희귀" -> RareBG
+            EquipmentConsts.GRADE_RELIC -> RelicBG
+            EquipmentConsts.GRADE_LEGENDARY -> LegendaryBG
+            EquipmentConsts.GRADE_EPIC -> EpicBG
+            EquipmentConsts.GRADE_RARE -> RareBG
             else -> UncommonBG
         }
         return itemBG

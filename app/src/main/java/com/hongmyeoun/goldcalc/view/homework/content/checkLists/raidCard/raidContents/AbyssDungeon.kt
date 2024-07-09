@@ -8,6 +8,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.constants.Labels
+import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCard
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckBox
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckLists
@@ -22,24 +24,24 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
     val kayangelRotaR by animateFloatAsState(
         targetValue = if (kayangelRotated) 180f else 0f,
         animationSpec = tween(500),
-        label = "회전 애니메이션"
+        label = Labels.Animation.ROTATION
     )
     val ivoryTowerRotaR by animateFloatAsState(
         targetValue = if (ivoryTowerRotated) 180f else 0f,
         animationSpec = tween(500),
-        label = "회전 애니메이션"
+        label = Labels.Animation.ROTATION
     )
 
     RaidCheckLists(maxItem = 2) { modifier ->
         RaidCheckBox(
-            name = "카양겔",
+            name = Raid.Name.KAYANGEL,
             modifier = modifier,
             checked = viewModel.kayangelCheck,
             onCheckedChange = { viewModel.onKayangelCheck() }
         )
 
         RaidCheckBox(
-            name = "상아탑",
+            name = Raid.Name.IVORY_TOWER,
             modifier = modifier,
             checked = viewModel.ivoryCheck,
             onCheckedChange = { viewModel.onIvoryCheck() }
@@ -181,7 +183,6 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
                         viewModel.sumGold()
                     }
                 )
-
             }
         )
     }

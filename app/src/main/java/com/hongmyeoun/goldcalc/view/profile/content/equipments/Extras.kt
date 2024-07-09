@@ -20,6 +20,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
 import com.hongmyeoun.goldcalc.model.profile.equipment.Bracelet
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
@@ -61,7 +63,6 @@ fun Extra(
             viewModel = viewModel,
         )
 
-
         Divider(
             modifier = Modifier
                 .height(50.dp)
@@ -87,7 +88,10 @@ fun ExtraBracelet(
     Column(
         modifier = modifier.noRippleClickable { viewModel.onBraClicked() }
     ) {
-        Text(text = "팔찌", style = titleTextStyle())
+        Text(
+            text = EquipmentConsts.BRACELET,
+            style = titleTextStyle()
+        )
         Spacer(modifier = Modifier.height(8.dp))
 
         Row(
@@ -153,7 +157,7 @@ fun ExtraElixir(
 ) {
     Column(modifier = modifier) {
         Text(
-            text = "엘릭서",
+            text = Profile.ELIXIR,
             style = titleTextStyle()
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -163,7 +167,7 @@ fun ExtraElixir(
         ) {
             Column {
                 Text(
-                    text = "합계 ${viewModel.sumElixirLevel(characterEquipment)}",
+                    text = "${Profile.TOTAL} ${viewModel.sumElixirLevel(characterEquipment)}",
                     style = normalTextStyle()
                 )
                 Spacer(modifier = Modifier.height(4.dp))
@@ -186,7 +190,7 @@ fun ExtraTrans(
 ) {
     Column(modifier = modifier) {
         Text(
-            text = "초월",
+            text = Profile.TRANSCENDENT,
             style = titleTextStyle()
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -196,13 +200,13 @@ fun ExtraTrans(
         ) {
             Column {
                 Text(
-                    text = "합계 ${viewModel.sumTransLevel(characterEquipment)}",
+                    text = "${Profile.TOTAL} ${viewModel.sumTransLevel(characterEquipment)}",
                     style = normalTextStyle()
                 )
                 Spacer(modifier = Modifier.height(4.dp))
 
                 TextChip(
-                    text = "평균 ${viewModel.avgTransLevel(characterEquipment)}단계",
+                    text = "${Profile.AVG} ${viewModel.avgTransLevel(characterEquipment)}단계",
                     customRoundedCornerSize = 8.dp,
                     borderless = true
                 )

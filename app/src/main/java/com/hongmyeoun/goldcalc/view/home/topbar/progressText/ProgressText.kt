@@ -25,6 +25,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.common.ImageReturn
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Home
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
 
@@ -46,7 +47,7 @@ fun ProgressText(viewModel: HomeVM) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "숙제 진행도",
+                text = Home.PROGRESS_HW,
                 style = normalTextStyle(fontSize = 18.sp)
             )
 
@@ -66,7 +67,7 @@ fun ProgressText(viewModel: HomeVM) {
         }
 
         Text(
-            text = "주간 골드 :",
+            text = Home.WEEKLY_GOLD,
             style = normalTextStyle(),
             fontWeight = FontWeight.Light
         )

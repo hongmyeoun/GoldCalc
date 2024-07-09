@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
 import com.hongmyeoun.goldcalc.model.profile.equipment.Bracelet
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
@@ -48,7 +50,7 @@ fun BraceletDetail(
             horizontalAlignment = Alignment.Start
         ) {
             Text(
-                text = "팔찌",
+                text = EquipmentConsts.BRACELET,
                 style = titleTextStyle()
             )
 
@@ -111,7 +113,7 @@ private fun IconAndName(
 private fun Stats(statName: String, statValue: String) {
     Row {
         TextChip(
-            text = "특성",
+            text = Profile.STAT,
             borderless = true,
             customBGColor = LightGrayBG
         )
@@ -131,7 +133,7 @@ private fun Effects(effectName: String, tooltip: String) {
     Column {
         Row {
             TextChip(
-                text = "효과",
+                text = Profile.EFFECT,
                 borderless = true,
                 customBGColor = LightGrayBG
             )

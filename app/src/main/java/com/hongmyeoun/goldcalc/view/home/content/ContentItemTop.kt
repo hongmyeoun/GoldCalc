@@ -39,6 +39,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.common.ImageReturn.goldImage
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
 import com.hongmyeoun.goldcalc.model.common.toPercentage
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Home
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
@@ -230,7 +231,7 @@ fun ProgressBar(viewModel: HomeContentVM) {
         Text(
             modifier = Modifier
                 .align(Alignment.Center),
-            text = "진행도",
+            text = Home.PROGRESS,
             style = normalTextStyle(fontSize = 8.sp),
         )
 
@@ -242,5 +243,4 @@ fun ProgressBar(viewModel: HomeContentVM) {
             style = normalTextStyle(fontSize = 8.sp),
         )
     }
-
 }

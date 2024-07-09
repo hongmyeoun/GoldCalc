@@ -29,6 +29,8 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.common.ImageReturn.goldImage
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
+import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.RedQual
@@ -95,7 +97,7 @@ private fun TotalGoldText(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "합 : "
+            text = Homework.TOTAL_GOLD
         )
         Text(
             modifier = Modifier.weight(0.7f),
@@ -160,11 +162,11 @@ fun TwoGoldText(
     RaidNameText(name = name)
 
     OneGoldText(
-        phase = "①",
+        phase = Homework.PHASE_ONE_NUM,
         phaseGold = phaseOneGold
     )
     OneGoldText(
-        phase = "②",
+        phase = Homework.PHASE_TWO_NUM,
         phaseGold = phaseTwoGold
     )
 }
@@ -182,7 +184,7 @@ fun ThreeGoldText(
         phaseTwoGold = phaseTwoGold
     )
     OneGoldText(
-        phase = "③",
+        phase = Homework.PHASE_THREE_NUM,
         phaseGold = phaseThreeGold
     )
 }
@@ -202,7 +204,7 @@ fun FourGoldText(
         phaseThreeGold = phaseThreeGold
     )
     OneGoldText(
-        phase = "④",
+        phase = Homework.PHASE_FOUR_NUM,
         phaseGold = phaseFourGold
     )
 }
@@ -233,7 +235,7 @@ fun ClearMoreCheckBox(
                     checkmarkColor = Color.White
                 )
             )
-            Text(text = "클리어")
+            Text(text = Homework.CLEAR)
         }
 
         Row(
@@ -249,7 +251,7 @@ fun ClearMoreCheckBox(
                     checkmarkColor = Color.White
                 )
             )
-            Text(text = "더보기")
+            Text(text = Homework.SEE_MORE)
         }
     }
 }
@@ -263,7 +265,7 @@ fun Level(
     onLevelClicked: () -> Unit = {},
     oneDifficult: Boolean = false
 ) {
-    val difficultyColor = if (difficulty == "하드") RedQual else if (difficulty == "노말") GreenQual else YellowQual
+    val difficultyColor = if (difficulty == Raid.Difficulty.KR_HARD) RedQual else if (difficulty == Raid.Difficulty.KR_NORMAL) GreenQual else YellowQual
 
     Row(
         modifier = Modifier

@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.hongmyeoun.goldcalc.model.constants.Labels
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.view.common.LoadingScreen
 import com.hongmyeoun.goldcalc.viewModel.home.HomeContentVM
@@ -34,7 +35,7 @@ fun ContentItem(
     ) {
         Crossfade(
             targetState = isLoading,
-            label = "로딩 Crossfade"
+            label = Labels.Crossfade.Loading
         ) {
             Column {
                 if (it) {

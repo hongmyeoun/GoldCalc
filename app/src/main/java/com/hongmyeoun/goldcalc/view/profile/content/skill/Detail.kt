@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
 import com.hongmyeoun.goldcalc.model.profile.gem.Gem
 import com.hongmyeoun.goldcalc.model.profile.skills.Skills
 import com.hongmyeoun.goldcalc.model.profile.skills.Tripods
@@ -58,7 +59,7 @@ fun Detail(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "스킬 상세",
+                text = "${Profile.SKILL} ${Profile.Detail}",
                 style = titleTextStyle()
             )
         }
@@ -308,9 +309,7 @@ private fun RuneAndGem(
                                 style = normalTextStyle()
                             )
                         }
-
                     }
-
                 }
             }
         }

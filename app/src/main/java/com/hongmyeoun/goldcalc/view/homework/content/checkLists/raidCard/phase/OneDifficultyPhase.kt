@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase
 
 import androidx.compose.runtime.Composable
+import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 
 @Composable
 fun OneDifficultyPhase(
@@ -61,7 +62,7 @@ fun TwoPhaseNoHard(
         phaseCheckUI = {
             OneDifficultyPhase(
                 phase = 1,
-                difficulty = "노말",
+                difficulty = Raid.Difficulty.KR_NORMAL,
                 clearCheck = phaseOneCC,
                 moreCheck = phaseOneSMC,
                 onClearClicked = { onOnePhaseClearCheckBoxChecked(it) },
@@ -70,80 +71,11 @@ fun TwoPhaseNoHard(
 
             OneDifficultyPhase(
                 phase = 2,
-                difficulty = "노말",
+                difficulty = Raid.Difficulty.KR_NORMAL,
                 clearCheck = phaseTwoCC,
                 moreCheck = phaseTwoSMC,
                 onClearClicked = { onTwoPhaseClearCheckBoxChecked(it) },
                 onMoreClicked = { onTwoPhaseSeeMoreCheckBoxChecked(it) }
-            )
-        }
-    )
-}
-
-@Composable
-fun ThreePhaseNoHard(
-    rotaR: Float,
-
-    name: String,
-    raidBossImg: Int,
-    totalGold: Int,
-
-    phaseOneGold: Int,
-    phaseOneSMC: Boolean,
-    phaseOneCC: Boolean,
-    onOnePhaseClearCheckBoxChecked: (Boolean) -> Unit,
-    onOnePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
-
-    phaseTwoGold: Int,
-    phaseTwoSMC: Boolean,
-    phaseTwoCC: Boolean,
-    onTwoPhaseClearCheckBoxChecked: (Boolean) -> Unit,
-    onTwoPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
-
-    phaseThreeGold: Int,
-    phaseThreeSMC: Boolean,
-    phaseThreeCC: Boolean,
-    onThreePhaseClearCheckBoxChecked: (Boolean) -> Unit,
-    onThreePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
-) {
-    BossCard(
-        rotaR = rotaR,
-        raidBossImg = raidBossImg,
-        totalGold = totalGold,
-        phaseGoldTextUI = {
-            ThreeGoldText(
-                name = name,
-                phaseOneGold = phaseOneGold,
-                phaseTwoGold = phaseTwoGold,
-                phaseThreeGold = phaseThreeGold
-            )
-        },
-        phaseCheckUI = {
-            OneDifficultyPhase(
-                phase = 1,
-                difficulty = "노말",
-                clearCheck = phaseOneCC,
-                moreCheck = phaseOneSMC,
-                onClearClicked = { onOnePhaseClearCheckBoxChecked(it) },
-                onMoreClicked = { onOnePhaseSeeMoreCheckBoxChecked(it) }
-            )
-
-            OneDifficultyPhase(
-                phase = 2,
-                difficulty = "노말",
-                clearCheck = phaseTwoCC,
-                moreCheck = phaseTwoSMC,
-                onClearClicked = { onTwoPhaseClearCheckBoxChecked(it) },
-                onMoreClicked = { onTwoPhaseSeeMoreCheckBoxChecked(it) }
-            )
-
-            OneDifficultyPhase(
-                phase = 3,
-                difficulty = "노말",
-                clearCheck = phaseThreeCC,
-                moreCheck = phaseThreeSMC,
-                onClearClicked = { onThreePhaseClearCheckBoxChecked(it) },
-                onMoreClicked = { onThreePhaseSeeMoreCheckBoxChecked(it) }
             )
         }
     )
@@ -233,7 +165,7 @@ fun FourPhaseLastHard(
 
             OneDifficultyPhase(
                 phase = 4,
-                difficulty = "하드",
+                difficulty = Raid.Difficulty.KR_HARD,
                 clearCheck = phaseFourCC,
                 moreCheck = phaseFourSMC,
                 onClearClicked = { onFourPhaseClearCheckBoxChecked(it) },

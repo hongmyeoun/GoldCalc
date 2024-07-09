@@ -37,6 +37,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.common.ImageReturn
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
 import com.hongmyeoun.goldcalc.model.common.toPercentage
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Home
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
@@ -70,7 +71,7 @@ fun SimpleCurrent(viewModel: HomeVM) {
 private fun CurrentTop() {
     Text(
         modifier = Modifier.fillMaxWidth(),
-        text = "숙제 현황",
+        text = Home.CURRENT_HW,
         textAlign = TextAlign.Center,
         style = titleTextStyle(fontSize = 20.sp)
     )
@@ -196,7 +197,6 @@ private fun Content(character: Character) {
                     }
                 }
             }
-
         }
 
         Spacer(modifier = Modifier.height(6.dp))
@@ -231,5 +231,4 @@ private fun Content(character: Character) {
     }
 
     Spacer(modifier = Modifier.height(16.dp))
-
 }

@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.util.fastSumBy
 import androidx.lifecycle.ViewModel
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.profile.gem.Gem
 import com.hongmyeoun.goldcalc.model.profile.skills.Skills
 import com.hongmyeoun.goldcalc.ui.theme.BlueQual
@@ -35,10 +36,10 @@ class SkillVM: ViewModel() {
 
     fun getGradeBG(grade: String): Color {
         val itemBG = when (grade) {
-            "유물" -> RelicColor
-            "전설" -> OrangeQual
-            "영웅" -> PurpleQual
-            "희귀" -> BlueQual
+            EquipmentConsts.GRADE_RELIC -> RelicColor
+            EquipmentConsts.GRADE_LEGENDARY -> OrangeQual
+            EquipmentConsts.GRADE_EPIC -> PurpleQual
+            EquipmentConsts.GRADE_RARE -> BlueQual
             else -> GreenQual
         }
         return itemBG
@@ -46,10 +47,10 @@ class SkillVM: ViewModel() {
 
     fun getItemBG(grade: String): Brush {
         val itemBG = when (grade) {
-            "유물" -> RelicBG
-            "전설" -> LegendaryBG
-            "영웅" -> EpicBG
-            "희귀" -> RareBG
+            EquipmentConsts.GRADE_RELIC -> RelicBG
+            EquipmentConsts.GRADE_LEGENDARY -> LegendaryBG
+            EquipmentConsts.GRADE_EPIC -> EpicBG
+            EquipmentConsts.GRADE_RARE -> RareBG
             else -> UncommonBG
         }
         return itemBG

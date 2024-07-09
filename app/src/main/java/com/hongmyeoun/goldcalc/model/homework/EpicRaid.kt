@@ -1,5 +1,7 @@
 package com.hongmyeoun.goldcalc.model.homework
 
+import com.hongmyeoun.goldcalc.model.constants.raid.Gold
+import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 
 enum class EpicRaid(
@@ -8,14 +10,14 @@ enum class EpicRaid(
     val clearGold: Map<String, List<Int>>
 ) {
     BEHEMOTH(
-        boss = "베히모스",
+        boss = Raid.Name.BEHEMOTH,
         seeMoreGold = mapOf(
-            "normal" to listOf(3100, 4900),
-            "hard" to listOf(3100, 4900)
+            Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.BEHEMOTH,
+            Raid.Difficulty.HARD to Gold.SeeMore.Hard.BEHEMOTH
         ),
         clearGold = mapOf(
-            "normal" to listOf(7000, 14500),
-            "hard" to listOf(7000, 14500)
+            Raid.Difficulty.NORMAL to Gold.Clear.Normal.BEHEMOTH,
+            Raid.Difficulty.HARD to Gold.Clear.Hard.BEHEMOTH
         )
     );
 
@@ -36,14 +38,14 @@ class EpicRaidModel(character: Character?) {
 
 class Behemoth(character: Character?) {
     val name = EpicRaid.BEHEMOTH.boss
-    private val seeMoreGold = EpicRaid.BEHEMOTH.getBossInfo("normal").first + EpicRaid.BEHEMOTH.getBossInfo("hard").first
-    private val clearGold = EpicRaid.BEHEMOTH.getBossInfo("normal").second + EpicRaid.BEHEMOTH.getBossInfo("hard").second
+    private val seeMoreGold = EpicRaid.BEHEMOTH.getBossInfo(Raid.Difficulty.NORMAL).first + EpicRaid.BEHEMOTH.getBossInfo(Raid.Difficulty.HARD).first
+    private val clearGold = EpicRaid.BEHEMOTH.getBossInfo(Raid.Difficulty.NORMAL).second + EpicRaid.BEHEMOTH.getBossInfo(Raid.Difficulty.HARD).second
 
     var isChecked = character?.checkList?.epic?.get(0)?.isCheck?:false
 
     private val getOnePhase = character?.checkList?.epic?.get(0)?.phases?.get(0)
 
-    private val onePhaseDifficulty = getOnePhase?.difficulty?:"노말"
+    private val onePhaseDifficulty = getOnePhase?.difficulty?: Raid.Difficulty.KR_NORMAL
     private val onePhaseIsClear = getOnePhase?.isClear?:false
     private val onePhaseMCheck = getOnePhase?.mCheck?:false
 
@@ -60,7 +62,7 @@ class Behemoth(character: Character?) {
 
     private val getTwoPhase = character?.checkList?.epic?.get(0)?.phases?.get(1)
 
-    private val twoPhaseDifficulty = getTwoPhase?.difficulty?:"노말"
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty?: Raid.Difficulty.KR_NORMAL
     private val twoPhaseIsClear = getTwoPhase?.isClear?:false
     private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
 

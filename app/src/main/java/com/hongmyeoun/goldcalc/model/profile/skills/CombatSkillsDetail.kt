@@ -1,6 +1,8 @@
 package com.hongmyeoun.goldcalc.model.profile.skills
 
 import com.google.gson.JsonParser
+import com.hongmyeoun.goldcalc.model.constants.TooltipStrings
+import com.hongmyeoun.goldcalc.model.profile.Common
 
 class CombatSkillsDetail(private val combatSkills: List<CombatSkills>) {
     fun getSkills(): List<Skills> {
@@ -41,12 +43,14 @@ class CombatSkillsDetail(private val combatSkills: List<CombatSkills>) {
         val tooltip = JsonParser.parseString(combatSkills.tooltip).asJsonObject
 
         for (index in 7..8) {
-            val elementKey = "Element_${String.format("%03d", index)}"
+            val elementKey = Common.currentElementKey(index)
             if (tooltip.has(elementKey)) {
                 val element = tooltip.getAsJsonObject(elementKey)
-                if (element.get("type").asString == "ItemPartBox") {
-                    val value = element.getAsJsonObject("value")
-                    if (value.get("Element_000").asString.contains("보석 효과")) {
+                if (Common.itemPartBox(element)) {
+                    val value = element
+                        .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+
+                    if (value.get(TooltipStrings.MemberName.ELEMENT_000).asString.contains(TooltipStrings.Contains.GEM_EFFECTS)) {
                         return true
                     }
                 }
@@ -59,7 +63,10 @@ class CombatSkillsDetail(private val combatSkills: List<CombatSkills>) {
     private fun getRuneTooltip(rune: Rune): String? {
         val tooltip = JsonParser.parseString(rune.tooltip).asJsonObject
 
-        return tooltip.getAsJsonObject("Element_002").getAsJsonObject("value").get("Element_001").asString
+        return tooltip
+            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_002)
+            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+            .get(TooltipStrings.MemberName.ELEMENT_001).asString
     }
 
 }

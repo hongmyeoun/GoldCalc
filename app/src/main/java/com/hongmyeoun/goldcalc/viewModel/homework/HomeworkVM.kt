@@ -1,12 +1,13 @@
 package com.hongmyeoun.goldcalc.viewModel.homework
 
-import android.content.Context
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hongmyeoun.goldcalc.model.constants.viewConst.SnackbarMessage
+import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
@@ -121,7 +122,7 @@ class HomeworkVM @Inject constructor(
         expanded = false
     }
 
-    val headerTitle = listOf("군단장", "어비스 던전", "카제로스", "에픽", "기타")
+    val headerTitle = Raid.Name.RAID_LIST
     var selectedTab by mutableStateOf(0)
     fun moveHeader(index: Int) {
         selectedTab = index
@@ -144,10 +145,10 @@ class HomeworkVM @Inject constructor(
         }
     }
 
-    fun onReloadClick(context: Context, characterName: String?, snackbarHostState: SnackbarHostState) {
+    fun onReloadClick(characterName: String?, snackbarHostState: SnackbarHostState) {
         characterName?.let {
             viewModelScope.launch(Dispatchers.IO) {
-                val characterDetail = getCharDetail(context, characterName)
+                val characterDetail = getCharDetail(characterName)
                 characterDetail?.let {
                     updateCharacterDetail(characterDetail)
                 }
@@ -156,11 +157,11 @@ class HomeworkVM @Inject constructor(
         }
         doneSnackbar(
             snackbarHostState = snackbarHostState,
-            text = "캐릭터 정보를 갱신했습니다."
+            text = SnackbarMessage.RELOAD
         )
     }
 
-    fun doneSnackbar(
+    private fun doneSnackbar(
         snackbarHostState: SnackbarHostState,
         text: String,
     ) {

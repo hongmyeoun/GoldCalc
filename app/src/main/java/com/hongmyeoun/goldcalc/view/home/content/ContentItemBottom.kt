@@ -30,8 +30,9 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.viewModel.home.HomeContentVM
+import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.viewModel.home.GoldContentStateVM
+import com.hongmyeoun.goldcalc.viewModel.home.HomeContentVM
 
 @Composable
 fun HomeworkProgress(
@@ -57,7 +58,7 @@ fun HomeworkProgress(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.epic[0].phases),
                     raidImg = R.drawable.epic_behemoth,
-                    raidName = "베히모스",
+                    raidName = Raid.Name.BEHEMOTH,
                     viewModel = behemothVM,
                     onClicked = { viewModel.beheGoldCalc(it) }
                 )
@@ -71,7 +72,7 @@ fun HomeworkProgress(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.kazeroth[0].phases),
                     raidImg = R.drawable.kazeroth_echidna,
-                    raidName = "에키드나",
+                    raidName = Raid.Name.ECHIDNA,
                     viewModel = echidnaVM,
                     onClicked = { viewModel.echiGoldCalc(it) }
                 )
@@ -85,7 +86,7 @@ fun HomeworkProgress(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.command[5].phases),
                     raidImg = R.drawable.command_kamen,
-                    raidName = "카멘",
+                    raidName = Raid.Name.KAMEN,
                     viewModel = kamenVM,
                     onClicked = { viewModel.kamenGoldCalc(it) }
                 )
@@ -99,7 +100,7 @@ fun HomeworkProgress(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.abyssDungeon[1].phases),
                     raidImg = R.drawable.abyss_dungeon_ivory_tower,
-                    raidName = "혼돈의 상아탑",
+                    raidName = Raid.Name.IVORY_TOWER_LONG,
                     viewModel = ivoryTowerVM,
                     onClicked = { viewModel.iTGoldCalc(it) }
                 )
@@ -113,7 +114,7 @@ fun HomeworkProgress(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.command[4].phases),
                     raidImg = R.drawable.command_illiakan,
-                    raidName = "일리아칸",
+                    raidName = Raid.Name.ILLIAKAN,
                     viewModel = illiakanVM,
                     onClicked = { viewModel.illiGoldCalc(it) }
                 )
@@ -127,7 +128,7 @@ fun HomeworkProgress(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.abyssDungeon[0].phases),
                     raidImg = R.drawable.abyss_dungeon_kayangel,
-                    raidName = "카양겔",
+                    raidName = Raid.Name.KAYANGEL,
                     viewModel = kayangelVM,
                     onClicked = { viewModel.kayanGoldCalc(it) }
                 )
@@ -141,7 +142,7 @@ fun HomeworkProgress(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.command[3].phases),
                     raidImg = R.drawable.command_abrelshud,
-                    raidName = "아브렐슈드",
+                    raidName = Raid.Name.ABRELSHUD,
                     viewModel = abrelshudVM,
                     onClicked = { viewModel.abrelGoldCalc(it) }
                 )
@@ -155,7 +156,7 @@ fun HomeworkProgress(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.command[2].phases),
                     raidImg = R.drawable.command_kouku,
-                    raidName = "쿠크세이튼",
+                    raidName = Raid.Name.KOUKU_SATON,
                     viewModel = koukuSatonVM,
                     onClicked = { viewModel.kokuGoldCalc(it) }
                 )
@@ -169,7 +170,7 @@ fun HomeworkProgress(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.command[1].phases),
                     raidImg = R.drawable.command_biackiss,
-                    raidName = "비아키스",
+                    raidName = Raid.Name.BIACKISS,
                     viewModel = biackissVM,
                     onClicked = { viewModel.biaGoldCalc(it) }
                 )
@@ -183,7 +184,7 @@ fun HomeworkProgress(
                     enabled = viewModel.enabled,
                     phase = viewModel.phaseCalc(character.checkList.command[0].phases),
                     raidImg = R.drawable.command_valtan,
-                    raidName = "발탄",
+                    raidName = Raid.Name.VALTAN,
                     viewModel = valtanVM,
                     onClicked = { viewModel.valGoldCalc(it) }
                 )
@@ -202,7 +203,7 @@ fun ProgressState(
     viewModel: GoldContentStateVM,
     onClicked: (Int) -> Unit
 ) {
-    val textColor = if (raidName == "카양겔") Color.Black else Color.White
+    val textColor = if (raidName == Raid.Name.KAYANGEL) Color.Black else Color.White
 
     Box(
         modifier = Modifier

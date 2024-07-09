@@ -17,6 +17,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.common.ImageReturn
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Home
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
 
@@ -29,7 +30,7 @@ fun CurrentGold(viewModel: HomeVM) {
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = "얻은 골드",
+                text = Home.EARN_GOLD,
                 style = normalTextStyle(),
                 fontWeight = FontWeight.Light
             )
@@ -52,7 +53,7 @@ fun CurrentGold(viewModel: HomeVM) {
         }
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = "남은 골드",
+                text = Home.REMAIN_GOLD,
                 style = normalTextStyle(),
                 fontWeight = FontWeight.Light
             )

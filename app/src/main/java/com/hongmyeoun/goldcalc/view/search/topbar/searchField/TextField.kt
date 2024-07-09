@@ -1,6 +1,5 @@
 package com.hongmyeoun.goldcalc.view.search.topbar.searchField
 
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -31,12 +30,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Search
 import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
@@ -52,7 +51,6 @@ fun TextField(
     focusState: FocusManager,
     onGloballyPositioned: (LayoutCoordinates) -> Unit,
 ) {
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     val characterName by viewModel.characterName.collectAsState()
@@ -76,7 +74,7 @@ fun TextField(
         ),
         keyboardActions = KeyboardActions(
             onDone = {
-                viewModel.onDone(context)
+                viewModel.onDone()
                 scope.launch { scrollState.animateScrollToItem(0) } // 검색결과를 0으로
                 keyboardController?.hide()
                 focusState.clearFocus()
@@ -84,7 +82,7 @@ fun TextField(
         ),
         placeholder = { PlaceHolder(isFocus) },
         trailingIcon = if (isFocus) {
-            { TrailingIcon(characterName, viewModel, context, keyboardController, focusState, scrollState, scope) }
+            { TrailingIcon(characterName, viewModel, keyboardController, focusState, scrollState, scope) }
         } else {
             null
         },
@@ -111,7 +109,7 @@ private fun PlaceHolder(isFocus: Boolean) {
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "캐릭터 검색",
+                text = Search.PLACE_HOLDER,
                 color = Color.LightGray,
             )
             Spacer(modifier = Modifier.width(4.dp))
@@ -119,7 +117,7 @@ private fun PlaceHolder(isFocus: Boolean) {
         }
     } else {
         Text(
-            text = "캐릭터 검색",
+            text = Search.PLACE_HOLDER,
             color = Color.LightGray,
         )
     }
@@ -129,7 +127,6 @@ private fun PlaceHolder(isFocus: Boolean) {
 private fun TrailingIcon(
     characterName: String,
     viewModel: SearchVM,
-    context: Context,
     keyboardController: SoftwareKeyboardController?,
     focusState: FocusManager,
     scrollState: LazyListState,
@@ -148,7 +145,7 @@ private fun TrailingIcon(
         }
         IconButton(
             onClick = {
-                viewModel.onDone(context)
+                viewModel.onDone()
                 scope.launch { scrollState.animateScrollToItem(0) }
                 keyboardController?.hide()
                 focusState.clearFocus()

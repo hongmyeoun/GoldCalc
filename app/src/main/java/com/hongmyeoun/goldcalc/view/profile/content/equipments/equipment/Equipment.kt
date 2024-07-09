@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterEquipment
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
@@ -224,7 +225,7 @@ private fun EquipmentIcon(
                                 GlideImage(
                                     modifier = Modifier
                                         .size(13.dp),
-                                    model = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png",
+                                    model = NetworkConfig.TRANSCENDENCE_ICON,
                                     contentDescription = "초월 아이콘"
                                 )
                                 Spacer(modifier = Modifier.width(2.dp))
