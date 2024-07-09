@@ -60,7 +60,7 @@ class SearchVM @Inject constructor(
 
     private fun getCharacterList(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
-            val (characterList, error) = getCharacter(context, _characterName.value)
+            val (characterList, error) = getCharacter(_characterName.value)
             if (characterList != null) {
                 _characterList.value = characterList
                 _errorMessage.value = null

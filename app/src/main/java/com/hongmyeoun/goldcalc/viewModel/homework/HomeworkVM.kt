@@ -147,7 +147,7 @@ class HomeworkVM @Inject constructor(
     fun onReloadClick(context: Context, characterName: String?, snackbarHostState: SnackbarHostState) {
         characterName?.let {
             viewModelScope.launch(Dispatchers.IO) {
-                val characterDetail = getCharDetail(context, characterName)
+                val characterDetail = getCharDetail(characterName)
                 characterDetail?.let {
                     updateCharacterDetail(characterDetail)
                 }
