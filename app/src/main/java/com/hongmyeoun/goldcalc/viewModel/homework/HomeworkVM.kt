@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hongmyeoun.goldcalc.model.constants.SnackbarMessage
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
@@ -156,11 +157,11 @@ class HomeworkVM @Inject constructor(
         }
         doneSnackbar(
             snackbarHostState = snackbarHostState,
-            text = "캐릭터 정보를 갱신했습니다."
+            text = SnackbarMessage.RELOAD
         )
     }
 
-    fun doneSnackbar(
+    private fun doneSnackbar(
         snackbarHostState: SnackbarHostState,
         text: String,
     ) {

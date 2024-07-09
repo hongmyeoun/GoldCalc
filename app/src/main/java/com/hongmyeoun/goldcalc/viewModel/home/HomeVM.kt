@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.util.fastSumBy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hongmyeoun.goldcalc.model.constants.SnackbarMessage
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.model.roomDB.character.RaidPhaseInfo
@@ -78,14 +79,14 @@ class HomeVM @Inject constructor(
             reset()
             doneSnackbar(
                 snackbarHostState = snackbarHostState,
-                text = "숙제가 초기화 되었습니다.",
+                text = SnackbarMessage.HW_INIT,
                 delay = 1500L
             )
             clickPressedTime = 0L // 초기화 후 한번더 초기화 할때 오류가 안나게 하기 위해 초기화
         } else {
             doneSnackbar(
                 snackbarHostState = snackbarHostState,
-                text = "한 번 더 누르시면 숙제가 초기화 됩니다.",
+                text = SnackbarMessage.HW_INIT_WARN,
                 delay = 750L
             )
         }
