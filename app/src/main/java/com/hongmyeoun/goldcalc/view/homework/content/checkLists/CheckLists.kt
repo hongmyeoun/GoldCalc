@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.constants.Labels
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.TitleCard
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidContents.AbyssDungeon
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidContents.Command
@@ -27,7 +28,7 @@ fun CheckLists(
 ) {
     Crossfade(
         targetState = viewModel.selectedTab,
-        label = "헤더 Crossfade"
+        label = Labels.Crossfade.Loading
     ) { selectedTab ->
         Column(
             modifier = Modifier

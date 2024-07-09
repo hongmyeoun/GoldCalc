@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.hongmyeoun.goldcalc.model.constants.Labels
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.view.common.LoadingScreen
@@ -47,7 +48,7 @@ fun HomeworkView(
 
     Crossfade(
         targetState = isLoading,
-        label = "로딩 Crossfade"
+        label = Labels.Crossfade.Loading
     ) { loading ->
         if (loading) {
             LoadingScreen()

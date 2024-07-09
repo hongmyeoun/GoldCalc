@@ -19,6 +19,7 @@ import androidx.compose.ui.zIndex
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.constants.Labels
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.MokokoGreen
 
@@ -26,7 +27,7 @@ import com.hongmyeoun.goldcalc.ui.theme.MokokoGreen
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun LoadingScreen(isBackground: Boolean = true) {
-    val transition = rememberInfiniteTransition(label = "색 변경")
+    val transition = rememberInfiniteTransition(label = Labels.Animation.COLOR_CHANGE)
     val tintColor by transition.animateColor(
         initialValue = Color.White,
         targetValue = MokokoGreen,
@@ -34,7 +35,7 @@ fun LoadingScreen(isBackground: Boolean = true) {
             animation = tween(durationMillis = 1000, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
         ),
-        label = "색이 바뀌는 애니메이션"
+        label = Labels.Animation.COLOR_CHANGE
     )
 
     val bgColor = if (isBackground) ImageBG.copy(alpha = 0.5f) else ImageBG

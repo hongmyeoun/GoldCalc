@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.hongmyeoun.goldcalc.model.constants.Labels
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.navigation.NavControl
 import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
@@ -35,7 +36,7 @@ fun LoGolGi(characterRepository: CharacterRepository) {
         Box(modifier = Modifier.safeDrawingPadding()) {
             Crossfade(
                 targetState = isLoading,
-                label = "시작 로딩"
+                label = Labels.Crossfade.Loading
             ) { loading ->
                 if (loading) {
                     LoadingScreen()

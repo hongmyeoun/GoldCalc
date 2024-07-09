@@ -1,6 +1,5 @@
 package com.hongmyeoun.goldcalc.viewModel.search
 
-import android.content.Context
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hongmyeoun.goldcalc.model.constants.Labels
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharacter
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterInfo
 import com.hongmyeoun.goldcalc.model.roomDB.searchHistory.SearchHistory
@@ -58,7 +58,7 @@ class SearchVM @Inject constructor(
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage
 
-    private fun getCharacterList(context: Context) {
+    private fun getCharacterList() {
         viewModelScope.launch(Dispatchers.IO) {
             val (characterList, error) = getCharacter(_characterName.value)
             if (characterList != null) {
@@ -79,10 +79,10 @@ class SearchVM @Inject constructor(
         _isLoading.value = false
     }
 
-    fun onDone(context: Context) {
+    fun onDone() {
         loadingTrue()
         if (_characterName.value.isNotEmpty()) {
-            getCharacterList(context)
+            getCharacterList()
             addHistory()
         }
         loadingFalse()
@@ -159,8 +159,8 @@ class SearchVM @Inject constructor(
 
     @Composable
     fun animatedShape(isFocus: Boolean): RoundedCornerShape {
-        val bottomStart by animateDpAsState(targetValue = if (isFocus) 0.dp else 16.dp, animationSpec = tween(durationMillis = 300), label = "")
-        val bottomEnd by animateDpAsState(targetValue = if (isFocus) 0.dp else 16.dp, animationSpec = tween(durationMillis = 300), label = "")
+        val bottomStart by animateDpAsState(targetValue = if (isFocus) 0.dp else 16.dp, animationSpec = tween(durationMillis = 300), label = Labels.Animation.EDGE_SHAPE)
+        val bottomEnd by animateDpAsState(targetValue = if (isFocus) 0.dp else 16.dp, animationSpec = tween(durationMillis = 300), label = Labels.Animation.EDGE_SHAPE)
         return RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomStart = bottomStart, bottomEnd = bottomEnd)
     }
 }

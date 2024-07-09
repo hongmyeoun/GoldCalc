@@ -15,12 +15,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.hongmyeoun.goldcalc.model.constants.Labels
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.view.setting.reorderPage.ReorderBottomBar
 import com.hongmyeoun.goldcalc.view.setting.reorderPage.ReorderPageContent
 import com.hongmyeoun.goldcalc.view.setting.reorderPage.ReorderPageTopBar
-import com.hongmyeoun.goldcalc.view.setting.settingPage.content.SettingContent
 import com.hongmyeoun.goldcalc.view.setting.settingPage.SettingTopBar
+import com.hongmyeoun.goldcalc.view.setting.settingPage.content.SettingContent
 import com.hongmyeoun.goldcalc.viewModel.setting.SettingVM
 
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
@@ -44,7 +45,7 @@ fun SettingView(
     ) {
         Crossfade(
             targetState = reorderPage,
-            label = "화면 전환"
+            label = Labels.Crossfade.Loading
         ) { isReorderPage ->
             if (isReorderPage) {
                 ReorderPageContent(it, viewModel)

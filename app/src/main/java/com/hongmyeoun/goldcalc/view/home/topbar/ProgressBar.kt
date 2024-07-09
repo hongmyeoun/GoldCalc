@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.hongmyeoun.goldcalc.model.common.toPercentage
+import com.hongmyeoun.goldcalc.model.constants.Labels
 import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
 import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
 
@@ -27,7 +28,7 @@ fun ProgressBar(viewModel: HomeVM) {
     val animatedProgress = animateFloatAsState(
         targetValue = viewModel.progressPercentage,
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec,
-        label = "progressbar"
+        label = Labels.Animation.PROGRESSBAR
     ).value
 
     Box {

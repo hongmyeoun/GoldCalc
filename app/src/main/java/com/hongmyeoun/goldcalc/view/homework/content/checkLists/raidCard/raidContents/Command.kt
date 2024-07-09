@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.constants.Labels
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCard
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckBox
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckLists
@@ -31,32 +32,32 @@ fun Command(
     val valtanRotaR by animateFloatAsState(
         targetValue = if (valtanRotated) 180f else 0f,
         animationSpec = tween(500),
-        label = "회전 애니메이션"
+        label = Labels.Animation.ROTATION
     )
     val biackissRotaR by animateFloatAsState(
         targetValue = if (biackissRotated) 180f else 0f,
         animationSpec = tween(500),
-        label = "회전 애니메이션"
+        label = Labels.Animation.ROTATION
     )
     val koukuSatonRotaR by animateFloatAsState(
         targetValue = if (koukuSatonRotated) 180f else 0f,
         animationSpec = tween(500),
-        label = "회전 애니메이션"
+        label = Labels.Animation.ROTATION
     )
     val abrelshudRotaR by animateFloatAsState(
         targetValue = if (abrelshudRotated) 180f else 0f,
         animationSpec = tween(500),
-        label = "회전 애니메이션"
+        label = Labels.Animation.ROTATION
     )
     val illiakanRotaR by animateFloatAsState(
         targetValue = if (illiakanRotated) 180f else 0f,
         animationSpec = tween(500),
-        label = "회전 애니메이션"
+        label = Labels.Animation.ROTATION
     )
     val kamenRotaR by animateFloatAsState(
         targetValue = if (kamenRotated) 180f else 0f,
         animationSpec = tween(500),
-        label = "회전 애니메이션"
+        label = Labels.Animation.ROTATION
     )
 
     RaidCheckLists(maxItem = 3) { modifier ->
