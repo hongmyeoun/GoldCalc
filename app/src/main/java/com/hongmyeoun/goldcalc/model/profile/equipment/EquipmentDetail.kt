@@ -554,7 +554,7 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         }
 
         // 키워드 패턴과 값 찾아서 리스트에 저장
-        val keywords = listOf("치명", "특화", "신속")
+        val keywords = EquipmentConsts.FILTERED_COMBAT_STAT_LIST
         val keyValuePattern = Regex("(\\S+)\\s*\\+\\s*(.+)")
         val keyValueList = mutableListOf<Pair<String, String>>()
 

@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hongmyeoun.goldcalc.model.constants.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
@@ -96,8 +97,8 @@ private fun Simple(
     default: Boolean,
     onClick: () -> Unit
 ) {
-    val title = if (default) "기본 특성" else "전투 특성"
-    val typeList = if (default) listOf("공격력", "최대 생명력") else listOf("치명", "특화", "제압", "신속", "인내", "숙련")
+    val title = if (default) EquipmentConsts.DEFAULT_STAT else EquipmentConsts.COMBAT_STAT
+    val typeList = if (default) EquipmentConsts.DEFAULT_STAT_LIST else EquipmentConsts.COMBAT_STAT_LIST
     val maxItem = if (default) 1 else 2
 
     Column(
@@ -178,8 +179,8 @@ fun Details(
     val screenHeight = configuration.screenHeightDp.dp
     val maxColumnHeight = (screenHeight * 0.8f) // 화면 높이의 80%
 
-    val title = if (default) "기본 특성" else "전투 특성"
-    val typeList = if (default) listOf("공격력", "최대 생명력") else listOf("치명", "특화", "제압", "신속", "인내", "숙련")
+    val title = if (default) EquipmentConsts.DEFAULT_STAT else EquipmentConsts.COMBAT_STAT
+    val typeList = if (default) EquipmentConsts.DEFAULT_STAT_LIST else EquipmentConsts.COMBAT_STAT_LIST
 
     Dialog(
         onDismissRequest = { viewModel.onDismissRequest() }
