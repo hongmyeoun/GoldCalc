@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.view.search
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -47,7 +48,8 @@ fun SearchView(
                 focusState = focusState
             )
         },
-        containerColor = ImageBG
+        containerColor = ImageBG,
+        contentWindowInsets = WindowInsets(0,0,0,0)
     ) { paddingValues ->
         SearchContent(
             paddingValues = paddingValues,
