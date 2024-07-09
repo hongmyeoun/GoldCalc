@@ -7,6 +7,7 @@ class PhaseInfo(
     isClearCheck: Boolean,
     moreCheck: Boolean,
     isChecked: Boolean,
+    private val noSolo: Boolean = true,
     private val noHardWithSolo: Boolean = false,
     private val seeMoreGoldN: Int,
     private val seeMoreGoldH: Int,
@@ -62,7 +63,7 @@ class PhaseInfo(
     }
 
     private fun levelClicked() {
-        level = GoldCalcFunction.levelDetector(level, noHardWithSolo)
+        level = GoldCalcFunction.levelDetector(level, noHardWithSolo, noSolo)
     }
 
     private fun seeMoreGoldCalculate(seeMoreGoldN: Int, seeMoreGoldH: Int, seeMoreGoldS: Int?) {
@@ -87,7 +88,7 @@ class PhaseInfo(
 }
 
 object GoldCalcFunction {
-    fun levelDetector(level: String, noHardWithSolo: Boolean): String {
+    fun levelDetector(level: String, noHardWithSolo: Boolean, noSolo: Boolean): String {
         return if (noHardWithSolo) {
             if (level == Raid.Difficulty.KR_NORMAL) {
                 Raid.Difficulty.KR_SOLO
@@ -95,15 +96,23 @@ object GoldCalcFunction {
                 Raid.Difficulty.KR_NORMAL
             }
         } else {
-            when (level) {
-                Raid.Difficulty.KR_NORMAL -> {
+            if (noSolo) {
+                if (level == Raid.Difficulty.KR_NORMAL) {
                     Raid.Difficulty.KR_HARD
-                }
-                Raid.Difficulty.KR_HARD -> {
-                    Raid.Difficulty.KR_SOLO
-                }
-                else -> {
+                } else {
                     Raid.Difficulty.KR_NORMAL
+                }
+            } else {
+                when (level) {
+                    Raid.Difficulty.KR_NORMAL -> {
+                        Raid.Difficulty.KR_HARD
+                    }
+                    Raid.Difficulty.KR_HARD -> {
+                        Raid.Difficulty.KR_SOLO
+                    }
+                    else -> {
+                        Raid.Difficulty.KR_NORMAL
+                    }
                 }
             }
         }
