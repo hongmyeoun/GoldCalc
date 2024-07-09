@@ -9,8 +9,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.constants.Labels
-import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckBox
+import com.hongmyeoun.goldcalc.model.constants.Raid
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCard
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckBox
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckLists
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.TwoPhaseNoHard
 import com.hongmyeoun.goldcalc.viewModel.homework.EpicRaidVM
@@ -26,7 +27,7 @@ fun Epic(viewModel: EpicRaidVM) {
 
     RaidCheckLists(maxItem = 2) { modifier ->
         RaidCheckBox(
-            name = "베히모스",
+            name = Raid.Name.BEHEMOTH,
             modifier = modifier,
             checked = viewModel.beheCheck,
             onCheckedChange = { viewModel.onBeheCheck() }

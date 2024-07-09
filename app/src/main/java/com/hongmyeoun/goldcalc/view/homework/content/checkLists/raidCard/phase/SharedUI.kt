@@ -29,6 +29,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.common.ImageReturn.goldImage
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
+import com.hongmyeoun.goldcalc.model.constants.Raid
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.RedQual
@@ -263,7 +264,7 @@ fun Level(
     onLevelClicked: () -> Unit = {},
     oneDifficult: Boolean = false
 ) {
-    val difficultyColor = if (difficulty == "하드") RedQual else if (difficulty == "노말") GreenQual else YellowQual
+    val difficultyColor = if (difficulty == Raid.Difficulty.KR_HARD) RedQual else if (difficulty == Raid.Difficulty.KR_NORMAL) GreenQual else YellowQual
 
     Row(
         modifier = Modifier

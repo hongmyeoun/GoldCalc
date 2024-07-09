@@ -1,5 +1,6 @@
 package com.hongmyeoun.goldcalc.model.homework
 
+import com.hongmyeoun.goldcalc.model.constants.Raid
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 
 enum class AbyssDungeon(
@@ -8,29 +9,29 @@ enum class AbyssDungeon(
     val clearGold: Map<String, List<Int>>
 ) {
     KAYANGEL(
-        boss = "카양겔",
+        boss = Raid.Name.KAYANGEL,
         seeMoreGold = mapOf(
-            "normal" to listOf(300, 400, 500),
-            "hard" to listOf(350, 500, 700),
-            "solo" to listOf(0, 0, 0)
+            Raid.Difficulty.NORMAL to listOf(300, 400, 500),
+            Raid.Difficulty.HARD to listOf(350, 500, 700),
+            Raid.Difficulty.SOLO to listOf(0, 0, 0)
         ),
         clearGold = mapOf(
-            "normal" to listOf(800, 1200, 1600),
-            "hard" to listOf(1000, 1600, 2200),
-            "solo" to listOf(250, 400, 550)
+            Raid.Difficulty.NORMAL to listOf(800, 1200, 1600),
+            Raid.Difficulty.HARD to listOf(1000, 1600, 2200),
+            Raid.Difficulty.SOLO to listOf(250, 400, 550)
         )
     ),
     IVORY_TOWER(
-        boss = "상아탑",
+        boss = Raid.Name.IVORY_TOWER,
         seeMoreGold = mapOf(
-            "normal" to listOf(600, 650, 1000),
-            "hard" to listOf(1200, 1450, 2000),
-            "solo" to listOf(0, 0, 0)
+            Raid.Difficulty.NORMAL to listOf(600, 650, 1000),
+            Raid.Difficulty.HARD to listOf(1200, 1450, 2000),
+            Raid.Difficulty.SOLO to listOf(0, 0, 0)
         ),
         clearGold = mapOf(
-            "normal" to listOf(1500, 2000, 3000),
-            "hard" to listOf(3000, 4000, 6000),
-            "solo" to listOf(450, 675, 1000)
+            Raid.Difficulty.NORMAL to listOf(1500, 2000, 3000),
+            Raid.Difficulty.HARD to listOf(3000, 4000, 6000),
+            Raid.Difficulty.SOLO to listOf(450, 675, 1000)
         )
     );
 
@@ -57,14 +58,14 @@ class AbyssDungeonModel(character: Character?) {
 
 class Kayangel(character: Character?) {
     val name = AbyssDungeon.KAYANGEL.boss
-    private val seeMoreGold = AbyssDungeon.KAYANGEL.getBossInfo("normal").first + AbyssDungeon.KAYANGEL.getBossInfo("hard").first + AbyssDungeon.KAYANGEL.getBossInfo("solo").first
-    private val clearGold = AbyssDungeon.KAYANGEL.getBossInfo("normal").second + AbyssDungeon.KAYANGEL.getBossInfo("hard").second + AbyssDungeon.KAYANGEL.getBossInfo("solo").second
+    private val seeMoreGold = AbyssDungeon.KAYANGEL.getBossInfo(Raid.Difficulty.NORMAL).first + AbyssDungeon.KAYANGEL.getBossInfo(Raid.Difficulty.HARD).first + AbyssDungeon.KAYANGEL.getBossInfo(Raid.Difficulty.SOLO).first
+    private val clearGold = AbyssDungeon.KAYANGEL.getBossInfo(Raid.Difficulty.NORMAL).second + AbyssDungeon.KAYANGEL.getBossInfo(Raid.Difficulty.HARD).second + AbyssDungeon.KAYANGEL.getBossInfo(Raid.Difficulty.SOLO).second
 
     var isChecked = character?.checkList?.abyssDungeon?.get(0)?.isCheck?:false
 
     private val getOnePhase = character?.checkList?.abyssDungeon?.get(0)?.phases?.get(0)
 
-    private val onePhaseDifficulty = getOnePhase?.difficulty?:"노말"
+    private val onePhaseDifficulty = getOnePhase?.difficulty?:Raid.Difficulty.KR_NORMAL
     private val onePhaseIsClear = getOnePhase?.isClear?:false
     private val onePhaseMCheck = getOnePhase?.mCheck?:false
 
@@ -83,7 +84,7 @@ class Kayangel(character: Character?) {
 
     private val getTwoPhase = character?.checkList?.abyssDungeon?.get(0)?.phases?.get(1)
 
-    private val twoPhaseDifficulty = getTwoPhase?.difficulty?:"노말"
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty?:Raid.Difficulty.KR_NORMAL
     private val twoPhaseIsClear = getTwoPhase?.isClear?:false
     private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
 
@@ -101,7 +102,7 @@ class Kayangel(character: Character?) {
     )
 
     private val getThreePhase = character?.checkList?.abyssDungeon?.get(0)?.phases?.get(2)
-    private val threePhaseDifficulty = getThreePhase?.difficulty?:"노말"
+    private val threePhaseDifficulty = getThreePhase?.difficulty?:Raid.Difficulty.KR_NORMAL
     private val threePhaseIsClear = getThreePhase?.isClear?:false
     private val threePhaseMCheck = getThreePhase?.mCheck?:false
 
@@ -133,14 +134,14 @@ class Kayangel(character: Character?) {
 
 class IvoryTower(character: Character?) {
     val name = AbyssDungeon.IVORY_TOWER.boss
-    private val seeMoreGold = AbyssDungeon.IVORY_TOWER.getBossInfo("normal").first + AbyssDungeon.IVORY_TOWER.getBossInfo("hard").first + AbyssDungeon.IVORY_TOWER.getBossInfo("solo").first
-    private val clearGold = AbyssDungeon.IVORY_TOWER.getBossInfo("normal").second + AbyssDungeon.IVORY_TOWER.getBossInfo("hard").second + AbyssDungeon.IVORY_TOWER.getBossInfo("solo").second
+    private val seeMoreGold = AbyssDungeon.IVORY_TOWER.getBossInfo(Raid.Difficulty.NORMAL).first + AbyssDungeon.IVORY_TOWER.getBossInfo(Raid.Difficulty.HARD).first + AbyssDungeon.IVORY_TOWER.getBossInfo(Raid.Difficulty.SOLO).first
+    private val clearGold = AbyssDungeon.IVORY_TOWER.getBossInfo(Raid.Difficulty.NORMAL).second + AbyssDungeon.IVORY_TOWER.getBossInfo(Raid.Difficulty.HARD).second + AbyssDungeon.IVORY_TOWER.getBossInfo(Raid.Difficulty.SOLO).second
 
     var isChecked = character?.checkList?.abyssDungeon?.get(1)?.isCheck?:false
 
     private val getOnePhase = character?.checkList?.abyssDungeon?.get(1)?.phases?.get(0)
 
-    private val onePhaseDifficulty = getOnePhase?.difficulty?:"노말"
+    private val onePhaseDifficulty = getOnePhase?.difficulty?:Raid.Difficulty.KR_NORMAL
     private val onePhaseIsClear = getOnePhase?.isClear?:false
     private val onePhaseMCheck = getOnePhase?.mCheck?:false
 
@@ -159,7 +160,7 @@ class IvoryTower(character: Character?) {
 
     private val getTwoPhase = character?.checkList?.abyssDungeon?.get(1)?.phases?.get(1)
 
-    private val twoPhaseDifficulty = getTwoPhase?.difficulty?:"노말"
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty?:Raid.Difficulty.KR_NORMAL
     private val twoPhaseIsClear = getTwoPhase?.isClear?:false
     private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
 
@@ -177,7 +178,7 @@ class IvoryTower(character: Character?) {
     )
 
     private val getThreePhase = character?.checkList?.abyssDungeon?.get(1)?.phases?.get(2)
-    private val threePhaseDifficulty = getThreePhase?.difficulty?:"노말"
+    private val threePhaseDifficulty = getThreePhase?.difficulty?:Raid.Difficulty.KR_NORMAL
     private val threePhaseIsClear = getThreePhase?.isClear?:false
     private val threePhaseMCheck = getThreePhase?.mCheck?:false
 

@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase
 
 import androidx.compose.runtime.Composable
+import com.hongmyeoun.goldcalc.model.constants.Raid
 
 @Composable
 fun OneDifficultyPhase(
@@ -61,7 +62,7 @@ fun TwoPhaseNoHard(
         phaseCheckUI = {
             OneDifficultyPhase(
                 phase = 1,
-                difficulty = "노말",
+                difficulty = Raid.Difficulty.KR_NORMAL,
                 clearCheck = phaseOneCC,
                 moreCheck = phaseOneSMC,
                 onClearClicked = { onOnePhaseClearCheckBoxChecked(it) },
@@ -70,7 +71,7 @@ fun TwoPhaseNoHard(
 
             OneDifficultyPhase(
                 phase = 2,
-                difficulty = "노말",
+                difficulty = Raid.Difficulty.KR_NORMAL,
                 clearCheck = phaseTwoCC,
                 moreCheck = phaseTwoSMC,
                 onClearClicked = { onTwoPhaseClearCheckBoxChecked(it) },
@@ -121,7 +122,7 @@ fun ThreePhaseNoHard(
         phaseCheckUI = {
             OneDifficultyPhase(
                 phase = 1,
-                difficulty = "노말",
+                difficulty = Raid.Difficulty.KR_NORMAL,
                 clearCheck = phaseOneCC,
                 moreCheck = phaseOneSMC,
                 onClearClicked = { onOnePhaseClearCheckBoxChecked(it) },
@@ -130,7 +131,7 @@ fun ThreePhaseNoHard(
 
             OneDifficultyPhase(
                 phase = 2,
-                difficulty = "노말",
+                difficulty = Raid.Difficulty.KR_NORMAL,
                 clearCheck = phaseTwoCC,
                 moreCheck = phaseTwoSMC,
                 onClearClicked = { onTwoPhaseClearCheckBoxChecked(it) },
@@ -139,7 +140,7 @@ fun ThreePhaseNoHard(
 
             OneDifficultyPhase(
                 phase = 3,
-                difficulty = "노말",
+                difficulty = Raid.Difficulty.KR_NORMAL,
                 clearCheck = phaseThreeCC,
                 moreCheck = phaseThreeSMC,
                 onClearClicked = { onThreePhaseClearCheckBoxChecked(it) },
@@ -233,7 +234,7 @@ fun FourPhaseLastHard(
 
             OneDifficultyPhase(
                 phase = 4,
-                difficulty = "하드",
+                difficulty = Raid.Difficulty.KR_HARD,
                 clearCheck = phaseFourCC,
                 moreCheck = phaseFourSMC,
                 onClearClicked = { onFourPhaseClearCheckBoxChecked(it) },

@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.constants.Labels
+import com.hongmyeoun.goldcalc.model.constants.Raid
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCard
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckBox
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckLists
@@ -33,14 +34,14 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
 
     RaidCheckLists(maxItem = 2) { modifier ->
         RaidCheckBox(
-            name = "카양겔",
+            name = Raid.Name.KAYANGEL,
             modifier = modifier,
             checked = viewModel.kayangelCheck,
             onCheckedChange = { viewModel.onKayangelCheck() }
         )
 
         RaidCheckBox(
-            name = "상아탑",
+            name = Raid.Name.IVORY_TOWER,
             modifier = modifier,
             checked = viewModel.ivoryCheck,
             onCheckedChange = { viewModel.onIvoryCheck() }

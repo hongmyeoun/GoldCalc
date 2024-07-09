@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.constants.Labels
+import com.hongmyeoun.goldcalc.model.constants.Raid
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCard
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckBox
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckLists
@@ -62,42 +63,42 @@ fun Command(
 
     RaidCheckLists(maxItem = 3) { modifier ->
         RaidCheckBox(
-            name = "발탄",
+            name = Raid.Name.VALTAN,
             modifier = modifier,
             checked = viewModel.valtanCheck,
             onCheckedChange = { viewModel.onValtanCheck() }
         )
 
         RaidCheckBox(
-            name = "비아",
+            name = Raid.Name.BIACKISS_SHORT,
             modifier = modifier,
             checked = viewModel.biaCheck,
             onCheckedChange = { viewModel.onBiaCheck() }
         )
 
         RaidCheckBox(
-            name = "쿠크",
+            name = Raid.Name.KOUKU_SATON_SHORT,
             modifier = modifier,
             checked = viewModel.koukuCheck,
             onCheckedChange = { viewModel.onKoukuCheck() }
         )
 
         RaidCheckBox(
-            name = "아브",
+            name = Raid.Name.ABRELSHUD_SHORT,
             modifier = modifier,
             checked = viewModel.abreCheck,
             onCheckedChange = { viewModel.onAbreCheck() }
         )
 
         RaidCheckBox(
-            name = "일리",
+            name = Raid.Name.ILLIAKAN_SHORT,
             modifier = modifier,
             checked = viewModel.illiCheck,
             onCheckedChange = { viewModel.onIlliCheck() }
         )
 
         RaidCheckBox(
-            name = "카멘",
+            name = Raid.Name.KAMEN,
             modifier = modifier,
             checked = viewModel.kamenCheck,
             onCheckedChange = { viewModel.onKamenCheck() }

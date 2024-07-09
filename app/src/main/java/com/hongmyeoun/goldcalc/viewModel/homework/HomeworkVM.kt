@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hongmyeoun.goldcalc.model.constants.Raid
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
@@ -121,7 +122,7 @@ class HomeworkVM @Inject constructor(
         expanded = false
     }
 
-    val headerTitle = listOf("군단장", "어비스 던전", "카제로스", "에픽", "기타")
+    val headerTitle = Raid.Name.RAID_LIST
     var selectedTab by mutableStateOf(0)
     fun moveHeader(index: Int) {
         selectedTab = index

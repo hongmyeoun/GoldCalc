@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
+import com.hongmyeoun.goldcalc.model.constants.Raid
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.homework.AbyssDungeonVM
@@ -121,7 +122,7 @@ private fun Script(cbVM: CommandBossVM) {
             .padding(16.dp)
             .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
     ) {
-        RaidTitle(title = "군단장 레이드", totalGold = cbVM.totalGold)
+        RaidTitle(title = Raid.Name.COMMAND_RAID, totalGold = cbVM.totalGold)
         Divider()
 
         Row(
@@ -130,7 +131,7 @@ private fun Script(cbVM: CommandBossVM) {
             PhaseInfo(
                 isCheck = cbVM.valtanCheck,
                 modifier = Modifier.weight(1f),
-                raidName = "발탄",
+                raidName = Raid.Name.VALTAN,
                 phaseInfo = {
                     Text(
                         text = "1관문 ${cbVM.valtan.onePhase.level} : ${cbVM.valtan.onePhase.totalGold.formatWithCommas()} G", color = Color.White
@@ -141,7 +142,7 @@ private fun Script(cbVM: CommandBossVM) {
             PhaseInfo(
                 isCheck = cbVM.biaCheck,
                 modifier = Modifier.weight(1f),
-                raidName = "비아키스",
+                raidName = Raid.Name.BIACKISS,
                 phaseInfo = {
                     Text(text = "1관문 ${cbVM.valtan.onePhase.level} : ${cbVM.valtan.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
                     Text(text = "2관문 ${cbVM.valtan.twoPhase.level} : ${cbVM.valtan.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
@@ -155,7 +156,7 @@ private fun Script(cbVM: CommandBossVM) {
             PhaseInfo(
                 isCheck = cbVM.koukuCheck,
                 modifier = Modifier.weight(1f),
-                raidName = "쿠크세이튼",
+                raidName = Raid.Name.KOUKU_SATON,
                 phaseInfo = {
                     Text(
                         text = "1관문 ${cbVM.koukuSaton.onePhase.level} : ${cbVM.koukuSaton.onePhase.totalGold.formatWithCommas()} G",
@@ -174,7 +175,7 @@ private fun Script(cbVM: CommandBossVM) {
             PhaseInfo(
                 isCheck = cbVM.abreCheck,
                 modifier = Modifier.weight(1f),
-                raidName = "아브렐슈드",
+                raidName = Raid.Name.ABRELSHUD,
                 phaseInfo = {
                     Text(
                         text = "1관문 ${cbVM.abrelshud.onePhase.level} : ${cbVM.abrelshud.onePhase.totalGold.formatWithCommas()} G",
@@ -202,7 +203,7 @@ private fun Script(cbVM: CommandBossVM) {
             PhaseInfo(
                 isCheck = cbVM.illiCheck,
                 modifier = Modifier.weight(1f),
-                raidName = "일리아칸",
+                raidName = Raid.Name.ILLIAKAN,
                 phaseInfo = {
                     Text(text = "1관문 ${cbVM.illiakan.onePhase.level} : ${cbVM.illiakan.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
                     Text(text = "2관문 ${cbVM.illiakan.twoPhase.level} : ${cbVM.illiakan.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
@@ -215,7 +216,7 @@ private fun Script(cbVM: CommandBossVM) {
             PhaseInfo(
                 isCheck = cbVM.kamenCheck,
                 modifier = Modifier.weight(1f),
-                raidName = "카멘",
+                raidName = Raid.Name.KAMEN,
                 phaseInfo = {
                     Text(text = "1관문 ${cbVM.kamen.onePhase.level} : ${cbVM.kamen.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
                     Text(text = "2관문 ${cbVM.kamen.twoPhase.level} : ${cbVM.kamen.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
@@ -234,7 +235,7 @@ private fun Script(adVM: AbyssDungeonVM) {
             .padding(16.dp)
             .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
     ) {
-        RaidTitle(title = "어비스 던전", totalGold = adVM.totalGold)
+        RaidTitle(title = Raid.Name.ABYSS_DUNGEON, totalGold = adVM.totalGold)
         Divider()
 
         Row(
@@ -243,7 +244,7 @@ private fun Script(adVM: AbyssDungeonVM) {
             PhaseInfo(
                 isCheck = adVM.kayangelCheck,
                 modifier = Modifier.weight(1f),
-                raidName = "카양겔",
+                raidName = Raid.Name.KAYANGEL,
                 phaseInfo = {
                     Text(text = "1관문 ${adVM.kayangel.onePhase.level} : ${adVM.kayangel.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
                     Text(text = "2관문 ${adVM.kayangel.twoPhase.level} : ${adVM.kayangel.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
@@ -256,7 +257,7 @@ private fun Script(adVM: AbyssDungeonVM) {
             PhaseInfo(
                 isCheck = adVM.ivoryCheck,
                 modifier = Modifier.weight(1f),
-                raidName = "혼돈의 상아탑",
+                raidName = Raid.Name.IVORY_TOWER_LONG,
                 phaseInfo = {
                     Text(
                         text = "1관문 ${adVM.ivoryTower.onePhase.level} : ${adVM.ivoryTower.onePhase.totalGold.formatWithCommas()} G",
@@ -283,7 +284,7 @@ private fun Script(kzVM: KazerothRaidVM) {
             .padding(16.dp)
             .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
     ) {
-        RaidTitle(title = "카제로스 레이드", totalGold = kzVM.totalGold)
+        RaidTitle(title = Raid.Name.KAZEROTH_RAID, totalGold = kzVM.totalGold)
         Divider()
 
         Row(
@@ -292,7 +293,7 @@ private fun Script(kzVM: KazerothRaidVM) {
             PhaseInfo(
                 isCheck = kzVM.echiCheck,
                 modifier = Modifier.weight(1f),
-                raidName = "에키드나",
+                raidName = Raid.Name.ECHIDNA,
                 phaseInfo = {
                     Text(text = "1관문 ${kzVM.echidna.onePhase.level} : ${kzVM.echidna.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
                     Text(text = "2관문 ${kzVM.echidna.twoPhase.level} : ${kzVM.echidna.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
@@ -309,7 +310,7 @@ private fun Script(epVM: EpicRaidVM) {
             .padding(16.dp)
             .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
     ) {
-        RaidTitle(title = "에픽 레이드", totalGold = epVM.totalGold)
+        RaidTitle(title = Raid.Name.EPIC_RAID, totalGold = epVM.totalGold)
         Divider()
 
         Row(
@@ -318,7 +319,7 @@ private fun Script(epVM: EpicRaidVM) {
             PhaseInfo(
                 isCheck = epVM.beheCheck,
                 modifier = Modifier.weight(1f),
-                raidName = "베히모스",
+                raidName = Raid.Name.BEHEMOTH,
                 phaseInfo = {
                     Text(text = "1관문 ${epVM.behemoth.onePhase.level} : ${epVM.behemoth.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
                     Text(text = "2관문 ${epVM.behemoth.twoPhase.level} : ${epVM.behemoth.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)

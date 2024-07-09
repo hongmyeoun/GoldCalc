@@ -3,6 +3,7 @@ package com.hongmyeoun.goldcalc.model.roomDB.character
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.hongmyeoun.goldcalc.model.constants.Raid
 
 @Entity
 data class Character(
@@ -67,49 +68,49 @@ data class RaidPhaseInfo(
 data class CheckList(
     @ColumnInfo("Command") val command: List<RaidList> = listOf(
         RaidList(
-            name = "발탄",
+            name = Raid.Name.VALTAN,
             phases = listOf(Phase(), Phase())
         ),
         RaidList(
-            name = "비아키스",
+            name = Raid.Name.BIACKISS,
             phases = listOf(Phase(), Phase())
         ),
         RaidList(
-            name = "쿠크세이튼",
+            name = Raid.Name.KOUKU_SATON,
             phases = listOf(Phase(), Phase(), Phase())
         ),
         RaidList(
-            name = "아브렐슈드",
+            name = Raid.Name.ABRELSHUD,
             phases = listOf(Phase(), Phase(), Phase(), Phase())
         ),
         RaidList(
-            name = "일리아칸",
+            name = Raid.Name.ILLIAKAN,
             phases = listOf(Phase(), Phase(), Phase())
         ),
         RaidList(
-            name = "카멘",
-            phases = listOf(Phase(), Phase(), Phase(), Phase(difficulty = "하드"))
+            name = Raid.Name.KAMEN,
+            phases = listOf(Phase(), Phase(), Phase(), Phase(difficulty = Raid.Difficulty.KR_HARD))
         ),
     ),
     @ColumnInfo("AbyssDungeon") val abyssDungeon: List<RaidList> = listOf(
         RaidList(
-            name = "카양겔",
+            name = Raid.Name.KAYANGEL,
             phases = listOf(Phase(), Phase(), Phase())
         ),
         RaidList(
-            name = "상아탑",
+            name = Raid.Name.IVORY_TOWER,
             phases = listOf(Phase(), Phase(), Phase())
         ),
     ),
     @ColumnInfo("Kazeroth") val kazeroth: List<RaidList> = listOf(
         RaidList(
-            name = "에키드나",
+            name = Raid.Name.ECHIDNA,
             phases = listOf(Phase(), Phase())
         )
     ),
     @ColumnInfo("Epic") val epic: List<RaidList> = listOf(
         RaidList(
-            name = "베히모스",
+            name = Raid.Name.BEHEMOTH,
             phases = listOf(Phase(), Phase())
         )
     )
@@ -118,14 +119,14 @@ data class CheckList(
 data class RaidList(
     val name: String,
     val phases: List<Phase> = listOf(
-        Phase(difficulty = "노말", isClear = false, mCheck = false)
+        Phase(difficulty = Raid.Difficulty.KR_NORMAL, isClear = false, mCheck = false)
     ),
     @ColumnInfo("isCheck") val isCheck: Boolean = true,
 
 )
 
 data class Phase(
-    @ColumnInfo("difficulty") val difficulty: String = "노말",
+    @ColumnInfo("difficulty") val difficulty: String = Raid.Difficulty.KR_NORMAL,
     @ColumnInfo("isClear") val isClear: Boolean = false,
     @ColumnInfo("mCheck") val mCheck: Boolean = false,
 )

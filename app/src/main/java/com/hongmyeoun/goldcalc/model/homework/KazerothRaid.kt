@@ -1,5 +1,6 @@
 package com.hongmyeoun.goldcalc.model.homework
 
+import com.hongmyeoun.goldcalc.model.constants.Raid
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 
 enum class KazerothRaid(
@@ -8,14 +9,14 @@ enum class KazerothRaid(
     val clearGold: Map<String, List<Int>>
 ) {
     ECHIDNA(
-        boss = "에키드나",
+        boss = Raid.Name.ECHIDNA,
         seeMoreGold = mapOf(
-            "normal" to listOf(2200, 3400),
-            "hard" to listOf(2800, 4100)
+            Raid.Difficulty.NORMAL to listOf(2200, 3400),
+            Raid.Difficulty.HARD to listOf(2800, 4100)
         ),
         clearGold = mapOf(
-            "normal" to listOf(5000, 9500),
-            "hard" to listOf(6000, 12500)
+            Raid.Difficulty.NORMAL to listOf(5000, 9500),
+            Raid.Difficulty.HARD to listOf(6000, 12500)
         )
     );
 
@@ -36,14 +37,14 @@ class KazerothRaidModel(character: Character?) {
 
 class Echidna(character: Character?) {
     val name = KazerothRaid.ECHIDNA.boss
-    private val seeMoreGold = KazerothRaid.ECHIDNA.getBossInfo("normal").first + KazerothRaid.ECHIDNA.getBossInfo("hard").first
-    private val clearGold = KazerothRaid.ECHIDNA.getBossInfo("normal").second + KazerothRaid.ECHIDNA.getBossInfo("hard").second
+    private val seeMoreGold = KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.NORMAL).first + KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.HARD).first
+    private val clearGold = KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.NORMAL).second + KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.HARD).second
 
     var isChecked = character?.checkList?.kazeroth?.get(0)?.isCheck?:false
 
     private val getOnePhase = character?.checkList?.kazeroth?.get(0)?.phases?.get(0)
 
-    private val onePhaseDifficulty = getOnePhase?.difficulty?:"노말"
+    private val onePhaseDifficulty = getOnePhase?.difficulty?:Raid.Difficulty.KR_NORMAL
     private val onePhaseIsClear = getOnePhase?.isClear?:false
     private val onePhaseMCheck = getOnePhase?.mCheck?:false
 
@@ -60,7 +61,7 @@ class Echidna(character: Character?) {
 
     private val getTwoPhase = character?.checkList?.kazeroth?.get(0)?.phases?.get(1)
 
-    private val twoPhaseDifficulty = getTwoPhase?.difficulty?:"노말"
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty?:Raid.Difficulty.KR_NORMAL
     private val twoPhaseIsClear = getTwoPhase?.isClear?:false
     private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
 

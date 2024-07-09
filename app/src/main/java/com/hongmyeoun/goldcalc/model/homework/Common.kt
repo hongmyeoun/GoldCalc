@@ -1,5 +1,7 @@
 package com.hongmyeoun.goldcalc.model.homework
 
+import com.hongmyeoun.goldcalc.model.constants.Raid
+
 class PhaseInfo(
     difficulty: String,
     isClearCheck: Boolean,
@@ -87,32 +89,32 @@ class PhaseInfo(
 object GoldCalcFunction {
     fun levelDetector(level: String, noHardWithSolo: Boolean): String {
         return if (noHardWithSolo) {
-            if (level == "노말") {
-                "솔로잉"
+            if (level == Raid.Difficulty.KR_NORMAL) {
+                Raid.Difficulty.KR_SOLO
             } else {
-                "노말"
+                Raid.Difficulty.KR_NORMAL
             }
         } else {
             when (level) {
-                "노말" -> {
-                    "하드"
+                Raid.Difficulty.KR_NORMAL -> {
+                    Raid.Difficulty.KR_HARD
                 }
-                "하드" -> {
-                    "솔로잉"
+                Raid.Difficulty.KR_HARD -> {
+                    Raid.Difficulty.KR_SOLO
                 }
                 else -> {
-                    "노말"
+                    Raid.Difficulty.KR_NORMAL
                 }
             }
         }
     }
 
     fun smgCalculator(isChecked: Boolean, level: String, seeMoreGoldN: Int, seeMoreGoldH: Int, seeMoreGoldS: Int?): Int {
-        return if (isChecked && level == "노말") seeMoreGoldN else if (isChecked && level == "하드") seeMoreGoldH else if (isChecked && seeMoreGoldS != null && level == "솔로잉") seeMoreGoldS else 0
+        return if (isChecked && level == Raid.Difficulty.KR_NORMAL) seeMoreGoldN else if (isChecked && level == Raid.Difficulty.KR_HARD) seeMoreGoldH else if (isChecked && seeMoreGoldS != null && level == Raid.Difficulty.KR_SOLO) seeMoreGoldS else 0
     }
 
     fun cgCalculator(isChecked: Boolean, level: String, clearGoldN: Int, clearGoldH: Int, clearGoldS: Int?): Int {
-        return if (isChecked && level == "노말") clearGoldN else if (isChecked && level == "하드") clearGoldH else if (isChecked && clearGoldS != null && level == "솔로잉") clearGoldS else 0
+        return if (isChecked && level == Raid.Difficulty.KR_NORMAL) clearGoldN else if (isChecked && level == Raid.Difficulty.KR_HARD) clearGoldH else if (isChecked && clearGoldS != null && level == Raid.Difficulty.KR_SOLO) clearGoldS else 0
     }
 
     fun totalCGCalculator(cg: Int, smg: Int): Int {
