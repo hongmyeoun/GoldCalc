@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.hongmyeoun.goldcalc.model.constants.ButtonText
+import com.hongmyeoun.goldcalc.model.constants.Search
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
@@ -36,10 +37,16 @@ fun WarningDialog(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text = title, style = titleTextStyle())
+            Text(
+                text = title,
+                style = titleTextStyle()
+            )
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(text = "검색 기록에서 삭제하시겠습니까?", color = Color.White)
+            Text(
+                text = Search.DELETE_WARN,
+                color = Color.White
+            )
             Spacer(modifier = Modifier.height(20.dp))
 
             Divider(thickness = 0.5.dp)
@@ -79,7 +86,6 @@ fun WarningDialog(
                         color = Color.Red
                     )
                 }
-
             }
         }
     }

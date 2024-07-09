@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.model.constants.Search
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterInfo
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.navigation.Screen
@@ -48,7 +49,7 @@ fun SearchResults(
         state = scrollState
     ) {
         if (characterList.isNotEmpty()) {
-            stickyHeader { HeaderText("검색 결과") }
+            stickyHeader { HeaderText(Search.RESULT) }
             item {
                 val firstCharacter = characterList[0]
                 ResultItem(
@@ -60,7 +61,7 @@ fun SearchResults(
             }
         }
         if (characterList.size >= 2) {
-            stickyHeader { HeaderText("같은 계정내 캐릭터 (${characterList.size - 1})") }
+            stickyHeader { HeaderText("${Search.SAME_ACCOUNT_CHAR} (${characterList.size - 1})") }
             items(characterList.drop(1), key = { item -> item.characterName }) {
                 ResultItem(
                     character = it,

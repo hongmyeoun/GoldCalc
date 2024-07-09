@@ -35,6 +35,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.constants.Search
 import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
@@ -108,7 +109,7 @@ private fun PlaceHolder(isFocus: Boolean) {
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "캐릭터 검색",
+                text = Search.PLACE_HOLDER,
                 color = Color.LightGray,
             )
             Spacer(modifier = Modifier.width(4.dp))
@@ -116,7 +117,7 @@ private fun PlaceHolder(isFocus: Boolean) {
         }
     } else {
         Text(
-            text = "캐릭터 검색",
+            text = Search.PLACE_HOLDER,
             color = Color.LightGray,
         )
     }
