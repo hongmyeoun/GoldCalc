@@ -15,6 +15,7 @@ object EquipmentConsts {
     val ACCESSORY_LIST = listOf(NECKLACE, EARRINGS, RING)
 
     const val ABILITY_STONE = "어빌리티 스톤"
+    const val ABILITY_STONE_SHORT = "스톤"
 
     const val BRACELET = "팔찌"
 

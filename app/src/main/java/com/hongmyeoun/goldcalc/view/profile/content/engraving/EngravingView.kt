@@ -25,13 +25,14 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.model.constants.Profile
 import com.hongmyeoun.goldcalc.model.profile.engravings.SkillEngravings
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
+import com.hongmyeoun.goldcalc.view.common.noRippleClickable
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
-import com.hongmyeoun.goldcalc.view.common.noRippleClickable
 import com.hongmyeoun.goldcalc.viewModel.profile.EngravingVM
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -113,7 +114,7 @@ fun Description(
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = "각인 상세",
+                    text = "${Profile.ENGRAVING} ${Profile.Detail}",
                     style = titleTextStyle()
                 )
 

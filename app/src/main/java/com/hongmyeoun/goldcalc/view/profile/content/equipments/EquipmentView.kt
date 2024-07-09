@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.hongmyeoun.goldcalc.model.constants.Profile
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.view.common.TextChip
@@ -24,8 +25,8 @@ import com.hongmyeoun.goldcalc.view.profile.content.equipments.detail.AccessoryD
 import com.hongmyeoun.goldcalc.view.profile.content.equipments.detail.BraceletDetail
 import com.hongmyeoun.goldcalc.view.profile.content.equipments.equipment.Equipment
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
-import com.hongmyeoun.goldcalc.viewModel.profile.ProfileVM
 import com.hongmyeoun.goldcalc.viewModel.profile.EquipmentVM
+import com.hongmyeoun.goldcalc.viewModel.profile.ProfileVM
 
 @Composable
 fun Equipments(
@@ -72,7 +73,7 @@ private fun EquipmentAndAccessory(
     viewModel: EquipmentVM
 ) {
     Text(
-        text = "장비",
+        text = Profile.EQUIPMENT,
         style = titleTextStyle(),
     )
     Spacer(modifier = Modifier.height(4.dp))
@@ -113,10 +114,10 @@ fun Summary(
         }
         Spacer(modifier = Modifier.width(8.dp))
 
-        TextChip(text = "악세 품질 $accessoryQualityAvg")
+        TextChip(text = "${Profile.ACC_QUAL} $accessoryQualityAvg")
         Spacer(modifier = Modifier.width(8.dp))
 
-        TextChip(text = "특성합 $totalCombatStat")
+        TextChip(text = "${Profile.TOTAL_STAT} $totalCombatStat")
     }
     Spacer(modifier = Modifier.height(12.dp))
 }

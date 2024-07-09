@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.hongmyeoun.goldcalc.model.constants.EquipmentConsts
+import com.hongmyeoun.goldcalc.model.constants.Profile
 import com.hongmyeoun.goldcalc.model.profile.equipment.AbilityStone
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
@@ -47,7 +49,7 @@ fun AccessoryDetail(
             horizontalAlignment = Alignment.Start
         ) {
             Text(
-                text = "장신구",
+                text = Profile.ACC,
                 style = titleTextStyle()
             )
 
@@ -101,7 +103,7 @@ private fun DetailUI(
                     style = normalTextStyle(fontSize = 12.sp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                if (accessory.type == "목걸이") {
+                if (accessory.type == EquipmentConsts.NECKLACE) {
                     Text(
                         text = accessory.combatStat2,
                         style = normalTextStyle(fontSize = 12.sp)

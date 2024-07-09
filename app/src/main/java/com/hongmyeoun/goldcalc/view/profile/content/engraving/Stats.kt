@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hongmyeoun.goldcalc.model.constants.EquipmentConsts
+import com.hongmyeoun.goldcalc.model.constants.Profile
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
@@ -89,7 +90,6 @@ fun Stats(
     }
 }
 
-// TODO: STRING
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun Simple(
@@ -168,7 +168,6 @@ private fun Simple(
     }
 }
 
-// TODO: STRING
 @Composable
 fun Details(
     profile: CharacterDetail,
@@ -221,11 +220,11 @@ fun Details(
                             .padding(16.dp)
                     ) {
                         stat.tooltip.forEach { description ->
-                            if (!description.contains("않습니다.")) {
+                            if (!description.contains(Profile.NO)) {
                                 Row(verticalAlignment = Alignment.Top) {
                                     Text(
                                         modifier = Modifier.padding(end = 4.dp),
-                                        text = "·",
+                                        text = Profile.MIDDLE_DOT,
                                         style = normalTextStyle(fontSize = 12.sp)
                                     )
 

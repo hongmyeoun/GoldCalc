@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.hongmyeoun.goldcalc.model.constants.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.profile.equipment.AbilityStone
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
@@ -72,7 +73,7 @@ fun AccessoryUI(
                         text = accessory.combatStat1,
                         style = normalTextStyle()
                     )
-                    if (accessory.combatStat2.isNotEmpty() && accessory.type == "목걸이") {
+                    if (accessory.combatStat2.isNotEmpty() && accessory.type == EquipmentConsts.NECKLACE) {
                         Text(
                             text = accessory.combatStat2,
                             style = normalTextStyle()

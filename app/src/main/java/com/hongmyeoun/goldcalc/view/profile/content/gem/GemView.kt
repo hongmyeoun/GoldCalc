@@ -13,11 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hongmyeoun.goldcalc.model.constants.Profile
 import com.hongmyeoun.goldcalc.model.profile.gem.Gem
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.view.profile.Title
-import com.hongmyeoun.goldcalc.viewModel.profile.ProfileVM
 import com.hongmyeoun.goldcalc.viewModel.profile.GemVM
+import com.hongmyeoun.goldcalc.viewModel.profile.ProfileVM
 
 @Composable
 fun Gem(
@@ -45,7 +46,7 @@ fun GemView(
             .padding(8.dp)
     ) {
         Title(
-            title = "보석",
+            title = Profile.GEM,
             onClick = { viewModel.onDetailClicked() }
         )
 
