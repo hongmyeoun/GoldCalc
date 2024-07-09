@@ -33,6 +33,7 @@ class TooltipStrings {
         const val STEP = "단계"
         const val ABILITY_STONE_BONUS = "세공 단계 보너스"
         const val ABILITY_STONE_ENGRAVING = "무작위 각인 효과"
+        const val GEM_EFFECTS = "보석 효과"
     }
 
     object SubStringAfter {
