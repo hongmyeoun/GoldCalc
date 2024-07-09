@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.hongmyeoun.goldcalc.model.constants.NavigationKey
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.view.home.HomeView
 import com.hongmyeoun.goldcalc.view.homework.HomeworkView
@@ -29,7 +30,7 @@ fun NavControl(characterRepository: CharacterRepository) {
             )
         }
         composable(Screen.Homework.route) {
-            val charName = it.arguments?.getString("charName") ?: "ERROR"
+            val charName = it.arguments?.getString(NavigationKey.KEY) ?: NavigationKey.KEY_ERROR
             HomeworkView(
                 navController = navController,
                 characterRepository = characterRepository,
@@ -40,7 +41,7 @@ fun NavControl(characterRepository: CharacterRepository) {
             SearchView(navController)
         }
         composable(Screen.Profile.route) {
-            val charName = it.arguments?.getString("charName")!!
+            val charName = it.arguments?.getString(NavigationKey.KEY)!!
 
             ProfileView(charName, navController)
         }
