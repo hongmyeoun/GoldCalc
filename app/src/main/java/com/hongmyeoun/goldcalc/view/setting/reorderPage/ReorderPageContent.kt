@@ -210,6 +210,5 @@ private fun CharacterListItem(
                 contentDescription = "Reorder"
             )
         }
-
     }
 }

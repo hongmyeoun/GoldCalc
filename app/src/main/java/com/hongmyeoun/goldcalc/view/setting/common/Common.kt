@@ -24,6 +24,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hongmyeoun.goldcalc.model.constants.ButtonText
+import com.hongmyeoun.goldcalc.model.constants.Setting
 import com.hongmyeoun.goldcalc.ui.theme.LightBlue
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.viewModel.setting.SettingVM
@@ -58,7 +59,7 @@ fun Dialog(
                             color = Color.White
                         )
                     ) {
-                        append("를 ")
+                        append(Setting.DIALOG_MIDDLE_TEXT)
                     }
 
                     withStyle(
@@ -75,7 +76,7 @@ fun Dialog(
                             color = Color.White
                         )
                     ) {
-                        append(" 하시겠습니까?")
+                        append(Setting.DIALOG_LAST_TEXT)
                     }
 
                 },
@@ -121,7 +122,6 @@ fun Dialog(
                         color = Color.Red
                     )
                 }
-
             }
         }
     }

@@ -19,6 +19,9 @@ import androidx.compose.ui.unit.sp
 import com.hongmyeoun.goldcalc.BuildConfig
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.constants.ButtonText
+import com.hongmyeoun.goldcalc.model.constants.Home
+import com.hongmyeoun.goldcalc.model.constants.Profile
+import com.hongmyeoun.goldcalc.model.constants.Setting
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.setting.common.Dialog
 import com.hongmyeoun.goldcalc.viewModel.setting.SettingVM
@@ -37,7 +40,7 @@ fun SettingContent(
 
     if (showResetDialog) {
         Dialog(
-            title = "숙제",
+            title = Home.HW,
             action = ButtonText.INIT,
             viewModel = viewModel,
             onConfirm = { viewModel.onHomeworkReset() }
@@ -46,7 +49,7 @@ fun SettingContent(
 
     if (showDeleteCharListDialog) {
         Dialog(
-            title = "캐릭터",
+            title = Profile.CHARACTER,
             action = ButtonText.DELETE_ALL,
             viewModel = viewModel,
             onConfirm = { viewModel.onDeleteAllCharList() }
@@ -55,7 +58,7 @@ fun SettingContent(
 
     if (showDeleteHistoriesDialog) {
         Dialog(
-            title = "검색기록",
+            title = Setting.SEARCH_HISTORY,
             action = ButtonText.DELETE_ALL,
             viewModel = viewModel,
             onConfirm = { viewModel.onDeleteAllHistories() }
@@ -70,16 +73,16 @@ fun SettingContent(
     ) {
         item {
             ItemBox(
-                title = "캐릭터"
+                title = Profile.CHARACTER
             ) {
                 Item(
-                    itemTitle = "숙제 초기화",
+                    itemTitle = "${Home.HW} ${ButtonText.INIT}",
                     icon = R.drawable.baseline_settings_backup_restore_24,
                     onClicked = { viewModel.showResetDialog() }
                 )
 
                 Item(
-                    itemTitle = "캐릭터 순서 변경",
+                    itemTitle = Setting.CHARACTER_REORDER,
                     icon = R.drawable.baseline_sort,
                     onClicked = { viewModel.openReorderPage() }
                 )
@@ -88,16 +91,16 @@ fun SettingContent(
 
         item {
             ItemBox(
-                title = "삭제"
+                title = ButtonText.DELETE
             ) {
                 Item(
-                    itemTitle = "캐릭터",
+                    itemTitle = Profile.CHARACTER,
                     icon = R.drawable.baseline_delete_sweep,
                     onClicked = { viewModel.showDeleteCharListDialog() }
                 )
 
                 Item(
-                    itemTitle = "검색기록",
+                    itemTitle = Setting.SEARCH_HISTORY,
                     icon = R.drawable.baseline_manage_history,
                     onClicked = { viewModel.showDeleteHistoryDialog() }
                 )
@@ -106,7 +109,7 @@ fun SettingContent(
 
         item {
             ItemBox(
-                title = "앱 설정"
+                title = Setting.APP_SETTING
             ) {
                 CacheClear(
                     icon = R.drawable.outline_cleaning_services,
@@ -115,7 +118,7 @@ fun SettingContent(
                 )
 
                 Item(
-                    itemTitle = "업데이트 확인",
+                    itemTitle = Setting.UPDATE_CHECK,
                     icon = R.drawable.outline_restore,
                     onClicked = {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + context.packageName))
@@ -127,7 +130,7 @@ fun SettingContent(
 
         item {
             ItemBox(
-                title = "앱 버전"
+                title = Setting.VERSION
             ) {
                 Text(
                     modifier = Modifier
