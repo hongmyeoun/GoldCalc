@@ -40,10 +40,10 @@ class GemVM: ViewModel() {
 
     fun getItemBG(grade: String): Brush {
         val itemBG = when (grade) {
-            "유물" -> RelicBG
-            "전설" -> LegendaryBG
-            "영웅" -> EpicBG
-            "희귀" -> RareBG
+            EquipmentConsts.GRADE_RELIC -> RelicBG
+            EquipmentConsts.GRADE_LEGENDARY -> LegendaryBG
+            EquipmentConsts.GRADE_EPIC -> EpicBG
+            EquipmentConsts.GRADE_RARE -> RareBG
             else -> UncommonBG
         }
         return itemBG
