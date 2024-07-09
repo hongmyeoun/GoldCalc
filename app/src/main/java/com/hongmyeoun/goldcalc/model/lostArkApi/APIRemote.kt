@@ -3,6 +3,7 @@ package com.hongmyeoun.goldcalc.model.lostArkApi
 import android.content.Context
 import androidx.core.content.ContextCompat
 import com.google.gson.GsonBuilder
+import com.hongmyeoun.goldcalc.BuildConfig
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.profile.card.CardDetail
 import com.hongmyeoun.goldcalc.model.profile.card.CardEffects
@@ -23,13 +24,15 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
 object APIRemote {
+    val API_KEY = BuildConfig.API_KEY
+
     suspend fun getCharacter(context: Context, characterName: String): Pair<List<CharacterInfo>?, String?> {
         return withContext(Dispatchers.IO) {
             val gson = GsonBuilder().setLenient().create()
             val retrofit = Retrofit.Builder()
                 .baseUrl(ContextCompat.getString(context, R.string.lost_ark_url))
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(authorizationHeader(context))
+                .client(authorizationHeader())
                 .build()
 
             val lostArkApiService = retrofit.create(LostArkApiService::class.java)
@@ -67,7 +70,7 @@ object APIRemote {
             val retrofit = Retrofit.Builder()
                 .baseUrl(ContextCompat.getString(context, R.string.lost_ark_url))
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(authorizationHeader(context))
+                .client(authorizationHeader())
                 .build()
 
             val lostArkApiService = retrofit.create(LostArkApiService::class.java)
@@ -106,7 +109,7 @@ object APIRemote {
             val retrofit = Retrofit.Builder()
                 .baseUrl(ContextCompat.getString(context, R.string.lost_ark_url))
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(authorizationHeader(context))
+                .client(authorizationHeader())
                 .build()
 
             val lostArkApiService = retrofit.create(LostArkApiService::class.java)
@@ -134,7 +137,7 @@ object APIRemote {
             val retrofit = Retrofit.Builder()
                 .baseUrl(ContextCompat.getString(context, R.string.lost_ark_url))
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(authorizationHeader(context))
+                .client(authorizationHeader())
                 .build()
 
             val lostArkApiService = retrofit.create(LostArkApiService::class.java)
@@ -163,7 +166,7 @@ object APIRemote {
             val retrofit = Retrofit.Builder()
                 .baseUrl(ContextCompat.getString(context, R.string.lost_ark_url))
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(authorizationHeader(context))
+                .client(authorizationHeader())
                 .build()
 
             val lostArkApiService = retrofit.create(LostArkApiService::class.java)
@@ -193,7 +196,7 @@ object APIRemote {
             val retrofit = Retrofit.Builder()
                 .baseUrl(ContextCompat.getString(context, R.string.lost_ark_url))
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(authorizationHeader(context))
+                .client(authorizationHeader())
                 .build()
 
             val lostArkApiService = retrofit.create(LostArkApiService::class.java)
@@ -222,7 +225,7 @@ object APIRemote {
             val retrofit = Retrofit.Builder()
                 .baseUrl(ContextCompat.getString(context, R.string.lost_ark_url))
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(authorizationHeader(context))
+                .client(authorizationHeader())
                 .build()
 
             val lostArkApiService = retrofit.create(LostArkApiService::class.java)
@@ -246,11 +249,11 @@ object APIRemote {
     }
 
 
-    private fun authorizationHeader(context: Context): OkHttpClient {
+    private fun authorizationHeader(): OkHttpClient {
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor { chain ->
             val request = chain.request().newBuilder()
-                .addHeader("Authorization", ContextCompat.getString(context, R.string.lost_ark_api))
+                .addHeader("Authorization", API_KEY)
                 .build()
             chain.proceed(request)
         }
