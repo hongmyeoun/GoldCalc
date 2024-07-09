@@ -20,13 +20,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.VeryLightGrayTransBG
+import com.hongmyeoun.goldcalc.view.common.TextChip
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleBoldWhite12
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
-import com.hongmyeoun.goldcalc.view.common.TextChip
 
 // 서버이름, 직업
 @Composable
@@ -75,7 +76,7 @@ fun ItemLevel(level: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         GlideImage(
             modifier = Modifier.size(24.dp),
-            model = "https://cdn-lostark.game.onstove.com/efui_iconatlas/tooltip/tooltip_0_12.png",
+            model = NetworkConfig.ITEM_LEVEL_ICON,
             contentScale = ContentScale.FillHeight,
             contentDescription = "아이템 레벨"
         )
