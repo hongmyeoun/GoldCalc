@@ -69,6 +69,7 @@ fun TextField(
             },
         value = characterName,
         onValueChange = { viewModel.onCharacterNameValueChange(it) },
+        maxLines = 1,
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Done
         ),
