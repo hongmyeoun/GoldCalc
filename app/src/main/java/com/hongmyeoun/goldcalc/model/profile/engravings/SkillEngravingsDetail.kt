@@ -1,17 +1,18 @@
 package com.hongmyeoun.goldcalc.model.profile.engravings
 
 import com.google.gson.JsonParser
+import com.hongmyeoun.goldcalc.model.constants.TooltipStrings
 
 class SkillEngravingsDetail(private val skillEngravings: SkillEngravingsAndEffects) {
     fun getEngravingsDetail(): List<SkillEngravings> {
         val engravingMap = skillEngravings.engravings?.associateBy { it?.name }
 
         return skillEngravings.effect.map { effect ->
-            val name = effect.name.substringBefore(" Lv")
+            val name = effect.name.substringBefore(TooltipStrings.SubStringBefore.SPACE_LEVEL)
             val engravingDetail = SkillEngravings(
                 name = name,
                 icon = effect.icon,
-                level = effect.name.substringAfter("Lv. "),
+                level = effect.name.substringAfter(TooltipStrings.SubStringAfter.LEVEL_DOT_SPACE),
                 description = removeHTMLTags(effect.description)
             )
 
@@ -26,11 +27,18 @@ class SkillEngravingsDetail(private val skillEngravings: SkillEngravingsAndEffec
     private fun getAwakenEngravingsPoint(skillEngraving: SkillEngraving): String {
         val tooltip = JsonParser.parseString(skillEngraving.tooltip).asJsonObject
 
-        val awakenPointStr = tooltip.getAsJsonObject("Element_001").getAsJsonObject("value").get("leftText").asString
+        val awakenPointStr = tooltip
+            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_001)
+            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+            .get(TooltipStrings.MemberName.ENGRAVINGS_POINT)
+            .asString
 
-        return awakenPointStr.substringAfter("포인트 ").substringBefore("</FONT>")
+        return awakenPointStr
+            .substringAfter(TooltipStrings.SubStringAfter.POINT_SPACE)
+            .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
     }
 
+    // TODO: HTML TAG 지우기 공통화
     private fun removeHTMLTags(htmlStr: String): String {
         return htmlStr.replace(Regex("<.*?>"), "")
     }

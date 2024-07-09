@@ -2,6 +2,9 @@ package com.hongmyeoun.goldcalc.model.profile.equipment
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import com.hongmyeoun.goldcalc.model.constants.EquipmentConsts
+import com.hongmyeoun.goldcalc.model.constants.TooltipStrings
+import com.hongmyeoun.goldcalc.model.profile.Common
 
 class EquipmentDetail(private val equipments: List<Equipment>) {
     private fun parserEquipmentTooltip(equipment: Equipment): JsonObject {
@@ -13,7 +16,7 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
 
         for (equipment in equipments) {
             when (equipment.type) {
-                "무기", "투구", "상의", "하의", "장갑", "어깨" -> {
+                in EquipmentConsts.EQUIPMENT_LIST -> {
                     val (elixir1Lv, elixir1Op) = getElixirFirstOptionAndLevel(equipment)
                     val (elixir2Lv, elixir2Op) = getElixirSecondOptionAndLevel(equipment)
 
@@ -37,7 +40,7 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                     characterEquipmentList.add(characterEquipment)
                 }
 
-                "목걸이", "귀걸이", "반지" -> {
+                in EquipmentConsts.ACCESSORY_LIST -> {
                     val characterAccessory = CharacterAccessory(
                         type = getEquipmentType(equipment),
                         grade = getEquipmentGrade(equipment),
@@ -53,7 +56,7 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                     characterEquipmentList.add(characterAccessory)
                 }
 
-                "어빌리티 스톤" -> {
+                EquipmentConsts.ABILITY_STONE -> {
                     val (eng1Op, eng1Lv) = getABStoneFirstEngraving(equipment)
                     val (eng2Op, eng2Lv) = getABStoneSecondEngraving(equipment)
                     val (eng3Op, eng3Lv) = getABStoneThirdEngraving(equipment)
@@ -74,7 +77,7 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                     characterEquipmentList.add(abilityStone)
                 }
 
-                "팔찌" -> {
+                EquipmentConsts.BRACELET -> {
                     val (specialEffect, stats, extraStats) = getBraceletEffect(equipment)
                     val bracelet = Bracelet(
                         type = getEquipmentType(equipment),
@@ -88,7 +91,6 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                     characterEquipmentList.add(bracelet)
                 }
             }
-
         }
 
         return characterEquipmentList
@@ -103,21 +105,29 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
     }
 
     private fun getEquipmentUpgradeLevel(equipment: Equipment): String {
-        return equipment.name.split(" ")[0]
+        return equipment.name.split(TooltipStrings.Split.SPACE)[0]
     }
 
     private fun getItemLevel(equipment: Equipment): String {
         val tooltip = parserEquipmentTooltip(equipment)
-        val itemTitleValue = tooltip.getAsJsonObject("Element_001").getAsJsonObject("value")
+        val itemTitleValue = tooltip
+            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_001)
+            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
 
-        return itemTitleValue.get("leftStr2").asString.split(" ")[3]
+        return itemTitleValue
+            .get(TooltipStrings.MemberName.ITEM_LEVEL)
+            .asString
+            .split(TooltipStrings.Split.SPACE)[3]
     }
 
     private fun getItemQuality(equipment: Equipment): Int {
         val tooltip = parserEquipmentTooltip(equipment)
-        val itemTitleValue = tooltip.getAsJsonObject("Element_001").getAsJsonObject("value")
+        val itemTitleValue = tooltip
+            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_001)
+            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
 
-        return itemTitleValue.get("qualityValue").asInt
+        return itemTitleValue
+            .get(TooltipStrings.MemberName.QUALITY).asInt
     }
 
     private fun getItemIcon(equipment: Equipment): String {
@@ -125,106 +135,129 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
     }
 
     private fun getElixirFirstOptionAndLevel(equipment: Equipment): Pair<String, String> {
-        // Tooltip을 JSON 객체로 파싱
-        val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
-        // Element_008부터 Element_010까지 확인
+        val contentStr = elixirContentSTR(equipment)
 
-        for (index in 8..10) {
-            val elementKey = "Element_${String.format("%03d", index)}"
-            if (tooltipJson.has(elementKey)) {
-                val element = tooltipJson.getAsJsonObject(elementKey)
-                if (element.get("type").asString == "IndentStringGroup") {
-                    val value = element.getAsJsonObject("value")
-                    if (value.has("Element_000")) {
-                        val topStr = value.getAsJsonObject("Element_000").get("topStr").asString
-                        if (topStr.contains("엘릭서 효과")) {
-                            val contentStr = value.getAsJsonObject("Element_000").getAsJsonObject("contentStr")
-                            val firstOption = contentStr.getAsJsonObject("Element_000").get("contentStr").asString
+        contentStr?.let {
+            val firstOption = contentStr
+                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
+                .get(TooltipStrings.MemberName.CONTENT).asString
 
-                            val option = firstOption.substringAfter("</FONT> ").substringBefore(" <FONT color='#FFD200'>Lv")
-                            val level = firstOption.substringAfter("<FONT color='#FFD200'>Lv.").substringBeforeLast("</FONT>")
+            val option = firstOption
+                .substringAfter(TooltipStrings.SubStringAfter.FONT_END_SPACE)
+                .substringBefore(TooltipStrings.SubStringBefore.SPACE_FONT_ELIXIR_COLOR_LEVEL)
 
-                            return Pair(level, option)
-                        }
-                    }
-                }
-            }
+            val level = firstOption
+                .substringAfter(TooltipStrings.SubStringAfter.FONT_START_ELIXIR_COLOR_LEVEL_DOT)
+                .substringBeforeLast(TooltipStrings.SubStringBefore.FONT_END)
+
+            return Pair(level, option)
         }
 
         return Pair("", "")
     }
 
     private fun getElixirSecondOptionAndLevel(equipment: Equipment): Pair<String, String> {
-        // Tooltip을 JSON 객체로 파싱
-        val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
-        // Element_008부터 Element_010까지 확인
+        val contentStr = elixirContentSTR(equipment)
 
-        for (index in 8..10) {
-            val elementKey = "Element_${String.format("%03d", index)}"
-            if (tooltipJson.has(elementKey)) {
-                val element = tooltipJson.getAsJsonObject(elementKey)
-                if (element.get("type").asString == "IndentStringGroup") {
-                    val value = element.getAsJsonObject("value")
-                    if (value.has("Element_000")) {
-                        val topStr = value.getAsJsonObject("Element_000").get("topStr").asString
-                        if (topStr.contains("엘릭서 효과")) {
-                            val contentStr = value.getAsJsonObject("Element_000").getAsJsonObject("contentStr")
-                            if (contentStr.has("Element_001")) {
-                                val secondOption = contentStr.getAsJsonObject("Element_001").get("contentStr").asString
+        if (contentStr != null && contentStr.has(TooltipStrings.MemberName.ELEMENT_001)) {
+            val secondOption = contentStr
+                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_001)
+                .get(TooltipStrings.MemberName.CONTENT).asString
 
-                                val option = secondOption.substringAfter("</FONT> ").substringBefore(" <FONT color='#FFD200'>Lv")
-                                val level = secondOption.substringAfter("<FONT color='#FFD200'>Lv.").substringBeforeLast("</FONT>")
+            val option = secondOption
+                .substringAfter(TooltipStrings.SubStringAfter.FONT_END_SPACE)
+                .substringBefore(TooltipStrings.SubStringBefore.SPACE_FONT_ELIXIR_COLOR_LEVEL)
 
-                                return Pair(level, option)
-                            }
-                        }
-                    }
-                }
-            }
+            val level = secondOption
+                .substringAfter(TooltipStrings.SubStringAfter.FONT_START_ELIXIR_COLOR_LEVEL_DOT)
+                .substringBeforeLast(TooltipStrings.SubStringBefore.FONT_END)
+
+            return Pair(level, option)
         }
 
         return Pair("", "")
     }
 
-    private fun getTranscendenceLevel(equipment: Equipment): String {
+    private fun elixirContentSTR(equipment: Equipment): JsonObject? {
         val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
 
-        for (index in 7..10) {
-            val elementKey = "Element_${String.format("%03d", index)}"
+        for (index in 8..10) {
+            val elementKey = Common.currentElementKey(index)
+
             if (tooltipJson.has(elementKey)) {
                 val element = tooltipJson.getAsJsonObject(elementKey)
-                if (element.get("type").asString == "IndentStringGroup") {
-                    val value = element.getAsJsonObject("value")
-                    if (value.has("Element_000")) {
-                        val topStr = value.getAsJsonObject("Element_000").get("topStr").asString
-                        if (topStr.contains("[초월]")) {
-                            return topStr.substringAfterLast("<FONT COLOR='#FFD200'>").substringBeforeLast("</FONT>")
+
+                if (Common.indentStringGroup(element)) {
+                    val value = element
+                        .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+
+                    if (Common.has000(value)) {
+                        val topStr = value
+                            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
+                            .get(TooltipStrings.MemberName.TOP).asString
+
+                        if (topStr.contains(TooltipStrings.Contains.ELIXIR)) {
+
+                            return value
+                                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
+                                .getAsJsonObject(TooltipStrings.MemberName.CONTENT)
                         }
                     }
                 }
             }
         }
+        return null
+    }
+
+    private fun getTranscendenceLevel(equipment: Equipment): String {
+        val topStr = transcendenceTopSTR(equipment)
+
+        if (topStr.isNotEmpty()) {
+            return topStr
+                .substringAfterLast(TooltipStrings.SubStringAfter.FONT_TRANSCENDENCE_COLOR)
+                .substringBeforeLast(TooltipStrings.SubStringBefore.FONT_END)
+        }
+
         return ""
     }
 
     private fun getTranscendenceTotal(equipment: Equipment): String {
+        val topStr = transcendenceTopSTR(equipment)
+
+        if (topStr.isNotEmpty()) {
+            return topStr
+                .substringAfterLast(TooltipStrings.SubStringAfter.IMG_END)
+        }
+
+        return ""
+    }
+
+    private fun transcendenceTopSTR(equipment: Equipment): String {
         val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
 
         for (index in 7..10) {
-            val elementKey = "Element_${String.format("%03d", index)}"
+            val elementKey = Common.currentElementKey(index)
+
             if (tooltipJson.has(elementKey)) {
                 val element = tooltipJson.getAsJsonObject(elementKey)
-                if (element.get("type").asString == "IndentStringGroup") {
-                    val value = element.getAsJsonObject("value")
-                    if (value.has("Element_000")) {
-                        val topStr = value.getAsJsonObject("Element_000").get("topStr").asString
-                        if (topStr.contains("[초월]")) {
-                            return topStr.substringAfterLast("</img>")
+
+                if (Common.indentStringGroup(element)) {
+                    val value = element
+                        .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+
+                    if (Common.has000(value)) {
+                        val topStr = value
+                            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
+                            .get(TooltipStrings.MemberName.TOP).asString
+
+                        if (topStr.contains(TooltipStrings.Contains.TRANSCENDENCE)) {
+                            return topStr
                         }
                     }
                 }
             }
         }
+
         return ""
     }
 
@@ -232,14 +265,24 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
 
         for (index in 7..12) {
-            val elementKey = "Element_${String.format("%03d", index)}"
+            val elementKey = Common.currentElementKey(index)
+
             if (tooltipJson.has(elementKey)) {
-                val element = tooltipJson.getAsJsonObject(elementKey)
-                if (element.get("type").asString == "ItemPartBox") {
-                    val value = element.getAsJsonObject("value").get("Element_001").asString
-                    if (value.contains("Lv.")) {
-                        val setOption = value.substringBefore(" <FONT")
-                        val setLevel = value.substringAfterLast("Lv.").substringBefore("</FONT>")
+                val element = tooltipJson
+                    .getAsJsonObject(elementKey)
+
+                if (Common.itemPartBox(element)) {
+                    val value = element
+                        .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+                        .get(TooltipStrings.MemberName.ELEMENT_001).asString
+
+                    if (value.contains(TooltipStrings.Contains.LEVEL_DOT)) {
+                        val setOption = value
+                            .substringBefore(TooltipStrings.SubStringBefore.SPACE_FONT_EMPTY)
+
+                        val setLevel = value
+                            .substringAfterLast(TooltipStrings.SubStringAfter.LEVEL_DOT)
+                            .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
 
                         return "$setOption $setLevel"
                     }
@@ -251,38 +294,51 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
     }
 
     private fun getElixirSetOption(equipment: Equipment): String {
-        // Tooltip을 JSON 객체로 파싱
         val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
 
         for (index in 9..11) {
-            val elementKey = "Element_${String.format("%03d", index)}"
+            val elementKey = Common.currentElementKey(index)
+
             if (tooltipJson.has(elementKey)) {
                 val element = tooltipJson.getAsJsonObject(elementKey)
-                if (element.get("type").asString == "IndentStringGroup") {
-                    val value = element.getAsJsonObject("value")
-                    if (value.has("Element_000")) {
-                        val topStr = value.getAsJsonObject("Element_000").get("topStr").asString
-                        if (topStr.contains("연성 추가 효과")) {
-                            val setOption = topStr.substringAfterLast("'>").substringBeforeLast("</FONT>")
 
-                            return if (setOption.contains("단계")) setOption else "세트 없음"
+                if (Common.indentStringGroup(element)) {
+                    val value = element
+                        .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+
+                    if (Common.has000(value)) {
+                        val topStr = value
+                            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
+                            .get(TooltipStrings.MemberName.TOP).asString
+
+                        if (topStr.contains(TooltipStrings.Contains.ELIXIR_ADDITIONAL_EFFECT)) {
+                            val setOption = topStr
+                                .substringAfterLast(TooltipStrings.SubStringAfter.UPPER_DOT_DECREASE)
+                                .substringBeforeLast(TooltipStrings.SubStringBefore.FONT_END)
+
+                            return if (setOption.contains(TooltipStrings.Contains.STEP)) setOption else TooltipStrings.NoResult.ELIXIR_SET
                         }
                     }
                 }
             }
         }
 
-        return "세트 없음"
+        return TooltipStrings.NoResult.ELIXIR_SET
     }
 
 
     private fun getHigherUpgradeLevel(equipment: Equipment): String {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
-        val element = tooltip.getAsJsonObject("Element_005")
+        val element = tooltip
+            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_005)
 
-        if (element.get("type").asString == "SingleTextBox") {
-            val value = element.get("value").asString
-            return value.substringAfterLast("<FONT COLOR='#FFD200'>").substringBefore("</FONT>")
+        if (Common.singleTextBox(element)) {
+            val value = element
+                .get(TooltipStrings.MemberName.VALUE).asString
+
+            return value
+                .substringAfterLast(TooltipStrings.SubStringAfter.FONT_TRANSCENDENCE_COLOR)
+                .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
         }
 
         return ""
@@ -293,56 +349,65 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
     }
 
     private fun getAccFirstCombatStat(equipment: Equipment): String {
-        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
-        val combatStat = tooltip.getAsJsonObject("Element_005").getAsJsonObject("value").get("Element_001").asString
+        val combatStat = combatStatElement(equipment)
 
-        return combatStat.substringBefore("<BR>")
+        return combatStat
+            .substringBefore(TooltipStrings.SubStringBefore.ENTER_HTML)
     }
 
     private fun getAccSecondCombatStat(equipment: Equipment): String {
-        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
-        val combatStat = tooltip.getAsJsonObject("Element_005").getAsJsonObject("value").get("Element_001").asString
+        val combatStat = combatStatElement(equipment)
+        return combatStat
+            .substringAfter(TooltipStrings.SubStringBefore.ENTER_HTML)
+    }
 
-        return combatStat.substringAfter("<BR>")
+    private fun combatStatElement(equipment: Equipment): String {
+        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
+
+        return tooltip
+            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_005)
+            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+            .get(TooltipStrings.MemberName.ELEMENT_001).asString
     }
 
     private fun getAccFirstEngraving(equipment: Equipment): String {
-        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
-        if (tooltip.getAsJsonObject("Element_006").get("type").asString != "SingleTextBox") {
-            val engraving =
-                tooltip.getAsJsonObject("Element_006").getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
-                    .getAsJsonObject("Element_000").get("contentStr").asString
-            val option = engraving.substringAfter("<FONT COLOR='#FFFFAC'>").substringBefore("</FONT>")
-            val activation = engraving.substringAfter("활성도 +").substringBefore("<BR>")
-
-            return "$option $activation"
-        }
-        return ""
+        return accEngraving(equipment, TooltipStrings.MemberName.ELEMENT_000)
     }
 
     private fun getAccSecondEngraving(equipment: Equipment): String {
-        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
-        if (tooltip.getAsJsonObject("Element_006").get("type").asString != "SingleTextBox") {
-            val contentStr = tooltip.getAsJsonObject("Element_006").getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
-            if (contentStr.has("Element_001")) {
-                val engraving = contentStr.getAsJsonObject("Element_001").get("contentStr").asString
-                val option = engraving.substringAfter("<FONT COLOR='#FFFFAC'>").substringBefore("</FONT>")
-                val activation = engraving.substringAfter("활성도 +").substringBefore("<BR>")
-
-                return "$option $activation"
-            }
-        }
-        return ""
+        return accEngraving(equipment, TooltipStrings.MemberName.ELEMENT_001)
     }
 
     private fun getAccThirdEngraving(equipment: Equipment): String {
+        return accEngraving(equipment, TooltipStrings.MemberName.ELEMENT_002)
+    }
+
+    private fun accEngraving(equipment: Equipment, memberName: String): String {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
-        if (tooltip.getAsJsonObject("Element_006").get("type").asString != "SingleTextBox") {
-            val contentStr = tooltip.getAsJsonObject("Element_006").getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
-            if (contentStr.has("Element_002")) {
-                val engraving = contentStr.getAsJsonObject("Element_002").get("contentStr").asString
-                val option = engraving.substringAfter("<FONT COLOR='#FE2E2E'>").substringBefore("</FONT>")
-                val activation = engraving.substringAfter("활성도 +").substringBefore("<BR>")
+        val element = tooltip
+            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_006)
+
+        val slicingOptionAfter = if (memberName == TooltipStrings.MemberName.ELEMENT_002) TooltipStrings.SubStringAfter.FONT_ENGRAVING_COLOR_THIRD else TooltipStrings.SubStringAfter.FONT_ENGRAVING_COLOR
+
+        if (Common.notSingleTextBox(element)) {
+            val contentStr = tooltip
+                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_006)
+                .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
+                .getAsJsonObject(TooltipStrings.MemberName.CONTENT)
+
+            if (contentStr.has(memberName)) {
+                val engraving = contentStr
+                    .getAsJsonObject(memberName)
+                    .get(TooltipStrings.MemberName.CONTENT).asString
+
+                val option = engraving
+                    .substringAfter(slicingOptionAfter)
+                    .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
+
+                val activation = engraving
+                    .substringAfter(TooltipStrings.SubStringAfter.AWAKEN_PLUS)
+                    .substringBefore(TooltipStrings.SubStringBefore.ENTER_HTML)
 
                 return "$option $activation"
             }
@@ -354,15 +419,18 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
 
         for (index in 5..6) {
-            val elementKey = "Element_${String.format("%03d", index)}"
+            val elementKey = Common.currentElementKey(index)
             if (tooltip.has(elementKey)) {
                 val element = tooltip.getAsJsonObject(elementKey)
-                if (element.get("type").asString == "ItemPartBox") {
-                    val value = element.getAsJsonObject("value")
-                    val bonusText = value.get("Element_000").asString
-                    if (bonusText.contains("세공 단계 보너스")) {
-                        return value.get("Element_001").asString
+                if (Common.itemPartBox(element)) {
+                    val value = element
+                        .getAsJsonObject(TooltipStrings.MemberName.VALUE)
 
+                    val bonusText = value
+                        .get(TooltipStrings.MemberName.ELEMENT_000).asString
+
+                    if (bonusText.contains(TooltipStrings.Contains.ABILITY_STONE_BONUS)) {
+                        return value.get(TooltipStrings.MemberName.ELEMENT_001).asString
                     }
                 }
             }
@@ -372,146 +440,160 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
     }
 
     private fun getABStoneFirstEngraving(equipment: Equipment): Pair<String, String> {
-        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
+        val contentStr = abStoneEngravingContentSTR(equipment, TooltipStrings.MemberName.ELEMENT_000)
 
-        for (index in 5..6) {
-            val elementKey = "Element_${String.format("%03d", index)}"
-            if (tooltip.has(elementKey)) {
-                val element = tooltip.getAsJsonObject(elementKey)
-                if (element.get("type").asString == "IndentStringGroup") {
-                    val topStr = element.getAsJsonObject("value").getAsJsonObject("Element_000").get("topStr").asString
-                    if (topStr.contains("무작위 각인 효과")) {
-                        val contentStr = element.getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
-                            .getAsJsonObject("Element_000").get("contentStr").asString
-                        val option = contentStr.substringAfter("<FONT COLOR='#FFFFAC'>").substringBefore("</FONT>")
-                        val activation = contentStr.substringAfter("활성도 +").substringBefore("<BR>")
+        if (contentStr.isNotEmpty()) {
+            val option = contentStr
+                .substringAfter(TooltipStrings.SubStringAfter.FONT_ENGRAVING_COLOR)
+                .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
 
-                        return Pair(option, activation)
-                    }
-                }
-            }
+            val activation = contentStr
+                .substringAfter(TooltipStrings.SubStringAfter.AWAKEN_PLUS)
+                .substringBefore(TooltipStrings.SubStringBefore.ENTER_HTML)
+
+            return Pair(option, activation)
         }
 
         return Pair("", "")
     }
 
     private fun getABStoneSecondEngraving(equipment: Equipment): Pair<String, String> {
-        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
+        val contentStr = abStoneEngravingContentSTR(equipment, TooltipStrings.MemberName.ELEMENT_001)
 
-        for (index in 5..6) {
-            val elementKey = "Element_${String.format("%03d", index)}"
-            if (tooltip.has(elementKey)) {
-                val element = tooltip.getAsJsonObject(elementKey)
-                if (element.get("type").asString == "IndentStringGroup") {
-                    val topStr = element.getAsJsonObject("value").getAsJsonObject("Element_000").get("topStr").asString
-                    if (topStr.contains("무작위 각인 효과")) {
-                        val contentStr = element.getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
-                            .getAsJsonObject("Element_001").get("contentStr").asString
-                        val option = contentStr.substringAfter("<FONT COLOR='#FFFFAC'>").substringBefore("</FONT>")
-                        val activation = contentStr.substringAfter("활성도 +").substringBefore("<BR>")
+        if (contentStr.isNotEmpty()) {
+            val option = contentStr
+                .substringAfter(TooltipStrings.SubStringAfter.FONT_ENGRAVING_COLOR)
+                .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
 
-                        return Pair(option, activation)
-                    }
-                }
-            }
+            val activation = contentStr
+                .substringAfter(TooltipStrings.SubStringAfter.AWAKEN_PLUS)
+                .substringBefore(TooltipStrings.SubStringBefore.ENTER_HTML)
+
+            return Pair(option, activation)
         }
 
         return Pair("", "")
     }
 
     private fun getABStoneThirdEngraving(equipment: Equipment): Pair<String, String> {
-        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
+        val contentStr = abStoneEngravingContentSTR(equipment, TooltipStrings.MemberName.ELEMENT_002)
 
-        for (index in 5..6) {
-            val elementKey = "Element_${String.format("%03d", index)}"
-            if (tooltip.has(elementKey)) {
-                val element = tooltip.getAsJsonObject(elementKey)
-                if (element.get("type").asString == "IndentStringGroup") {
-                    val topStr = element.getAsJsonObject("value").getAsJsonObject("Element_000").get("topStr").asString
-                    if (topStr.contains("무작위 각인 효과")) {
-                        val contentStr = element.getAsJsonObject("value").getAsJsonObject("Element_000").getAsJsonObject("contentStr")
-                            .getAsJsonObject("Element_002").get("contentStr").asString
-                        val option = contentStr.substringAfter("<FONT COLOR='#FE2E2E'>").substringBefore("</FONT>")
-                        val activation = contentStr.substringAfter("활성도 +").substringBefore("<BR>")
+        if (contentStr.isNotEmpty()) {
+            val option = contentStr
+                .substringAfter(TooltipStrings.SubStringAfter.FONT_ENGRAVING_COLOR_THIRD)
+                .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
 
-                        return Pair(option, activation)
-                    }
-                }
-            }
+            val activation = contentStr
+                .substringAfter(TooltipStrings.SubStringAfter.AWAKEN_PLUS)
+                .substringBefore(TooltipStrings.SubStringBefore.ENTER_HTML)
+
+            return Pair(option, activation)
         }
 
         return Pair("", "")
     }
 
+    private fun abStoneEngravingContentSTR(equipment: Equipment, memberName: String) : String {
+        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
+
+        for (index in 5..6) {
+            val elementKey = Common.currentElementKey(index)
+            if (tooltip.has(elementKey)) {
+                val element = tooltip.getAsJsonObject(elementKey)
+                if (Common.indentStringGroup(element)) {
+                    val topStr = element
+                        .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+                        .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
+                        .get(TooltipStrings.MemberName.TOP).asString
+
+                    if (topStr.contains(TooltipStrings.Contains.ABILITY_STONE_ENGRAVING)) {
+
+                        return element
+                            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+                            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
+                            .getAsJsonObject(TooltipStrings.MemberName.CONTENT)
+                            .getAsJsonObject(memberName)
+                            .get(TooltipStrings.MemberName.CONTENT).asString
+                    }
+                }
+            }
+        }
+
+        return ""
+    }
+
     private fun getBraceletEffect(equipment: Equipment): Triple<List<Pair<String, String>>, List<Pair<String, String>>, List<Pair<String, String>>> {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
-        val effect = tooltip.getAsJsonObject("Element_004").getAsJsonObject("value").get("Element_001").asString
+        val effect = tooltip
+            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_004)
+            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+            .get(TooltipStrings.MemberName.ELEMENT_001).asString
         val (effects, keyStats) = processStringFiltered(effect)
         val allStats = processString(effect)
 
         return Triple(effects, keyStats, allStats)
     }
 
-}
+    private fun processStringFiltered(input: String): Pair<List<Pair<String, String>>, List<Pair<String, String>>> {
+        // <BR> 태그를 줄 나누기로 변환
+        var withLineBreaks = input.replace(Regex("(?i)<BR>(?=[<\\[])"), "\n<BR>")
 
-fun processStringFiltered(input: String): Pair<List<Pair<String, String>>, List<Pair<String, String>>> {
-    // <BR> 태그를 줄 나누기로 변환
-    var withLineBreaks = input.replace(Regex("(?i)<BR>(?=[<\\[])"), "\n<BR>")
+        // HTML 태그 제거
+        withLineBreaks = withLineBreaks.replace(Regex("<[^>]*>"), "")
 
-    // HTML 태그 제거
-    withLineBreaks = withLineBreaks.replace(Regex("<[^>]*>"), "")
+        // [이름] 값 패턴 찾아서 key와 값을 분리하여 리스트에 저장
+        val namePattern = Regex("\\[([^\\[\\]]+)\\]\\s*(.+)")
+        val nameValueList = mutableListOf<Pair<String, String>>()
 
-    // [이름] 값 패턴 찾아서 key와 값을 분리하여 리스트에 저장
-    val namePattern = Regex("\\[([^\\[\\]]+)\\]\\s*(.+)")
-    val nameValueList = mutableListOf<Pair<String, String>>()
-
-    withLineBreaks.split("\n").forEach { line ->
-        namePattern.find(line)?.let { matchResult ->
-            val key = matchResult.groupValues[1].replace("\\s+".toRegex(), "")
-            val value = matchResult.groupValues[2].trim()
-            nameValueList.add(key to value)
+        withLineBreaks.split("\n").forEach { line ->
+            namePattern.find(line)?.let { matchResult ->
+                val key = matchResult.groupValues[1].replace("\\s+".toRegex(), "")
+                val value = matchResult.groupValues[2].trim()
+                nameValueList.add(key to value)
+            }
         }
+
+        // 키워드 패턴과 값 찾아서 리스트에 저장
+        val keywords = listOf("치명", "특화", "신속")
+        val keyValuePattern = Regex("(\\S+)\\s*\\+\\s*(.+)")
+        val keyValueList = mutableListOf<Pair<String, String>>()
+
+        withLineBreaks.split("\n").forEach { line ->
+            keyValuePattern.find(line)?.let { matchResult ->
+                val key = matchResult.groupValues[1]
+                val value = matchResult.groupValues[2].trim()
+                if (keywords.contains(key)) {
+                    keyValueList.add(key to value)
+                }
+            }
+        }
+
+        // 결과 반환
+        return nameValueList to keyValueList
     }
 
-    // 키워드 패턴과 값 찾아서 리스트에 저장
-    val keywords = listOf("치명", "특화", "신속")
-    val keyValuePattern = Regex("(\\S+)\\s*\\+\\s*(.+)")
-    val keyValueList = mutableListOf<Pair<String, String>>()
+    private fun processString(input: String): List<Pair<String, String>> {
+        // <BR> 태그를 줄 나누기로 변환
+        var withLineBreaks = input.replace(Regex("(?i)<BR>(?=[<\\[])"), "\n<BR>")
 
-    withLineBreaks.split("\n").forEach { line ->
-        keyValuePattern.find(line)?.let { matchResult ->
-            val key = matchResult.groupValues[1]
-            val value = matchResult.groupValues[2].trim()
-            if (keywords.contains(key)) {
+        // HTML 태그 제거
+        withLineBreaks = withLineBreaks.replace(Regex("<[^>]*>"), "")
+
+        // 키 + 값 패턴 찾아서 key와 값을 분리하여 리스트에 저장
+        val keyValuePattern = Regex("(\\S+)\\s*\\+\\s*(.+)")
+        val keyValueList = mutableListOf<Pair<String, String>>()
+
+        withLineBreaks.split("\n").forEach { line ->
+            keyValuePattern.find(line)?.let { matchResult ->
+                val key = matchResult.groupValues[1]
+                val value = matchResult.groupValues[2].trim()
                 keyValueList.add(key to value)
             }
         }
-    }
 
-    // 결과 반환
-    return nameValueList to keyValueList
+        // 결과 반환
+        return keyValueList
+    }
 }
 
-fun processString(input: String): List<Pair<String, String>> {
-    // <BR> 태그를 줄 나누기로 변환
-    var withLineBreaks = input.replace(Regex("(?i)<BR>(?=[<\\[])"), "\n<BR>")
-
-    // HTML 태그 제거
-    withLineBreaks = withLineBreaks.replace(Regex("<[^>]*>"), "")
-
-    // 키 + 값 패턴 찾아서 key와 값을 분리하여 리스트에 저장
-    val keyValuePattern = Regex("(\\S+)\\s*\\+\\s*(.+)")
-    val keyValueList = mutableListOf<Pair<String, String>>()
-
-    withLineBreaks.split("\n").forEach { line ->
-        keyValuePattern.find(line)?.let { matchResult ->
-            val key = matchResult.groupValues[1]
-            val value = matchResult.groupValues[2].trim()
-            keyValueList.add(key to value)
-        }
-    }
-
-    // 결과 반환
-    return keyValueList
-}
 
