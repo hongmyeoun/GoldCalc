@@ -1,7 +1,7 @@
 package com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase
 
 import androidx.compose.runtime.Composable
-import com.hongmyeoun.goldcalc.model.constants.Raid
+import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 
 @Composable
 fun OneDifficultyPhase(

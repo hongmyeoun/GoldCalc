@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.model.constants.Raid
+import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.viewModel.home.GoldContentStateVM
 import com.hongmyeoun.goldcalc.viewModel.home.HomeContentVM
 

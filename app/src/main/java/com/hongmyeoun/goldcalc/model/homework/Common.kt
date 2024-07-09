@@ -1,6 +1,6 @@
 package com.hongmyeoun.goldcalc.model.homework
 
-import com.hongmyeoun.goldcalc.model.constants.Raid
+import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 
 class PhaseInfo(
     difficulty: String,

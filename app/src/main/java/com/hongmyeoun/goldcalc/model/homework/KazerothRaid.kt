@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.model.homework
 
-import com.hongmyeoun.goldcalc.model.constants.Raid
+import com.hongmyeoun.goldcalc.model.constants.raid.Gold
+import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 
 enum class KazerothRaid(
@@ -11,12 +12,12 @@ enum class KazerothRaid(
     ECHIDNA(
         boss = Raid.Name.ECHIDNA,
         seeMoreGold = mapOf(
-            Raid.Difficulty.NORMAL to listOf(2200, 3400),
-            Raid.Difficulty.HARD to listOf(2800, 4100)
+            Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.ECHIDNA,
+            Raid.Difficulty.HARD to Gold.SeeMore.Hard.ECHIDNA
         ),
         clearGold = mapOf(
-            Raid.Difficulty.NORMAL to listOf(5000, 9500),
-            Raid.Difficulty.HARD to listOf(6000, 12500)
+            Raid.Difficulty.NORMAL to Gold.Clear.Normal.ECHIDNA,
+            Raid.Difficulty.HARD to Gold.Clear.Hard.ECHIDNA
         )
     );
 
@@ -44,7 +45,7 @@ class Echidna(character: Character?) {
 
     private val getOnePhase = character?.checkList?.kazeroth?.get(0)?.phases?.get(0)
 
-    private val onePhaseDifficulty = getOnePhase?.difficulty?:Raid.Difficulty.KR_NORMAL
+    private val onePhaseDifficulty = getOnePhase?.difficulty?: Raid.Difficulty.KR_NORMAL
     private val onePhaseIsClear = getOnePhase?.isClear?:false
     private val onePhaseMCheck = getOnePhase?.mCheck?:false
 
@@ -61,7 +62,7 @@ class Echidna(character: Character?) {
 
     private val getTwoPhase = character?.checkList?.kazeroth?.get(0)?.phases?.get(1)
 
-    private val twoPhaseDifficulty = getTwoPhase?.difficulty?:Raid.Difficulty.KR_NORMAL
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty?: Raid.Difficulty.KR_NORMAL
     private val twoPhaseIsClear = getTwoPhase?.isClear?:false
     private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
 

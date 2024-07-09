@@ -3,7 +3,7 @@ package com.hongmyeoun.goldcalc.model.roomDB.character
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.hongmyeoun.goldcalc.model.constants.Raid
+import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 
 @Entity
 data class Character(

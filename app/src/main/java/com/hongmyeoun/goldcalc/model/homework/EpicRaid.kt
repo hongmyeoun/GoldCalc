@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.model.homework
 
-import com.hongmyeoun.goldcalc.model.constants.Raid
+import com.hongmyeoun.goldcalc.model.constants.raid.Gold
+import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 
 enum class EpicRaid(
@@ -11,12 +12,12 @@ enum class EpicRaid(
     BEHEMOTH(
         boss = Raid.Name.BEHEMOTH,
         seeMoreGold = mapOf(
-            Raid.Difficulty.NORMAL to listOf(3100, 4900),
-            Raid.Difficulty.HARD to listOf(3100, 4900)
+            Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.BEHEMOTH,
+            Raid.Difficulty.HARD to Gold.SeeMore.Hard.BEHEMOTH
         ),
         clearGold = mapOf(
-            Raid.Difficulty.NORMAL to listOf(7000, 14500),
-            Raid.Difficulty.HARD to listOf(7000, 14500)
+            Raid.Difficulty.NORMAL to Gold.Clear.Normal.BEHEMOTH,
+            Raid.Difficulty.HARD to Gold.Clear.Hard.BEHEMOTH
         )
     );
 
@@ -44,7 +45,7 @@ class Behemoth(character: Character?) {
 
     private val getOnePhase = character?.checkList?.epic?.get(0)?.phases?.get(0)
 
-    private val onePhaseDifficulty = getOnePhase?.difficulty?:Raid.Difficulty.KR_NORMAL
+    private val onePhaseDifficulty = getOnePhase?.difficulty?: Raid.Difficulty.KR_NORMAL
     private val onePhaseIsClear = getOnePhase?.isClear?:false
     private val onePhaseMCheck = getOnePhase?.mCheck?:false
 
@@ -61,7 +62,7 @@ class Behemoth(character: Character?) {
 
     private val getTwoPhase = character?.checkList?.epic?.get(0)?.phases?.get(1)
 
-    private val twoPhaseDifficulty = getTwoPhase?.difficulty?:Raid.Difficulty.KR_NORMAL
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty?: Raid.Difficulty.KR_NORMAL
     private val twoPhaseIsClear = getTwoPhase?.isClear?:false
     private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
 

@@ -56,7 +56,7 @@ fun HomeworkContent(
             ) {
                 ProfileTemplate(
                     character = character,
-                    onReloadClick = { viewModel.onReloadClick(context, character?.name, snackbarHostState) },
+                    onReloadClick = { viewModel.onReloadClick(character?.name, snackbarHostState) },
                     onAvatarClick = { viewModel.onAvatarClick(character) }
                 )
             }
