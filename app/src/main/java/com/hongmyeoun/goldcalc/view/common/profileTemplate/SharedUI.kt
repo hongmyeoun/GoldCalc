@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.model.constants.Homework
 import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
@@ -69,7 +70,7 @@ fun TitleCharName(title: String?, name: String) {
     Spacer(modifier = Modifier.height(12.dp))
 }
 
-// 아이템 레벨 TODO: 이미지 주소 STRING
+// 아이템 레벨
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ItemLevel(level: String) {
@@ -80,7 +81,7 @@ fun ItemLevel(level: String) {
             contentScale = ContentScale.FillHeight,
             contentDescription = "아이템 레벨"
         )
-        val dot = "."
+        val dot = Homework.DOT
         val beforeDot = level.substringBefore(dot)
         val afterDot = level.substringAfter(dot)
         Text(
@@ -118,70 +119,67 @@ fun ItemLevel(level: String) {
     Spacer(modifier = Modifier.height(12.dp))
 }
 
-// 길드, 영지, PVP 등급(homework) TODO: STRING
+// 길드, 영지, PVP 등급(homework)
 @Composable
 fun Extra(character: Character) {
-    ExtraInfo("길드", character.guildName)
+    ExtraInfo(Homework.GUILD, character.guildName)
     Spacer(modifier = Modifier.height(6.dp))
 
-    ExtraInfo("영지", "Lv.${character.townLevel} ${character.townName}")
+    ExtraInfo(Homework.TOWN, "Lv.${character.townLevel} ${character.townName}")
     Spacer(modifier = Modifier.height(6.dp))
 
-    ExtraInfo("PVP", character.pvpGradeName)
+    ExtraInfo(Homework.PVP, character.pvpGradeName)
     Spacer(modifier = Modifier.height(16.dp))
 }
 
 // 길드, 영지, PVP 등급(Profile)
 @Composable
 fun Extra(profile: CharacterDetail) {
-    ExtraInfo("길드", profile.guildName)
+    ExtraInfo(Homework.GUILD, profile.guildName)
     Spacer(modifier = Modifier.height(6.dp))
 
-    ExtraInfo("영지", "Lv.${profile.townLevel} ${profile.townName}")
+    ExtraInfo(Homework.TOWN, "Lv.${profile.townLevel} ${profile.townName}")
     Spacer(modifier = Modifier.height(6.dp))
 
-    ExtraInfo("PVP", profile.pvpGradeName)
+    ExtraInfo(Homework.PVP, profile.pvpGradeName)
     Spacer(modifier = Modifier.height(16.dp))
 }
 
-
-
-// TODO: STRING
 @Composable
 private fun ExtraInfo(extraTitle: String, extraDetail: String?) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         TextChip(text = extraTitle, borderless = true, customBGColor = VeryLightGrayTransBG)
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = extraDetail ?: "-",
+            text = extraDetail ?: Homework.NULL_VAULE,
             style = normalTextStyle()
         )
     }
 }
 
-// 전투, 원정대 레벨(Homework) TODO: STRING
+// 전투, 원정대 레벨(Homework)
 @Composable
 fun Levels(character: Character) {
     Row {
-        CharLevel("전투", character.characterLevel.toString())
+        CharLevel(Homework.CHARACTER_LEVEL, character.characterLevel.toString())
         Spacer(modifier = Modifier.width(16.dp))
 
-        CharLevel("원정대", character.expeditionLevel.toString())
+        CharLevel(Homework.EXPEDITION_LEVEL, character.expeditionLevel.toString())
     }
 }
 
-// 전투, 원정대 레벨(Profile) TODO: STRING
+// 전투, 원정대 레벨(Profile)
 @Composable
 fun Levels(profile: CharacterDetail) {
     Row {
-        CharLevel("전투", profile.characterLevel.toString())
+        CharLevel(Homework.CHARACTER_LEVEL, profile.characterLevel.toString())
         Spacer(modifier = Modifier.width(16.dp))
 
-        CharLevel("원정대", profile.expeditionLevel.toString())
+        CharLevel(Homework.EXPEDITION_LEVEL, profile.expeditionLevel.toString())
     }
 }
 
-// TODO: STRING
+// 아이템 레벨
 @Composable
 private fun CharLevel(title: String, level: String) {
     Column {
@@ -189,8 +187,8 @@ private fun CharLevel(title: String, level: String) {
             text = title,
             style = titleBoldWhite12()
         )
-        if (title == "아이템") {
-            val dot = "."
+        if (title == Homework.ITEM_LEVEL) {
+            val dot = Homework.DOT
             val beforeDot = level.substringBefore(dot)
             val afterDot = level.substringAfter(dot)
             Text(

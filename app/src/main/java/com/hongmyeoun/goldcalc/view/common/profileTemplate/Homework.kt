@@ -31,6 +31,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.model.constants.Homework
 import com.hongmyeoun.goldcalc.model.constants.Labels
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
@@ -47,7 +48,7 @@ fun HomeworkProfile(
 ) {
     var isBlinking by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    val characterImgText = if (it.avatarImage) "아바타" else "기본"
+    val characterImgText = if (it.avatarImage) Homework.AVATAR else Homework.DEFAULT_IMAGE
 
     Box(
         modifier = Modifier
@@ -185,7 +186,7 @@ private fun BlinkingText(
                 targetValue = 0f,
                 animationSpec = infiniteRepeatable(
                     animation = keyframes {
-                        durationMillis = 750 // 1초 동안 깜빡이도록 수정
+                        durationMillis = 750
                     },
                     repeatMode = RepeatMode.Reverse
                 ),
