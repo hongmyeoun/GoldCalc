@@ -1,5 +1,6 @@
 package com.hongmyeoun.goldcalc.model.lostArkApi
 
+import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
 import com.hongmyeoun.goldcalc.model.profile.card.CardsWithEffects
 import com.hongmyeoun.goldcalc.model.profile.engravings.SkillEngravingsAndEffects
 import com.hongmyeoun.goldcalc.model.profile.equipment.Equipment
@@ -10,38 +11,38 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface LostArkApiService {
-    @GET("/characters/{characterName}/siblings")
+    @GET(NetworkConfig.SIBLINGS)
     fun getCharacters(
-        @Path("characterName") characterName: String
+        @Path(NetworkConfig.SEARCH_PATH) characterName: String
     ): Call<List<CharacterInfo>>
 
-    @GET("/armories/characters/{characterName}/profiles")
+    @GET(NetworkConfig.PROFILES)
     fun getCharacterDetail(
-        @Path("characterName") characterName: String
+        @Path(NetworkConfig.SEARCH_PATH) characterName: String
     ): Call<CharacterDetail>
 
-    @GET("/armories/characters/{characterName}/equipment")
+    @GET(NetworkConfig.EQUIPMENT)
     fun getCharacterEquipment(
-        @Path("characterName") characterName: String
+        @Path(NetworkConfig.SEARCH_PATH) characterName: String
     ): Call<List<Equipment>>
 
-    @GET("/armories/characters/{characterName}/gems")
+    @GET(NetworkConfig.GEMS)
     fun getCharacterGem(
-        @Path("characterName") characterName: String
+        @Path(NetworkConfig.SEARCH_PATH) characterName: String
     ): Call<GemAndEffect>
 
-    @GET("/armories/characters/{characterName}/cards")
+    @GET(NetworkConfig.CARDS)
     fun getCharacterCard(
-        @Path("characterName") characterName: String
+        @Path(NetworkConfig.SEARCH_PATH) characterName: String
     ): Call<CardsWithEffects>
 
-    @GET("/armories/characters/{characterName}/combat-skills")
+    @GET(NetworkConfig.COMBAT_SKILLS)
     fun getCharacterSkills(
-        @Path("characterName") characterName: String
+        @Path(NetworkConfig.SEARCH_PATH) characterName: String
     ): Call<List<CombatSkills>>
 
-    @GET("/armories/characters/{characterName}/engravings")
+    @GET(NetworkConfig.ENGRAVINGS)
     fun getCharacterEngravings(
-        @Path("characterName") characterName: String
+        @Path(NetworkConfig.SEARCH_PATH) characterName: String
     ): Call<SkillEngravingsAndEffects>
 }
