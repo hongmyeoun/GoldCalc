@@ -18,7 +18,7 @@ data class Character(
     @ColumnInfo("earnGold") val earnGold: Int = 0,
 
     @ColumnInfo("guildName") val guildName: String? = null,
-    @ColumnInfo("title") val title: String = "",
+    @ColumnInfo("title") val title: String? = null,
     @ColumnInfo("characterLevel") val characterLevel: Int = 0,
     @ColumnInfo("expeditionLevel") val expeditionLevel: Int = 0,
     @ColumnInfo("pvpGradeName") val pvpGradeName: String = "",
