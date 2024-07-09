@@ -3,6 +3,7 @@ package com.hongmyeoun.goldcalc.model.lostArkApi
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.hongmyeoun.goldcalc.BuildConfig
+import com.hongmyeoun.goldcalc.model.constants.ErrorMessage
 import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
 import com.hongmyeoun.goldcalc.model.profile.card.CardDetail
 import com.hongmyeoun.goldcalc.model.profile.card.CardEffects
@@ -51,15 +52,15 @@ object APIRemote {
 
                         Pair(sortedCharacterInfoList, null)
                     } else {
-                        Pair(null, "\"${characterName}\"(은)는 없는 결과입니다.")
+                        Pair(null, ErrorMessage.noResult(characterName))
                     }
                 } else {
                     // 실패 처리
-                    Pair(null, "서버 응답 실패: ${response.code()}")
+                    Pair(null, ErrorMessage.serverError(response.code()))
                 }
             } catch (e: IOException) {
                 // 네트워크 오류 처리
-                Pair(null, "네트워크 오류")
+                Pair(null, NetworkConfig.NETWORK_ERROR)
             }
         }
     }
@@ -198,14 +199,14 @@ object APIRemote {
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor { chain ->
             val request = chain.request().newBuilder()
-                .addHeader("Authorization", API_KEY)
+                .addHeader(NetworkConfig.API_HEADER, API_KEY)
                 .build()
             chain.proceed(request)
         }
         return httpClient.build()
     }
+    private fun parseDoubleWithoutComma(value: String): Double {
+        return value.replace(",", "").toDouble()
+    }
 }
 
-fun parseDoubleWithoutComma(value: String): Double {
-    return value.replace(",", "").toDouble()
-}
