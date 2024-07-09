@@ -57,7 +57,6 @@ fun TitleCard(
                 color = Color.White
             )
         }
-
     }
 
     raidContent()

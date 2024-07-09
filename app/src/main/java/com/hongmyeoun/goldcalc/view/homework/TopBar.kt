@@ -36,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
+import com.hongmyeoun.goldcalc.model.constants.ButtonText
+import com.hongmyeoun.goldcalc.model.constants.Homework
 import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.LightBlue
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
@@ -94,7 +96,7 @@ fun HomeworkTopBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(2f),
-                text = viewModel.character.value?.name ?: "정보없음",
+                text = viewModel.character.value?.name ?: Homework.NULL_VALUE,
                 style = titleTextStyle(fontSize = 20.sp),
                 textAlign = TextAlign.Center,
             )
@@ -143,7 +145,7 @@ private fun DeleteDialog(
                             color = Color.White
                         )
                     ) {
-                        append("의 정보를 ")
+                        append(Homework.DELETE_DIALOG_TEXT_MIDDLE)
                     }
 
                     withStyle(
@@ -152,7 +154,7 @@ private fun DeleteDialog(
                             fontSize = 20.sp
                         )
                     ) {
-                        append("삭제")
+                        append(ButtonText.DELETE)
                     }
 
                     withStyle(
@@ -160,7 +162,7 @@ private fun DeleteDialog(
                             color = Color.White
                         )
                     ) {
-                        append(" 하시겠습니까?")
+                        append(Homework.DELETE_DIALOG_TEXT_LAST)
                     }
 
                 },
@@ -185,7 +187,7 @@ private fun DeleteDialog(
                         contentColor = Color.LightGray
                     )
                 ) {
-                    Text(text = "취소")
+                    Text(text = ButtonText.CANCEL)
                 }
 
                 Divider(
@@ -207,7 +209,7 @@ private fun DeleteDialog(
                     },
                 ) {
                     Text(
-                        text = "삭제",
+                        text = ButtonText.DELETE,
                         color = Color.Red
                     )
                 }
@@ -215,4 +217,3 @@ private fun DeleteDialog(
         }
     }
 }
-

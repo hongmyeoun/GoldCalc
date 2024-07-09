@@ -23,6 +23,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hongmyeoun.goldcalc.model.constants.ButtonText
 import com.hongmyeoun.goldcalc.ui.theme.LightBlue
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.viewModel.setting.SettingVM
@@ -99,7 +100,7 @@ fun Dialog(
                         contentColor = Color.LightGray
                     )
                 ) {
-                    Text(text = "취소")
+                    Text(text = ButtonText.CANCEL)
                 }
 
                 Divider(

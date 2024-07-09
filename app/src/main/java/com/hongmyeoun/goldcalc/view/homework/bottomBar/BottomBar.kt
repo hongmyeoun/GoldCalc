@@ -38,6 +38,8 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.common.ImageReturn.goldImage
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
+import com.hongmyeoun.goldcalc.model.constants.ButtonText
+import com.hongmyeoun.goldcalc.model.constants.Homework
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
@@ -129,7 +131,7 @@ fun BottomBarTexts(
             modifier = Modifier.weight(3f),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            GoldText(beforeOrAfter = "전", gold = character?.weeklyGold ?: 0)
+            GoldText(beforeOrAfter = Homework.BEFORE, gold = character?.weeklyGold ?: 0)
             Spacer(modifier = Modifier.width(8.dp))
 
             Icon(
@@ -139,7 +141,7 @@ fun BottomBarTexts(
             )
             Spacer(modifier = Modifier.width(12.dp))
 
-            GoldText(beforeOrAfter = "후", gold = viewModel.totalGold)
+            GoldText(beforeOrAfter = Homework.AFTER, gold = viewModel.totalGold)
         }
 
         Row(
@@ -157,7 +159,7 @@ fun BottomBarTexts(
                     }
                 }
             ) {
-                Text("취소")
+                Text(ButtonText.CANCEL)
             }
             Spacer(modifier = Modifier.width(8.dp))
 
@@ -175,7 +177,7 @@ fun BottomBarTexts(
                     }
                 }
             ) {
-                Text(text = "완료")
+                Text(text = ButtonText.CONFIRM)
             }
         }
     }
@@ -226,4 +228,3 @@ fun GoldText(beforeOrAfter: String, gold: Int) {
         }
     }
 }
-

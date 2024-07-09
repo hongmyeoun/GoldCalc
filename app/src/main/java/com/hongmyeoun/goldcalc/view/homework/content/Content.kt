@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.ProfileTemplate
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.CheckLists
 import com.hongmyeoun.goldcalc.viewModel.homework.AbyssDungeonVM
@@ -37,8 +36,6 @@ fun HomeworkContent(
     kzVM: KazerothRaidVM,
     epVM: EpicRaidVM,
 ) {
-    val context = LocalContext.current
-
     val character by viewModel.character.collectAsState()
     val showDetail by viewModel.showDetail.collectAsState()
 

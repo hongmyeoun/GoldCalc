@@ -151,7 +151,7 @@ private fun ExtraInfo(extraTitle: String, extraDetail: String?) {
         TextChip(text = extraTitle, borderless = true, customBGColor = VeryLightGrayTransBG)
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = extraDetail ?: Homework.NULL_VAULE,
+            text = extraDetail ?: Homework.NULL_VALUE,
             style = normalTextStyle()
         )
     }

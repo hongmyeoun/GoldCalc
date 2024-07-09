@@ -183,7 +183,6 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
                         viewModel.sumGold()
                     }
                 )
-
             }
         )
     }

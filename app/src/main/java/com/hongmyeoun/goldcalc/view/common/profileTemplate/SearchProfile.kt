@@ -16,7 +16,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.model.constants.Homework
+import com.hongmyeoun.goldcalc.model.constants.ButtonText
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.Extra
@@ -94,7 +94,7 @@ private fun DefaultsProfilesWithGetButton(
                 ElevatedButton(
                     onClick = onGetClick,
                 ) {
-                    Text(text = Homework.GET_PROFILE_BUTTON_TEXT)
+                    Text(text = ButtonText.GET_PROFILE_BUTTON_TEXT)
                 }
             }
         }

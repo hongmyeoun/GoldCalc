@@ -72,9 +72,7 @@ fun Epic(viewModel: EpicRaidVM) {
                         viewModel.sumGold()
                     },
                 )
-
             }
         )
     }
-
 }

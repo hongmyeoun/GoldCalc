@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.hongmyeoun.goldcalc.model.constants.ButtonText
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
@@ -58,7 +59,7 @@ fun WarningDialog(
                         contentColor = Color.LightGray
                     )
                 ) {
-                    Text(text = "취소")
+                    Text(text = ButtonText.CANCEL)
                 }
 
                 Divider(
@@ -74,7 +75,7 @@ fun WarningDialog(
                     },
                 ) {
                     Text(
-                        text = "삭제",
+                        text = ButtonText.DELETE,
                         color = Color.Red
                     )
                 }

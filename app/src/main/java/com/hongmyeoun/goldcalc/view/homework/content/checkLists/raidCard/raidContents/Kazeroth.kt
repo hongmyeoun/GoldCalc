@@ -83,7 +83,6 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
                         viewModel.sumGold()
                     },
                 )
-
             }
         )
     }

@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.hongmyeoun.goldcalc.model.constants.Homework
 import com.hongmyeoun.goldcalc.viewModel.homework.HomeworkVM
 
 @Composable
@@ -40,7 +41,7 @@ fun ETCGold(
         OutlinedTextField(
             value = viewModel.plusGold,
             onValueChange = { viewModel.plusGoldValue(it) },
-            label = { Text(text = "추가 골드") },
+            label = { Text(text = Homework.EXTRA_GOLD) },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Done
@@ -69,7 +70,7 @@ fun ETCGold(
         OutlinedTextField(
             value = viewModel.minusGold,
             onValueChange = { viewModel.minusGoldValue(it) },
-            label = { Text(text = "사용 골드") },
+            label = { Text(text = Homework.USED_GOLD) },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Done

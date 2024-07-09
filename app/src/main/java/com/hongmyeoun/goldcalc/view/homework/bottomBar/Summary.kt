@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
+import com.hongmyeoun.goldcalc.model.constants.Homework
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
@@ -134,9 +135,9 @@ private fun Script(cbVM: CommandBossVM) {
                 raidName = Raid.Name.VALTAN,
                 phaseInfo = {
                     Text(
-                        text = "1관문 ${cbVM.valtan.onePhase.level} : ${cbVM.valtan.onePhase.totalGold.formatWithCommas()} G", color = Color.White
+                        text = "${Homework.PHASE_ONE} ${cbVM.valtan.onePhase.level} : ${cbVM.valtan.onePhase.totalGold.formatWithCommas()} G", color = Color.White
                     )
-                    Text(text = "2관문 ${cbVM.valtan.twoPhase.level} : ${cbVM.valtan.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_TWO} ${cbVM.valtan.twoPhase.level} : ${cbVM.valtan.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
                 }
             )
             PhaseInfo(
@@ -144,8 +145,8 @@ private fun Script(cbVM: CommandBossVM) {
                 modifier = Modifier.weight(1f),
                 raidName = Raid.Name.BIACKISS,
                 phaseInfo = {
-                    Text(text = "1관문 ${cbVM.valtan.onePhase.level} : ${cbVM.valtan.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
-                    Text(text = "2관문 ${cbVM.valtan.twoPhase.level} : ${cbVM.valtan.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_ONE} ${cbVM.valtan.onePhase.level} : ${cbVM.valtan.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_TWO} ${cbVM.valtan.twoPhase.level} : ${cbVM.valtan.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
                 }
             )
         }
@@ -159,15 +160,15 @@ private fun Script(cbVM: CommandBossVM) {
                 raidName = Raid.Name.KOUKU_SATON,
                 phaseInfo = {
                     Text(
-                        text = "1관문 ${cbVM.koukuSaton.onePhase.level} : ${cbVM.koukuSaton.onePhase.totalGold.formatWithCommas()} G",
+                        text = "${Homework.PHASE_ONE} ${cbVM.koukuSaton.onePhase.level} : ${cbVM.koukuSaton.onePhase.totalGold.formatWithCommas()} G",
                         color = Color.White
                     )
                     Text(
-                        text = "2관문 ${cbVM.koukuSaton.twoPhase.level} : ${cbVM.koukuSaton.twoPhase.totalGold.formatWithCommas()} G",
+                        text = "${Homework.PHASE_TWO} ${cbVM.koukuSaton.twoPhase.level} : ${cbVM.koukuSaton.twoPhase.totalGold.formatWithCommas()} G",
                         color = Color.White
                     )
                     Text(
-                        text = "3관문 ${cbVM.koukuSaton.threePhase.level} : ${cbVM.koukuSaton.threePhase.totalGold.formatWithCommas()} G",
+                        text = "${Homework.PHASE_THREE} ${cbVM.koukuSaton.threePhase.level} : ${cbVM.koukuSaton.threePhase.totalGold.formatWithCommas()} G",
                         color = Color.White
                     )
                 }
@@ -178,19 +179,19 @@ private fun Script(cbVM: CommandBossVM) {
                 raidName = Raid.Name.ABRELSHUD,
                 phaseInfo = {
                     Text(
-                        text = "1관문 ${cbVM.abrelshud.onePhase.level} : ${cbVM.abrelshud.onePhase.totalGold.formatWithCommas()} G",
+                        text = "${Homework.PHASE_ONE} ${cbVM.abrelshud.onePhase.level} : ${cbVM.abrelshud.onePhase.totalGold.formatWithCommas()} G",
                         color = Color.White
                     )
                     Text(
-                        text = "2관문 ${cbVM.abrelshud.twoPhase.level} : ${cbVM.abrelshud.twoPhase.totalGold.formatWithCommas()} G",
+                        text = "${Homework.PHASE_TWO} ${cbVM.abrelshud.twoPhase.level} : ${cbVM.abrelshud.twoPhase.totalGold.formatWithCommas()} G",
                         color = Color.White
                     )
                     Text(
-                        text = "3관문 ${cbVM.abrelshud.threePhase.level} : ${cbVM.abrelshud.threePhase.totalGold.formatWithCommas()} G",
+                        text = "${Homework.PHASE_THREE} ${cbVM.abrelshud.threePhase.level} : ${cbVM.abrelshud.threePhase.totalGold.formatWithCommas()} G",
                         color = Color.White
                     )
                     Text(
-                        text = "4관문 ${cbVM.abrelshud.fourPhase.level} : ${cbVM.abrelshud.fourPhase.totalGold.formatWithCommas()} G",
+                        text = "${Homework.PHASE_FOUR} ${cbVM.abrelshud.fourPhase.level} : ${cbVM.abrelshud.fourPhase.totalGold.formatWithCommas()} G",
                         color = Color.White
                     )
                 }
@@ -205,10 +206,10 @@ private fun Script(cbVM: CommandBossVM) {
                 modifier = Modifier.weight(1f),
                 raidName = Raid.Name.ILLIAKAN,
                 phaseInfo = {
-                    Text(text = "1관문 ${cbVM.illiakan.onePhase.level} : ${cbVM.illiakan.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
-                    Text(text = "2관문 ${cbVM.illiakan.twoPhase.level} : ${cbVM.illiakan.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_ONE} ${cbVM.illiakan.onePhase.level} : ${cbVM.illiakan.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_TWO} ${cbVM.illiakan.twoPhase.level} : ${cbVM.illiakan.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
                     Text(
-                        text = "3관문 ${cbVM.illiakan.threePhase.level} : ${cbVM.illiakan.threePhase.totalGold.formatWithCommas()} G",
+                        text = "${Homework.PHASE_THREE} ${cbVM.illiakan.threePhase.level} : ${cbVM.illiakan.threePhase.totalGold.formatWithCommas()} G",
                         color = Color.White
                     )
                 }
@@ -218,10 +219,10 @@ private fun Script(cbVM: CommandBossVM) {
                 modifier = Modifier.weight(1f),
                 raidName = Raid.Name.KAMEN,
                 phaseInfo = {
-                    Text(text = "1관문 ${cbVM.kamen.onePhase.level} : ${cbVM.kamen.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
-                    Text(text = "2관문 ${cbVM.kamen.twoPhase.level} : ${cbVM.kamen.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
-                    Text(text = "3관문 ${cbVM.kamen.threePhase.level} : ${cbVM.kamen.threePhase.totalGold.formatWithCommas()} G", color = Color.White)
-                    Text(text = "4관문 ${cbVM.kamen.fourPhase.level} : ${cbVM.kamen.fourPhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_ONE} ${cbVM.kamen.onePhase.level} : ${cbVM.kamen.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_TWO} ${cbVM.kamen.twoPhase.level} : ${cbVM.kamen.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_THREE} ${cbVM.kamen.threePhase.level} : ${cbVM.kamen.threePhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_FOUR} ${cbVM.kamen.fourPhase.level} : ${cbVM.kamen.fourPhase.totalGold.formatWithCommas()} G", color = Color.White)
                 }
             )
         }
@@ -246,10 +247,10 @@ private fun Script(adVM: AbyssDungeonVM) {
                 modifier = Modifier.weight(1f),
                 raidName = Raid.Name.KAYANGEL,
                 phaseInfo = {
-                    Text(text = "1관문 ${adVM.kayangel.onePhase.level} : ${adVM.kayangel.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
-                    Text(text = "2관문 ${adVM.kayangel.twoPhase.level} : ${adVM.kayangel.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_ONE} ${adVM.kayangel.onePhase.level} : ${adVM.kayangel.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_TWO} ${adVM.kayangel.twoPhase.level} : ${adVM.kayangel.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
                     Text(
-                        text = "3관문 ${adVM.kayangel.threePhase.level} : ${adVM.kayangel.threePhase.totalGold.formatWithCommas()} G",
+                        text = "${Homework.PHASE_THREE} ${adVM.kayangel.threePhase.level} : ${adVM.kayangel.threePhase.totalGold.formatWithCommas()} G",
                         color = Color.White
                     )
                 }
@@ -260,15 +261,15 @@ private fun Script(adVM: AbyssDungeonVM) {
                 raidName = Raid.Name.IVORY_TOWER_LONG,
                 phaseInfo = {
                     Text(
-                        text = "1관문 ${adVM.ivoryTower.onePhase.level} : ${adVM.ivoryTower.onePhase.totalGold.formatWithCommas()} G",
+                        text = "${Homework.PHASE_ONE} ${adVM.ivoryTower.onePhase.level} : ${adVM.ivoryTower.onePhase.totalGold.formatWithCommas()} G",
                         color = Color.White
                     )
                     Text(
-                        text = "2관문 ${adVM.ivoryTower.twoPhase.level} : ${adVM.ivoryTower.twoPhase.totalGold.formatWithCommas()} G",
+                        text = "${Homework.PHASE_TWO} ${adVM.ivoryTower.twoPhase.level} : ${adVM.ivoryTower.twoPhase.totalGold.formatWithCommas()} G",
                         color = Color.White
                     )
                     Text(
-                        text = "3관문 ${adVM.ivoryTower.threePhase.level} : ${adVM.ivoryTower.threePhase.totalGold.formatWithCommas()} G",
+                        text = "${Homework.PHASE_THREE} ${adVM.ivoryTower.threePhase.level} : ${adVM.ivoryTower.threePhase.totalGold.formatWithCommas()} G",
                         color = Color.White
                     )
                 }
@@ -295,8 +296,8 @@ private fun Script(kzVM: KazerothRaidVM) {
                 modifier = Modifier.weight(1f),
                 raidName = Raid.Name.ECHIDNA,
                 phaseInfo = {
-                    Text(text = "1관문 ${kzVM.echidna.onePhase.level} : ${kzVM.echidna.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
-                    Text(text = "2관문 ${kzVM.echidna.twoPhase.level} : ${kzVM.echidna.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_ONE} ${kzVM.echidna.onePhase.level} : ${kzVM.echidna.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_TWO} ${kzVM.echidna.twoPhase.level} : ${kzVM.echidna.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
                 }
             )
         }
@@ -321,8 +322,8 @@ private fun Script(epVM: EpicRaidVM) {
                 modifier = Modifier.weight(1f),
                 raidName = Raid.Name.BEHEMOTH,
                 phaseInfo = {
-                    Text(text = "1관문 ${epVM.behemoth.onePhase.level} : ${epVM.behemoth.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
-                    Text(text = "2관문 ${epVM.behemoth.twoPhase.level} : ${epVM.behemoth.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_ONE} ${epVM.behemoth.onePhase.level} : ${epVM.behemoth.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_TWO} ${epVM.behemoth.twoPhase.level} : ${epVM.behemoth.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
                 }
             )
         }
@@ -336,7 +337,7 @@ private fun Script(viewModel: HomeworkVM) {
             .padding(16.dp)
             .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
     ) {
-        RaidTitle(title = "기타", totalGold = viewModel.etcGold)
+        RaidTitle(title = Raid.Name.ETC, totalGold = viewModel.etcGold)
         Divider()
 
         Row(

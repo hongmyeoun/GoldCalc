@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hongmyeoun.goldcalc.BuildConfig
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.constants.ButtonText
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.setting.common.Dialog
 import com.hongmyeoun.goldcalc.viewModel.setting.SettingVM
@@ -37,7 +38,7 @@ fun SettingContent(
     if (showResetDialog) {
         Dialog(
             title = "숙제",
-            action = "초기화",
+            action = ButtonText.INIT,
             viewModel = viewModel,
             onConfirm = { viewModel.onHomeworkReset() }
         )
@@ -46,7 +47,7 @@ fun SettingContent(
     if (showDeleteCharListDialog) {
         Dialog(
             title = "캐릭터",
-            action = "일괄 삭제",
+            action = ButtonText.DELETE_ALL,
             viewModel = viewModel,
             onConfirm = { viewModel.onDeleteAllCharList() }
         )
@@ -55,7 +56,7 @@ fun SettingContent(
     if (showDeleteHistoriesDialog) {
         Dialog(
             title = "검색기록",
-            action = "일괄 삭제",
+            action = ButtonText.DELETE_ALL,
             viewModel = viewModel,
             onConfirm = { viewModel.onDeleteAllHistories() }
         )
@@ -139,6 +140,3 @@ fun SettingContent(
         }
     }
 }
-
-
-
