@@ -31,7 +31,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.model.constants.Homework
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
 import com.hongmyeoun.goldcalc.model.constants.Labels
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character

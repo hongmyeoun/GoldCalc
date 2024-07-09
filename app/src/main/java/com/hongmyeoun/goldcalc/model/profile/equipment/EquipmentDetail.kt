@@ -2,7 +2,7 @@ package com.hongmyeoun.goldcalc.model.profile.equipment
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import com.hongmyeoun.goldcalc.model.constants.EquipmentConsts
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.constants.TooltipStrings
 import com.hongmyeoun.goldcalc.model.profile.Common
 

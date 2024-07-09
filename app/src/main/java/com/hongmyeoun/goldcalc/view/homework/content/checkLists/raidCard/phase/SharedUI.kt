@@ -29,7 +29,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.common.ImageReturn.goldImage
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
-import com.hongmyeoun.goldcalc.model.constants.Homework
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG

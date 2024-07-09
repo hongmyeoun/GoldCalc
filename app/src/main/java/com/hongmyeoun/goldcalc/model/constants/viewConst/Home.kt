@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.model.constants
+package com.hongmyeoun.goldcalc.model.constants.viewConst
 
 object Home {
     const val PROGRESS = "진행도"

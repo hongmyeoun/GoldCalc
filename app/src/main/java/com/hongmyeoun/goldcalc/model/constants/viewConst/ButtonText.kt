@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.model.constants
+package com.hongmyeoun.goldcalc.model.constants.viewConst
 
 object ButtonText {
     const val GET_PROFILE_BUTTON_TEXT = "가져오기"

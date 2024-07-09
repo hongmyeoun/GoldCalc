@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.hongmyeoun.goldcalc.model.constants.EquipmentConsts
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.profile.equipment.AbilityStone
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem

@@ -23,8 +23,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.hongmyeoun.goldcalc.model.constants.ButtonText
-import com.hongmyeoun.goldcalc.model.constants.Setting
+import com.hongmyeoun.goldcalc.model.constants.viewConst.ButtonText
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Setting
 import com.hongmyeoun.goldcalc.ui.theme.LightBlue
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.viewModel.setting.SettingVM

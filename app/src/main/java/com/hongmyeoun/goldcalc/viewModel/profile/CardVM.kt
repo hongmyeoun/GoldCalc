@@ -5,6 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.constants.TooltipStrings
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.profile.card.CardEffects
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,10 +36,11 @@ class CardVM: ViewModel() {
     }
 
     fun effect(effectName: String): String {
-        val name = effectName.split(" ").last()
+        val name = effectName.split(TooltipStrings.Split.SPACE).last()
 
-        return if (name.contains("각성")) {
-            name.substringAfter("(").substringBefore("합계")
+        return if (name.contains(TooltipStrings.Contains.AWAKEN)) {
+            name.substringAfter(TooltipStrings.SubStringAfter.LEFT_SMALL_BRACKET)
+                .substringBefore(TooltipStrings.SubStringBefore.TOTAL)
         } else {
             name
         }
@@ -55,11 +58,11 @@ class CardVM: ViewModel() {
 
     fun cardBorderGrade(grade: String): Int {
         return  when (grade) {
-            "일반" -> { R.drawable.img_card_grade_normal }
-            "고급" -> { R.drawable.img_card_grade_uncommon }
-            "희귀" -> { R.drawable.img_card_grade_rare }
-            "영웅" -> { R.drawable.img_card_grade_epic }
-            "전설" -> { R.drawable.img_card_grade_legendary }
+            EquipmentConsts.GRADE_NORMAL -> { R.drawable.img_card_grade_normal }
+            EquipmentConsts.GRADE_UNCOMMON -> { R.drawable.img_card_grade_uncommon }
+            EquipmentConsts.GRADE_RARE -> { R.drawable.img_card_grade_rare }
+            EquipmentConsts.GRADE_EPIC -> { R.drawable.img_card_grade_epic }
+            EquipmentConsts.GRADE_LEGENDARY -> { R.drawable.img_card_grade_legendary }
             else -> { R.drawable.img_card_grade_relic }
         }
     }

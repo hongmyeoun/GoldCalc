@@ -37,7 +37,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.common.ImageReturn
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
 import com.hongmyeoun.goldcalc.model.common.toPercentage
-import com.hongmyeoun.goldcalc.model.constants.Home
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Home
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG

@@ -19,8 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.hongmyeoun.goldcalc.model.constants.ButtonText
-import com.hongmyeoun.goldcalc.model.constants.Search
+import com.hongmyeoun.goldcalc.model.constants.viewConst.ButtonText
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Search
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM

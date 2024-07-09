@@ -1,6 +1,6 @@
 package com.hongmyeoun.goldcalc.model.profile.gem
 
-import com.hongmyeoun.goldcalc.model.constants.EquipmentConsts
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 
 class GemDetail(private val gemAndEffect: GemAndEffect) {
     fun getCharacterGemDetails(): List<Gem> {

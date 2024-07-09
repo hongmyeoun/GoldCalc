@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.hongmyeoun.goldcalc.model.constants.NavigationKey
+import com.hongmyeoun.goldcalc.model.constants.viewConst.NavigationKey
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.view.home.HomeView
 import com.hongmyeoun.goldcalc.view.homework.HomeworkView

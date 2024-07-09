@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.hongmyeoun.goldcalc.model.constants.SnackbarMessage
+import com.hongmyeoun.goldcalc.model.constants.viewConst.SnackbarMessage
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.view.home.content.HomeContent
 import com.hongmyeoun.goldcalc.view.home.topbar.HomeTopBar

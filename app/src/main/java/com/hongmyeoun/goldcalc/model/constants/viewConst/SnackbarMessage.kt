@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.model.constants
+package com.hongmyeoun.goldcalc.model.constants.viewConst
 
 object SnackbarMessage {
     const val EXIT_APP = "한 번 더 누르시면 앱이 종료됩니다."

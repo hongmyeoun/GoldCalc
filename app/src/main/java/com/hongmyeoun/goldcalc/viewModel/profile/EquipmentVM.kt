@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.util.fastSumBy
 import androidx.lifecycle.ViewModel
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterEquipment
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
@@ -29,7 +30,7 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
     private val _accessoryAvgQuality = MutableStateFlow(0.0)
     val accessoryAvgQuality: StateFlow<Double> = _accessoryAvgQuality
 
-    private val _setOption = MutableStateFlow("세트효과 없음")
+    private val _setOption = MutableStateFlow(EquipmentConsts.NO_SETTING)
     val setOption: StateFlow<String> = _setOption
 
     private val _totalCombatStat = MutableStateFlow(0)
@@ -126,7 +127,7 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
 
     fun elixirSetOption(equipment: List<CharacterItem>): String {
         val setOption = equipment.filterIsInstance<CharacterEquipment>().filter { it.type == "투구" }.map { it.elixirSetOption }
-        return if (setOption.isEmpty()) "세트 없음" else setOption[0]
+        return if (setOption.isEmpty()) EquipmentConsts.NO_SETTING else setOption[0]
     }
 
     fun sumTransLevel(equipment: List<CharacterItem>): Int {
@@ -141,9 +142,9 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
 
     fun getItemBG(grade: String): Brush {
         val itemBG = when (grade) {
-            "에스더" -> EstherBG
-            "고대" -> AncientBG
-            "유물" -> RelicBG
+            EquipmentConsts.GRADE_ESTHER -> EstherBG
+            EquipmentConsts.GRADE_ANCIENT -> AncientBG
+            EquipmentConsts.GRADE_RELIC -> RelicBG
             else -> LegendaryBG
         }
         return itemBG
@@ -151,9 +152,9 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
 
     fun getGradeBG(grade: String, brightAncient: Boolean = true): Color {
         val itemBG = when (grade) {
-            "에스더" -> EsterColor
-            "고대" -> if (brightAncient) AncientColor else AncientMiddle
-            "유물" -> RelicColor
+            EquipmentConsts.GRADE_ESTHER -> EsterColor
+            EquipmentConsts.GRADE_ANCIENT -> if (brightAncient) AncientColor else AncientMiddle
+            EquipmentConsts.GRADE_RELIC -> RelicColor
             else -> LegendaryColor
         }
         return itemBG

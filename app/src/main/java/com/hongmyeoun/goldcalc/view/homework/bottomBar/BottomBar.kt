@@ -38,8 +38,8 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.common.ImageReturn.goldImage
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
-import com.hongmyeoun.goldcalc.model.constants.ButtonText
-import com.hongmyeoun.goldcalc.model.constants.Homework
+import com.hongmyeoun.goldcalc.model.constants.viewConst.ButtonText
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual

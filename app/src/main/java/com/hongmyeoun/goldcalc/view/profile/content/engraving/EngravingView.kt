@@ -25,7 +25,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.model.constants.Profile
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
 import com.hongmyeoun.goldcalc.model.profile.engravings.SkillEngravings
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG

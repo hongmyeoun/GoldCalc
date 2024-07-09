@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.model.constants
+package com.hongmyeoun.goldcalc.model.constants.viewConst
 
 object EquipmentConsts {
     const val WEAPON = "무기"
@@ -41,4 +41,16 @@ object EquipmentConsts {
     const val COOLTIME = "재사용 대기시간"
 
     const val INCREASE = "증가"
+
+    const val GRADE_NORMAL = "일반"
+    const val GRADE_UNCOMMON = "고급"
+    const val GRADE_RARE = "희귀"
+    const val GRADE_EPIC = "영웅"
+    const val GRADE_LEGENDARY = "전설"
+    const val GRADE_RELIC = "유물"
+    const val GRADE_ANCIENT = "고대"
+    const val GRADE_ESTHER = "에스더"
+
+    const val NO_SETTING = "세트 없음"
+
 }

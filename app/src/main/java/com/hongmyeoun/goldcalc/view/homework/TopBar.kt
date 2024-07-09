@@ -36,8 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
-import com.hongmyeoun.goldcalc.model.constants.ButtonText
-import com.hongmyeoun.goldcalc.model.constants.Homework
+import com.hongmyeoun.goldcalc.model.constants.viewConst.ButtonText
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
 import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.LightBlue
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG

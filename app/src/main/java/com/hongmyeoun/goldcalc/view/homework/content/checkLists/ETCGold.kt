@@ -20,7 +20,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.hongmyeoun.goldcalc.model.constants.Homework
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
 import com.hongmyeoun.goldcalc.viewModel.homework.HomeworkVM
 
 @Composable

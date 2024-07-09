@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.hongmyeoun.goldcalc.model.constants.Setting
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Setting
 import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle

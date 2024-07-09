@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hongmyeoun.goldcalc.model.constants.SnackbarMessage
+import com.hongmyeoun.goldcalc.model.constants.viewConst.SnackbarMessage
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.model.roomDB.character.RaidPhaseInfo

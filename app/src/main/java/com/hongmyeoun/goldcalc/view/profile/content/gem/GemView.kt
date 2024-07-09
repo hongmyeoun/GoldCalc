@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.hongmyeoun.goldcalc.model.constants.Profile
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
 import com.hongmyeoun.goldcalc.model.profile.gem.Gem
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.view.profile.Title

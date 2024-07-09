@@ -18,8 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.hongmyeoun.goldcalc.model.constants.EquipmentConsts
-import com.hongmyeoun.goldcalc.model.constants.Profile
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
 import com.hongmyeoun.goldcalc.model.profile.equipment.AbilityStone
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem

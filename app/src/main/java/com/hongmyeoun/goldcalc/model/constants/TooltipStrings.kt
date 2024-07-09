@@ -34,10 +34,12 @@ class TooltipStrings {
         const val ABILITY_STONE_BONUS = "세공 단계 보너스"
         const val ABILITY_STONE_ENGRAVING = "무작위 각인 효과"
         const val GEM_EFFECTS = "보석 효과"
+        const val AWAKEN = "각성"
     }
 
     object SubStringAfter {
         const val UPPER_DOT_DECREASE = "'>"
+        const val LEFT_SMALL_BRACKET = "("
 
         const val LEVEL_DOT = "Lv."
         const val LEVEL_DOT_SPACE = "Lv. "
@@ -55,6 +57,8 @@ class TooltipStrings {
     }
 
     object SubStringBefore {
+        const val TOTAL = "합계"
+
         const val ENTER_HTML = "<BR>"
         const val SPACE_LEVEL = " Lv"
 

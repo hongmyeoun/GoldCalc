@@ -18,10 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hongmyeoun.goldcalc.BuildConfig
 import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.model.constants.ButtonText
-import com.hongmyeoun.goldcalc.model.constants.Home
-import com.hongmyeoun.goldcalc.model.constants.Profile
-import com.hongmyeoun.goldcalc.model.constants.Setting
+import com.hongmyeoun.goldcalc.model.constants.viewConst.ButtonText
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Home
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Setting
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.setting.common.Dialog
 import com.hongmyeoun.goldcalc.viewModel.setting.SettingVM

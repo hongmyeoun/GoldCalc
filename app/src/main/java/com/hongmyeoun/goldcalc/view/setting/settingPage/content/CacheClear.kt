@@ -22,7 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
-import com.hongmyeoun.goldcalc.model.constants.Setting
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Setting
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.viewModel.setting.SettingVM
 

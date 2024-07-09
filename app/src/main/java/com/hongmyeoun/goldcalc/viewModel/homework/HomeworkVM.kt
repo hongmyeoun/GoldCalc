@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hongmyeoun.goldcalc.model.constants.SnackbarMessage
+import com.hongmyeoun.goldcalc.model.constants.viewConst.SnackbarMessage
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail

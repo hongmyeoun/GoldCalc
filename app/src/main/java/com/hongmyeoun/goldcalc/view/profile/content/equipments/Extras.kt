@@ -20,8 +20,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.model.constants.EquipmentConsts
-import com.hongmyeoun.goldcalc.model.constants.Profile
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
 import com.hongmyeoun.goldcalc.model.profile.equipment.Bracelet
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG

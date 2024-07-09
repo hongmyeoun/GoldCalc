@@ -34,8 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.hongmyeoun.goldcalc.model.constants.EquipmentConsts
-import com.hongmyeoun.goldcalc.model.constants.Profile
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG

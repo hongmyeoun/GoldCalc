@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.model.constants.Search
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Search
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterInfo
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.navigation.Screen

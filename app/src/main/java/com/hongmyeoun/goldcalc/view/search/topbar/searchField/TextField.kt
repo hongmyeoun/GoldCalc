@@ -35,7 +35,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.hongmyeoun.goldcalc.R
-import com.hongmyeoun.goldcalc.model.constants.Search
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Search
 import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM

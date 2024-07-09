@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.model.constants
+package com.hongmyeoun.goldcalc.model.constants.viewConst
 
 object Setting {
     const val DIALOG_MIDDLE_TEXT = "를 "
