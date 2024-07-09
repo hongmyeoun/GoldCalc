@@ -24,12 +24,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.model.constants.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.profile.gem.Gem
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.RelicColor
-import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.common.TextChip
+import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 
 @Composable
 fun Detail(
@@ -38,12 +39,12 @@ fun Detail(
     Row {
         GemDetail(
             modifier = Modifier.weight(1f),
-            effectType = "피해",
+            effectType = EquipmentConsts.DEAL,
             gemList = gemList
         )
         GemDetail(
             modifier = Modifier.weight(1f),
-            effectType = "재사용 대기시간",
+            effectType = EquipmentConsts.COOLTIME,
             gemList = gemList
         )
     }
@@ -76,7 +77,7 @@ private fun GemDetail(
             )
         }
 
-        val type = if (effectType == "피해") "멸화" else "홍염"
+        val type = if (effectType == EquipmentConsts.DEAL) EquipmentConsts.DEAL_GEM_3_TIER else EquipmentConsts.COOLTIME_GEM_3_TIER
 
         gemList.filter { it.type == type }.forEach { gem ->
             Row(

@@ -32,4 +32,12 @@ object EquipmentConsts {
     const val ATTACK_POWER = "공격력"
     const val MAX_LIFE = "최대 생명력"
     val DEFAULT_STAT_LIST = listOf(ATTACK_POWER, MAX_LIFE)
+
+    const val DEAL_GEM_3_TIER = "멸화"
+    const val COOLTIME_GEM_3_TIER = "홍염"
+
+    const val DEAL = "피해"
+    const val COOLTIME = "재사용 대기시간"
+
+    const val INCREASE = "증가"
 }

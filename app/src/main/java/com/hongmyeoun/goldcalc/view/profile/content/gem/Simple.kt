@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.model.constants.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.profile.gem.Gem
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.common.TextChip
@@ -37,9 +38,9 @@ fun Simple(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        TextChip(text = "멸화 x$annihilation")
+        TextChip(text = "${EquipmentConsts.DEAL_GEM_3_TIER} x$annihilation")
         Spacer(modifier = Modifier.width(8.dp))
-        TextChip(text = "홍염 x$crimsonFlame")
+        TextChip(text = "${EquipmentConsts.COOLTIME_GEM_3_TIER} x$crimsonFlame")
     }
     Spacer(modifier = Modifier.height(4.dp))
 
@@ -49,7 +50,7 @@ fun Simple(
             FlowRow(
                 maxItemsInEachRow = annMaxItemCount
             ) {
-                gemList.filter { it.type == "멸화" }.forEach {
+                gemList.filter { it.type == EquipmentConsts.DEAL_GEM_3_TIER }.forEach {
                     GemSimple(it, viewModel)
                 }
             }
@@ -58,7 +59,7 @@ fun Simple(
             FlowRow(
                 maxItemsInEachRow = criMaxItemCount
             ) {
-                gemList.filter { it.type == "홍염" }.forEach {
+                gemList.filter { it.type == EquipmentConsts.COOLTIME_GEM_3_TIER }.forEach {
                     GemSimple(it, viewModel)
                 }
             }
