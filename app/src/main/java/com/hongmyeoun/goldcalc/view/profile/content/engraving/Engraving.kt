@@ -9,13 +9,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
+import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
 import com.hongmyeoun.goldcalc.viewModel.profile.ProfileVM
 
 @Composable
 fun Engraving(
     viewModel: ProfileVM,
-    profile: CharacterDetail
+    profile: SearchedCharacterDetail
 ) {
     // 각인
     val engravings by viewModel.engravings.collectAsState()

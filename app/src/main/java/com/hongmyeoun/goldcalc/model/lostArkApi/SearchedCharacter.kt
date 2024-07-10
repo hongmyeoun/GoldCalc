@@ -2,7 +2,7 @@ package com.hongmyeoun.goldcalc.model.lostArkApi
 
 import com.google.gson.annotations.SerializedName
 
-data class CharacterInfo(
+data class SearchedCharacter(
     @SerializedName("ServerName") val serverName: String,
     @SerializedName("CharacterName") val characterName: String,
     @SerializedName("CharacterLevel") val characterLevel: Int,
@@ -11,7 +11,7 @@ data class CharacterInfo(
     @SerializedName("ItemMaxLevel") val itemMaxLevel: String,
 )
 
-data class CharacterDetail(
+data class SearchedCharacterDetail(
     @SerializedName("CharacterImage") val characterImage: String,
     @SerializedName("ExpeditionLevel") val expeditionLevel: Int,
     @SerializedName("PvpGradeName") val pvpGradeName: String,
@@ -29,7 +29,8 @@ data class CharacterDetail(
     @SerializedName("CharacterLevel") val characterLevel: Int,
     @SerializedName("CharacterClassName") val characterClassName: String,
     @SerializedName("ItemAvgLevel") val itemAvgLevel: String,
-    @SerializedName("ItemMaxLevel") val itemMaxLevel: String
+    @SerializedName("ItemMaxLevel") val itemMaxLevel: String,
+    @SerializedName("ArkPassive") val arkPassive: ArkPassive
 )
 
 data class Stats(
@@ -42,4 +43,15 @@ data class Tendency(
     @SerializedName("Type") val type: String,
     @SerializedName("Point") val point: Int,
     @SerializedName("MaxPoint") val maxPoint: Int
+)
+
+data class ArkPassive(
+    @SerializedName("IsArkPassive") val isArkPassive: Boolean,
+    @SerializedName("Points") val points: List<ArkPassivePoint>
+)
+
+data class ArkPassivePoint(
+    @SerializedName("Name") val name: String,
+    @SerializedName("Value") val value: Int,
+    @SerializedName("Tooltip") val tooltip: String
 )

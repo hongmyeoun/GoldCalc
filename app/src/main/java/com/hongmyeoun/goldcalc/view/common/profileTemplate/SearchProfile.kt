@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.constants.viewConst.ButtonText
-import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
+import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.Extra
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.ItemLevel
@@ -28,7 +28,7 @@ import com.hongmyeoun.goldcalc.view.common.profileTemplate.TitleCharName
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
 fun SearchProfile(
-    profile: CharacterDetail,
+    profile: SearchedCharacterDetail,
     onGetClick: () -> Unit,
     enabled: Boolean
 ) {
@@ -66,7 +66,7 @@ fun SearchProfile(
 
 @Composable
 private fun DefaultsProfilesWithGetButton(
-    profile: CharacterDetail,
+    profile: SearchedCharacterDetail,
     enabled: Boolean,
     onGetClick: () -> Unit
 ) {

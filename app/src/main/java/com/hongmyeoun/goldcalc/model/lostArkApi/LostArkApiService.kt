@@ -14,12 +14,12 @@ interface LostArkApiService {
     @GET(NetworkConfig.SIBLINGS)
     fun getCharacters(
         @Path(NetworkConfig.SEARCH_PATH) characterName: String
-    ): Call<List<CharacterInfo>>
+    ): Call<List<SearchedCharacter>>
 
     @GET(NetworkConfig.PROFILES)
     fun getCharacterDetail(
         @Path(NetworkConfig.SEARCH_PATH) characterName: String
-    ): Call<CharacterDetail>
+    ): Call<SearchedCharacterDetail>
 
     @GET(NetworkConfig.EQUIPMENT)
     fun getCharacterEquipment(

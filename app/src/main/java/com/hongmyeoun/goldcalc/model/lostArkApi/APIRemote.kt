@@ -36,7 +36,7 @@ object APIRemote {
 
     private val lostArkApiService: LostArkApiService = retrofit.create(LostArkApiService::class.java)
 
-    suspend fun getCharacter(characterName: String): Pair<List<CharacterInfo>?, String?> {
+    suspend fun getCharacter(characterName: String): Pair<List<SearchedCharacter>?, String?> {
         return withContext(Dispatchers.IO) {
             try {
                 val response = lostArkApiService.getCharacters(characterName).execute()
@@ -65,7 +65,7 @@ object APIRemote {
         }
     }
 
-    suspend fun getCharDetail(characterName: String): CharacterDetail? {
+    suspend fun getCharDetail(characterName: String): SearchedCharacterDetail? {
         return withContext(Dispatchers.IO) {
             try {
                 val characterInfo = lostArkApiService.getCharacters(characterName).execute()

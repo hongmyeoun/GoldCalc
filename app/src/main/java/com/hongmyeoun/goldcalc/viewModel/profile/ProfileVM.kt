@@ -8,7 +8,7 @@ import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharEngravings
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharEquipment
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharGem
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharSkill
-import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
+import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
 import com.hongmyeoun.goldcalc.model.profile.card.CardEffects
 import com.hongmyeoun.goldcalc.model.profile.card.Cards
 import com.hongmyeoun.goldcalc.model.profile.engravings.SkillEngravings
@@ -42,7 +42,7 @@ class ProfileVM @Inject constructor(
     }
 
     // 버튼을 눌렀을시 character를 DB에 저장
-    fun saveCharDetailToLocal(charDetail: CharacterDetail) {
+    fun saveCharDetailToLocal(charDetail: SearchedCharacterDetail) {
         val avatarImage = !charDetail.characterImage.isNullOrEmpty() // 접속여부가 없다면 이미지가 null값임, 객체에서는 not null이기 때문에 경고가 뜸
 
         val character = Character(
@@ -72,8 +72,8 @@ class ProfileVM @Inject constructor(
     }
 
     // API로 받아올 캐릭터 형식
-    private val _characterDetail = MutableStateFlow<CharacterDetail?>(null)
-    val charProfile: StateFlow<CharacterDetail?> = _characterDetail
+    private val _characterDetail = MutableStateFlow<SearchedCharacterDetail?>(null)
+    val charProfile: StateFlow<SearchedCharacterDetail?> = _characterDetail
 
     private val _engravings = MutableStateFlow<List<SkillEngravings>?>(null)
     val engravings: StateFlow<List<SkillEngravings>?> = _engravings

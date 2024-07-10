@@ -29,7 +29,7 @@ import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Search
-import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterInfo
+import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacter
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
@@ -38,7 +38,7 @@ import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 fun SearchResults(
-    characterList: List<CharacterInfo>,
+    characterList: List<SearchedCharacter>,
     navController: NavHostController,
     scrollState: LazyListState,
 ) {
@@ -94,7 +94,7 @@ private fun HeaderText(text: String) {
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ResultItem(
-    character: CharacterInfo,
+    character: SearchedCharacter,
     isFirstItem: Boolean,
     navController: NavHostController,
 ) {

@@ -22,7 +22,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
 import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
-import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
+import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.VeryLightGrayTransBG
 import com.hongmyeoun.goldcalc.view.common.TextChip
@@ -134,7 +134,7 @@ fun Extra(character: Character) {
 
 // 길드, 영지, PVP 등급(Profile)
 @Composable
-fun Extra(profile: CharacterDetail) {
+fun Extra(profile: SearchedCharacterDetail) {
     ExtraInfo(Homework.GUILD, profile.guildName)
     Spacer(modifier = Modifier.height(6.dp))
 
@@ -170,7 +170,7 @@ fun Levels(character: Character) {
 
 // 전투, 원정대 레벨(Profile)
 @Composable
-fun Levels(profile: CharacterDetail) {
+fun Levels(profile: SearchedCharacterDetail) {
     Row {
         CharLevel(Homework.CHARACTER_LEVEL, profile.characterLevel.toString())
         Spacer(modifier = Modifier.width(16.dp))
