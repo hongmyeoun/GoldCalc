@@ -24,6 +24,9 @@ val LightGrayTransBG = Color(0x7F1C1F26)
 val VeryLightGrayTransBG = Color(0x80646E6F)
 val LightGrayBG = Color(0xFF2B313A)
 
+val ArkPassiveEvolution = Color(0xFFF2D694)
+val ArkPassiveEnlightenment = Color(0xFF83E9FF)
+
 val OrangeQual = Color(0xFFEA6811)
 val PurpleQual = Color(0xFF7030A0)
 val BlueQual = Color(0xFF4472C4)

@@ -1,8 +1,10 @@
 package com.hongmyeoun.goldcalc.view.common.profileTemplate
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -15,15 +17,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
+import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
 import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
+import com.hongmyeoun.goldcalc.ui.theme.ArkPassiveEnlightenment
+import com.hongmyeoun.goldcalc.ui.theme.ArkPassiveEvolution
 import com.hongmyeoun.goldcalc.ui.theme.VeryLightGrayTransBG
 import com.hongmyeoun.goldcalc.view.common.TextChip
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
@@ -129,7 +135,7 @@ fun Extra(character: Character) {
     Spacer(modifier = Modifier.height(6.dp))
 
     ExtraInfo(Homework.PVP, character.pvpGradeName)
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(8.dp))
 }
 
 // 길드, 영지, PVP 등급(Profile)
@@ -142,7 +148,7 @@ fun Extra(profile: SearchedCharacterDetail) {
     Spacer(modifier = Modifier.height(6.dp))
 
     ExtraInfo(Homework.PVP, profile.pvpGradeName)
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(8.dp))
 }
 
 @Composable
@@ -226,4 +232,96 @@ private fun CharLevel(title: String, level: String) {
             Text(text = "Lv.$level", fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, color = Color.White)
         }
     }
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun ArkPassive(
+    character: Character,
+) {
+    Row {
+        Box(
+            modifier = Modifier.size(width = 58.dp, height = 25.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            GlideImage(
+                model = R.drawable.bg_arkpassive_evolution,
+                contentScale = ContentScale.FillBounds,
+                contentDescription = "진화"
+            )
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "   ${character.evolutionLevel}",
+                color = ArkPassiveEvolution,
+                fontSize = 12.sp,
+                textAlign = TextAlign.Center
+            )
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Box(
+            modifier = Modifier.size(width = 58.dp, height = 25.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            GlideImage(
+                model = R.drawable.bg_arkpassive_enlightenment,
+                contentScale = ContentScale.FillBounds,
+                contentDescription = "깨달음"
+            )
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "   ${character.enlightenmentLevel}",
+                color = ArkPassiveEnlightenment,
+                fontSize = 12.sp,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+    Spacer(modifier = Modifier.height(8.dp))
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun ArkPassive(
+    profile: SearchedCharacterDetail,
+) {
+    Row {
+        Box(
+            modifier = Modifier.size(width = 58.dp, height = 25.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            GlideImage(
+                model = R.drawable.bg_arkpassive_evolution,
+                contentScale = ContentScale.FillBounds,
+                contentDescription = "진화"
+            )
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "   ${profile.arkPassive.points[0].value}",
+                color = ArkPassiveEvolution,
+                fontSize = 12.sp,
+                textAlign = TextAlign.Center
+            )
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Box(
+            modifier = Modifier.size(width = 58.dp, height = 25.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            GlideImage(
+                model = R.drawable.bg_arkpassive_enlightenment,
+                contentScale = ContentScale.FillBounds,
+                contentDescription = "깨달음"
+            )
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "   ${profile.arkPassive.points[1].value}",
+                color = ArkPassiveEnlightenment,
+                fontSize = 12.sp,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+    Spacer(modifier = Modifier.height(8.dp))
 }

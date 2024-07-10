@@ -83,7 +83,7 @@ class Gold {
             val VALTAN = listOf(200, 400)
             val BIACKISS = listOf(300, 500)
             val KOUKU_SATON = listOf(300, 400, 700)
-            val ABRELSHUD = listOf(400, 500, 800, 500)
+            val ABRELSHUD = listOf(400, 500, 800, 900)
             val ILLIAKAN = listOf(700, 800, 1300)
 
             val KAYANGEL = listOf(400, 500, 800)

@@ -58,7 +58,9 @@ class ProfileVM @Inject constructor(
             townLevel = charDetail.townLevel,
             townName = charDetail.townName,
             characterImage = charDetail.characterImage,
-            avatarImage = avatarImage
+            avatarImage = avatarImage,
+            evolutionLevel = charDetail.arkPassive.points[0].value,
+            enlightenmentLevel = charDetail.arkPassive.points[1].value
         )
         saveCharacter(character)
     }

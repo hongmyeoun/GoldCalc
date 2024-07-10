@@ -17,8 +17,9 @@ import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.constants.viewConst.ButtonText
-import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
+import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
+import com.hongmyeoun.goldcalc.view.common.profileTemplate.ArkPassive
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.Extra
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.ItemLevel
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.Levels
@@ -32,7 +33,7 @@ fun SearchProfile(
     onGetClick: () -> Unit,
     enabled: Boolean
 ) {
-    val height = if (enabled) 332.dp else 262.dp
+    val height = if (enabled) 372.dp else 302.dp
 
     val characterImage = if (profile.characterImage.isNullOrEmpty()) {
         CharacterResourceMapper.getClassDefaultImg(profile.characterClassName)
@@ -83,6 +84,7 @@ private fun DefaultsProfilesWithGetButton(
         )
         ItemLevel(level = profile.itemMaxLevel)
         Extra(profile = profile)
+        ArkPassive(profile = profile)
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
