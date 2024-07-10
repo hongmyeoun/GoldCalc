@@ -34,13 +34,25 @@ object EquipmentConsts {
     const val MAX_LIFE = "최대 생명력"
     val DEFAULT_STAT_LIST = listOf(ATTACK_POWER, MAX_LIFE)
 
+    const val DEAL_GEM_2_TIER = "청명"
+    const val COOLTIME_GEM_2_TIER = "원해"
+
     const val DEAL_GEM_3_TIER = "멸화"
     const val COOLTIME_GEM_3_TIER = "홍염"
 
+    const val DEAL_GEM_4_TIER = "겁화"
+    const val COOLTIME_GEM_4_TIER = "작열"
+
+    val DEAL_GEM_LIST = listOf(DEAL_GEM_2_TIER, DEAL_GEM_3_TIER, DEAL_GEM_4_TIER)
+    val COOLTIME_GEM_LIST = listOf(COOLTIME_GEM_2_TIER, COOLTIME_GEM_3_TIER, COOLTIME_GEM_4_TIER)
+
     const val DEAL = "피해"
     const val COOLTIME = "재사용 대기시간"
+    const val COOLTIME_SHORT = "쿨타임"
 
     const val INCREASE = "증가"
+
+    const val DEFAULT_SPACE = "기본 "
 
     const val GRADE_NORMAL = "일반"
     const val GRADE_UNCOMMON = "고급"

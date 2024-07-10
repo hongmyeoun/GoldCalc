@@ -25,6 +25,10 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.COOLTIME
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.COOLTIME_SHORT
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.DEAL
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.DEFAULT_SPACE
 import com.hongmyeoun.goldcalc.model.profile.gem.Gem
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
@@ -39,12 +43,12 @@ fun Detail(
     Row {
         GemDetail(
             modifier = Modifier.weight(1f),
-            effectType = EquipmentConsts.DEAL,
+            effectType = DEAL,
             gemList = gemList
         )
         GemDetail(
             modifier = Modifier.weight(1f),
-            effectType = EquipmentConsts.COOLTIME,
+            effectType = COOLTIME,
             gemList = gemList
         )
     }
@@ -77,9 +81,9 @@ private fun GemDetail(
             )
         }
 
-        val type = if (effectType == EquipmentConsts.DEAL) EquipmentConsts.DEAL_GEM_3_TIER else EquipmentConsts.COOLTIME_GEM_3_TIER
+        val type = if (effectType == DEAL) EquipmentConsts.DEAL_GEM_LIST else EquipmentConsts.COOLTIME_GEM_LIST
 
-        gemList.filter { it.type == type }.forEach { gem ->
+        gemList.filter { it.type in type }.forEach { gem ->
             Row(
                 modifier = Modifier.padding(4.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -115,13 +119,22 @@ private fun GemDetail(
                         text = gem.skill,
                         color = RelicColor,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp
+                        fontSize = if (gem.option.isNotEmpty()) 12.sp else 14.sp
                     )
                     Spacer(modifier = Modifier.height(4.dp))
+                    val fixType = if (effectType == COOLTIME) COOLTIME_SHORT else DEAL
+
                     Text(
-                        text = gem.effect.substringAfter("$effectType "),
-                        style = normalTextStyle(fontSize = 12.sp)
+                        text = "$fixType ${gem.effect.substringAfter("$effectType ")}",
+                        style = normalTextStyle(fontSize = if (gem.option.isNotEmpty()) 11.sp else 12.sp)
                     )
+                    if (gem.option.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Text(
+                            text = gem.option.substringAfter(DEFAULT_SPACE),
+                            style = normalTextStyle(fontSize = 11.sp)
+                        )
+                    }
                 }
             }
         }

@@ -33,38 +33,84 @@ fun Simple(
     gemList: List<Gem>,
     viewModel: GemVM,
 ) {
-    val (annihilation, crimsonFlame) = viewModel.countAnnihilationGem(gemList)
+    val (deal, coolTime) = viewModel.countDealGem(gemList)
+    GemCount(
+        viewModel = viewModel,
+        gemList = gemList
+    )
+
+    Row {
+        val (dealItemCount, coolItemCount) = viewModel.calcMaxItemsInEachRow(deal, coolTime)
+        Column {
+            FlowRow(
+                maxItemsInEachRow = dealItemCount
+            ) {
+                gemList.filter { it.type in EquipmentConsts.DEAL_GEM_LIST }.forEach {
+                    GemSimple(it, viewModel)
+                }
+            }
+        }
+        Column {
+            FlowRow(
+                maxItemsInEachRow = coolItemCount
+            ) {
+                gemList.filter { it.type in EquipmentConsts.COOLTIME_GEM_LIST }.forEach {
+                    GemSimple(it, viewModel)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun GemCount(
+    viewModel: GemVM,
+    gemList: List<Gem>
+) {
+    val totalAttack = viewModel.totalIncrease(gemList)
+
+    val t4Deal = viewModel.t4Deal(gemList)
+    val t4Cool = viewModel.t4Cool(gemList)
+    val t3Deal = viewModel.t3Deal(gemList)
+    val t3Cool = viewModel.t3Cool(gemList)
+    val t2Deal = viewModel.t2Deal(gemList)
+    val t2Cool = viewModel.t2Cool(gemList)
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        TextChip(text = "${EquipmentConsts.DEAL_GEM_3_TIER} x$annihilation")
-        Spacer(modifier = Modifier.width(8.dp))
-        TextChip(text = "${EquipmentConsts.COOLTIME_GEM_3_TIER} x$crimsonFlame")
+        if (totalAttack.isNotEmpty()) {
+            TextChip(text = "공격력 +$totalAttack")
+            Spacer(modifier = Modifier.width(8.dp))
+        }
+        if (t4Deal > 1) {
+            TextChip(text = "${EquipmentConsts.DEAL_GEM_4_TIER} x$t4Deal")
+            Spacer(modifier = Modifier.width(8.dp))
+        }
+        if (t4Cool > 1) {
+            TextChip(text = "${EquipmentConsts.COOLTIME_GEM_4_TIER} x$t4Cool")
+            Spacer(modifier = Modifier.width(8.dp))
+        }
+
+        if (t3Deal > 1) {
+            TextChip(text = "${EquipmentConsts.DEAL_GEM_3_TIER} x$t3Deal")
+            Spacer(modifier = Modifier.width(8.dp))
+        }
+        if (t3Cool > 1) {
+            TextChip(text = "${EquipmentConsts.COOLTIME_GEM_3_TIER} x$t3Cool")
+            Spacer(modifier = Modifier.width(8.dp))
+        }
+
+        if (t2Deal > 1) {
+            TextChip(text = "${EquipmentConsts.DEAL_GEM_2_TIER} x$t2Deal")
+            Spacer(modifier = Modifier.width(8.dp))
+        }
+        if (t2Cool > 1) {
+            TextChip(text = "${EquipmentConsts.COOLTIME_GEM_2_TIER} x$t2Cool")
+        }
     }
     Spacer(modifier = Modifier.height(4.dp))
-
-    Row {
-        val (annMaxItemCount, criMaxItemCount) = viewModel.calcMaxItemsInEachRow(annihilation, crimsonFlame)
-        Column {
-            FlowRow(
-                maxItemsInEachRow = annMaxItemCount
-            ) {
-                gemList.filter { it.type == EquipmentConsts.DEAL_GEM_3_TIER }.forEach {
-                    GemSimple(it, viewModel)
-                }
-            }
-        }
-        Column {
-            FlowRow(
-                maxItemsInEachRow = criMaxItemCount
-            ) {
-                gemList.filter { it.type == EquipmentConsts.COOLTIME_GEM_3_TIER }.forEach {
-                    GemSimple(it, viewModel)
-                }
-            }
-        }
-    }
 }
 
 @Composable

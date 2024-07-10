@@ -37,5 +37,6 @@ data class Gem(
     val gemIcon: String,
     val skillIcon: String,
     val skill: String,
-    val effect: String
+    val effect: String,
+    val option: String
 )
