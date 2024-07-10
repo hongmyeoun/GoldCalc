@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.lifecycle.ViewModel
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.profile.gem.Gem
+import com.hongmyeoun.goldcalc.ui.theme.AncientBG
 import com.hongmyeoun.goldcalc.ui.theme.EpicBG
 import com.hongmyeoun.goldcalc.ui.theme.LegendaryBG
 import com.hongmyeoun.goldcalc.ui.theme.RareBG
@@ -40,6 +41,7 @@ class GemVM: ViewModel() {
 
     fun getItemBG(grade: String): Brush {
         val itemBG = when (grade) {
+            EquipmentConsts.GRADE_ANCIENT -> AncientBG
             EquipmentConsts.GRADE_RELIC -> RelicBG
             EquipmentConsts.GRADE_LEGENDARY -> LegendaryBG
             EquipmentConsts.GRADE_EPIC -> EpicBG

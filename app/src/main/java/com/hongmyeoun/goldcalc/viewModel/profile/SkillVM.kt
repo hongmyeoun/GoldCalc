@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.profile.gem.Gem
 import com.hongmyeoun.goldcalc.model.profile.skills.Skills
+import com.hongmyeoun.goldcalc.ui.theme.AncientBG
+import com.hongmyeoun.goldcalc.ui.theme.AncientColor
 import com.hongmyeoun.goldcalc.ui.theme.BlueQual
 import com.hongmyeoun.goldcalc.ui.theme.EpicBG
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
@@ -36,6 +38,7 @@ class SkillVM: ViewModel() {
 
     fun getGradeBG(grade: String): Color {
         val itemBG = when (grade) {
+            EquipmentConsts.GRADE_ANCIENT -> AncientColor
             EquipmentConsts.GRADE_RELIC -> RelicColor
             EquipmentConsts.GRADE_LEGENDARY -> OrangeQual
             EquipmentConsts.GRADE_EPIC -> PurpleQual
@@ -47,6 +50,7 @@ class SkillVM: ViewModel() {
 
     fun getItemBG(grade: String): Brush {
         val itemBG = when (grade) {
+            EquipmentConsts.GRADE_ANCIENT -> AncientBG
             EquipmentConsts.GRADE_RELIC -> RelicBG
             EquipmentConsts.GRADE_LEGENDARY -> LegendaryBG
             EquipmentConsts.GRADE_EPIC -> EpicBG
