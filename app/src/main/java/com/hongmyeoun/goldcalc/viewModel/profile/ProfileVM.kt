@@ -1,6 +1,5 @@
 package com.hongmyeoun.goldcalc.viewModel.profile
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharCard
@@ -10,14 +9,14 @@ import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharEquipment
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharGem
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharSkill
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
-import com.hongmyeoun.goldcalc.model.roomDB.character.Character
-import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.model.profile.card.CardEffects
 import com.hongmyeoun.goldcalc.model.profile.card.Cards
 import com.hongmyeoun.goldcalc.model.profile.engravings.SkillEngravings
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.model.profile.gem.Gem
 import com.hongmyeoun.goldcalc.model.profile.skills.Skills
+import com.hongmyeoun.goldcalc.model.roomDB.character.Character
+import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -95,7 +94,7 @@ class ProfileVM @Inject constructor(
     val skills: StateFlow<List<Skills>?> = _skills
 
     // API에서 character 정보들을 받아옴
-    fun getCharDetails(context: Context, charName: String) {
+    fun getCharDetails(charName: String) {
         viewModelScope.launch {
             _characterDetail.value = getCharDetail(charName)
             _engravings.value = getCharEngravings(charName)

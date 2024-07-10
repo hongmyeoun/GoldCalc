@@ -5,8 +5,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.util.fastSumBy
 import androidx.lifecycle.ViewModel
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.COOLTIME_GEM_2_TIER_SHORT
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.COOLTIME_GEM_3_TIER
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.COOLTIME_GEM_3_TIER_SHORT
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.COOLTIME_GEM_4_TIER
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.COOLTIME_GEM_4_TIER_SHORT
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.DEAL_GEM_2_TIER
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.DEAL_GEM_2_TIER_SHORT
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.DEAL_GEM_3_TIER
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.DEAL_GEM_3_TIER_SHORT
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.DEAL_GEM_4_TIER
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.DEAL_GEM_4_TIER_SHORT
 import com.hongmyeoun.goldcalc.model.profile.gem.Gem
 import com.hongmyeoun.goldcalc.model.profile.skills.Skills
+import com.hongmyeoun.goldcalc.ui.theme.AncientBG
+import com.hongmyeoun.goldcalc.ui.theme.AncientMiddle
 import com.hongmyeoun.goldcalc.ui.theme.BlueQual
 import com.hongmyeoun.goldcalc.ui.theme.EpicBG
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
@@ -36,6 +49,7 @@ class SkillVM: ViewModel() {
 
     fun getGradeBG(grade: String): Color {
         val itemBG = when (grade) {
+            EquipmentConsts.GRADE_ANCIENT -> AncientMiddle
             EquipmentConsts.GRADE_RELIC -> RelicColor
             EquipmentConsts.GRADE_LEGENDARY -> OrangeQual
             EquipmentConsts.GRADE_EPIC -> PurpleQual
@@ -47,6 +61,7 @@ class SkillVM: ViewModel() {
 
     fun getItemBG(grade: String): Brush {
         val itemBG = when (grade) {
+            EquipmentConsts.GRADE_ANCIENT -> AncientBG
             EquipmentConsts.GRADE_RELIC -> RelicBG
             EquipmentConsts.GRADE_LEGENDARY -> LegendaryBG
             EquipmentConsts.GRADE_EPIC -> EpicBG
@@ -69,8 +84,19 @@ class SkillVM: ViewModel() {
         return gemList.filter { gem -> gem.skill == skill.name }
     }
 
+//    private fun typeTrans(gem: Gem): Char {
+//        return if (gem.type.contains('멸')) '멸' else '홍'
+//    }
+
     private fun typeTrans(gem: Gem): Char {
-        return if (gem.type.contains('멸')) '멸' else '홍'
+        return when(gem.type) {
+            DEAL_GEM_4_TIER -> DEAL_GEM_4_TIER_SHORT
+            COOLTIME_GEM_4_TIER -> COOLTIME_GEM_4_TIER_SHORT
+            DEAL_GEM_3_TIER -> DEAL_GEM_3_TIER_SHORT
+            COOLTIME_GEM_3_TIER -> COOLTIME_GEM_3_TIER_SHORT
+            DEAL_GEM_2_TIER -> DEAL_GEM_2_TIER_SHORT
+            else -> COOLTIME_GEM_2_TIER_SHORT
+        }
     }
 
     fun gemInfo(gem: Gem): String {

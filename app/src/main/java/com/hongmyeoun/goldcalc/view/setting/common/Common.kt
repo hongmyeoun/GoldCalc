@@ -36,7 +36,7 @@ fun Dialog(
     viewModel: SettingVM,
     onConfirm: () -> Unit
 ) {
-    androidx.compose.ui.window.Dialog(onDismissRequest = { viewModel.onDissmissRequest() }) {
+    androidx.compose.ui.window.Dialog(onDismissRequest = { viewModel.onDismissRequest() }) {
 
         Column(
             modifier = Modifier.background(LightGrayBG, RoundedCornerShape(16.dp)),
@@ -95,7 +95,7 @@ fun Dialog(
                 TextButton(
                     modifier = Modifier.weight(1f),
                     onClick = {
-                        viewModel.onDissmissRequest()
+                        viewModel.onDismissRequest()
                     },
                     colors = ButtonDefaults.textButtonColors(
                         contentColor = Color.LightGray
@@ -113,7 +113,7 @@ fun Dialog(
                 TextButton(
                     modifier = Modifier.weight(1f),
                     onClick = {
-                        viewModel.onDissmissRequest()
+                        viewModel.onDismissRequest()
                         onConfirm()
                     },
                 ) {

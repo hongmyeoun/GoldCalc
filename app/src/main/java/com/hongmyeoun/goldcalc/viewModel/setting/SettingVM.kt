@@ -66,7 +66,7 @@ class SettingVM @Inject constructor(
         _showDeleteHistoryDialog.value = true
     }
 
-    fun onDissmissRequest() {
+    fun onDismissRequest() {
         _showResetDialog.value = false
         _showDeleteCharListDialog.value = false
         _showDeleteHistoryDialog.value = false
@@ -101,7 +101,7 @@ class SettingVM @Inject constructor(
             }
             characterRepository.updateAll(resetData)
         }
-        onDissmissRequest()
+        onDismissRequest()
     }
 
     fun onDeleteAllCharList() {
@@ -110,7 +110,7 @@ class SettingVM @Inject constructor(
                 characterRepository.delete(it)
             }
         }
-        onDissmissRequest()
+        onDismissRequest()
     }
 
     fun onDeleteAllHistories() {
@@ -119,7 +119,7 @@ class SettingVM @Inject constructor(
                 searchHistoryRepository.delete(it)
             }
         }
-        onDissmissRequest()
+        onDismissRequest()
     }
 
     fun onSave(snackbarHostState: SnackbarHostState,) {

@@ -2,8 +2,8 @@ package com.hongmyeoun.goldcalc.model.profile.equipment
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.constants.TooltipStrings
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.profile.Common
 
 class EquipmentDetail(private val equipments: List<Equipment>) {
@@ -188,8 +188,13 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                 val element = tooltipJson.getAsJsonObject(elementKey)
 
                 if (Common.indentStringGroup(element)) {
-                    val value = element
-                        .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+                    val testValue = element.get(TooltipStrings.MemberName.VALUE)
+
+                    if (testValue == null || !testValue.isJsonObject) {
+                        continue
+                    }
+
+                    val value = element.getAsJsonObject(TooltipStrings.MemberName.VALUE)
 
                     if (Common.has000(value)) {
                         val topStr = value
@@ -242,6 +247,12 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                 val element = tooltipJson.getAsJsonObject(elementKey)
 
                 if (Common.indentStringGroup(element)) {
+                    val testValue = element.get(TooltipStrings.MemberName.VALUE)
+
+                    if (testValue == null || !testValue.isJsonObject) {
+                        continue
+                    }
+
                     val value = element
                         .getAsJsonObject(TooltipStrings.MemberName.VALUE)
 
@@ -303,6 +314,12 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                 val element = tooltipJson.getAsJsonObject(elementKey)
 
                 if (Common.indentStringGroup(element)) {
+                    val testValue = element.get(TooltipStrings.MemberName.VALUE)
+
+                    if (testValue == null || !testValue.isJsonObject) {
+                        continue
+                    }
+
                     val value = element
                         .getAsJsonObject(TooltipStrings.MemberName.VALUE)
 
@@ -448,8 +465,8 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                 .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
 
             val activation = contentStr
-                .substringAfter(TooltipStrings.SubStringAfter.AWAKEN_PLUS)
-                .substringBefore(TooltipStrings.SubStringBefore.ENTER_HTML)
+                .substringAfter(TooltipStrings.SubStringAfter.AWAKEN)
+                .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
 
             return Pair(option, activation)
         }
@@ -466,9 +483,8 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                 .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
 
             val activation = contentStr
-                .substringAfter(TooltipStrings.SubStringAfter.AWAKEN_PLUS)
-                .substringBefore(TooltipStrings.SubStringBefore.ENTER_HTML)
-
+                .substringAfter(TooltipStrings.SubStringAfter.AWAKEN)
+                .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
             return Pair(option, activation)
         }
 
@@ -484,9 +500,8 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                 .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
 
             val activation = contentStr
-                .substringAfter(TooltipStrings.SubStringAfter.AWAKEN_PLUS)
-                .substringBefore(TooltipStrings.SubStringBefore.ENTER_HTML)
-
+                .substringAfter(TooltipStrings.SubStringAfter.AWAKEN)
+                .substringBeforeLast(TooltipStrings.SubStringBefore.FONT_END)
             return Pair(option, activation)
         }
 

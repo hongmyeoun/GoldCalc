@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -24,6 +26,9 @@ import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
 fun CurrentGold(viewModel: HomeVM) {
+    val earnGold by viewModel.earnGold.collectAsState()
+    val remainGold by viewModel.remainGold.collectAsState()
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -40,13 +45,13 @@ fun CurrentGold(viewModel: HomeVM) {
             ) {
                 GlideImage(
                     modifier = Modifier.size(25.dp),
-                    model = ImageReturn.goldImage(viewModel.earnGold),
+                    model = ImageReturn.goldImage(earnGold),
                     contentDescription = "골드"
                 )
                 Spacer(modifier = Modifier.width(8.dp))
 
                 Text(
-                    text = viewModel.earnGold.formatWithCommas(),
+                    text = earnGold.formatWithCommas(),
                     style = normalTextStyle(fontSize = 16.sp),
                 )
             }
@@ -62,13 +67,13 @@ fun CurrentGold(viewModel: HomeVM) {
             ) {
                 GlideImage(
                     modifier = Modifier.size(25.dp),
-                    model = ImageReturn.goldImage(viewModel.remainGold),
+                    model = ImageReturn.goldImage(remainGold),
                     contentDescription = "골드"
                 )
                 Spacer(modifier = Modifier.width(8.dp))
 
                 Text(
-                    text = viewModel.remainGold.formatWithCommas(),
+                    text = remainGold.formatWithCommas(),
                     style = normalTextStyle(fontSize = 16.sp),
                 )
             }

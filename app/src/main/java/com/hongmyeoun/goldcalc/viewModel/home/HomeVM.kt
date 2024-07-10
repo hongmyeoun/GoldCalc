@@ -28,7 +28,7 @@ class HomeVM @Inject constructor(
 
     private val _showDialog = MutableStateFlow(false)
     val showDialog: StateFlow<Boolean> = _showDialog
-    fun onDissmissRequest() {
+    fun onDismissRequest() {
         _showDialog.value = false
     }
 
@@ -46,28 +46,34 @@ class HomeVM @Inject constructor(
         }
     }
 
+    private val _earnGold = MutableStateFlow(0)
+    val earnGold: StateFlow<Int> = _earnGold
+
+    private val _remainGold = MutableStateFlow(0)
+    val remainGold: StateFlow<Int> = _remainGold
+
+    private val _maxGold = MutableStateFlow(0)
+    val maxGold: StateFlow<Int> = _maxGold
+
     private fun getCharacters() {
         viewModelScope.launch(Dispatchers.IO) {
             characterRepository.getAll().collect {
                 _characters.value = it
-                earnGold = it.fastSumBy { character -> character.earnGold } + it.fastSumBy { character -> character.plusGold.toInt() } - it.fastSumBy { character -> character.minusGold.toInt() }
+                _earnGold.value = it.fastSumBy { character -> character.earnGold } + it.fastSumBy { character -> character.plusGold.toInt() } - it.fastSumBy { character -> character.minusGold.toInt() }
                 initProgressBar(it)
-                remainGold = maxGold - earnGold
+                _remainGold.value = _maxGold.value - _earnGold.value
             }
         }
     }
 
     private fun initProgressBar(characterList: List<Character>) {
-        maxGold = characterList.fastSumBy { it.weeklyGold }
-        progressPercentage = if (maxGold != 0) earnGold.toFloat() / maxGold else 0.0f
+        _maxGold.value = characterList.fastSumBy { it.weeklyGold }
+        progressPercentage = if (_maxGold.value != 0) _earnGold.value.toFloat() / _maxGold.value else 0.0f
     }
 
-    var maxGold by mutableStateOf(0)
+
     var progressPercentage by mutableStateOf(0.0f)
         private set
-
-    var earnGold by mutableStateOf(0)
-    var remainGold by mutableStateOf(0)
 
     private var clickPressedTime = 0L
 
