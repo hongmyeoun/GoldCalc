@@ -466,7 +466,7 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                 .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
 
             val activation = contentStr
-                .substringAfter(TooltipStrings.SubStringAfter.AWAKEN_PLUS)
+                .substringAfter(TooltipStrings.SubStringAfter.AWAKEN)
                 .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
 
             Log.d("테스트1", "$option $activation")
@@ -485,7 +485,7 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                 .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
 
             val activation = contentStr
-                .substringAfter(TooltipStrings.SubStringAfter.AWAKEN_PLUS)
+                .substringAfter(TooltipStrings.SubStringAfter.AWAKEN)
                 .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
             Log.d("테스트2", "$option $activation")
             return Pair(option, activation)
@@ -503,7 +503,7 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                 .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
 
             val activation = contentStr
-                .substringAfter(TooltipStrings.SubStringAfter.AWAKEN_PLUS)
+                .substringAfter(TooltipStrings.SubStringAfter.AWAKEN)
                 .substringBeforeLast(TooltipStrings.SubStringBefore.FONT_END)
             Log.d("테스트3", "$option $activation")
             return Pair(option, activation)

@@ -45,7 +45,8 @@ class TooltipStrings {
         const val LEVEL_DOT_SPACE = "Lv. "
 
         const val POINT_SPACE = "포인트 "
-        const val AWAKEN_PLUS = "활성도 "
+        const val AWAKEN = "활성도 "
+        const val AWAKEN_PLUS = "활성도 +"
 
         const val FONT_END_SPACE = "</FONT> "
         const val IMG_END = "</img>"
