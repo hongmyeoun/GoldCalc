@@ -23,6 +23,7 @@ import com.hongmyeoun.goldcalc.ui.theme.RelicBG
 @Composable
 fun TextChip(
     text: String,
+    textColor: Color = Color.White,
     customTextSize: TextUnit = 10.sp,
     borderless: Boolean = false,
     customPadding: Modifier = Modifier.padding(start = 6.dp, end = 6.dp, top = 2.dp, bottom = 2.dp),
@@ -78,7 +79,7 @@ fun TextChip(
             Text(
                 text = text,
                 fontSize = customTextSize,
-                color = Color.White
+                color = textColor
             )
         } else {
             if (yourImage != null) {
@@ -87,7 +88,7 @@ fun TextChip(
             Text(
                 text = text,
                 fontSize = customTextSize,
-                color = Color.White
+                color = textColor
             )
         }
     }

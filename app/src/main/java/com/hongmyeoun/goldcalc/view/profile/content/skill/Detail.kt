@@ -297,10 +297,10 @@ private fun RuneAndGem(
                                 customBGColor = viewModel.getGradeBG(gem.grade)
                             )
                         }
-                        Box(
+                        Column(
                             modifier = Modifier
                                 .padding(start = 8.dp, end = 24.dp)
-                                .background(LightGrayBG, RoundedCornerShape(4.dp))
+                                .background(LightGrayTransBG, RoundedCornerShape(4.dp))
                                 .fillMaxWidth()
                                 .padding(8.dp)
                         ) {
@@ -308,6 +308,13 @@ private fun RuneAndGem(
                                 text = gem.effect,
                                 style = normalTextStyle()
                             )
+                            if (gem.option.isNotEmpty()) {
+                                Spacer(modifier = Modifier.height(2.dp))
+                                Text(
+                                    text = gem.option,
+                                    style = normalTextStyle()
+                                )
+                            }
                         }
                     }
                 }

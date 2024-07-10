@@ -43,6 +43,15 @@ object EquipmentConsts {
     const val DEAL_GEM_4_TIER = "겁화"
     const val COOLTIME_GEM_4_TIER = "작열"
 
+    const val DEAL_GEM_2_TIER_SHORT = '청'
+    const val COOLTIME_GEM_2_TIER_SHORT = '원'
+
+    const val DEAL_GEM_3_TIER_SHORT = '멸'
+    const val COOLTIME_GEM_3_TIER_SHORT = '홍'
+
+    const val DEAL_GEM_4_TIER_SHORT = '겁'
+    const val COOLTIME_GEM_4_TIER_SHORT = '작'
+
     val DEAL_GEM_LIST = listOf(DEAL_GEM_2_TIER, DEAL_GEM_3_TIER, DEAL_GEM_4_TIER)
     val COOLTIME_GEM_LIST = listOf(COOLTIME_GEM_2_TIER, COOLTIME_GEM_3_TIER, COOLTIME_GEM_4_TIER)
 
