@@ -6,8 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hongmyeoun.goldcalc.model.constants.viewConst.SnackbarMessage
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
+import com.hongmyeoun.goldcalc.model.constants.viewConst.SnackbarMessage
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
@@ -28,7 +28,7 @@ class HomeworkVM @Inject constructor(
 
     private val _showDialog = MutableStateFlow(false)
     val showDialog: StateFlow<Boolean> = _showDialog
-    fun onDissmissRequest() {
+    fun onDismissRequest() {
         _showDialog.value = false
     }
 

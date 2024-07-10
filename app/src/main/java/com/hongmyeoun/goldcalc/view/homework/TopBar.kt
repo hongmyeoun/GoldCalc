@@ -122,7 +122,7 @@ private fun DeleteDialog(
     navController: NavHostController,
 ) {
     Dialog(
-        onDismissRequest = { viewModel.onDissmissRequest() }
+        onDismissRequest = { viewModel.onDismissRequest() }
     ) {
         Column(
             modifier = Modifier.background(LightGrayBG, RoundedCornerShape(16.dp)),
@@ -181,7 +181,7 @@ private fun DeleteDialog(
                 TextButton(
                     modifier = Modifier.weight(1f),
                     onClick = {
-                        viewModel.onDissmissRequest()
+                        viewModel.onDismissRequest()
                     },
                     colors = ButtonDefaults.textButtonColors(
                         contentColor = Color.LightGray
@@ -199,7 +199,7 @@ private fun DeleteDialog(
                 TextButton(
                     modifier = Modifier.weight(1f),
                     onClick = {
-                        viewModel.onDissmissRequest()
+                        viewModel.onDismissRequest()
                         navController.navigate(Screen.Home.route) {
                             popUpTo(Screen.Homework.route) {
                                 inclusive = true

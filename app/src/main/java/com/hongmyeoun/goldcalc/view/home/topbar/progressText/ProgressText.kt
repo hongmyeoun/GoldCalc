@@ -33,6 +33,7 @@ import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
 @Composable
 fun ProgressText(viewModel: HomeVM) {
     val showDialog by viewModel.showDialog.collectAsState()
+    val maxGold by viewModel.maxGold.collectAsState()
 
     if (showDialog) {
         SimpleCurrent(viewModel)
@@ -75,14 +76,14 @@ fun ProgressText(viewModel: HomeVM) {
         Spacer(modifier = Modifier.width(8.dp))
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = viewModel.maxGold.formatWithCommas(),
+                text = maxGold.formatWithCommas(),
                 style = normalTextStyle(fontSize = 16.sp)
             )
             Spacer(modifier = Modifier.width(4.dp))
 
             GlideImage(
                 modifier = Modifier.size(25.dp),
-                model = ImageReturn.goldImage(viewModel.maxGold),
+                model = ImageReturn.goldImage(maxGold),
                 contentDescription = "골드"
             )
         }

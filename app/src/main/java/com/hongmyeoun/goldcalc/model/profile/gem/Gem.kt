@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class GemAndEffect(
     @SerializedName("Gems") val gems: List<Gems>,
-    @SerializedName("Effects") val effects: List<Effects>,
+    @SerializedName("Effects") val effects: Effects,
 )
 
 data class Gems(
@@ -17,13 +17,18 @@ data class Gems(
 )
 
 data class Effects(
+    @SerializedName("Skills") val skills: List<Skills>,
+    @SerializedName("Description") val description: String,
+)
+
+data class Skills(
     @SerializedName("GemSlot") val gemSlot: Int,
     @SerializedName("Name") val name: String,
-    @SerializedName("Description") val description: String,
+    @SerializedName("Description") val description: List<String>,
+    @SerializedName("Option") val option: String,
     @SerializedName("Icon") val icon: String,
     @SerializedName("Tooltip") val tooltip: String,
 )
-
 
 data class Gem(
     val type: String,

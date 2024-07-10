@@ -35,7 +35,7 @@ fun ProfileContent(
     val verticalScrollState = rememberScrollState()
 
     LaunchedEffect(Unit) {
-        viewModel.getCharDetails(context, charName)
+        viewModel.getCharDetails(charName)
         viewModel.isSavedName(charName)
     }
 

@@ -49,7 +49,7 @@ import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
 
 @Composable
 fun SimpleCurrent(viewModel: HomeVM) {
-    Dialog(onDismissRequest = { viewModel.onDissmissRequest() }) {
+    Dialog(onDismissRequest = { viewModel.onDismissRequest() }) {
         val configuration = LocalConfiguration.current
         val screenHeight = configuration.screenHeightDp.dp
         val maxColumnHeight = (screenHeight * 0.8f) // 화면 높이의 80%
