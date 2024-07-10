@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hongmyeoun.goldcalc.model.constants.Labels
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharacter
-import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterInfo
+import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacter
 import com.hongmyeoun.goldcalc.model.roomDB.searchHistory.SearchHistory
 import com.hongmyeoun.goldcalc.model.roomDB.searchHistory.SearchHistoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -52,8 +52,8 @@ class SearchVM @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
-    private val _characterList = MutableStateFlow<List<CharacterInfo>>(emptyList())
-    val characterList: StateFlow<List<CharacterInfo>> = _characterList
+    private val _characterList = MutableStateFlow<List<SearchedCharacter>>(emptyList())
+    val characterList: StateFlow<List<SearchedCharacter>> = _characterList
 
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage

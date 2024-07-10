@@ -36,7 +36,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
-import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
+import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
@@ -50,7 +50,7 @@ import com.hongmyeoun.goldcalc.viewModel.profile.StatVM
 @Composable
 fun Stats(
     modifier: Modifier,
-    profile: CharacterDetail,
+    profile: SearchedCharacterDetail,
     viewModel: StatVM = viewModel()
 ) {
     val showDefaultDialog by viewModel.showDefaultDialog.collectAsState()
@@ -93,7 +93,7 @@ fun Stats(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun Simple(
-    charDetail: CharacterDetail,
+    charDetail: SearchedCharacterDetail,
     default: Boolean,
     onClick: () -> Unit
 ) {
@@ -170,7 +170,7 @@ private fun Simple(
 
 @Composable
 fun Details(
-    profile: CharacterDetail,
+    profile: SearchedCharacterDetail,
     viewModel: StatVM,
     default: Boolean
 ) {

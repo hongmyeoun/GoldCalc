@@ -17,7 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
-import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
+import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
 import com.hongmyeoun.goldcalc.model.profile.gem.Gem
 import com.hongmyeoun.goldcalc.model.profile.skills.Skills
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
@@ -30,7 +30,7 @@ import com.hongmyeoun.goldcalc.viewModel.profile.SkillVM
 @Composable
 fun Skill(
     viewModel: ProfileVM,
-    profile: CharacterDetail
+    profile: SearchedCharacterDetail
 ) {
     // 스킬
     val skills by viewModel.skills.collectAsState()
@@ -45,7 +45,7 @@ fun Skill(
 
 @Composable
 fun SkillView(
-    characterDetail: CharacterDetail?,
+    characterDetail: SearchedCharacterDetail?,
     skills: List<Skills>,
     gemList: List<Gem>?,
     viewModel: SkillVM = viewModel()
@@ -80,7 +80,7 @@ fun SkillView(
 
 @Composable
 fun SkillPoint(
-    characterDetail: CharacterDetail?,
+    characterDetail: SearchedCharacterDetail?,
     skills: List<Skills>,
     viewModel: SkillVM,
 ) {

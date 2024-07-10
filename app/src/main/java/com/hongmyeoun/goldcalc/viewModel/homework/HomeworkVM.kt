@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.model.constants.viewConst.SnackbarMessage
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharDetail
-import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
+import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import kotlinx.coroutines.Dispatchers
@@ -128,7 +128,7 @@ class HomeworkVM @Inject constructor(
         selectedTab = index
     }
 
-    private fun updateCharacterDetail(characterDetail: CharacterDetail) {
+    private fun updateCharacterDetail(characterDetail: SearchedCharacterDetail) {
         _character.value?.let {
             val newDetail = _character.value!!.copy(
                 itemLevel = characterDetail.itemMaxLevel,

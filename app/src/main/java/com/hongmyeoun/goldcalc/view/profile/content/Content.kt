@@ -12,10 +12,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterDetail
+import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.ProfileTemplate
 import com.hongmyeoun.goldcalc.view.profile.content.card.Card
@@ -31,7 +30,6 @@ fun ProfileContent(
     paddingValues: PaddingValues,
     viewModel: ProfileVM = hiltViewModel()
 ) {
-    val context = LocalContext.current
     val verticalScrollState = rememberScrollState()
 
     LaunchedEffect(Unit) {
@@ -69,7 +67,7 @@ fun ProfileContent(
 @Composable
 fun ProfileDetails(
     viewModel: ProfileVM,
-    profile: CharacterDetail
+    profile: SearchedCharacterDetail
 ) {
     Column(
         modifier = Modifier
