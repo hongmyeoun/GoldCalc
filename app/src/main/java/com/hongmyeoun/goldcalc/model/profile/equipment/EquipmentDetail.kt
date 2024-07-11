@@ -513,9 +513,18 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
 
         for (index in 5..6) {
             val elementKey = Common.currentElementKey(index)
+
             if (tooltip.has(elementKey)) {
                 val element = tooltip.getAsJsonObject(elementKey)
+
                 if (Common.indentStringGroup(element)) {
+                    val testValue = element
+                        .get(TooltipStrings.MemberName.VALUE)
+
+                    if (testValue == null || !testValue.isJsonObject) {
+                        continue
+                    }
+
                     val topStr = element
                         .getAsJsonObject(TooltipStrings.MemberName.VALUE)
                         .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
