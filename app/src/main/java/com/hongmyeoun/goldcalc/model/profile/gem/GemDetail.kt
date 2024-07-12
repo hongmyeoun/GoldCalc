@@ -2,10 +2,10 @@ package com.hongmyeoun.goldcalc.model.profile.gem
 
 class GemDetail(private val gemAndEffect: GemAndEffect) {
     fun getCharacterGemDetails(): List<Gem> {
-        val gemMap = gemAndEffect.gems.associateBy { it.slot }
+        val gemMap = gemAndEffect.gems?.associateBy { it.slot }
 
         return gemAndEffect.effects.skills.mapNotNull { skill ->
-            gemMap[skill.gemSlot]?.let { gem ->
+            gemMap?.get(skill.gemSlot)?.let { gem ->
                 val type = gemType(gem)
                 Gem(
                     type = type,

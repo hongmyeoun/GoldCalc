@@ -3,7 +3,7 @@ package com.hongmyeoun.goldcalc.model.profile.gem
 import com.google.gson.annotations.SerializedName
 
 data class GemAndEffect(
-    @SerializedName("Gems") val gems: List<Gems>,
+    @SerializedName("Gems") val gems: List<Gems>?,
     @SerializedName("Effects") val effects: Effects,
 )
 
