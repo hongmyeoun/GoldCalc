@@ -1,9 +1,11 @@
 package com.hongmyeoun.goldcalc.view.profile.content.equipments.detail
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -92,43 +94,74 @@ private fun DetailUI(
         )
         Spacer(modifier = Modifier.width(8.dp))
         Column {
-            Text(
-                text = accessory.name,
-                style = titleBoldWhite12()
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Row {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(
-                    text = accessory.combatStat1,
-                    style = normalTextStyle(fontSize = 12.sp)
+                    text = accessory.name,
+                    style = titleBoldWhite12()
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                if (accessory.type == EquipmentConsts.NECKLACE) {
-                    Text(
-                        text = accessory.combatStat2,
-                        style = normalTextStyle(fontSize = 12.sp)
+
+                if (accessory.arkPassivePoint != null) {
+                    TextChip(
+                        text = accessory.arkPassivePoint,
+                        customBGColor = LightGrayBG,
+                        borderless = true
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
-            Row {
-                TextChip(
-                    text = viewModel.simplyEngravingName(accessory.engraving1),
-                    customBGColor = LightGrayBG,
-                    borderless = true
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                TextChip(
-                    text = viewModel.simplyEngravingName(accessory.engraving2),
-                    customBGColor = LightGrayBG,
-                    borderless = true
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                TextChip(
-                    text = accessory.engraving3,
-                    customBGColor = RedQual,
-                    borderless = true
-                )
+            Spacer(modifier = Modifier.height(4.dp))
+
+            if (accessory.combatStat1 != null && accessory.combatStat2 != null) {
+                Row {
+                    Text(
+                        text = accessory.combatStat1,
+                        style = normalTextStyle(fontSize = 12.sp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    if (accessory.type == EquipmentConsts.NECKLACE) {
+                        Text(
+                            text = accessory.combatStat2,
+                            style = normalTextStyle(fontSize = 12.sp)
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Row {
+                    TextChip(
+                        text = viewModel.simplyEngravingName(accessory.engraving1),
+                        customBGColor = LightGrayBG,
+                        borderless = true
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    TextChip(
+                        text = viewModel.simplyEngravingName(accessory.engraving2),
+                        customBGColor = LightGrayBG,
+                        borderless = true
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    TextChip(
+                        text = accessory.engraving3,
+                        customBGColor = RedQual,
+                        borderless = true
+                    )
+                }
+            } else if (accessory.grindEffect != null) {
+                Box(
+                    modifier = Modifier
+                        .background(LightGrayBG, RoundedCornerShape(4.dp))
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    Text(
+                        text = accessory.grindEffect,
+                        style = normalTextStyle()
+                    )
+                }
             }
         }
     }
