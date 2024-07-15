@@ -87,7 +87,10 @@ fun ProfileDetails(
             viewModel = viewModel,
             profile = profile
         )
-        Equipments(viewModel = viewModel)
+        Equipments(
+            viewModel = viewModel,
+            profile = profile
+        )
         Gem(viewModel = viewModel)
         Card(viewModel = viewModel)
         Skill(

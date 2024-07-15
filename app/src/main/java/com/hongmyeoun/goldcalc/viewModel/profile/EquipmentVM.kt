@@ -215,6 +215,36 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
         return getSimpleEngraving(match)
     }
 
+    fun grindEffectSize(input: String?): String {
+        val inputSize = input?.split("\n")?.size
+        return if (inputSize != null) "연마 +$inputSize" else "연마 없음"
+    }
+
+    fun arkPassiveEngLv(engLv: Int?): String? {
+        return when (engLv) {
+            6 -> { "Lv.1" }
+            in 7..8 -> { "Lv.2" }
+            9 -> { "Lv.3" }
+            10 -> { "Lv.4" }
+            else -> null
+        }
+    }
+
+    fun arkPassiveEngPenLv(engLv: Int?): String? {
+        return when (engLv) {
+            in 5..6 -> { "Lv.1" }
+            in 7..9 -> { "Lv.2" }
+            10 -> { "Lv.3" }
+            else -> null
+        }
+    }
+
+    fun arkPoint(input: String): Int {
+        val regex = "\\d+".toRegex()
+        val match = regex.find(input)
+        return match?.value?.toInt() ?: 0
+    }
+
     fun getSimpleEngraving(engraving: String): String {
         val simpleName = mapOf(
             "결투의 대가" to "결대",
@@ -267,7 +297,11 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
             "잔재된 기운" to "잔재",
             "그믐의 경계" to "그믐",
             "만월의 집행자" to "만월",
-            "질풍노도" to "질풍"
+            "질풍노도" to "질풍",
+            "공격력 감소" to "공감",
+            "공격속도 감소" to "공속감",
+            "이동속도 감소" to "이속감",
+            "방여력 감소" to "방감",
         )
         return simpleName[engraving] ?: engraving
     }

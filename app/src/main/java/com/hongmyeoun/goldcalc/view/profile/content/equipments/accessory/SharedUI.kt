@@ -2,6 +2,7 @@ package com.hongmyeoun.goldcalc.view.profile.content.equipments.accessory
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.profile.equipment.AbilityStone
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterAccessory
@@ -36,58 +39,98 @@ import com.hongmyeoun.goldcalc.viewModel.profile.EquipmentVM
 fun EquipmentIcon(
     accessory: CharacterAccessory,
     viewModel: EquipmentVM,
+    isArkPassive: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = Modifier
-            .size(56.dp)
-            .background(
-                brush = viewModel.getItemBG(accessory.grade),
-                shape = RoundedCornerShape(8.dp)
-            )
-            .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+        modifier = modifier,
+        contentAlignment = Alignment.Center
     ) {
-        GlideImage(
-            modifier = Modifier
-                .size(56.dp),
-            model = accessory.itemIcon,
-            contentDescription = "장비 아이콘",
-        )
         Box(
             modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(2.dp)
+                .size(56.dp)
+                .background(
+                    brush = viewModel.getItemBG(accessory.grade),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
         ) {
-            TextChip(
-                text = accessory.type,
-                borderless = true,
-                customBGColor = BlackTransBG,
-                customRoundedCornerSize = 8.dp,
-                customTextSize = 8.sp
+            GlideImage(
+                modifier = Modifier
+                    .size(56.dp),
+                model = accessory.itemIcon,
+                contentDescription = "장비 아이콘",
             )
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(2.dp)
+            ) {
+                TextChip(
+                    text = accessory.type,
+                    borderless = true,
+                    customBGColor = BlackTransBG,
+                    customRoundedCornerSize = 8.dp,
+                    customTextSize = 8.sp
+                )
+            }
+
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+            ) {
+                if (!accessory.arkPassivePoint.isNullOrEmpty()) {
+                    Box {
+                        Column {
+                            TextChip(
+                                text = "${viewModel.arkPoint(accessory.arkPassivePoint)}",
+                                borderless = true,
+                                customBGColor = BlackTransBG,
+                                customPadding = Modifier.padding(start = 2.dp, end = 2.dp),
+                                image = true,
+                                yourImage = {
+                                    GlideImage(
+                                        modifier = Modifier
+                                            .size(13.dp),
+                                        model = R.drawable.icon_arkpassive_enlightenment,
+                                        contentDescription = "초월 아이콘"
+                                    )
+                                    Spacer(modifier = Modifier.width(2.dp))
+                                }
+                            )
+                            Spacer(modifier = Modifier.height(14.dp))
+                        }
+                    }
+                }
+
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(14.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .align(Alignment.BottomCenter),
+                    progress = accessory.itemQuality * 0.01f,
+                    color = viewModel.getQualityColor(accessory.itemQuality.toString()),
+                    trackColor = ImageBG
+                )
+
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter),
+                    text = "${accessory.itemQuality}",
+                    style = normalTextStyle(),
+                    textAlign = TextAlign.Center
+                )
+            }
         }
 
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-        ) {
-            LinearProgressIndicator(
+        if (isArkPassive) {
+            GlideImage(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(14.dp)
-                    .clip(RoundedCornerShape(4.dp))
-                    .align(Alignment.BottomCenter),
-                progress = accessory.itemQuality * 0.01f,
-                color = viewModel.getQualityColor(accessory.itemQuality.toString()),
-                trackColor = ImageBG
-            )
-
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter),
-                text = "${accessory.itemQuality}",
-                style = normalTextStyle(),
-                textAlign = TextAlign.Center
+                    .size(72.dp),
+                model = NetworkConfig.ARK_PASSIVE_ACC,
+                contentDescription = "악세 테두리",
             )
         }
     }

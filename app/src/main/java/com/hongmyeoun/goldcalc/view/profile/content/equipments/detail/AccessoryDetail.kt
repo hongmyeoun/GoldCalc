@@ -29,6 +29,7 @@ import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.RedQual
 import com.hongmyeoun.goldcalc.view.common.TextChip
+import com.hongmyeoun.goldcalc.view.profile.content.equipments.accessory.EngravingStr
 import com.hongmyeoun.goldcalc.view.profile.content.equipments.accessory.EquipmentIcon
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleBoldWhite12
@@ -38,7 +39,8 @@ import com.hongmyeoun.goldcalc.viewModel.profile.EquipmentVM
 @Composable
 fun AccessoryDetail(
     viewModel: EquipmentVM,
-    characterEquipment: List<CharacterItem>
+    characterEquipment: List<CharacterItem>,
+    isArkPassive: Boolean
 ) {
     Dialog(
         onDismissRequest = { viewModel.onAccDismissRequest() }
@@ -64,14 +66,16 @@ fun AccessoryDetail(
                     is CharacterAccessory -> {
                         DetailUI(
                             accessory = it,
-                            viewModel = viewModel
+                            viewModel = viewModel,
+                            isArkPassive = isArkPassive
                         )
                     }
 
                     is AbilityStone -> {
                         DetailUI(
                             abilityStone = it,
-                            viewModel = viewModel
+                            viewModel = viewModel,
+                            isArkPassive = isArkPassive
                         )
                     }
                 }
@@ -83,16 +87,19 @@ fun AccessoryDetail(
 @Composable
 private fun DetailUI(
     accessory: CharacterAccessory,
-    viewModel: EquipmentVM
+    viewModel: EquipmentVM,
+    isArkPassive: Boolean
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
         EquipmentIcon(
             accessory = accessory,
-            viewModel = viewModel
+            viewModel = viewModel,
+            isArkPassive = isArkPassive,
         )
         Spacer(modifier = Modifier.width(8.dp))
+
         Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -129,6 +136,7 @@ private fun DetailUI(
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
+
                 Row {
                     TextChip(
                         text = viewModel.simplyEngravingName(accessory.engraving1),
@@ -155,7 +163,7 @@ private fun DetailUI(
                     modifier = Modifier
                         .background(LightGrayBG, RoundedCornerShape(4.dp))
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(4.dp)
                 ) {
                     Text(
                         text = accessory.grindEffect,
@@ -171,46 +179,93 @@ private fun DetailUI(
 @Composable
 fun DetailUI(
     abilityStone: AbilityStone,
-    viewModel: EquipmentVM
+    viewModel: EquipmentVM,
+    isArkPassive: Boolean
 ) {
     Row(
+        modifier = Modifier.padding(start = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         EquipmentIcon(
             abilityStone = abilityStone,
             viewModel = viewModel
         )
-
         Spacer(modifier = Modifier.width(8.dp))
+
         Column {
-            Text(
-                text = abilityStone.name,
-                style = titleBoldWhite12()
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = abilityStone.name,
+                    style = titleBoldWhite12()
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+
+                if (isArkPassive && abilityStone.engraving3Lv != null) {
+                    TextChip(
+                        text = "${viewModel.getSimpleEngraving(abilityStone.engraving3Op)}${viewModel.arkPassiveEngPenLv(abilityStone.engraving3Lv)?:""}",
+                        textColor = RedQual,
+                        customBGColor = LightGrayBG,
+                        borderless = true
+                    )
+                }
+            }
+
             Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = abilityStone.hpBonus,
-                style = normalTextStyle(fontSize = 12.sp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Row {
-                TextChip(
-                    text = "${viewModel.getSimpleEngraving(abilityStone.engraving1Op)} ${abilityStone.engraving1Lv}",
-                    customBGColor = LightGrayBG,
-                    borderless = true
+
+            if (!isArkPassive) {
+                Text(
+                    text = abilityStone.hpBonus,
+                    style = normalTextStyle(fontSize = 12.sp)
                 )
-                Spacer(modifier = Modifier.width(4.dp))
-                TextChip(
-                    text = "${viewModel.getSimpleEngraving(abilityStone.engraving2Op)} ${abilityStone.engraving2Lv}",
-                    customBGColor = LightGrayBG,
-                    borderless = true
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                TextChip(
-                    text = "${abilityStone.engraving3Op} ${abilityStone.engraving3Lv}",
-                    customBGColor = RedQual,
-                    borderless = true
-                )
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row {
+                    TextChip(
+                        text = "${viewModel.getSimpleEngraving(abilityStone.engraving1Op)} ${abilityStone.engraving1Lv}",
+                        customBGColor = LightGrayBG,
+                        borderless = true
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+
+                    TextChip(
+                        text = "${viewModel.getSimpleEngraving(abilityStone.engraving2Op)} ${abilityStone.engraving2Lv}",
+                        customBGColor = LightGrayBG,
+                        borderless = true
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+
+                    TextChip(
+                        text = "${abilityStone.engraving3Op} ${abilityStone.engraving3Lv}",
+                        customBGColor = RedQual,
+                        borderless = true
+                    )
+                }
+            } else {
+                Box(
+                    modifier = Modifier
+                        .background(LightGrayBG, RoundedCornerShape(4.dp))
+                        .fillMaxWidth()
+                        .padding(4.dp)
+                ) {
+                    Column {
+                        EngravingStr(
+                            viewModel = viewModel,
+                            engravingName = abilityStone.engraving1Op,
+                            engravingLv = abilityStone.engraving1Lv,
+                            isArkPassive = isArkPassive
+                        )
+
+                        EngravingStr(
+                            viewModel = viewModel,
+                            engravingName = abilityStone.engraving2Op,
+                            engravingLv = abilityStone.engraving2Lv,
+                            isArkPassive = isArkPassive,
+                            lastSpacer = true
+                        )
+                    }
+                }
             }
         }
     }
