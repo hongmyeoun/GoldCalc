@@ -67,13 +67,13 @@ fun AccessoryUI(
                 viewModel = viewModel,
                 grade = accessory.grade
             )
-            if (accessory.combatStat1.isNotEmpty()) {
+            if (!accessory.combatStat1.isNullOrEmpty()) {
                 Column {
                     Text(
                         text = accessory.combatStat1,
                         style = normalTextStyle()
                     )
-                    if (accessory.combatStat2.isNotEmpty() && accessory.type == EquipmentConsts.NECKLACE) {
+                    if (!accessory.combatStat2.isNullOrEmpty() && accessory.type == EquipmentConsts.NECKLACE) {
                         Text(
                             text = accessory.combatStat2,
                             style = normalTextStyle()

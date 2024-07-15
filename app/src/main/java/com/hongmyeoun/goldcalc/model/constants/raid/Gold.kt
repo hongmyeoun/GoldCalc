@@ -35,14 +35,14 @@ class Gold {
         }
 
         object Solo {
-            val VALTAN = listOf(0, 0)
-            val BIACKISS = listOf(0, 0)
-            val KOUKU_SATON = listOf(0, 0, 0)
-            val ABRELSHUD = listOf(0, 0, 0, 0)
-            val ILLIAKAN = listOf(0, 0, 0)
+            val VALTAN = listOf(75, 100)
+            val BIACKISS = listOf(100, 150)
+            val KOUKU_SATON = listOf(100, 150, 200)
+            val ABRELSHUD = listOf(100, 150, 200, 375)
+            val ILLIAKAN = listOf(225, 275, 375)
 
-            val KAYANGEL = listOf(0, 0, 0)
-            val IVORY_TOWER = listOf(0, 0, 0)
+            val KAYANGEL = listOf(200, 225, 300)
+            val IVORY_TOWER = listOf(250, 350, 550)
         }
     }
 

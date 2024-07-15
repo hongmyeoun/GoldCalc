@@ -89,16 +89,33 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
     }
 
 
-    private fun getSumCombatStat(equipment: List<CharacterItem>): Int {
-        val combatStat = equipment.filterIsInstance<CharacterAccessory>().map { it.combatStat1 }
-        if (combatStat.isNotEmpty()) {
-            val combatStatOne = combatStat.sumOf { it.split(" ")[1].removePrefix("+").toInt() }
-            val combatStatTwo = equipment.filterIsInstance<CharacterAccessory>()[0].combatStat2.split(" ")[1].removePrefix("+").toInt()
+//    private fun getSumCombatStat(equipment: List<CharacterItem>): Int {
+//        val combatStat = equipment.filterIsInstance<CharacterAccessory>().mapNotNull { it.combatStat1 }
+//        if (combatStat.isNotEmpty()) {
+//            val combatStatOne = combatStat.sumOf { it.split(" ")[1].removePrefix("+").toInt() }
+//            val combatStatTwo = equipment.filterIsInstance<CharacterAccessory>()[0].combatStat2.split(" ")[1].removePrefix("+").toInt()
+//
+//            return combatStatOne + combatStatTwo
+//        }
+//        return 0
+//    }
 
-            return combatStatOne + combatStatTwo
+    private fun getSumCombatStat(equipment: List<CharacterItem>): Int {
+        var combatStatOne = 0
+        var combatStatTwo = 0
+
+        equipment.filterIsInstance<CharacterAccessory>().forEach { accessory ->
+            accessory.combatStat1?.let {
+                combatStatOne += it.split(" ")[1].removePrefix("+").toIntOrNull() ?: 0
+            }
+            accessory.combatStat2?.let {
+                combatStatTwo += it.split(" ")[1].removePrefix("+").toIntOrNull() ?: 0
+            }
         }
-        return 0
+
+        return combatStatOne + combatStatTwo
     }
+
 
     fun setOptionName(equipment: CharacterEquipment): String {
         return equipment.setOption.split(" ").first()
