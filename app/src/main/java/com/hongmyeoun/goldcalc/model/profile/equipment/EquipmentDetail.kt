@@ -52,6 +52,8 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                         engraving1 = getAccFirstEngraving(equipment),
                         engraving2 = getAccSecondEngraving(equipment),
                         engraving3 = getAccThirdEngraving(equipment),
+                        grindEffect = getGrindEffect(equipment),
+                        arkPassivePoint = getArkPassivePoint(equipment)
                     )
                     characterEquipmentList.add(characterAccessory)
                 }
@@ -365,26 +367,41 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         return equipment.name
     }
 
-    private fun getAccFirstCombatStat(equipment: Equipment): String {
+    private fun getAccFirstCombatStat(equipment: Equipment): String? {
         val combatStat = combatStatElement(equipment)
 
-        return combatStat
-            .substringBefore(TooltipStrings.SubStringBefore.ENTER_HTML)
+        if (combatStat != null) {
+            return combatStat
+                .substringBefore(TooltipStrings.SubStringBefore.ENTER_HTML)
+        }
+
+        return null
     }
 
-    private fun getAccSecondCombatStat(equipment: Equipment): String {
+    private fun getAccSecondCombatStat(equipment: Equipment): String? {
         val combatStat = combatStatElement(equipment)
-        return combatStat
-            .substringAfter(TooltipStrings.SubStringBefore.ENTER_HTML)
+
+        if (combatStat != null) {
+            return combatStat
+                .substringAfter(TooltipStrings.SubStringBefore.ENTER_HTML)
+        }
+
+        return null
     }
 
-    private fun combatStatElement(equipment: Equipment): String {
+    private fun combatStatElement(equipment: Equipment): String? {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
 
-        return tooltip
-            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_005)
-            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-            .get(TooltipStrings.MemberName.ELEMENT_001).asString
+        val itemTier = itemTier(tooltip)
+
+        if (itemTier < 4) {
+            return tooltip
+                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_005)
+                .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+                .get(TooltipStrings.MemberName.ELEMENT_001).asString
+        }
+
+        return null
     }
 
     private fun getAccFirstEngraving(equipment: Equipment): String {
@@ -401,35 +418,85 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
 
     private fun accEngraving(equipment: Equipment, memberName: String): String {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
-        val element = tooltip
-            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_006)
 
-        val slicingOptionAfter = if (memberName == TooltipStrings.MemberName.ELEMENT_002) TooltipStrings.SubStringAfter.FONT_ENGRAVING_COLOR_THIRD else TooltipStrings.SubStringAfter.FONT_ENGRAVING_COLOR
+        val itemTier = itemTier(tooltip)
 
-        if (Common.notSingleTextBox(element)) {
-            val contentStr = tooltip
+        if (itemTier < 4) {
+            val element = tooltip
                 .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_006)
-                .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
-                .getAsJsonObject(TooltipStrings.MemberName.CONTENT)
 
-            if (contentStr.has(memberName)) {
-                val engraving = contentStr
-                    .getAsJsonObject(memberName)
-                    .get(TooltipStrings.MemberName.CONTENT).asString
+            val slicingOptionAfter =
+                if (memberName == TooltipStrings.MemberName.ELEMENT_002) TooltipStrings.SubStringAfter.FONT_ENGRAVING_COLOR_THIRD else TooltipStrings.SubStringAfter.FONT_ENGRAVING_COLOR
 
-                val option = engraving
-                    .substringAfter(slicingOptionAfter)
-                    .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
+            if (Common.notSingleTextBox(element)) {
+                val contentStr = tooltip
+                    .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_006)
+                    .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+                    .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
+                    .getAsJsonObject(TooltipStrings.MemberName.CONTENT)
 
-                val activation = engraving
-                    .substringAfter(TooltipStrings.SubStringAfter.AWAKEN_PLUS)
-                    .substringBefore(TooltipStrings.SubStringBefore.ENTER_HTML)
+                if (contentStr.has(memberName)) {
+                    val engraving = contentStr
+                        .getAsJsonObject(memberName)
+                        .get(TooltipStrings.MemberName.CONTENT).asString
 
-                return "$option $activation"
+                    val option = engraving
+                        .substringAfter(slicingOptionAfter)
+                        .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
+
+                    val activation = engraving
+                        .substringAfter(TooltipStrings.SubStringAfter.AWAKEN_PLUS)
+                        .substringBefore(TooltipStrings.SubStringBefore.ENTER_HTML)
+
+                    return "$option $activation"
+                }
             }
         }
         return ""
+    }
+
+    fun getGrindEffect(equipment: Equipment): String? {
+        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
+
+        val itemTier = itemTier(tooltip)
+
+        if (itemTier >= 4) {
+            val rawGrinding = tooltip
+                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_005)
+                .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+                .get(TooltipStrings.MemberName.ELEMENT_001).asString
+
+            return accGrindingProcess(rawGrinding)
+        }
+
+        return null
+    }
+
+    fun getArkPassivePoint(equipment: Equipment): String? {
+        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
+
+        val itemTier = itemTier(tooltip)
+
+        if (itemTier >= 4) {
+            return tooltip
+                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_006)
+                .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+                .get(TooltipStrings.MemberName.ELEMENT_001)
+                .asString
+        }
+
+        return null
+    }
+
+    fun itemTier(tooltip: JsonObject): Int {
+        return tooltip
+            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_001)
+            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+            .get("leftStr2")
+            .asString
+            .substringAfter("아이템 티어 ")
+            .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
+            .toInt()
     }
 
     private fun getABStoneHPBonus(equipment: Equipment): String {
@@ -617,6 +684,14 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
 
         // 결과 반환
         return keyValueList
+    }
+
+    fun accGrindingProcess(input: String): String {
+        return input.replace(Regex("<img[^>]*>"), "") // Remove <img> tags
+            .replace("</img>", "")           // Remove </img> tags
+            .replace("<BR>", "\n")           // Replace <BR> with newline
+            .replace("&nbsp;", " ")          // Replace non-breaking space
+            .trim()                          // Trim leading/trailing whitespace
     }
 }
 

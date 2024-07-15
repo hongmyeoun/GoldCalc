@@ -36,11 +36,13 @@ data class CharacterAccessory(
   val name: String,
   val itemQuality: Int,
   val itemIcon: String,
-  val combatStat1: String,
-  val combatStat2: String,
+  val combatStat1: String?,
+  val combatStat2: String?,
   val engraving1: String,
   val engraving2: String,
   val engraving3: String,
+  val grindEffect: String?,
+  val arkPassivePoint: String?
 ) : CharacterItem
 
 data class AbilityStone(
