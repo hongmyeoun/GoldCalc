@@ -88,18 +88,6 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
         return formattedSetOptions.joinToString(", ")
     }
 
-
-//    private fun getSumCombatStat(equipment: List<CharacterItem>): Int {
-//        val combatStat = equipment.filterIsInstance<CharacterAccessory>().mapNotNull { it.combatStat1 }
-//        if (combatStat.isNotEmpty()) {
-//            val combatStatOne = combatStat.sumOf { it.split(" ")[1].removePrefix("+").toInt() }
-//            val combatStatTwo = equipment.filterIsInstance<CharacterAccessory>()[0].combatStat2.split(" ")[1].removePrefix("+").toInt()
-//
-//            return combatStatOne + combatStatTwo
-//        }
-//        return 0
-//    }
-
     private fun getSumCombatStat(equipment: List<CharacterItem>): Int {
         var combatStatOne = 0
         var combatStatTwo = 0

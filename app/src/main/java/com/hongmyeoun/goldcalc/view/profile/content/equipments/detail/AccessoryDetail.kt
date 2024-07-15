@@ -113,7 +113,7 @@ private fun DetailUI(
             }
             Spacer(modifier = Modifier.height(4.dp))
 
-            if (accessory.combatStat1 != null && accessory.combatStat2 != null) {
+            if (accessory.combatStat1 != null) {
                 Row {
                     Text(
                         text = accessory.combatStat1,
@@ -121,7 +121,7 @@ private fun DetailUI(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    if (accessory.type == EquipmentConsts.NECKLACE) {
+                    if (accessory.combatStat2 != null && accessory.type == EquipmentConsts.NECKLACE) {
                         Text(
                             text = accessory.combatStat2,
                             style = normalTextStyle(fontSize = 12.sp)

@@ -47,8 +47,8 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                         name = getAccName(equipment),
                         itemQuality = getItemQuality(equipment),
                         itemIcon = getItemIcon(equipment),
-                        combatStat1 = getAccFirstCombatStat(equipment),
-                        combatStat2 = getAccSecondCombatStat(equipment),
+                        combatStat1 = getAccCombatStats(equipment)?.first,
+                        combatStat2 = getAccCombatStats(equipment)?.second,
                         engraving1 = getAccFirstEngraving(equipment),
                         engraving2 = getAccSecondEngraving(equipment),
                         engraving3 = getAccThirdEngraving(equipment),
@@ -345,7 +345,6 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         return TooltipStrings.NoResult.ELIXIR_SET
     }
 
-
     private fun getHigherUpgradeLevel(equipment: Equipment): String {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
         val element = tooltip
@@ -367,23 +366,11 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         return equipment.name
     }
 
-    private fun getAccFirstCombatStat(equipment: Equipment): String? {
+    private fun getAccCombatStats(equipment: Equipment): Pair<String?, String?>? {
         val combatStat = combatStatElement(equipment)
 
         if (combatStat != null) {
-            return combatStat
-                .substringBefore(TooltipStrings.SubStringBefore.ENTER_HTML)
-        }
-
-        return null
-    }
-
-    private fun getAccSecondCombatStat(equipment: Equipment): String? {
-        val combatStat = combatStatElement(equipment)
-
-        if (combatStat != null) {
-            return combatStat
-                .substringAfter(TooltipStrings.SubStringBefore.ENTER_HTML)
+            return combatStatProcess(combatStat)
         }
 
         return null
@@ -455,7 +442,7 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         return ""
     }
 
-    fun getGrindEffect(equipment: Equipment): String? {
+    private fun getGrindEffect(equipment: Equipment): String? {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
 
         val itemTier = itemTier(tooltip)
@@ -472,7 +459,7 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         return null
     }
 
-    fun getArkPassivePoint(equipment: Equipment): String? {
+    private fun getArkPassivePoint(equipment: Equipment): String? {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
 
         val itemTier = itemTier(tooltip)
@@ -488,13 +475,13 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         return null
     }
 
-    fun itemTier(tooltip: JsonObject): Int {
+    private fun itemTier(tooltip: JsonObject): Int {
         return tooltip
             .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_001)
             .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-            .get("leftStr2")
+            .get(TooltipStrings.MemberName.ITEM_LEVEL)
             .asString
-            .substringAfter("아이템 티어 ")
+            .substringAfter(TooltipStrings.SubStringAfter.ITEM_TIER)
             .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
             .toInt()
     }
@@ -523,56 +510,37 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         return ""
     }
 
-    private fun getABStoneFirstEngraving(equipment: Equipment): Pair<String, String> {
+    private fun getABStoneFirstEngraving(equipment: Equipment): Pair<String, Int?> {
         val contentStr = abStoneEngravingContentSTR(equipment, TooltipStrings.MemberName.ELEMENT_000)
 
         if (contentStr.isNotEmpty()) {
-            val option = contentStr
-                .substringAfter(TooltipStrings.SubStringAfter.FONT_ENGRAVING_COLOR)
-                .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
 
-            val activation = contentStr
-                .substringAfter(TooltipStrings.SubStringAfter.AWAKEN)
-                .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
-
-            return Pair(option, activation)
+            return testAbilityStone(contentStr)
         }
 
-        return Pair("", "")
+        return Pair("", null)
     }
 
-    private fun getABStoneSecondEngraving(equipment: Equipment): Pair<String, String> {
+    private fun getABStoneSecondEngraving(equipment: Equipment): Pair<String, Int?> {
         val contentStr = abStoneEngravingContentSTR(equipment, TooltipStrings.MemberName.ELEMENT_001)
 
         if (contentStr.isNotEmpty()) {
-            val option = contentStr
-                .substringAfter(TooltipStrings.SubStringAfter.FONT_ENGRAVING_COLOR)
-                .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
 
-            val activation = contentStr
-                .substringAfter(TooltipStrings.SubStringAfter.AWAKEN)
-                .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
-            return Pair(option, activation)
+            return testAbilityStone(contentStr)
         }
 
-        return Pair("", "")
+        return Pair("", null)
     }
 
-    private fun getABStoneThirdEngraving(equipment: Equipment): Pair<String, String> {
+    private fun getABStoneThirdEngraving(equipment: Equipment): Pair<String, Int?> {
         val contentStr = abStoneEngravingContentSTR(equipment, TooltipStrings.MemberName.ELEMENT_002)
 
         if (contentStr.isNotEmpty()) {
-            val option = contentStr
-                .substringAfter(TooltipStrings.SubStringAfter.FONT_ENGRAVING_COLOR_THIRD)
-                .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
 
-            val activation = contentStr
-                .substringAfter(TooltipStrings.SubStringAfter.AWAKEN)
-                .substringBeforeLast(TooltipStrings.SubStringBefore.FONT_END)
-            return Pair(option, activation)
+            return testAbilityStone(contentStr)
         }
 
-        return Pair("", "")
+        return Pair("", null)
     }
 
     private fun abStoneEngravingContentSTR(equipment: Equipment, memberName: String) : String {
@@ -686,12 +654,40 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         return keyValueList
     }
 
-    fun accGrindingProcess(input: String): String {
+    private fun accGrindingProcess(input: String): String {
         return input.replace(Regex("<img[^>]*>"), "") // Remove <img> tags
             .replace("</img>", "")           // Remove </img> tags
             .replace("<BR>", "\n")           // Replace <BR> with newline
             .replace("&nbsp;", " ")          // Replace non-breaking space
             .trim()                          // Trim leading/trailing whitespace
+    }
+
+    private fun combatStatProcess(input: String): Pair<String?, String?> {
+        val cleanedInput = input.replace(Regex("<FONT COLOR[^>]*>"), "")
+            .replace("</FONT>", "")
+            .replace("<BR>", "\n")
+            .replace("&nbsp;", " ")
+            .trim()
+
+        val parts = cleanedInput.split("\n")
+        val firstPart = parts.getOrNull(0)
+        val secondPart = parts.getOrNull(1)
+
+        return Pair(firstPart, secondPart)
+    }
+
+    private fun testAbilityStone(input: String): Pair<String, Int?> {
+        val pattern = """\[<FONT COLOR='#(?:787878|FFFFFF|FFFFAC|FE2E2E)'>\s*([^<]+)\s*<\/FONT>\]\s*활성도\s*(\d+)""".toRegex()
+        val matchResult = pattern.find(input)
+
+        if (matchResult != null) {
+            val ability = matchResult.groups[1]?.value ?: ""
+            val level = matchResult.groups[2]?.value?.toIntOrNull()
+
+            return ability to level
+        }
+
+        return "" to null
     }
 }
 

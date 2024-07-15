@@ -48,6 +48,70 @@ fun EngravingView(
         Description(skillEngravings, viewModel)
     }
 
+    NoArkPassive(
+        modifier = modifier,
+        skillEngravings = skillEngravings,
+        viewModel = viewModel
+    )
+
+
+//    Column(
+//        modifier = modifier
+//            .background(LightGrayTransBG, RoundedCornerShape(8.dp))
+//            .clip(RoundedCornerShape(8.dp))
+//            .padding(16.dp),
+//        horizontalAlignment = Alignment.CenterHorizontally
+//    ) {
+//        skillEngravings.forEach {
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .noRippleClickable { viewModel.onClicked(it.name) },
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                GlideImage(
+//                    modifier = Modifier
+//                        .size(34.dp)
+//                        .clip(RoundedCornerShape(8.dp)),
+//                    model = it.icon,
+//                    contentDescription = "각인 아이콘"
+//                )
+//                Spacer(modifier = Modifier.width(12.dp))
+//
+//                Text(text = it.level, style = titleTextStyle())
+//                Spacer(modifier = Modifier.width(8.dp))
+//
+//                Column {
+//                    val textSize = if (it.name.length > 8) 10.sp else if (it.name.length > 7) 13.sp else 15.sp
+//                    Text(
+//                        text = it.name,
+//                        style = titleTextStyle(fontSize = textSize)
+//                    )
+//                    if (it.awakenEngravingsPoint != null) {
+//                        Text(
+//                            text = "각인서 ${it.awakenEngravingsPoint}",
+//                            style = normalTextStyle(fontSize = 12.sp)
+//                        )
+//                    }
+//                }
+//            }
+//
+//            if (it != skillEngravings.last()) {
+//                Spacer(modifier = Modifier.height(4.dp))
+//            }
+//        }
+//
+//    }
+    Spacer(modifier = Modifier.height(16.dp))
+}
+
+@Composable
+@OptIn(ExperimentalGlideComposeApi::class)
+private fun NoArkPassive(
+    modifier: Modifier,
+    skillEngravings: List<SkillEngravings>,
+    viewModel: EngravingVM
+) {
     Column(
         modifier = modifier
             .background(LightGrayTransBG, RoundedCornerShape(8.dp))
@@ -81,7 +145,10 @@ fun EngravingView(
                         style = titleTextStyle(fontSize = textSize)
                     )
                     if (it.awakenEngravingsPoint != null) {
-                        Text(text = "각인서 ${it.awakenEngravingsPoint}", style = normalTextStyle(fontSize = 12.sp))
+                        Text(
+                            text = "각인서 ${it.awakenEngravingsPoint}",
+                            style = normalTextStyle(fontSize = 12.sp)
+                        )
                     }
                 }
             }
@@ -92,7 +159,6 @@ fun EngravingView(
         }
 
     }
-    Spacer(modifier = Modifier.height(16.dp))
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)

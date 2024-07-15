@@ -33,11 +33,14 @@ class TooltipStrings {
         const val STEP = "단계"
         const val ABILITY_STONE_BONUS = "세공 단계 보너스"
         const val ABILITY_STONE_ENGRAVING = "무작위 각인 효과"
+        const val ABILITY_ARK_PASSIVE = "[아크 패시브 활성화 상태]"
         const val GEM_EFFECTS = "보석 효과"
         const val AWAKEN = "각성"
     }
 
     object SubStringAfter {
+        const val ITEM_TIER = "아이템 티어 "
+
         const val UPPER_DOT_DECREASE = "'>"
         const val LEFT_SMALL_BRACKET = "("
 

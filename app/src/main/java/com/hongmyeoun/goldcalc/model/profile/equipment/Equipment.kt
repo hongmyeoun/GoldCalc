@@ -51,11 +51,11 @@ data class AbilityStone(
   val name: String,
   val itemIcon: String,
   val hpBonus: String,
-  val engraving1Lv: String,
+  val engraving1Lv: Int?,
   val engraving1Op: String,
-  val engraving2Lv: String,
+  val engraving2Lv: Int?,
   val engraving2Op: String,
-  val engraving3Lv: String,
+  val engraving3Lv: Int?,
   val engraving3Op: String,
 ) : CharacterItem
 
