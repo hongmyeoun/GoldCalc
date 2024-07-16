@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.hongmyeoun.goldcalc.model.constants.TooltipStrings.NoResult.GRIND
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
 import com.hongmyeoun.goldcalc.model.profile.equipment.AbilityStone
@@ -158,7 +159,7 @@ private fun DetailUI(
                         borderless = true
                     )
                 }
-            } else if (accessory.grindEffect != null) {
+            } else if (accessory.arkPassivePoint != null) {
                 Box(
                     modifier = Modifier
                         .background(LightGrayBG, RoundedCornerShape(4.dp))
@@ -166,7 +167,7 @@ private fun DetailUI(
                         .padding(4.dp)
                 ) {
                     Text(
-                        text = accessory.grindEffect,
+                        text = accessory.grindEffect ?: GRIND,
                         style = normalTextStyle()
                     )
                 }
@@ -204,7 +205,7 @@ fun DetailUI(
 
                 if (isArkPassive && abilityStone.engraving3Lv != null) {
                     TextChip(
-                        text = "${viewModel.getSimpleEngraving(abilityStone.engraving3Op)}${viewModel.arkPassiveEngPenLv(abilityStone.engraving3Lv)?:""}",
+                        text = "${viewModel.getSimpleEngraving(abilityStone.engraving3Op)}${viewModel.arkPassiveEngPenLv(abilityStone.engraving3Lv) ?: ""}",
                         textColor = RedQual,
                         customBGColor = LightGrayBG,
                         borderless = true

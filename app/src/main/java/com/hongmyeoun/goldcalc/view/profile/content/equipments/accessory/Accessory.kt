@@ -66,12 +66,14 @@ fun AccessoryUI(
     isArkPassive: Boolean
 ) {
     val offsetValue = if (isArkPassive) (-6).dp else 0.dp
+    val arkPassiveOffsetValue = if (isArkPassive) Modifier.offset(x = (-8).dp, y = (-8).dp) else Modifier
+
     Row {
         EquipmentIcon(
             accessory = accessory,
             viewModel = viewModel,
             isArkPassive = isArkPassive,
-            modifier = Modifier.offset(x = (-8).dp, y = (-8).dp)
+            modifier = arkPassiveOffsetValue
         )
         Spacer(modifier = Modifier.width(4.dp))
 
@@ -98,7 +100,7 @@ fun AccessoryUI(
                         )
                     }
                 }
-            } else if (!accessory.grindEffect.isNullOrEmpty()) {
+            } else if (!accessory.arkPassivePoint.isNullOrEmpty()) {
                 Column {
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(

@@ -33,9 +33,11 @@ class TooltipStrings {
         const val STEP = "단계"
         const val ABILITY_STONE_BONUS = "세공 단계 보너스"
         const val ABILITY_STONE_ENGRAVING = "무작위 각인 효과"
-        const val ABILITY_ARK_PASSIVE = "[아크 패시브 활성화 상태]"
         const val GEM_EFFECTS = "보석 효과"
         const val AWAKEN = "각성"
+
+        const val GRIND = "연마 효과"
+        const val ARK_PASSIVE_POINT = "아크 패시브 포인트 효과"
     }
 
     object SubStringAfter {
@@ -48,7 +50,6 @@ class TooltipStrings {
         const val LEVEL_DOT_SPACE = "Lv. "
 
         const val POINT_SPACE = "포인트 "
-        const val AWAKEN = "활성도 "
         const val AWAKEN_PLUS = "활성도 +"
 
         const val FONT_END_SPACE = "</FONT> "
@@ -77,6 +78,7 @@ class TooltipStrings {
 
     object NoResult {
         const val ELIXIR_SET = "세트 없음"
+        const val GRIND = "연마 없음"
     }
 
 }

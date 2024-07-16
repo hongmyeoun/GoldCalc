@@ -445,15 +445,39 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
     private fun getGrindEffect(equipment: Equipment): String? {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
 
-        val itemTier = itemTier(tooltip)
+        for (index in 5..6) {
+            val elementKey = Common.currentElementKey(index)
 
-        if (itemTier >= 4) {
-            val rawGrinding = tooltip
-                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_005)
-                .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-                .get(TooltipStrings.MemberName.ELEMENT_001).asString
+            if (tooltip.has(elementKey)) {
+                val element = tooltip.getAsJsonObject(elementKey)
 
-            return accGrindingProcess(rawGrinding)
+                if (Common.itemPartBox(element)) {
+                    val testValue = element.get(TooltipStrings.MemberName.VALUE)
+
+                    if (testValue == null || !testValue.isJsonObject) {
+                        continue
+                    }
+
+                    val value = element.getAsJsonObject(TooltipStrings.MemberName.VALUE)
+
+                    val isGrind = value
+                        .get(TooltipStrings.MemberName.ELEMENT_000)
+                        .asString
+                        .contains(TooltipStrings.Contains.GRIND)
+
+                    if (isGrind) {
+                        val itemTier = itemTier(tooltip)
+
+                        if (itemTier >= 4) {
+                            val rawGrinding = value
+                                .get(TooltipStrings.MemberName.ELEMENT_001)
+                                .asString
+
+                            return accGrindingProcess(rawGrinding).ifEmpty { TooltipStrings.NoResult.GRIND }
+                        }
+                    }
+                }
+            }
         }
 
         return null
@@ -462,14 +486,37 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
     private fun getArkPassivePoint(equipment: Equipment): String? {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
 
-        val itemTier = itemTier(tooltip)
+        for (index in 5..6) {
+            val elementKey = Common.currentElementKey(index)
 
-        if (itemTier >= 4) {
-            return tooltip
-                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_006)
-                .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-                .get(TooltipStrings.MemberName.ELEMENT_001)
-                .asString
+            if (tooltip.has(elementKey)) {
+                val element = tooltip.getAsJsonObject(elementKey)
+
+                if (Common.itemPartBox(element)) {
+                    val testValue = element.get(TooltipStrings.MemberName.VALUE)
+
+                    if (testValue == null || !testValue.isJsonObject) {
+                        continue
+                    }
+
+                    val value = element.getAsJsonObject(TooltipStrings.MemberName.VALUE)
+
+                    val isGrind = value
+                        .get(TooltipStrings.MemberName.ELEMENT_000)
+                        .asString
+                        .contains(TooltipStrings.Contains.ARK_PASSIVE_POINT)
+
+                    if (isGrind) {
+                        val itemTier = itemTier(tooltip)
+
+                        if (itemTier >= 4) {
+                            return value
+                                .get(TooltipStrings.MemberName.ELEMENT_001)
+                                .asString
+                        }
+                    }
+                }
+            }
         }
 
         return null
@@ -543,7 +590,7 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         return Pair("", null)
     }
 
-    private fun abStoneEngravingContentSTR(equipment: Equipment, memberName: String) : String {
+    private fun abStoneEngravingContentSTR(equipment: Equipment, memberName: String): String {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
 
         for (index in 5..6) {
