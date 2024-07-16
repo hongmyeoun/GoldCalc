@@ -26,7 +26,7 @@ class SkillEngravingsDetail(private val skillEngravings: SkillEngravingsAndEffec
                 name = name,
                 icon = effect.icon,
                 level = effect.name.substringAfter(TooltipStrings.SubStringAfter.LEVEL_DOT_SPACE),
-                description = removeHTMLTags(effect.description)
+                description = effect.description
             )
 
             engravingMap[name]?.let { engraving ->
@@ -36,26 +36,6 @@ class SkillEngravingsDetail(private val skillEngravings: SkillEngravingsAndEffec
             } ?: engravingDetail
         }
     }
-
-//    fun getEngravingsDetail(): List<SkillEngravings> {
-//        val engravingMap = skillEngravings.engravings?.associateBy { it?.name }
-//
-//        return skillEngravings.effect?.map { effect ->
-//            val name = effect.name.substringBefore(TooltipStrings.SubStringBefore.SPACE_LEVEL)
-//            val engravingDetail = SkillEngravings(
-//                name = name,
-//                icon = effect.icon,
-//                level = effect.name.substringAfter(TooltipStrings.SubStringAfter.LEVEL_DOT_SPACE),
-//                description = removeHTMLTags(effect.description)
-//            )
-//
-//            engravingMap?.get(name)?.let { engraving ->
-//                engravingDetail.copy(
-//                    awakenEngravingsPoint = getAwakenEngravingsPoint(engraving)
-//                )
-//            } ?: engravingDetail
-//        } ?:
-//    }
 
     private fun getAwakenEngravingsPoint(skillEngraving: SkillEngraving): String {
         val tooltip = JsonParser.parseString(skillEngraving.tooltip).asJsonObject
@@ -69,10 +49,5 @@ class SkillEngravingsDetail(private val skillEngravings: SkillEngravingsAndEffec
         return awakenPointStr
             .substringAfter(TooltipStrings.SubStringAfter.POINT_SPACE)
             .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
-    }
-
-    // TODO: HTML TAG 지우기 공통화
-    private fun removeHTMLTags(htmlStr: String): String {
-        return htmlStr.replace(Regex("<.*?>"), "")
     }
 }

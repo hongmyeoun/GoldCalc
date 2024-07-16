@@ -26,6 +26,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.model.common.htmlStyledText
+import com.hongmyeoun.goldcalc.model.constants.NetworkConfig.Companion.ARK_PASSIVE_ACTIVATION_ICON
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.GRADE_EPIC
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
 import com.hongmyeoun.goldcalc.model.profile.engravings.SkillEngravings
@@ -47,7 +49,11 @@ fun EngravingView(
     val showDialog by viewModel.showDialog.collectAsState()
 
     if (showDialog) {
-        Description(skillEngravings, viewModel)
+        Description(
+            skillEngravings = skillEngravings,
+            viewModel = viewModel,
+            isArkPassive = isArkPassive
+        )
     }
 
     Column(
@@ -175,11 +181,11 @@ private fun NoArkPassive(
     }
 }
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun Description(
     skillEngravings: List<SkillEngravings>,
-    viewModel: EngravingVM
+    viewModel: EngravingVM,
+    isArkPassive: Boolean,
 ) {
     val engraving = viewModel.getEngraving(skillEngravings)
 
@@ -202,39 +208,131 @@ fun Description(
                 Divider()
                 Spacer(modifier = Modifier.height(8.dp))
 
+                if (isArkPassive) {
+                    ArkPassiveDetail(it, viewModel)
+
+                } else {
+                    NoArkPassiveDetail(it)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalGlideComposeApi::class)
+private fun ArkPassiveDetail(
+    it: SkillEngravings,
+    viewModel: EngravingVM
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        GlideImage(
+            modifier = Modifier
+                .size(54.dp)
+                .clip(RoundedCornerShape(8.dp)),
+            model = ARK_PASSIVE_ACTIVATION_ICON,
+            contentDescription = "각인 아이콘"
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Text(
+            text = it.name,
+            style = titleTextStyle(fontSize = 15.sp, color = viewModel.textColor(it.grade ?: GRADE_EPIC))
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 8.dp),
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.Center
+        ) {
+            if (it.abilityStoneLevel != null) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     GlideImage(
-                        modifier = Modifier
-                            .size(54.dp)
-                            .clip(RoundedCornerShape(8.dp)),
-                        model = it.icon,
-                        contentDescription = "각인 아이콘"
+                        modifier = Modifier.size(16.dp),
+                        model = viewModel.stoneImg(it.name),
+                        contentDescription = "어빌리티 활성도"
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
-
                     Text(
-                        text = "Lv.${it.level} ${it.name}",
-                        style = titleTextStyle(fontSize = 15.sp)
+                        text = "Lv.${it.abilityStoneLevel}",
+                        style = titleTextStyle(fontSize = 14.sp, color = viewModel.textColor(it.grade ?: GRADE_EPIC))
                     )
                 }
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(4.dp))
+            }
 
-                Box(
-                    modifier = Modifier
-                        .background(LightGrayBG, RoundedCornerShape(4.dp))
-                        .fillMaxWidth()
-                        .padding(16.dp)
+            if (it.grade != null) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
+                    GlideImage(
+                        modifier = Modifier.size(16.dp),
+                        model = viewModel.engGrade(it.grade),
+                        contentDescription = "각인서 활성도"
+                    )
                     Text(
-                        text = it.description,
-                        style = normalTextStyle(fontSize = 12.sp),
-                        lineHeight = 16.sp,
-                        softWrap = true
+                        text = "x${it.level}",
+                        style = titleTextStyle(fontSize = 14.sp, color = viewModel.textColor(it.grade))
                     )
                 }
             }
         }
+    }
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Box(
+        modifier = Modifier
+            .background(LightGrayBG, RoundedCornerShape(4.dp))
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Text(
+            text = htmlStyledText(it.description),
+            style = normalTextStyle(fontSize = 12.sp),
+            lineHeight = 16.sp,
+            softWrap = true
+        )
+    }
+}
+
+@Composable
+@OptIn(ExperimentalGlideComposeApi::class)
+private fun NoArkPassiveDetail(it: SkillEngravings) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        GlideImage(
+            modifier = Modifier
+                .size(54.dp)
+                .clip(RoundedCornerShape(8.dp)),
+            model = it.icon,
+            contentDescription = "각인 아이콘"
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Text(
+            text = "Lv.${it.level} ${it.name}",
+            style = titleTextStyle(fontSize = 15.sp)
+        )
+    }
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Box(
+        modifier = Modifier
+            .background(LightGrayBG, RoundedCornerShape(4.dp))
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Text(
+            text = htmlStyledText(it.description),
+            style = normalTextStyle(fontSize = 12.sp),
+            lineHeight = 16.sp,
+            softWrap = true
+        )
     }
 }
