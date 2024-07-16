@@ -59,8 +59,6 @@ object EquipmentConsts {
     const val COOLTIME = "재사용 대기시간"
     const val COOLTIME_SHORT = "쿨타임"
 
-    const val INCREASE = "증가"
-
     const val DEFAULT_SPACE = "기본 "
 
     const val GRADE_NORMAL = "일반"
@@ -74,4 +72,8 @@ object EquipmentConsts {
 
     const val NO_SETTING = "세트 없음"
 
+    val PENALTY_ENGRAVINGS = listOf("공격력 감소", "공격속도 감소", "이동속도 감소", "방어력 감소")
+
+    const val LOSE_DAMAGE = "받는 피해 감소"
+    const val LOSE_DAMAGE_SHORT = "받피감"
 }

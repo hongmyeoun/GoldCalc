@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -26,6 +27,8 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.LOSE_DAMAGE
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.LOSE_DAMAGE_SHORT
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterEquipment
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
@@ -40,7 +43,8 @@ import com.hongmyeoun.goldcalc.viewModel.profile.EquipmentVM
 fun Equipment(
     modifier: Modifier,
     characterEquipment: List<CharacterItem>,
-    viewModel: EquipmentVM
+    viewModel: EquipmentVM,
+    isArkPassive: Boolean
 ) {
     Column(
         modifier = modifier
@@ -50,7 +54,8 @@ fun Equipment(
                 is CharacterEquipment -> {
                     EquipmentUI(
                         equipment = it,
-                        viewModel = viewModel
+                        viewModel = viewModel,
+                        isArkPassive = isArkPassive
                     )
                 }
             }
@@ -62,8 +67,10 @@ fun Equipment(
 fun EquipmentUI(
     equipment: CharacterEquipment,
     viewModel: EquipmentVM,
+    isArkPassive: Boolean
 ) {
     val setOptionName = viewModel.setOptionName(equipment)
+    val arkPassiveOffsetValue = if (isArkPassive) Modifier.offset(x = (-8).dp, y = (-8).dp) else Modifier
 
     Row(
         horizontalArrangement = Arrangement.Center,
@@ -71,10 +78,15 @@ fun EquipmentUI(
     ) {
         EquipmentIcon(
             equipment = equipment,
-            viewModel = viewModel
+            viewModel = viewModel,
+            isArkPassive = isArkPassive,
+            modifier = arkPassiveOffsetValue
         )
         Spacer(modifier = Modifier.width(6.dp))
-        Column {
+
+        Column(
+            modifier = arkPassiveOffsetValue
+        ) {
             UpgradeQualityRow(
                 viewModel = viewModel,
                 grade = equipment.grade,
@@ -90,8 +102,11 @@ fun EquipmentUI(
             }
         }
         Spacer(modifier = Modifier.width(4.dp))
+
         if (equipment.elixirFirstLevel.isNotEmpty()) {
-            Column {
+            Column(
+                modifier = arkPassiveOffsetValue
+            ) {
                 ElixirLevelOptionRow(
                     level = equipment.elixirFirstLevel,
                     option = equipment.elixirFirstOption,
@@ -155,6 +170,7 @@ private fun ElixirLevelOptionRow(
     option: String,
     viewModel: EquipmentVM
 ) {
+    val optionStr = if (option == LOSE_DAMAGE) LOSE_DAMAGE_SHORT else option
     Row(
         modifier = Modifier.height(24.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -167,7 +183,7 @@ private fun ElixirLevelOptionRow(
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
-            text = option,
+            text = optionStr,
             style = normalTextStyle()
         )
     }
@@ -178,82 +194,99 @@ private fun ElixirLevelOptionRow(
 private fun EquipmentIcon(
     equipment: CharacterEquipment,
     viewModel: EquipmentVM,
+    isArkPassive: Boolean,
+    modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
-            .size(56.dp)
-            .background(
-                brush = viewModel.getItemBG(equipment.grade),
-                shape = RoundedCornerShape(8.dp)
-            )
-            .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+        modifier = modifier,
+        contentAlignment = Alignment.Center
     ) {
-        GlideImage(
-            modifier = Modifier
-                .size(56.dp),
-            model = equipment.itemIcon,
-            contentDescription = "장비 아이콘",
-        )
         Box(
             modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(2.dp)
+                .size(56.dp)
+                .background(
+                    brush = viewModel.getItemBG(equipment.grade),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
         ) {
-            TextChip(
-                text = equipment.type,
-                borderless = true,
-                customBGColor = BlackTransBG,
-                customRoundedCornerSize = 8.dp,
-                customTextSize = 8.sp
+            GlideImage(
+                modifier = Modifier
+                    .size(56.dp),
+                model = equipment.itemIcon,
+                contentDescription = "장비 아이콘",
             )
-        }
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(2.dp)
+            ) {
+                TextChip(
+                    text = equipment.type,
+                    borderless = true,
+                    customBGColor = BlackTransBG,
+                    customRoundedCornerSize = 8.dp,
+                    customTextSize = 8.sp
+                )
+            }
 
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-        ) {
-            if (equipment.transcendenceLevel.isNotEmpty()) {
-                Box {
-                    Column {
-                        TextChip(
-                            text = equipment.transcendenceTotal,
-                            borderless = true,
-                            customBGColor = BlackTransBG,
-                            customPadding = Modifier.padding(start = 2.dp, end = 2.dp),
-                            image = true,
-                            yourImage = {
-                                GlideImage(
-                                    modifier = Modifier
-                                        .size(13.dp),
-                                    model = NetworkConfig.TRANSCENDENCE_ICON,
-                                    contentDescription = "초월 아이콘"
-                                )
-                                Spacer(modifier = Modifier.width(2.dp))
-                            }
-                        )
-                        Spacer(modifier = Modifier.height(14.dp))
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+            ) {
+                if (equipment.transcendenceLevel.isNotEmpty()) {
+                    Box {
+                        Column {
+                            TextChip(
+                                text = equipment.transcendenceTotal,
+                                borderless = true,
+                                customBGColor = BlackTransBG,
+                                customPadding = Modifier.padding(start = 2.dp, end = 2.dp),
+                                image = true,
+                                yourImage = {
+                                    GlideImage(
+                                        modifier = Modifier
+                                            .size(13.dp),
+                                        model = NetworkConfig.TRANSCENDENCE_ICON,
+                                        contentDescription = "초월 아이콘"
+                                    )
+                                    Spacer(modifier = Modifier.width(2.dp))
+                                }
+                            )
+                            Spacer(modifier = Modifier.height(14.dp))
+                        }
                     }
                 }
-            }
-            LinearProgressIndicator(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(14.dp)
-                    .clip(RoundedCornerShape(4.dp))
-                    .align(Alignment.BottomCenter),
-                progress = equipment.itemQuality * 0.01f,
-                color = viewModel.getQualityColor(equipment.itemQuality.toString()),
-                trackColor = ImageBG
-            )
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(14.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .align(Alignment.BottomCenter),
+                    progress = equipment.itemQuality * 0.01f,
+                    color = viewModel.getQualityColor(equipment.itemQuality.toString()),
+                    trackColor = ImageBG
+                )
 
-            Text(
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter),
+                    text = "${equipment.itemQuality}",
+                    style = normalTextStyle(),
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+
+        if (isArkPassive) {
+            GlideImage(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter),
-                text = "${equipment.itemQuality}",
-                style = normalTextStyle(),
-                textAlign = TextAlign.Center
+                    .size(72.dp),
+                model = NetworkConfig.ARK_PASSIVE_EQUIP,
+                contentDescription = "악세 테두리",
             )
         }
     }
+
 }

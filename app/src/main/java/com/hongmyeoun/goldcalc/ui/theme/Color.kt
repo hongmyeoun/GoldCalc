@@ -27,6 +27,12 @@ val LightGrayBG = Color(0xFF2B313A)
 val ArkPassiveEvolution = Color(0xFFF2D694)
 val ArkPassiveEnlightenment = Color(0xFF83E9FF)
 
+val YellowWarn = Color(0xFFFFD000)
+
+val EpicTextColor = Color(0xFFCE43FC)
+val LegendaryTextColor = Color(0xFFFE9600)
+val RelicTextColor = Color(0xFFFF6600)
+
 val OrangeQual = Color(0xFFEA6811)
 val PurpleQual = Color(0xFF7030A0)
 val BlueQual = Color(0xFF4472C4)

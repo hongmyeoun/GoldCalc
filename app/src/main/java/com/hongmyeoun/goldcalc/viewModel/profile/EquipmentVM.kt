@@ -88,18 +88,6 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
         return formattedSetOptions.joinToString(", ")
     }
 
-
-//    private fun getSumCombatStat(equipment: List<CharacterItem>): Int {
-//        val combatStat = equipment.filterIsInstance<CharacterAccessory>().mapNotNull { it.combatStat1 }
-//        if (combatStat.isNotEmpty()) {
-//            val combatStatOne = combatStat.sumOf { it.split(" ")[1].removePrefix("+").toInt() }
-//            val combatStatTwo = equipment.filterIsInstance<CharacterAccessory>()[0].combatStat2.split(" ")[1].removePrefix("+").toInt()
-//
-//            return combatStatOne + combatStatTwo
-//        }
-//        return 0
-//    }
-
     private fun getSumCombatStat(equipment: List<CharacterItem>): Int {
         var combatStatOne = 0
         var combatStatTwo = 0
@@ -227,6 +215,36 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
         return getSimpleEngraving(match)
     }
 
+    fun grindEffectSize(input: String?): String {
+        val inputSize = input?.split("\n")?.size
+        return if (inputSize != null) "연마 +$inputSize" else "연마 없음"
+    }
+
+    fun arkPassiveEngLv(engLv: Int?): String? {
+        return when (engLv) {
+            6 -> { "Lv.1" }
+            in 7..8 -> { "Lv.2" }
+            9 -> { "Lv.3" }
+            10 -> { "Lv.4" }
+            else -> null
+        }
+    }
+
+    fun arkPassiveEngPenLv(engLv: Int?): String? {
+        return when (engLv) {
+            in 5..6 -> { "Lv.1" }
+            in 7..9 -> { "Lv.2" }
+            10 -> { "Lv.3" }
+            else -> null
+        }
+    }
+
+    fun arkPoint(input: String): Int {
+        val regex = "\\d+".toRegex()
+        val match = regex.find(input)
+        return match?.value?.toInt() ?: 0
+    }
+
     fun getSimpleEngraving(engraving: String): String {
         val simpleName = mapOf(
             "결투의 대가" to "결대",
@@ -279,7 +297,11 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
             "잔재된 기운" to "잔재",
             "그믐의 경계" to "그믐",
             "만월의 집행자" to "만월",
-            "질풍노도" to "질풍"
+            "질풍노도" to "질풍",
+            "공격력 감소" to "공감",
+            "공격속도 감소" to "공속감",
+            "이동속도 감소" to "이속감",
+            "방어력 감소" to "방감",
         )
         return simpleName[engraving] ?: engraving
     }
