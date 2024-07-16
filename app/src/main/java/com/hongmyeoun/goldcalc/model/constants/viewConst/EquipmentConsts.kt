@@ -74,4 +74,5 @@ object EquipmentConsts {
 
     const val NO_SETTING = "세트 없음"
 
+    val PENALTY_ENGRAVINGS = listOf("공격력 감소", "공격속도 감소", "이동속도 감소", "방어력 감소")
 }

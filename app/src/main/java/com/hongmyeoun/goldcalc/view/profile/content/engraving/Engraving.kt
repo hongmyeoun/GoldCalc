@@ -19,6 +19,7 @@ fun Engraving(
 ) {
     // 각인
     val engravings by viewModel.engravings.collectAsState()
+    val isArkPassive = profile.arkPassive.isArkPassive
 
     Row {
         val modifier = Modifier.weight(1f)
@@ -32,7 +33,8 @@ fun Engraving(
         engravings?.let { skillEngravings ->
             EngravingView(
                 modifier = modifier,
-                skillEngravings = skillEngravings
+                skillEngravings = skillEngravings,
+                isArkPassive = isArkPassive
             )
         }
     }

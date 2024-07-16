@@ -301,7 +301,7 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
             "공격력 감소" to "공감",
             "공격속도 감소" to "공속감",
             "이동속도 감소" to "이속감",
-            "방여력 감소" to "방감",
+            "방어력 감소" to "방감",
         )
         return simpleName[engraving] ?: engraving
     }
