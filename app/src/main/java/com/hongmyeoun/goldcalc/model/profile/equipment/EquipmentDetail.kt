@@ -183,7 +183,7 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
     private fun elixirContentSTR(equipment: Equipment): JsonObject? {
         val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
 
-        for (index in 8..10) {
+        for (index in 8..12) {
             val elementKey = Common.currentElementKey(index)
 
             if (tooltipJson.has(elementKey)) {
@@ -277,7 +277,7 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
     private fun getSetOption(equipment: Equipment): String {
         val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
 
-        for (index in 7..12) {
+        for (index in 7..13) {
             val elementKey = Common.currentElementKey(index)
 
             if (tooltipJson.has(elementKey)) {
@@ -309,7 +309,7 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
     private fun getElixirSetOption(equipment: Equipment): String {
         val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
 
-        for (index in 9..11) {
+        for (index in 9..12) {
             val elementKey = Common.currentElementKey(index)
 
             if (tooltipJson.has(elementKey)) {
