@@ -91,11 +91,12 @@ private fun ArkPassive(
                 .noRippleClickable { viewModel.onClicked(it.name) },
             verticalAlignment = Alignment.CenterVertically
         ) {
+            val textSize = if (it.abilityStoneLevel != null) viewModel.textSize(it.name.length) else 15.sp
+
             Text(
                 text = it.name,
-                style = titleTextStyle(fontSize = 15.sp, color = viewModel.textColor(it.grade ?: GRADE_EPIC))
+                style = titleTextStyle(fontSize = textSize, color = viewModel.textColor(it.grade ?: GRADE_EPIC))
             )
-            Spacer(modifier = Modifier.width(8.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -110,7 +111,7 @@ private fun ArkPassive(
                     )
                     Text(
                         text = "Lv.${it.abilityStoneLevel}",
-                        style = titleTextStyle(fontSize = 14.sp, color = viewModel.textColor(it.grade ?: GRADE_EPIC))
+                        style = titleTextStyle(fontSize = 12.sp, color = viewModel.textColor(it.grade ?: GRADE_EPIC))
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                 }

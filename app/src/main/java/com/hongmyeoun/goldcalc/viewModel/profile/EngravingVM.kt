@@ -1,6 +1,8 @@
 package com.hongmyeoun.goldcalc.viewModel.profile
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.GRADE_EPIC
@@ -49,6 +51,14 @@ class EngravingVM: ViewModel() {
             GRADE_EPIC -> EpicTextColor
             GRADE_LEGENDARY -> LegendaryTextColor
             else -> RelicTextColor
+        }
+    }
+
+    fun textSize(input: Int): TextUnit {
+        return when (input) {
+            in 2..5 -> 15.sp
+            in 6..8 -> 12.sp
+            else -> 10.sp
         }
     }
 }
