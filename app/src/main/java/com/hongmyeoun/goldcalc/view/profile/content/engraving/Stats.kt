@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.hongmyeoun.goldcalc.model.common.htmlStyledText
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
 import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
@@ -230,7 +231,7 @@ fun Details(
 
                                     Text(
                                         modifier = Modifier.weight(1f),
-                                        text = viewModel.removeHTMLTags(description),
+                                        text = htmlStyledText(viewModel.removeHTMLTags(description)),
                                         style = normalTextStyle(fontSize = 10.sp),
                                         lineHeight = 14.sp,
                                     )

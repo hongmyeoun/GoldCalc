@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.LOSE_DAMAGE
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.LOSE_DAMAGE_SHORT
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterEquipment
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
@@ -168,6 +170,7 @@ private fun ElixirLevelOptionRow(
     option: String,
     viewModel: EquipmentVM
 ) {
+    val optionStr = if (option == LOSE_DAMAGE) LOSE_DAMAGE_SHORT else option
     Row(
         modifier = Modifier.height(24.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -180,7 +183,7 @@ private fun ElixirLevelOptionRow(
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
-            text = option,
+            text = optionStr,
             style = normalTextStyle()
         )
     }

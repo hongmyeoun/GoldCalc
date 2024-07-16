@@ -538,8 +538,10 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
 
         for (index in 5..6) {
             val elementKey = Common.currentElementKey(index)
+
             if (tooltip.has(elementKey)) {
                 val element = tooltip.getAsJsonObject(elementKey)
+
                 if (Common.itemPartBox(element)) {
                     val value = element
                         .getAsJsonObject(TooltipStrings.MemberName.VALUE)
@@ -630,22 +632,44 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
 
     private fun getBraceletEffect(equipment: Equipment): Triple<List<Pair<String, String>>, List<Pair<String, String>>, List<Pair<String, String>>> {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
-        val effect = tooltip
-            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_004)
-            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-            .get(TooltipStrings.MemberName.ELEMENT_001).asString
-        val (effects, keyStats) = processStringFiltered(effect)
-        val allStats = processString(effect)
 
-        return Triple(effects, keyStats, allStats)
+        for (index in 4..5) {
+            val elementKey = Common.currentElementKey(index)
+
+            if (tooltip.has(elementKey)) {
+                val element = tooltip.getAsJsonObject(elementKey)
+
+                if (Common.itemPartBox(element)) {
+                    val testValue = element
+                        .get(TooltipStrings.MemberName.VALUE)
+
+                    if (testValue == null || !testValue.isJsonObject) {
+                        continue
+                    }
+
+                    val value = element.getAsJsonObject(TooltipStrings.MemberName.VALUE)
+
+                    if (value.get(TooltipStrings.MemberName.ELEMENT_000).asString.contains(TooltipStrings.Contains.BRACELET)) {
+                        val effect = value.get(TooltipStrings.MemberName.ELEMENT_001).asString
+
+                        val (effects, keyStats) = processStringFiltered(effect)
+                        val allStats = processString(effect)
+
+                        return Triple(effects, keyStats, allStats)
+                    }
+                }
+            }
+        }
+
+        return Triple(emptyList(), emptyList(), emptyList())
     }
 
     private fun processStringFiltered(input: String): Pair<List<Pair<String, String>>, List<Pair<String, String>>> {
         // <BR> 태그를 줄 나누기로 변환
         var withLineBreaks = input.replace(Regex("(?i)<BR>(?=[<\\[])"), "\n<BR>")
 
-        // HTML 태그 제거
-        withLineBreaks = withLineBreaks.replace(Regex("<[^>]*>"), "")
+        // <FONT COLOR='#...'>(...)</FONT> 형식의 태그를 남기되, color 속성 값이 빈 값인 태그는 제거
+        withLineBreaks = withLineBreaks.replace(Regex("<FONT COLOR='\\s*'>"), "")
 
         // [이름] 값 패턴 찾아서 key와 값을 분리하여 리스트에 저장
         val namePattern = Regex("\\[([^\\[\\]]+)\\]\\s*(.+)")
@@ -653,18 +677,24 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
 
         withLineBreaks.split("\n").forEach { line ->
             namePattern.find(line)?.let { matchResult ->
-                val key = matchResult.groupValues[1].replace("\\s+".toRegex(), "")
-                val value = matchResult.groupValues[2].trim()
+                val key = matchResult.groupValues[1].replace("\\s+".toRegex(), "").replace("</FONT>", "")
+                val value = matchResult.groupValues[2].replace("<BR>", "\n\n").trim()
                 nameValueList.add(key to value)
             }
         }
+
+        // <BR> 태그를 줄 나누기로 변환
+        var withLineBreaks2 = input.replace(Regex("(?i)<BR>(?=[<\\[])"), "\n<BR>")
+
+        // HTML 태그 제거
+        withLineBreaks2 = withLineBreaks2.replace(Regex("<[^>]*>"), "")
 
         // 키워드 패턴과 값 찾아서 리스트에 저장
         val keywords = EquipmentConsts.FILTERED_COMBAT_STAT_LIST
         val keyValuePattern = Regex("(\\S+)\\s*\\+\\s*(.+)")
         val keyValueList = mutableListOf<Pair<String, String>>()
 
-        withLineBreaks.split("\n").forEach { line ->
+        withLineBreaks2.split("\n").forEach { line ->
             keyValuePattern.find(line)?.let { matchResult ->
                 val key = matchResult.groupValues[1]
                 val value = matchResult.groupValues[2].trim()

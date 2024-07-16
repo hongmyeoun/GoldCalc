@@ -24,6 +24,10 @@ class StatVM: ViewModel() {
     }
 
     fun removeHTMLTags(htmlStr: String): String {
-        return htmlStr.replace(Regex("<.*?>"), "").trim()
+        var output = htmlStr.replace(Regex("<textformat[^>]*>"), "")
+        output = output.replace("<font> </font>", "")
+        output = output.replace("</textformat>", "").trim().uppercase()
+
+        return output
     }
 }

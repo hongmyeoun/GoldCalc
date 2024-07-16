@@ -34,6 +34,7 @@ class TooltipStrings {
         const val ABILITY_STONE_BONUS = "세공 단계 보너스"
         const val ABILITY_STONE_ENGRAVING = "무작위 각인 효과"
         const val GEM_EFFECTS = "보석 효과"
+        const val BRACELET = "팔찌 효과"
         const val AWAKEN = "각성"
 
         const val GRIND = "연마 효과"
