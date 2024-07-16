@@ -101,7 +101,8 @@ private fun EquipmentAndAccessory(
         Equipment(
             modifier = Modifier.weight(0.7f),
             characterEquipment = characterEquipment,
-            viewModel = viewModel
+            viewModel = viewModel,
+            isArkPassive = isArkPassive
         )
 
         Accessory(

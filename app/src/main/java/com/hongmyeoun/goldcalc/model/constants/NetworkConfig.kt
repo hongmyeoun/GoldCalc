@@ -23,7 +23,7 @@ class NetworkConfig {
 
         const val ARK_PASSIVE_ACTIVATION_ICON = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_arkpassive.png"
         const val ARK_PASSIVE_ACC = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/bg_equipment_arkpassive2.png"
-
+        const val ARK_PASSIVE_EQUIP = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/bg_equipment_arkpassive.png"
         const val API_HEADER = "Authorization"
 
         const val END_POINT_PNG = ".png"
