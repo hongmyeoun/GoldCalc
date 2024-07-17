@@ -29,7 +29,7 @@ fun LoGolGi(characterRepository: CharacterRepository) {
         var isLoading by remember { mutableStateOf(true) }
 
         LaunchedEffect(Unit) {
-            delay(1500L)
+            delay(250L)
             isLoading = false
         }
 

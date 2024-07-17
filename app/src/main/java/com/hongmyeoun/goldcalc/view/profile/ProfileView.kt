@@ -28,7 +28,7 @@ fun ProfileView(
     }
 
     LaunchedEffect(Unit) {
-        delay(1000)
+        delay(250L)
         isLoading = false
     }
 

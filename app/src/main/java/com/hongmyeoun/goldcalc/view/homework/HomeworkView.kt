@@ -42,7 +42,7 @@ fun HomeworkView(
     var isLoading by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
-        delay(1000)
+        delay(250L)
         isLoading = false
     }
 
