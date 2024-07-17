@@ -5,7 +5,7 @@ import com.hongmyeoun.goldcalc.model.constants.TooltipStrings
 
 class SkillEngravingsDetail(private val skillEngravings: SkillEngravingsAndEffects) {
     fun getEngravingsDetail(): List<SkillEngravings> {
-        if (skillEngravings.engravings.isNullOrEmpty() || skillEngravings.effect.isNullOrEmpty()) {
+        if (skillEngravings.engravings.isNullOrEmpty() && skillEngravings.effect.isNullOrEmpty()) {
             return skillEngravings.arkPassiveEffect?.map { passiveEffect ->
                 SkillEngravings(
                     name = passiveEffect.name,
@@ -18,9 +18,9 @@ class SkillEngravingsDetail(private val skillEngravings: SkillEngravingsAndEffec
             } ?: emptyList()
         }
 
-        val engravingMap = skillEngravings.engravings.associateBy { it?.name }
+        val engravingMap = skillEngravings.engravings?.associateBy { it?.name }
 
-        return skillEngravings.effect.map { effect ->
+        return skillEngravings.effect?.map { effect ->
             val name = effect.name.substringBefore(TooltipStrings.SubStringBefore.SPACE_LEVEL)
             val engravingDetail = SkillEngravings(
                 name = name,
@@ -29,12 +29,12 @@ class SkillEngravingsDetail(private val skillEngravings: SkillEngravingsAndEffec
                 description = effect.description
             )
 
-            engravingMap[name]?.let { engraving ->
+            engravingMap?.get(name)?.let { engraving ->
                 engravingDetail.copy(
                     awakenEngravingsPoint = getAwakenEngravingsPoint(engraving)
                 )
             } ?: engravingDetail
-        }
+        } ?: emptyList()
     }
 
     private fun getAwakenEngravingsPoint(skillEngraving: SkillEngraving): String {

@@ -1,7 +1,10 @@
 package com.hongmyeoun.goldcalc.view.profile.content.equipments
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -116,6 +119,7 @@ private fun EquipmentAndAccessory(
 }
 
 // 세트, 악세 품질 요약
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun Summary(
     viewModel: EquipmentVM,
@@ -125,8 +129,8 @@ fun Summary(
     val setOption by viewModel.setOption.collectAsState()
     val totalCombatStat by viewModel.totalCombatStat.collectAsState()
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically
+    FlowRow(
+        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically)
     ) {
         if (setOption.isNotEmpty() && !isArkPassive) {
             TextChip(text = setOption)
