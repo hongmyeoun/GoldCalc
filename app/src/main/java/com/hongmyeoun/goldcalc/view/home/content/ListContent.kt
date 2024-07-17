@@ -37,7 +37,8 @@ fun ListContent(
             ContentItem(
                 navController = navController,
                 cardViewModel = characterCardVM,
-                isLoading = isLoading
+                isLoading = isLoading,
+                isListView = true
             )
         }
     }

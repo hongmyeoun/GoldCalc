@@ -84,6 +84,18 @@ class HomeContentVM @Inject constructor(
         }
     }
 
+    fun onAvatarClick(character: Character?) {
+        character?.let {
+            if (!character.characterImage.isNullOrEmpty()) {
+                viewModelScope.launch(Dispatchers.IO) {
+                    val newValue = !character.avatarImage
+                    val avatarImgUpdate = _character.value.copy(avatarImage = newValue)
+                    characterRepository.update(avatarImgUpdate)
+                }
+            }
+        }
+    }
+
     fun initTG(character: Character) {
         _totalGold.value = character.earnGold + character.plusGold.toInt() - character.minusGold.toInt()
         _kamenTG.value = character.raidPhaseInfo.kamenTotalGold

@@ -50,11 +50,14 @@ import com.hongmyeoun.goldcalc.viewModel.home.HomeContentVM
 @Composable
 fun HomeworkProgress(
     viewModel: HomeContentVM,
+    isListView: Boolean
 ) {
     val character by viewModel.character.collectAsState()
 
+    val gridCellSize = if (isListView) 2 else 1
+
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2), // 열당 2개의 아이템을 보여주도록 설정
+        columns = GridCells.Fixed(gridCellSize), // 열당 x개의 아이템을 보여주도록 설정
         modifier = Modifier
             .fillMaxSize()
             .heightIn(max = 1000.dp)
@@ -240,6 +243,7 @@ fun ProgressState(
     raidImg: Int,
     raidName: String,
     viewModel: GoldContentStateVM,
+//    isListView: Boolean,
     noReward: Boolean = false,
     rewardCheck: (Boolean) -> Unit = {},
     onClicked: (Int) -> Unit

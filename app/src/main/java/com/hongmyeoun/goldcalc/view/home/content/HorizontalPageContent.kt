@@ -98,7 +98,8 @@ fun HorizontalPageContent(
                 ContentItem(
                     navController = navController,
                     cardViewModel = characterCardVM,
-                    isLoading = isLoading
+                    isLoading = isLoading,
+                    isListView = false
                 )
             }
         }
@@ -128,5 +129,4 @@ fun HorizontalPageContent(
             }
         }
     }
-
 }

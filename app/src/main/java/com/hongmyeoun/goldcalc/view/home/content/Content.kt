@@ -29,7 +29,7 @@ fun HomeContent(
             characterList = characterList,
             characterRepository = characterRepository,
             navController = navController,
-            isLoading = isLoading
+            isLoading = isLoading,
         )
     }
 }
