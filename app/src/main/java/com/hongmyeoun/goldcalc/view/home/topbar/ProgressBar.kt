@@ -12,6 +12,8 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,8 +27,10 @@ import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
 
 @Composable
 fun ProgressBar(viewModel: HomeVM) {
+    val progressPercentage by viewModel.progressPercentage.collectAsState()
+
     val animatedProgress = animateFloatAsState(
-        targetValue = viewModel.progressPercentage,
+        targetValue = progressPercentage,
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec,
         label = Labels.Animation.PROGRESSBAR
     ).value
@@ -52,7 +56,7 @@ fun ProgressBar(viewModel: HomeVM) {
                 .fillMaxWidth()
                 .align(Alignment.CenterEnd)
                 .padding(end = 8.dp),
-            text = viewModel.progressPercentage.toPercentage(),
+            text = progressPercentage.toPercentage(),
             textAlign = TextAlign.End,
             color = Color.White
         )

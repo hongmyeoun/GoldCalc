@@ -1,9 +1,6 @@
 package com.hongmyeoun.goldcalc.viewModel.home
 
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.util.fastSumBy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -68,12 +65,11 @@ class HomeVM @Inject constructor(
 
     private fun initProgressBar(characterList: List<Character>) {
         _maxGold.value = characterList.fastSumBy { it.weeklyGold }
-        progressPercentage = if (_maxGold.value != 0) _earnGold.value.toFloat() / _maxGold.value else 0.0f
+        _progressPercentage.value = if (_maxGold.value != 0) _earnGold.value.toFloat() / _maxGold.value else 0.0f
     }
 
-
-    var progressPercentage by mutableStateOf(0.0f)
-        private set
+    private val _progressPercentage = MutableStateFlow(0.0f)
+    val progressPercentage: StateFlow<Float> = _progressPercentage
 
     private var clickPressedTime = 0L
 
