@@ -22,6 +22,11 @@ object Homework {
     const val PHASE_THREE = "3관문"
     const val PHASE_FOUR = "4관문"
 
+    const val WEEK_GOLD = "4관 골드X"
+
+    const val ABREL_4GOLD = "abrel4Phase"
+    const val KAMEN_4GOLD = "kamen4Phase"
+
     const val PHASE_ONE_NUM = "①"
     const val PHASE_TWO_NUM = "②"
     const val PHASE_THREE_NUM = "③"

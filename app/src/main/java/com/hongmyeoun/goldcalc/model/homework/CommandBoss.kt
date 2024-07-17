@@ -133,18 +133,22 @@ class CommandBossModel(character: Character?) {
 
 class Valtan(character: Character?) {
     var name = CommandBoss.VALTAN.boss
-    private val seeMoreGold = CommandBoss.VALTAN.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.VALTAN.getBossInfo(Raid.Difficulty.HARD).first + CommandBoss.VALTAN.getBossInfo(
-        Raid.Difficulty.SOLO).first
-    private val clearGold =  CommandBoss.VALTAN.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.VALTAN.getBossInfo(Raid.Difficulty.HARD).second + CommandBoss.VALTAN.getBossInfo(
-        Raid.Difficulty.SOLO).second
+    private val seeMoreGold =
+        CommandBoss.VALTAN.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.VALTAN.getBossInfo(Raid.Difficulty.HARD).first + CommandBoss.VALTAN.getBossInfo(
+            Raid.Difficulty.SOLO
+        ).first
+    private val clearGold =
+        CommandBoss.VALTAN.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.VALTAN.getBossInfo(Raid.Difficulty.HARD).second + CommandBoss.VALTAN.getBossInfo(
+            Raid.Difficulty.SOLO
+        ).second
 
-    var isChecked = character?.checkList?.command?.get(0)?.isCheck?:false
+    var isChecked = character?.checkList?.command?.get(0)?.isCheck ?: false
 
     private val getOnePhase = character?.checkList?.command?.get(0)?.phases?.get(0)
 
-    private val onePhaseDifficulty = getOnePhase?.difficulty?: Raid.Difficulty.KR_NORMAL
-    private val onePhaseIsClear = getOnePhase?.isClear?:false
-    private val onePhaseMCheck = getOnePhase?.mCheck?:false
+    private val onePhaseDifficulty = getOnePhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val onePhaseIsClear = getOnePhase?.isClear ?: false
+    private val onePhaseMCheck = getOnePhase?.mCheck ?: false
 
     val onePhase = PhaseInfo(
         difficulty = onePhaseDifficulty,
@@ -162,9 +166,9 @@ class Valtan(character: Character?) {
 
     private val getTwoPhase = character?.checkList?.command?.get(0)?.phases?.get(1)
 
-    private val twoPhaseDifficulty = getTwoPhase?.difficulty?: Raid.Difficulty.KR_NORMAL
-    private val twoPhaseIsClear = getTwoPhase?.isClear?:false
-    private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val twoPhaseIsClear = getTwoPhase?.isClear ?: false
+    private val twoPhaseMCheck = getTwoPhase?.mCheck ?: false
 
     val twoPhase = PhaseInfo(
         difficulty = twoPhaseDifficulty,
@@ -194,18 +198,22 @@ class Valtan(character: Character?) {
 
 class Biackiss(character: Character?) {
     var name = CommandBoss.BIACKISS.boss
-    private val seeMoreGold = CommandBoss.BIACKISS.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.BIACKISS.getBossInfo(Raid.Difficulty.HARD).first + CommandBoss.BIACKISS.getBossInfo(
-        Raid.Difficulty.SOLO).first
-    private val clearGold = CommandBoss.BIACKISS.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.BIACKISS.getBossInfo(Raid.Difficulty.HARD).second + CommandBoss.BIACKISS.getBossInfo(
-        Raid.Difficulty.SOLO).second
+    private val seeMoreGold =
+        CommandBoss.BIACKISS.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.BIACKISS.getBossInfo(Raid.Difficulty.HARD).first + CommandBoss.BIACKISS.getBossInfo(
+            Raid.Difficulty.SOLO
+        ).first
+    private val clearGold =
+        CommandBoss.BIACKISS.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.BIACKISS.getBossInfo(Raid.Difficulty.HARD).second + CommandBoss.BIACKISS.getBossInfo(
+            Raid.Difficulty.SOLO
+        ).second
 
-    var isChecked = character?.checkList?.command?.get(1)?.isCheck?:false
+    var isChecked = character?.checkList?.command?.get(1)?.isCheck ?: false
 
     private val getOnePhase = character?.checkList?.command?.get(1)?.phases?.get(0)
 
-    private val onePhaseDifficulty = getOnePhase?.difficulty?: Raid.Difficulty.KR_NORMAL
-    private val onePhaseIsClear = getOnePhase?.isClear?:false
-    private val onePhaseMCheck = getOnePhase?.mCheck?:false
+    private val onePhaseDifficulty = getOnePhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val onePhaseIsClear = getOnePhase?.isClear ?: false
+    private val onePhaseMCheck = getOnePhase?.mCheck ?: false
 
     val onePhase = PhaseInfo(
         difficulty = onePhaseDifficulty,
@@ -223,9 +231,9 @@ class Biackiss(character: Character?) {
 
     private val getTwoPhase = character?.checkList?.command?.get(1)?.phases?.get(1)
 
-    private val twoPhaseDifficulty = getTwoPhase?.difficulty?: Raid.Difficulty.KR_NORMAL
-    private val twoPhaseIsClear = getTwoPhase?.isClear?:false
-    private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val twoPhaseIsClear = getTwoPhase?.isClear ?: false
+    private val twoPhaseMCheck = getTwoPhase?.mCheck ?: false
 
     val twoPhase = PhaseInfo(
         difficulty = twoPhaseDifficulty,
@@ -255,18 +263,22 @@ class Biackiss(character: Character?) {
 
 class KoukuSaton(character: Character?) {
     var name = CommandBoss.KOUKU_SATON.boss
-    private val seeMoreGold = CommandBoss.KOUKU_SATON.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.KOUKU_SATON.getBossInfo(Raid.Difficulty.HARD).first + CommandBoss.KOUKU_SATON.getBossInfo(
-        Raid.Difficulty.SOLO).first
-    private val clearGold = CommandBoss.KOUKU_SATON.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.KOUKU_SATON.getBossInfo(Raid.Difficulty.HARD).second + CommandBoss.KOUKU_SATON.getBossInfo(
-        Raid.Difficulty.SOLO).second
+    private val seeMoreGold =
+        CommandBoss.KOUKU_SATON.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.KOUKU_SATON.getBossInfo(Raid.Difficulty.HARD).first + CommandBoss.KOUKU_SATON.getBossInfo(
+            Raid.Difficulty.SOLO
+        ).first
+    private val clearGold =
+        CommandBoss.KOUKU_SATON.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.KOUKU_SATON.getBossInfo(Raid.Difficulty.HARD).second + CommandBoss.KOUKU_SATON.getBossInfo(
+            Raid.Difficulty.SOLO
+        ).second
 
-    var isChecked = character?.checkList?.command?.get(2)?.isCheck?:false
+    var isChecked = character?.checkList?.command?.get(2)?.isCheck ?: false
 
     private val getOnePhase = character?.checkList?.command?.get(2)?.phases?.get(0)
 
-    private val onePhaseDifficulty = getOnePhase?.difficulty?: Raid.Difficulty.KR_NORMAL
-    private val onePhaseIsClear = getOnePhase?.isClear?:false
-    private val onePhaseMCheck = getOnePhase?.mCheck?:false
+    private val onePhaseDifficulty = getOnePhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val onePhaseIsClear = getOnePhase?.isClear ?: false
+    private val onePhaseMCheck = getOnePhase?.mCheck ?: false
 
     val onePhase = PhaseInfo(
         difficulty = onePhaseDifficulty,
@@ -284,9 +296,9 @@ class KoukuSaton(character: Character?) {
 
     private val getTwoPhase = character?.checkList?.command?.get(2)?.phases?.get(1)
 
-    private val twoPhaseDifficulty = getTwoPhase?.difficulty?: Raid.Difficulty.KR_NORMAL
-    private val twoPhaseIsClear = getTwoPhase?.isClear?:false
-    private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val twoPhaseIsClear = getTwoPhase?.isClear ?: false
+    private val twoPhaseMCheck = getTwoPhase?.mCheck ?: false
 
     val twoPhase = PhaseInfo(
         difficulty = twoPhaseDifficulty,
@@ -303,9 +315,9 @@ class KoukuSaton(character: Character?) {
     )
 
     private val getThreePhase = character?.checkList?.command?.get(2)?.phases?.get(2)
-    private val threePhaseDifficulty = getThreePhase?.difficulty?: Raid.Difficulty.KR_NORMAL
-    private val threePhaseIsClear = getThreePhase?.isClear?:false
-    private val threePhaseMCheck = getThreePhase?.mCheck?:false
+    private val threePhaseDifficulty = getThreePhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val threePhaseIsClear = getThreePhase?.isClear ?: false
+    private val threePhaseMCheck = getThreePhase?.mCheck ?: false
 
     val threePhase = PhaseInfo(
         difficulty = threePhaseDifficulty,
@@ -336,18 +348,22 @@ class KoukuSaton(character: Character?) {
 
 class Abrelshud(character: Character?) {
     var name = CommandBoss.ABRELSHUD.boss
-    private val seeMoreGold = CommandBoss.ABRELSHUD.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.ABRELSHUD.getBossInfo(Raid.Difficulty.HARD).first + CommandBoss.ABRELSHUD.getBossInfo(
-        Raid.Difficulty.SOLO).first
-    private val clearGold = CommandBoss.ABRELSHUD.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.ABRELSHUD.getBossInfo(Raid.Difficulty.HARD).second + CommandBoss.ABRELSHUD.getBossInfo(
-        Raid.Difficulty.SOLO).second
+    private val seeMoreGold =
+        CommandBoss.ABRELSHUD.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.ABRELSHUD.getBossInfo(Raid.Difficulty.HARD).first + CommandBoss.ABRELSHUD.getBossInfo(
+            Raid.Difficulty.SOLO
+        ).first
+    private val clearGold =
+        CommandBoss.ABRELSHUD.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.ABRELSHUD.getBossInfo(Raid.Difficulty.HARD).second + CommandBoss.ABRELSHUD.getBossInfo(
+            Raid.Difficulty.SOLO
+        ).second
 
-    var isChecked = character?.checkList?.command?.get(3)?.isCheck?:false
+    var isChecked = character?.checkList?.command?.get(3)?.isCheck ?: false
 
     private val getOnePhase = character?.checkList?.command?.get(3)?.phases?.get(0)
 
-    private val onePhaseDifficulty = getOnePhase?.difficulty?: Raid.Difficulty.KR_NORMAL
-    private val onePhaseIsClear = getOnePhase?.isClear?:false
-    private val onePhaseMCheck = getOnePhase?.mCheck?:false
+    private val onePhaseDifficulty = getOnePhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val onePhaseIsClear = getOnePhase?.isClear ?: false
+    private val onePhaseMCheck = getOnePhase?.mCheck ?: false
 
     val onePhase = PhaseInfo(
         difficulty = onePhaseDifficulty,
@@ -365,9 +381,9 @@ class Abrelshud(character: Character?) {
 
     private val getTwoPhase = character?.checkList?.command?.get(3)?.phases?.get(1)
 
-    private val twoPhaseDifficulty = getTwoPhase?.difficulty?: Raid.Difficulty.KR_NORMAL
-    private val twoPhaseIsClear = getTwoPhase?.isClear?:false
-    private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val twoPhaseIsClear = getTwoPhase?.isClear ?: false
+    private val twoPhaseMCheck = getTwoPhase?.mCheck ?: false
 
     val twoPhase = PhaseInfo(
         difficulty = twoPhaseDifficulty,
@@ -384,9 +400,9 @@ class Abrelshud(character: Character?) {
     )
 
     private val getThreePhase = character?.checkList?.command?.get(3)?.phases?.get(2)
-    private val threePhaseDifficulty = getThreePhase?.difficulty?: Raid.Difficulty.KR_NORMAL
-    private val threePhaseIsClear = getThreePhase?.isClear?:false
-    private val threePhaseMCheck = getThreePhase?.mCheck?:false
+    private val threePhaseDifficulty = getThreePhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val threePhaseIsClear = getThreePhase?.isClear ?: false
+    private val threePhaseMCheck = getThreePhase?.mCheck ?: false
 
     val threePhase = PhaseInfo(
         difficulty = threePhaseDifficulty,
@@ -403,9 +419,9 @@ class Abrelshud(character: Character?) {
     )
 
     private val getFourPhase = character?.checkList?.command?.get(3)?.phases?.get(3)
-    private val fourPhaseDifficulty = getFourPhase?.difficulty?: Raid.Difficulty.KR_NORMAL
-    private val fourPhaseIsClear = getFourPhase?.isClear?:false
-    private val fourPhaseMCheck = getFourPhase?.mCheck?:false
+    private val fourPhaseDifficulty = getFourPhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val fourPhaseIsClear = getFourPhase?.isClear ?: false
+    private val fourPhaseMCheck = getFourPhase?.mCheck ?: false
 
     val fourPhase = PhaseInfo(
         difficulty = fourPhaseDifficulty,
@@ -437,18 +453,22 @@ class Abrelshud(character: Character?) {
 
 class Illiakan(character: Character?) {
     var name = CommandBoss.ILLIAKAN.boss
-    private val seeMoreGold = CommandBoss.ILLIAKAN.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.ILLIAKAN.getBossInfo(Raid.Difficulty.HARD).first + CommandBoss.ILLIAKAN.getBossInfo(
-        Raid.Difficulty.SOLO).first
-    private val clearGold = CommandBoss.ILLIAKAN.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.ILLIAKAN.getBossInfo(Raid.Difficulty.HARD).second + CommandBoss.ILLIAKAN.getBossInfo(
-        Raid.Difficulty.SOLO).second
+    private val seeMoreGold =
+        CommandBoss.ILLIAKAN.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.ILLIAKAN.getBossInfo(Raid.Difficulty.HARD).first + CommandBoss.ILLIAKAN.getBossInfo(
+            Raid.Difficulty.SOLO
+        ).first
+    private val clearGold =
+        CommandBoss.ILLIAKAN.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.ILLIAKAN.getBossInfo(Raid.Difficulty.HARD).second + CommandBoss.ILLIAKAN.getBossInfo(
+            Raid.Difficulty.SOLO
+        ).second
 
-    var isChecked = character?.checkList?.command?.get(4)?.isCheck?:false
+    var isChecked = character?.checkList?.command?.get(4)?.isCheck ?: false
 
     private val getOnePhase = character?.checkList?.command?.get(4)?.phases?.get(0)
 
-    private val onePhaseDifficulty = getOnePhase?.difficulty?: Raid.Difficulty.KR_NORMAL
-    private val onePhaseIsClear = getOnePhase?.isClear?:false
-    private val onePhaseMCheck = getOnePhase?.mCheck?:false
+    private val onePhaseDifficulty = getOnePhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val onePhaseIsClear = getOnePhase?.isClear ?: false
+    private val onePhaseMCheck = getOnePhase?.mCheck ?: false
 
     val onePhase = PhaseInfo(
         difficulty = onePhaseDifficulty,
@@ -466,9 +486,9 @@ class Illiakan(character: Character?) {
 
     private val getTwoPhase = character?.checkList?.command?.get(4)?.phases?.get(1)
 
-    private val twoPhaseDifficulty = getTwoPhase?.difficulty?: Raid.Difficulty.KR_NORMAL
-    private val twoPhaseIsClear = getTwoPhase?.isClear?:false
-    private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val twoPhaseIsClear = getTwoPhase?.isClear ?: false
+    private val twoPhaseMCheck = getTwoPhase?.mCheck ?: false
 
     val twoPhase = PhaseInfo(
         difficulty = twoPhaseDifficulty,
@@ -485,9 +505,9 @@ class Illiakan(character: Character?) {
     )
 
     private val getThreePhase = character?.checkList?.command?.get(4)?.phases?.get(2)
-    private val threePhaseDifficulty = getThreePhase?.difficulty?: Raid.Difficulty.KR_NORMAL
-    private val threePhaseIsClear = getThreePhase?.isClear?:false
-    private val threePhaseMCheck = getThreePhase?.mCheck?:false
+    private val threePhaseDifficulty = getThreePhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val threePhaseIsClear = getThreePhase?.isClear ?: false
+    private val threePhaseMCheck = getThreePhase?.mCheck ?: false
 
     val threePhase = PhaseInfo(
         difficulty = threePhaseDifficulty,
@@ -522,13 +542,13 @@ class Kamen(character: Character?) {
     private val seeMoreGold = CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.HARD).first
     private val clearGold = CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.HARD).second
 
-    var isChecked = character?.checkList?.command?.get(5)?.isCheck?:false
+    var isChecked = character?.checkList?.command?.get(5)?.isCheck ?: false
 
     private val getOnePhase = character?.checkList?.command?.get(5)?.phases?.get(0)
 
-    private val onePhaseDifficulty = getOnePhase?.difficulty?: Raid.Difficulty.KR_NORMAL
-    private val onePhaseIsClear = getOnePhase?.isClear?:false
-    private val onePhaseMCheck = getOnePhase?.mCheck?:false
+    private val onePhaseDifficulty = getOnePhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val onePhaseIsClear = getOnePhase?.isClear ?: false
+    private val onePhaseMCheck = getOnePhase?.mCheck ?: false
 
     val onePhase = PhaseInfo(
         difficulty = onePhaseDifficulty,
@@ -543,9 +563,9 @@ class Kamen(character: Character?) {
 
     private val getTwoPhase = character?.checkList?.command?.get(5)?.phases?.get(1)
 
-    private val twoPhaseDifficulty = getTwoPhase?.difficulty?: Raid.Difficulty.KR_NORMAL
-    private val twoPhaseIsClear = getTwoPhase?.isClear?:false
-    private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val twoPhaseIsClear = getTwoPhase?.isClear ?: false
+    private val twoPhaseMCheck = getTwoPhase?.mCheck ?: false
 
     val twoPhase = PhaseInfo(
         difficulty = twoPhaseDifficulty,
@@ -559,9 +579,9 @@ class Kamen(character: Character?) {
     )
 
     private val getThreePhase = character?.checkList?.command?.get(5)?.phases?.get(2)
-    private val threePhaseDifficulty = getThreePhase?.difficulty?: Raid.Difficulty.KR_NORMAL
-    private val threePhaseIsClear = getThreePhase?.isClear?:false
-    private val threePhaseMCheck = getThreePhase?.mCheck?:false
+    private val threePhaseDifficulty = getThreePhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val threePhaseIsClear = getThreePhase?.isClear ?: false
+    private val threePhaseMCheck = getThreePhase?.mCheck ?: false
 
     val threePhase = PhaseInfo(
         difficulty = threePhaseDifficulty,
@@ -575,9 +595,9 @@ class Kamen(character: Character?) {
     )
 
     private val getFourPhase = character?.checkList?.command?.get(5)?.phases?.get(3)
-    private val fourPhaseDifficulty = getFourPhase?.difficulty?: Raid.Difficulty.KR_NORMAL
-    private val fourPhaseIsClear = getFourPhase?.isClear?:false
-    private val fourPhaseMCheck = getFourPhase?.mCheck?:false
+    private val fourPhaseDifficulty = getFourPhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val fourPhaseIsClear = getFourPhase?.isClear ?: false
+    private val fourPhaseMCheck = getFourPhase?.mCheck ?: false
 
     val fourPhase = PhaseInfo(
         difficulty = fourPhaseDifficulty,

@@ -120,12 +120,18 @@ class HomeContentVM @Inject constructor(
         return phase
     }
 
-    fun kamenGoldCalc(nowPhase: Int) {
+    fun kamenGoldCalc(nowPhase: Int, noReward: Boolean) {
         _kamenTG.value = when (nowPhase) {
             1 -> { _cmModel.value.kamen.onePhase.totalGold }
             2 -> { _cmModel.value.kamen.onePhase.totalGold + _cmModel.value.kamen.twoPhase.totalGold }
             3 -> { _cmModel.value.kamen.onePhase.totalGold + _cmModel.value.kamen.twoPhase.totalGold + _cmModel.value.kamen.threePhase.totalGold }
-            4 -> { _cmModel.value.kamen.totalGold }
+            4 -> {
+                if (noReward) {
+                    _cmModel.value.kamen.totalGold - _cmModel.value.kamen.fourPhase.totalGold
+                } else {
+                    _cmModel.value.kamen.totalGold
+                }
+            }
             else -> { 0 }
         }
 
@@ -153,12 +159,18 @@ class HomeContentVM @Inject constructor(
         }
     }
 
-    fun abrelGoldCalc(nowPhase: Int) {
+    fun abrelGoldCalc(nowPhase: Int, noReward: Boolean) {
         _abrelshudTG.value = when (nowPhase) {
             1 -> { _cmModel.value.abrelshud.onePhase.totalGold }
             2 -> { _cmModel.value.abrelshud.onePhase.totalGold + _cmModel.value.abrelshud.twoPhase.totalGold }
             3 -> { _cmModel.value.abrelshud.onePhase.totalGold + _cmModel.value.abrelshud.twoPhase.totalGold + _cmModel.value.abrelshud.threePhase.totalGold }
-            4 -> { _cmModel.value.abrelshud.totalGold }
+            4 -> {
+                if (noReward) {
+                    _cmModel.value.abrelshud.totalGold - _cmModel.value.abrelshud.fourPhase.totalGold
+                } else {
+                    _cmModel.value.abrelshud.totalGold
+                }
+            }
             else -> { 0 }
         }
 
