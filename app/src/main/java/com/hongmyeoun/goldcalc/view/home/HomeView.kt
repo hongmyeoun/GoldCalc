@@ -42,13 +42,13 @@ fun HomeView(
 
     val activity = LocalContext.current as? Activity
     val sharedPref = remember { activity?.getPreferences(Context.MODE_PRIVATE) }
-    var listView by remember {
+    var isListView by remember {
         val viewOption = sharedPref?.getBoolean("viewoption", true) ?: true
         mutableStateOf(viewOption)
     }
 
-    LaunchedEffect(listView) {
-        sharedPref?.edit()?.putBoolean("viewoption", listView)?.apply()
+    LaunchedEffect(isListView) {
+        sharedPref?.edit()?.putBoolean("viewoption", isListView)?.apply()
     }
 
     Scaffold(
@@ -57,8 +57,8 @@ fun HomeView(
                 navController = navController,
                 viewModel = viewModel,
                 snackbarHostState = snackbarHostState,
-                isListView = listView,
-                viewChange = { listView = !listView }
+                isListView = isListView,
+                viewChange = { isListView = !isListView }
             )
         },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
@@ -70,6 +70,7 @@ fun HomeView(
             characterRepository = characterRepository,
             navController = navController,
             isLoading = isLoading,
+            isListView = isListView
         )
     }
 }

@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.home.content
+package com.hongmyeoun.goldcalc.view.home.content.contentItem
 
 import android.app.Activity
 import android.content.Context
