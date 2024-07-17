@@ -16,14 +16,22 @@ import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
 fun HomeTopBar(
     navController: NavHostController,
     viewModel: HomeVM,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    isListView: Boolean,
+    viewChange: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .background(LightGrayBG)
             .padding(16.dp)
     ) {
-        TitleAndMenu(navController, viewModel, snackbarHostState)
+        TitleAndMenu(
+            navController = navController,
+            viewModel = viewModel,
+            snackbarHostState = snackbarHostState,
+            isListView = isListView,
+            viewChange = viewChange
+        )
         ProgressText(viewModel)
         ProgressBar(viewModel)
         CurrentGold(viewModel)

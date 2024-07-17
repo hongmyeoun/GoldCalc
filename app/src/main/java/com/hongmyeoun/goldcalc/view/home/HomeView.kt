@@ -1,16 +1,20 @@
 package com.hongmyeoun.goldcalc.view.home
 
 import android.app.Activity
+import android.content.Context
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -36,8 +40,27 @@ fun HomeView(
 
     BackOnPressed(snackbarHostState)
 
+    val activity = LocalContext.current as? Activity
+    val sharedPref = remember { activity?.getPreferences(Context.MODE_PRIVATE) }
+    var isListView by remember {
+        val viewOption = sharedPref?.getBoolean("viewoption", true) ?: true
+        mutableStateOf(viewOption)
+    }
+
+    LaunchedEffect(isListView) {
+        sharedPref?.edit()?.putBoolean("viewoption", isListView)?.apply()
+    }
+
     Scaffold(
-        topBar = { HomeTopBar(navController, viewModel, snackbarHostState) },
+        topBar = {
+            HomeTopBar(
+                navController = navController,
+                viewModel = viewModel,
+                snackbarHostState = snackbarHostState,
+                isListView = isListView,
+                viewChange = { isListView = !isListView }
+            )
+        },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         contentWindowInsets = WindowInsets(0.dp)
     ) { paddingValues ->
@@ -47,6 +70,7 @@ fun HomeView(
             characterRepository = characterRepository,
             navController = navController,
             isLoading = isLoading,
+            isListView = isListView
         )
     }
 }

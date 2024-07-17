@@ -1,4 +1,4 @@
-package com.hongmyeoun.goldcalc.view.home.content
+package com.hongmyeoun.goldcalc.view.home.content.contentItem
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background

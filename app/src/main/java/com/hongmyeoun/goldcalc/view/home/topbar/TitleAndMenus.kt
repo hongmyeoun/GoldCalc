@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
@@ -32,13 +33,22 @@ import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
 fun TitleAndMenu(
     navController: NavHostController,
     viewModel: HomeVM,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    isListView: Boolean,
+    viewChange: () -> Unit
 ) {
     Box(
         modifier = Modifier.fillMaxWidth(),
     ) {
         Title(modifier = Modifier.align(Alignment.CenterStart))
-        Menus(modifier = Modifier.align(Alignment.CenterEnd), navController, viewModel, snackbarHostState)
+        Menus(
+            modifier = Modifier.align(Alignment.CenterEnd),
+            navController = navController,
+            viewModel = viewModel,
+            snackbarHostState = snackbarHostState,
+            isListView = isListView,
+            viewChange = viewChange
+        )
     }
     Spacer(modifier = Modifier.height(16.dp))
 }
@@ -102,7 +112,9 @@ private fun Menus(
     modifier: Modifier,
     navController: NavHostController,
     viewModel: HomeVM,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    isListView: Boolean,
+    viewChange: () -> Unit
 ) {
     Row(
         modifier = modifier,
@@ -119,6 +131,7 @@ private fun Menus(
             )
         }
 
+
         IconButton(
             modifier = Modifier.size(35.dp),
             onClick = { viewModel.onReset(snackbarHostState) }
@@ -128,6 +141,26 @@ private fun Menus(
                 tint = Color.White,
                 contentDescription = "새로고침"
             )
+        }
+
+        IconButton(
+            modifier = Modifier.size(35.dp),
+            onClick = { viewChange() }
+        ) {
+            if (isListView) {
+                Icon(
+                    modifier = Modifier.size(35.dp),
+                    imageVector = Icons.Default.List,
+                    tint = Color.White,
+                    contentDescription = "세로 목록형"
+                )
+            } else {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_one_character),
+                    tint = Color.White,
+                    contentDescription = "가로 목록형"
+                )
+            }
         }
 
         IconButton(
