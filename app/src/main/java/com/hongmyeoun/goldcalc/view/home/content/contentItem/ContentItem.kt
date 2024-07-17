@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -34,6 +36,14 @@ fun ContentItem(
 ) {
     var rotated by remember { mutableStateOf(false) }
 
+    val horizon = if (isListView) {
+        Modifier
+    } else {
+        Modifier
+            .animateContentSize()
+            .verticalScroll(rememberScrollState())
+    }
+
     val character by cardViewModel.character.collectAsState()
 
     Column(
@@ -45,7 +55,7 @@ fun ContentItem(
                 shape = RoundedCornerShape(16.dp)
             )
             .padding(top = 8.dp, bottom = 8.dp, start = 16.dp, end = 16.dp)
-            .animateContentSize(),
+            .then(horizon),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Crossfade(

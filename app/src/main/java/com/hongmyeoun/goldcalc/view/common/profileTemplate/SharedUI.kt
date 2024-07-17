@@ -79,7 +79,7 @@ fun TitleCharName(title: String?, name: String) {
 // 아이템 레벨
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ItemLevel(level: String) {
+fun ItemLevel(level: String, noSpace: Boolean = false) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         GlideImage(
             modifier = Modifier.size(24.dp),
@@ -122,7 +122,9 @@ fun ItemLevel(level: String) {
             }
         )
     }
-    Spacer(modifier = Modifier.height(12.dp))
+    if (!noSpace) {
+        Spacer(modifier = Modifier.height(12.dp))
+    }
 }
 
 // 길드, 영지, PVP 등급(homework)

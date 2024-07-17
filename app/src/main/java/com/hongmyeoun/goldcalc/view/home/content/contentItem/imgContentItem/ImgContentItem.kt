@@ -4,9 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
@@ -24,6 +26,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.model.common.ImageReturn
+import com.hongmyeoun.goldcalc.model.common.formatWithCommas
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.navigation.Screen
@@ -40,7 +44,7 @@ fun ImgContent(
     navController: NavHostController
 ) {
     Column(
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier.padding(top = 4.dp, bottom = 4.dp, start = 8.dp, end = 8.dp)
     ) {
         ImgContentTop(character, cardViewModel, navController)
         CharacterImg(character)
@@ -122,11 +126,12 @@ private fun CharacterImg(character: Character) {
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 private fun ImgContentBottom(character: Character) {
     Box(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(top = 8.dp, start = 8.dp, end = 8.dp)
             .fillMaxWidth(),
     ) {
         Column(
@@ -156,7 +161,27 @@ private fun ImgContentBottom(character: Character) {
                     text = "아이템 레벨",
                     style = normalTextStyle(fontSize = 11.sp)
                 )
-                ItemLevel(level = character.itemLevel)
+                ItemLevel(
+                    level = character.itemLevel,
+                    noSpace = true
+                )
+
+                Row(
+                    modifier = Modifier.align(Alignment.End),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    GlideImage(
+                        modifier = Modifier.size(25.dp),
+                        model = ImageReturn.goldImage(character.weeklyGold),
+                        contentDescription = "골드"
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Text(
+                        text = character.weeklyGold.formatWithCommas(),
+                        style = titleTextStyle(fontSize = 15.sp),
+                    )
+                }
             }
         }
     }

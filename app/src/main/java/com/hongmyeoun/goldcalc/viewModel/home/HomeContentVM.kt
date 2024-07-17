@@ -5,6 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.model.homework.AbyssDungeonModel
 import com.hongmyeoun.goldcalc.model.homework.CommandBossModel
 import com.hongmyeoun.goldcalc.model.homework.EpicRaidModel
@@ -314,5 +316,21 @@ class GoldContentStateVM(initPhase: Int) : ViewModel() {
             nowPhase += 1
         }
         return nowPhase
+    }
+
+    fun raidImg(raidName: String) : Int {
+        return when (raidName) {
+            Raid.Name.VALTAN -> R.drawable.command_valtan
+            Raid.Name.BIACKISS -> R.drawable.command_biackiss
+            Raid.Name.KOUKU_SATON -> R.drawable.command_kouku
+            Raid.Name.ABRELSHUD -> R.drawable.command_abrelshud
+            Raid.Name.ILLIAKAN -> R.drawable.command_illiakan
+            Raid.Name.KAMEN -> R.drawable.command_kamen
+            Raid.Name.KAYANGEL -> R.drawable.abyss_dungeon_kayangel
+            Raid.Name.IVORY_TOWER_LONG -> R.drawable.abyss_dungeon_ivory_tower
+            Raid.Name.ECHIDNA -> R.drawable.kazeroth_echidna
+            Raid.Name.BEHEMOTH -> R.drawable.epic_behemoth
+            else -> R.drawable.kazeroth_echidna
+        }
     }
 }
