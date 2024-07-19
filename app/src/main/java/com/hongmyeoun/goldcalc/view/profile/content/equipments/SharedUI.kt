@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.constants.TooltipStrings
 import com.hongmyeoun.goldcalc.view.common.TextChip
 import com.hongmyeoun.goldcalc.viewModel.profile.EquipmentVM
@@ -58,4 +61,19 @@ fun UpgradeQualityRow(
             )
         }
     }
+}
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun EquipmentIcon(
+    type: String,
+    viewModel: EquipmentVM
+) {
+    GlideImage(
+        modifier = Modifier
+            .size(56.dp),
+        model = viewModel.nullEquipmentIcon(type),
+        contentDescription = "장비 아이콘",
+    )
+    Spacer(modifier = Modifier.height(4.dp))
 }

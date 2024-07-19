@@ -18,9 +18,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.NO_BRACELET
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
 import com.hongmyeoun.goldcalc.model.profile.equipment.Bracelet
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
@@ -85,6 +87,8 @@ fun ExtraBracelet(
     characterEquipment: List<CharacterItem>,
     viewModel: EquipmentVM
 ) {
+    val bracelet = characterEquipment.filterIsInstance<Bracelet>()
+
     Column(
         modifier = modifier.noRippleClickable { viewModel.onBraClicked() }
     ) {
@@ -97,53 +101,62 @@ fun ExtraBracelet(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            characterEquipment.forEach {
-                when (it) {
-                    is Bracelet -> {
-                        Box(
-                            modifier = Modifier
-                                .size(34.dp)
-                                .background(
-                                    brush = viewModel.getItemBG(it.grade),
-                                    shape = RoundedCornerShape(4.dp)
+            if (bracelet.find { it.type == EquipmentConsts.BRACELET } != null) {
+                val it = bracelet.find { it.type == EquipmentConsts.BRACELET }!!
+                Box(
+                    modifier = Modifier
+                        .size(34.dp)
+                        .background(
+                            brush = viewModel.getItemBG(it.grade),
+                            shape = RoundedCornerShape(4.dp)
+                        )
+                        .clip(RoundedCornerShape(4.dp))
+                ) {
+                    GlideImage(
+                        modifier = Modifier.size(34.dp),
+                        model = it.itemIcon,
+                        contentDescription = "팔찌이미지"
+                    )
+                }
+                Spacer(modifier = Modifier.width(4.dp))
+                Column {
+                    if (it.stats.isNotEmpty()) {
+                        Row {
+                            it.stats.forEach { (statName, stat) ->
+                                Text(
+                                    text = "$statName $stat",
+                                    style = normalTextStyle()
                                 )
-                                .clip(RoundedCornerShape(4.dp))
-                        ) {
-                            GlideImage(
-                                modifier = Modifier.size(34.dp),
-                                model = it.itemIcon,
-                                contentDescription = "팔찌이미지"
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Column {
-                            if (it.stats.isNotEmpty()) {
-                                Row {
-                                    it.stats.forEach { (statName, stat) ->
-                                        Text(
-                                            text = "$statName $stat",
-                                            style = normalTextStyle()
-                                        )
-                                        Spacer(modifier = Modifier.width(6.dp))
-                                    }
-                                }
+                                Spacer(modifier = Modifier.width(6.dp))
                             }
-                            Spacer(modifier = Modifier.height(4.dp))
-                            if (it.specialEffect.isNotEmpty()) {
-                                Row {
-                                    it.specialEffect.forEach { (effectName, _) ->
-                                        TextChip(
-                                            text = effectName,
-                                            customRoundedCornerSize = 8.dp,
-                                            borderless = true
-                                        )
-                                        Spacer(modifier = Modifier.width(4.dp))
-                                    }
-                                }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    if (it.specialEffect.isNotEmpty()) {
+                        Row {
+                            it.specialEffect.forEach { (effectName, _) ->
+                                TextChip(
+                                    text = effectName,
+                                    customRoundedCornerSize = 8.dp,
+                                    borderless = true
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
                             }
                         }
                     }
                 }
+            } else {
+                GlideImage(
+                    modifier = Modifier.size(34.dp),
+                    model = viewModel.nullEquipmentIcon(EquipmentConsts.BRACELET),
+                    contentDescription = "팔찌 이미지"
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+
+                Text(
+                    text = NO_BRACELET,
+                    style = titleTextStyle(fontSize = 15.sp)
+                )
             }
         }
     }
