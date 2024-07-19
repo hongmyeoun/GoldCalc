@@ -26,6 +26,23 @@ class NetworkConfig {
         const val ARK_PASSIVE_EQUIP = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/bg_equipment_arkpassive.png"
         const val API_HEADER = "Authorization"
 
+        const val NO_HEAD_ICON = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/bg_equipment_slot1.png"
+        const val NO_SHOULDER_ICON = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/bg_equipment_slot2.png"
+        const val NO_CHEST_ICON = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/bg_equipment_slot3.png"
+        const val NO_PANTS_ICON = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/bg_equipment_slot4.png"
+        const val NO_GLOVES_ICON = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/bg_equipment_slot5.png"
+        const val NO_WEAPON_ICON = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/bg_equipment_slot6.png"
+
+        const val NO_NECKLACE_ICON = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/bg_equipment_slot7.png"
+        const val NO_EARRINGS_ICON = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/bg_equipment_slot8.png"
+        const val NO_EARRINGS_ICON_2 = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/bg_equipment_slot9.png"
+        const val NO_RINGS_ICON = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/bg_equipment_slot10.png"
+        const val NO_RINGS_ICON_2 = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/bg_equipment_slot11.png"
+
+        const val NO_ABILLITY_STONE_ICON = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/bg_equipment_slot12.png"
+
+        const val NO_BRACELET_ICON = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/bg_equipment_slot19.png"
+
         const val END_POINT_PNG = ".png"
 
         const val NETWORK_ERROR = "네트워크 오류"

@@ -4,7 +4,29 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.util.fastSumBy
 import androidx.lifecycle.ViewModel
+import com.hongmyeoun.goldcalc.model.constants.NetworkConfig.Companion.NO_ABILLITY_STONE_ICON
+import com.hongmyeoun.goldcalc.model.constants.NetworkConfig.Companion.NO_BRACELET_ICON
+import com.hongmyeoun.goldcalc.model.constants.NetworkConfig.Companion.NO_CHEST_ICON
+import com.hongmyeoun.goldcalc.model.constants.NetworkConfig.Companion.NO_EARRINGS_ICON
+import com.hongmyeoun.goldcalc.model.constants.NetworkConfig.Companion.NO_GLOVES_ICON
+import com.hongmyeoun.goldcalc.model.constants.NetworkConfig.Companion.NO_HEAD_ICON
+import com.hongmyeoun.goldcalc.model.constants.NetworkConfig.Companion.NO_NECKLACE_ICON
+import com.hongmyeoun.goldcalc.model.constants.NetworkConfig.Companion.NO_PANTS_ICON
+import com.hongmyeoun.goldcalc.model.constants.NetworkConfig.Companion.NO_RINGS_ICON
+import com.hongmyeoun.goldcalc.model.constants.NetworkConfig.Companion.NO_SHOULDER_ICON
+import com.hongmyeoun.goldcalc.model.constants.NetworkConfig.Companion.NO_WEAPON_ICON
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.ABILITY_STONE
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.BRACELET
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.CHEST
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.EARRINGS
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.GLOVES
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.HEAD
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.NECKLACE
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.PANTS
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.RING
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.SHOULDER
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.WEAPON
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterEquipment
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
@@ -243,6 +265,23 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
         val regex = "\\d+".toRegex()
         val match = regex.find(input)
         return match?.value?.toInt() ?: 0
+    }
+
+    fun nullEquipmentIcon(type: String): String {
+        return when(type) {
+            HEAD ->  NO_HEAD_ICON
+            SHOULDER -> NO_SHOULDER_ICON
+            CHEST -> NO_CHEST_ICON
+            PANTS -> NO_PANTS_ICON
+            GLOVES -> NO_GLOVES_ICON
+            WEAPON -> NO_WEAPON_ICON
+            NECKLACE -> NO_NECKLACE_ICON
+            EARRINGS -> NO_EARRINGS_ICON
+            RING -> NO_RINGS_ICON
+            ABILITY_STONE -> NO_ABILLITY_STONE_ICON
+            BRACELET -> NO_BRACELET_ICON
+            else -> NO_HEAD_ICON
+        }
     }
 
     fun getSimpleEngraving(engraving: String): String {

@@ -22,6 +22,7 @@ import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.ui.theme.RedQual
 import com.hongmyeoun.goldcalc.view.common.noRippleClickable
+import com.hongmyeoun.goldcalc.view.profile.content.equipments.EquipmentIcon
 import com.hongmyeoun.goldcalc.view.profile.content.equipments.UpgradeQualityRow
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.viewModel.profile.EquipmentVM
@@ -37,24 +38,91 @@ fun Accessory(
         modifier = modifier
             .noRippleClickable { viewModel.onAccClicked() }
     ) {
-        characterEquipment.forEach {
-            when (it) {
-                is CharacterAccessory -> {
+        val accessory = characterEquipment.filterIsInstance<CharacterAccessory>()
+        val abilityStone = characterEquipment.filterIsInstance<AbilityStone>()
+
+        if (accessory.find { it.type == EquipmentConsts.NECKLACE } != null) {
+            AccessoryUI(
+                accessory = accessory.find { it.type == EquipmentConsts.NECKLACE }!!,
+                viewModel = viewModel,
+                isArkPassive = isArkPassive
+            )
+        } else {
+            EquipmentIcon(
+                type = EquipmentConsts.NECKLACE,
+                viewModel = viewModel
+            )
+        }
+
+        if (accessory.find { it.type == EquipmentConsts.EARRINGS } != null) {
+            if (accessory.filter { it.type == EquipmentConsts.EARRINGS }.size == 1) {
+                AccessoryUI(
+                    accessory = accessory.find { it.type == EquipmentConsts.EARRINGS }!!,
+                    viewModel = viewModel,
+                    isArkPassive = isArkPassive
+                )
+                EquipmentIcon(
+                    type = EquipmentConsts.EARRINGS,
+                    viewModel = viewModel
+                )
+            } else if (accessory.filter { it.type == EquipmentConsts.EARRINGS }.size == 2) {
+                accessory.filter { it.type == EquipmentConsts.EARRINGS }.forEach {
                     AccessoryUI(
                         accessory = it,
                         viewModel = viewModel,
                         isArkPassive = isArkPassive
                     )
                 }
+            }
+        } else {
+            repeat(2) {
+                EquipmentIcon(
+                    type = EquipmentConsts.EARRINGS,
+                    viewModel = viewModel
+                )
+            }
+        }
 
-                is AbilityStone -> {
-                    AbilityStoneUI(
-                        abilityStone = it,
+        if (accessory.find { it.type == EquipmentConsts.RING } != null) {
+            if (accessory.filter { it.type == EquipmentConsts.RING }.size == 1) {
+                AccessoryUI(
+                    accessory = accessory.find { it.type == EquipmentConsts.RING }!!,
+                    viewModel = viewModel,
+                    isArkPassive = isArkPassive
+                )
+                EquipmentIcon(
+                    type = EquipmentConsts.RING,
+                    viewModel = viewModel
+                )
+            } else if (accessory.filter { it.type == EquipmentConsts.RING }.size == 2) {
+                accessory.filter { it.type == EquipmentConsts.RING }.forEach {
+                    AccessoryUI(
+                        accessory = it,
                         viewModel = viewModel,
                         isArkPassive = isArkPassive
                     )
                 }
             }
+        } else {
+            repeat(2) {
+                EquipmentIcon(
+                    type = EquipmentConsts.RING,
+                    viewModel = viewModel
+                )
+            }
+        }
+
+        if (abilityStone.find { it.type == EquipmentConsts.ABILITY_STONE } != null) {
+            AbilityStoneUI(
+                abilityStone = abilityStone.find { it.type == EquipmentConsts.ABILITY_STONE }!!,
+                viewModel = viewModel,
+                isArkPassive = isArkPassive
+            )
+        } else {
+            EquipmentIcon(
+                type = EquipmentConsts.ABILITY_STONE,
+                viewModel = viewModel
+            )
         }
     }
 }

@@ -71,6 +71,7 @@ object EquipmentConsts {
     const val GRADE_ESTHER = "에스더"
 
     const val NO_SETTING = "세트 없음"
+    const val NO_BRACELET = "팔찌 없음"
 
     val PENALTY_ENGRAVINGS = listOf("공격력 감소", "공격속도 감소", "이동속도 감소", "방어력 감소")
 

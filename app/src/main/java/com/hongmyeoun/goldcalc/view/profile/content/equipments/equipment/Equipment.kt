@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.LOSE_DAMAGE
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.LOSE_DAMAGE_SHORT
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterEquipment
@@ -35,9 +36,11 @@ import com.hongmyeoun.goldcalc.ui.theme.BlackTransBG
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.view.common.TextChip
+import com.hongmyeoun.goldcalc.view.profile.content.equipments.EquipmentIcon
 import com.hongmyeoun.goldcalc.view.profile.content.equipments.UpgradeQualityRow
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.viewModel.profile.EquipmentVM
+
 
 @Composable
 fun Equipment(
@@ -49,16 +52,84 @@ fun Equipment(
     Column(
         modifier = modifier
     ) {
-        characterEquipment.forEach {
-            when (it) {
-                is CharacterEquipment -> {
-                    EquipmentUI(
-                        equipment = it,
-                        viewModel = viewModel,
-                        isArkPassive = isArkPassive
-                    )
-                }
-            }
+        val equipment = characterEquipment.filterIsInstance<CharacterEquipment>()
+
+        if (equipment.find { it.type == EquipmentConsts.HEAD } != null) {
+            EquipmentUI(
+                equipment = equipment.find { it.type == EquipmentConsts.HEAD }!!,
+                viewModel = viewModel,
+                isArkPassive = isArkPassive
+            )
+        } else {
+            EquipmentIcon(
+                type = EquipmentConsts.HEAD,
+                viewModel = viewModel
+            )
+        }
+
+        if (equipment.find { it.type == EquipmentConsts.SHOULDER } != null) {
+            EquipmentUI(
+                equipment = equipment.find { it.type == EquipmentConsts.SHOULDER }!!,
+                viewModel = viewModel,
+                isArkPassive = isArkPassive
+            )
+        } else {
+            EquipmentIcon(
+                type = EquipmentConsts.SHOULDER,
+                viewModel = viewModel
+            )
+        }
+
+        if (equipment.find { it.type == EquipmentConsts.CHEST } != null) {
+            EquipmentUI(
+                equipment = equipment.find { it.type == EquipmentConsts.CHEST }!!,
+                viewModel = viewModel,
+                isArkPassive = isArkPassive
+            )
+        } else {
+            EquipmentIcon(
+                type = EquipmentConsts.CHEST,
+                viewModel = viewModel
+            )
+        }
+
+        if (equipment.find { it.type == EquipmentConsts.PANTS } != null) {
+            EquipmentUI(
+                equipment = equipment.find { it.type == EquipmentConsts.PANTS }!!,
+                viewModel = viewModel,
+                isArkPassive = isArkPassive
+            )
+        } else {
+            EquipmentIcon(
+                type = EquipmentConsts.PANTS,
+                viewModel = viewModel
+            )
+        }
+
+        if (equipment.find { it.type == EquipmentConsts.GLOVES } != null) {
+            EquipmentUI(
+                equipment = equipment.find { it.type == EquipmentConsts.GLOVES }!!,
+                viewModel = viewModel,
+                isArkPassive = isArkPassive
+            )
+        } else {
+            EquipmentIcon(
+                type = EquipmentConsts.GLOVES,
+                viewModel = viewModel
+            )
+        }
+
+        if (equipment.find { it.type == EquipmentConsts.WEAPON } != null) {
+            EquipmentUI(
+                equipment = equipment.find { it.type == EquipmentConsts.WEAPON }!!,
+                viewModel = viewModel,
+                isArkPassive = isArkPassive
+            )
+        } else {
+            EquipmentIcon(
+                type = EquipmentConsts.WEAPON,
+                viewModel = viewModel
+            )
         }
     }
 }
