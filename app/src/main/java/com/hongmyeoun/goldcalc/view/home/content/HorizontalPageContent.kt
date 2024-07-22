@@ -42,6 +42,7 @@ fun HorizontalPageContent(
     characterRepository: CharacterRepository,
     navController: NavHostController,
     isLoading: Boolean,
+    nowRotate: (Boolean) -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(pageCount = { characterList.size })
@@ -99,7 +100,8 @@ fun HorizontalPageContent(
                     navController = navController,
                     cardViewModel = characterCardVM,
                     isLoading = isLoading,
-                    isListView = false
+                    isListView = false,
+                    nowRotate = { nowRotate(it) }
                 )
             }
         }
