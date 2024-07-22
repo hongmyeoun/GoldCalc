@@ -29,6 +29,7 @@ import androidx.navigation.NavHostController
 import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
+import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 
 @Composable
@@ -49,7 +50,10 @@ fun HomeContent(
             isLoading = isLoading
         )
 
-        ListFloatingButton(paddingValues)
+        ListFloatingButton(
+            paddingValues = paddingValues,
+            navController = navController
+        )
 
     } else {
         var nowRotated by remember { mutableStateOf(false) }
@@ -64,13 +68,19 @@ fun HomeContent(
         )
 
         if (!nowRotated) {
-            HorizonFloatingButton(paddingValues)
+            HorizonFloatingButton(
+                paddingValues = paddingValues,
+                navController = navController
+            )
         }
     }
 }
 
 @Composable
-private fun ListFloatingButton(paddingValues: PaddingValues) {
+private fun ListFloatingButton(
+    paddingValues: PaddingValues,
+    navController: NavHostController
+) {
     var expanded by remember { mutableStateOf(false) }
     
     val width by animateDpAsState(
@@ -99,7 +109,7 @@ private fun ListFloatingButton(paddingValues: PaddingValues) {
         ) {
             if (expanded) {
                 IconButton(
-                    onClick = {  }
+                    onClick = { navController.navigate(Screen.Search.route) }
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.person_search),
@@ -143,7 +153,10 @@ private fun ListFloatingButton(paddingValues: PaddingValues) {
 }
 
 @Composable
-private fun HorizonFloatingButton(paddingValues: PaddingValues) {
+private fun HorizonFloatingButton(
+    paddingValues: PaddingValues,
+    navController: NavHostController
+) {
     var expanded by remember { mutableStateOf(false) }
 
     val width by animateDpAsState(
@@ -172,7 +185,7 @@ private fun HorizonFloatingButton(paddingValues: PaddingValues) {
         ) {
             if (expanded) {
                 IconButton(
-                    onClick = {  }
+                    onClick = { navController.navigate(Screen.Search.route) }
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.person_search),
