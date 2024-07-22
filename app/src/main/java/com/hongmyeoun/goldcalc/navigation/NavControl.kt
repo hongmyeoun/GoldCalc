@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hongmyeoun.goldcalc.model.constants.viewConst.NavigationKey
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
+import com.hongmyeoun.goldcalc.view.addScreen.AddScreenView
 import com.hongmyeoun.goldcalc.view.home.HomeView
 import com.hongmyeoun.goldcalc.view.homework.HomeworkView
 import com.hongmyeoun.goldcalc.view.profile.ProfileView
@@ -21,7 +22,8 @@ fun NavControl(characterRepository: CharacterRepository) {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route,
+//        startDestination = Screen.Home.route,
+        startDestination = Screen.AddCharacter.route
     ) {
         composable(Screen.Home.route) {
             HomeView(
@@ -47,6 +49,9 @@ fun NavControl(characterRepository: CharacterRepository) {
         }
         composable(Screen.Setting.route) {
             SettingView(navController)
+        }
+        composable(Screen.AddCharacter.route) {
+            AddScreenView()
         }
     }
 }

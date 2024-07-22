@@ -14,4 +14,6 @@ sealed class Screen(val route: String) {
     }
 
     object Setting : Screen("Setting")
+
+    object AddCharacter : Screen("AddScreen")
 }
