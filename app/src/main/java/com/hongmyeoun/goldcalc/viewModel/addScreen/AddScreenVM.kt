@@ -45,10 +45,10 @@ class AddScreenVM @Inject constructor(
     fun checkDuplication(nickname: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val savedNames = withContext(Dispatchers.IO) { characterRepository.getNames() }
-            _isDuplicate.value = savedNames.contains(nickname)
+            _isDuplicate.value = nickname in savedNames
             _finalNickname.value = _nickname.value
+            _isDuplicateCheck.value = true
         }
-        _isDuplicateCheck.value = true
     }
 
     private val _nickname = MutableStateFlow("")
@@ -59,6 +59,10 @@ class AddScreenVM @Inject constructor(
 
         if (newValue.length <= maxLength) {
             _nickname.value = newValue
+        }
+
+        if (_finalNickname.value != _nickname.value) {
+            _isDuplicateCheck.value = false
         }
     }
 
@@ -118,8 +122,8 @@ class AddScreenVM @Inject constructor(
         onClassDropdownDismiss()
     }
 
-    fun confirmEnable(isDuplicate: Boolean, nowNickname: String): Boolean {
-        return !isDuplicate && (_finalNickname.value == nowNickname) && nowNickname.isNotEmpty()
+    fun confirmEnable(isDuplicate: Boolean, isDuplicateCheck: Boolean, nowNickname: String): Boolean {
+        return !isDuplicate && nowNickname.isNotEmpty() && isDuplicateCheck
     }
 
     fun confirm() {
@@ -128,7 +132,8 @@ class AddScreenVM @Inject constructor(
                 name = _nickname.value,
                 itemLevel = _itemLevel.value.ifEmpty { "0.00" },
                 serverName = _serverSelect.value,
-                className = _classSelect.value
+                className = _classSelect.value,
+                avatarImage = false
             )
             characterRepository.insertAll(newCharacter)
         }

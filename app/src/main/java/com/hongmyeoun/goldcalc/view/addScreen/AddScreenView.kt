@@ -303,7 +303,7 @@ private fun AddScreenBottomBar(
     viewModel: AddScreenVM
 ) {
     val isDuplicate by viewModel.isDuplicate.collectAsState()
-
+    val isDuplicateCheck by viewModel.isDuplicateCheck.collectAsState()
     val nowNickname by viewModel.nickname.collectAsState()
 
     Row(
@@ -343,7 +343,7 @@ private fun AddScreenBottomBar(
                     }
                 }
             },
-            enabled = viewModel.confirmEnable(isDuplicate, nowNickname),
+            enabled = viewModel.confirmEnable(isDuplicate, isDuplicateCheck, nowNickname),
             shape = RoundedCornerShape(8.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = GreenQual,
