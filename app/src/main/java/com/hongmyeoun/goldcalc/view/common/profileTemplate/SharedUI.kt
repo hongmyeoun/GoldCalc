@@ -133,10 +133,10 @@ fun Extra(character: Character) {
     ExtraInfo(Homework.GUILD, character.guildName)
     Spacer(modifier = Modifier.height(6.dp))
 
-    ExtraInfo(Homework.TOWN, "Lv.${character.townLevel} ${character.townName}")
+    ExtraInfo(Homework.TOWN, if (character.townLevel != null) "Lv.${character.townLevel} ${character.townName}" else Homework.NULL_VALUE)
     Spacer(modifier = Modifier.height(6.dp))
 
-    ExtraInfo(Homework.PVP, character.pvpGradeName)
+    ExtraInfo(Homework.PVP, character.pvpGradeName.ifEmpty { Homework.NULL_VALUE })
     Spacer(modifier = Modifier.height(8.dp))
 }
 
