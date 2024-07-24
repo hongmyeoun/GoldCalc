@@ -14,7 +14,6 @@ object Profile {
     const val NO = "않습니다."
     const val MIDDLE_DOT = "·"
 
-
     const val STAT = "특성"
     const val EFFECT = "효과"
 
@@ -26,4 +25,6 @@ object Profile {
 
     const val TOTAL = "합계"
     const val AVG = "평균"
+
+    val SERVER_LIST = listOf("루페온", "실리안", "아만", "카마인", "카제로스", "아브렐슈드", "카단", "니나브")
 }

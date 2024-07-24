@@ -51,7 +51,7 @@ fun NavControl(characterRepository: CharacterRepository) {
             SettingView(navController)
         }
         composable(Screen.AddCharacter.route) {
-            AddScreenView()
+            AddScreenView(navController)
         }
     }
 }

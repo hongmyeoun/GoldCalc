@@ -100,4 +100,34 @@ class ClassName {
         const val ARTIST_EN = "artist"
         const val AEROMANCER_EN = "weather_artist"
     }
+
+    object ClassLists {
+        private val WARRIOR_LIST = listOf(
+            Warrior.DEFAULT,
+            Warrior.DESTROYER,
+            Warrior.WARLOARD,
+            Warrior.BERSERKER,
+            Warrior.HOLYKNIGHT,
+            Warrior.DEFAULT_FEMALE,
+            Warrior.SLAYER
+        )
+        private val FIGHTER_LIST = listOf(
+            Fighter.DEFAULT,
+            Fighter.BATTLE_MASTER,
+            Fighter.INFIGHTER,
+            Fighter.SOUL_MASTER,
+            Fighter.LANCE_MASTER,
+            Fighter.DEFAULT_MALE,
+            Fighter.STRIKER,
+            Fighter.BREAKER
+        )
+        private val HUNTER_LIST =
+            listOf(Hunter.DEFAULT, Hunter.DEVILHUNTER, Hunter.BLASTER, Hunter.HAWKEYE, Hunter.SCOUTER, Hunter.DEFAULT_FEMALE, Hunter.GUNSLINGER)
+        private val MAGICIAN_LIST = listOf(Magician.DEFAULT, Magician.BARD, Magician.SUMMONER, Magician.ARCANA, Magician.SORCERESS)
+        private val DELAIN_LIST = listOf(Delain.DEFAULT, Delain.BLADE, Delain.DEMONIC, Delain.REAPER, Delain.SOUL_EATER)
+        private val SPECIALIST_LIST = listOf(Specialist.DEFAULT, Specialist.ARTIST, Specialist.AEROMANCER)
+
+        val CHARACTER_LIST = WARRIOR_LIST + FIGHTER_LIST + HUNTER_LIST + MAGICIAN_LIST + DELAIN_LIST + SPECIALIST_LIST
+    }
+
 }
