@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hongmyeoun.goldcalc.model.constants.viewConst.AddCharacter
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.RedQual
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
@@ -42,7 +43,7 @@ fun NicknameField(viewModel: AddScreenVM) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "닉네임",
+                text = AddCharacter.NICKNAME,
                 style = titleTextStyle()
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -60,7 +61,7 @@ fun NicknameField(viewModel: AddScreenVM) {
                 enabled = nickname.isNotEmpty()
             ) {
                 Text(
-                    text = "중복 체크",
+                    text = AddCharacter.CHECK_DUPLICATE,
                     style = normalTextStyle(fontSize = 12.sp)
                 )
             }
@@ -73,7 +74,7 @@ fun NicknameField(viewModel: AddScreenVM) {
             onValueChange = { viewModel.nicknameValueChange(it) },
             placeholder = {
                 Text(
-                    text = "1~12글자의 닉네임을 입력해 주세요.",
+                    text = AddCharacter.NICKNAME_PLACEHOLDER,
                     style = normalTextStyle(color = Color.DarkGray, fontSize = 12.sp)
                 )
             },
@@ -89,12 +90,12 @@ fun NicknameField(viewModel: AddScreenVM) {
             Spacer(modifier = Modifier.height(4.dp))
             if (isDuplicate) {
                 Text(
-                    text = "이미 사용중인 캐릭터 입니다.",
+                    text = AddCharacter.USED,
                     style = normalTextStyle(color = RedQual, fontSize = 12.sp)
                 )
             } else {
                 Text(
-                    text = "사용가능한 캐릭터 입니다.",
+                    text = AddCharacter.NOT_USED,
                     style = normalTextStyle(color = GreenQual, fontSize = 12.sp)
                 )
             }

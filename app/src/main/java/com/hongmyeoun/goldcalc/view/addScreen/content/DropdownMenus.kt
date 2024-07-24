@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.compose.ui.window.PopupProperties
+import com.hongmyeoun.goldcalc.model.constants.viewConst.AddCharacter
 import com.hongmyeoun.goldcalc.ui.theme.DarkGreen
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.addScreen.AddScreenVM
@@ -39,7 +40,7 @@ fun ServerClassSelect(viewModel: AddScreenVM) {
 
     // 서버
     SelectDropdownMenu(
-        title = "서버",
+        title = AddCharacter.SERVER,
         dropdownItems = viewModel.serverName,
         dropdownExpand = serverDropdownExpanded,
         selectedStr = serverSelect,
@@ -53,7 +54,7 @@ fun ServerClassSelect(viewModel: AddScreenVM) {
 
     // 직업
     SelectDropdownMenu(
-        title = "직업",
+        title = AddCharacter.CLASS,
         dropdownItems = viewModel.className,
         dropdownExpand = classDropdownExpanded,
         selectedStr = classSelect,
@@ -104,7 +105,7 @@ private fun SelectDropdownMenu(
             DropdownMenu(
                 modifier = Modifier
                     .width(with(LocalDensity.current) { rowSize.width.toDp() })
-                    .heightIn(max = if (title == "서버") 250.dp else 220.dp),
+                    .heightIn(max = if (title == AddCharacter.SERVER) 250.dp else 220.dp),
                 expanded = dropdownExpand,
                 onDismissRequest = onDismissClick,
                 properties = PopupProperties(focusable = true)

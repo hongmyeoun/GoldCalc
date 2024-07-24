@@ -18,6 +18,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hongmyeoun.goldcalc.model.constants.viewConst.AddCharacter
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.addScreen.AddScreenVM
@@ -30,7 +31,7 @@ fun ItemLevelField(
 
     Column {
         Text(
-            text = "아이템 레벨",
+            text = AddCharacter.ITEM_LEVEL,
             style = titleTextStyle()
         )
         Spacer(modifier = Modifier.height(4.dp))
@@ -41,7 +42,7 @@ fun ItemLevelField(
             onValueChange = { viewModel.itemLevelValueChange(it) },
             placeholder = {
                 Text(
-                    text = "0~1714.17",
+                    text = AddCharacter.ITEM_LEVEL_PLACEHOLDER,
                     style = normalTextStyle(color = Color.DarkGray, fontSize = 12.sp)
                 )
             },

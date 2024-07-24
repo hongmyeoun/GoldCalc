@@ -3,6 +3,7 @@ package com.hongmyeoun.goldcalc.viewModel.addScreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hongmyeoun.goldcalc.model.constants.ClassName
+import com.hongmyeoun.goldcalc.model.constants.viewConst.AddCharacter
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
@@ -40,7 +41,6 @@ class AddScreenVM @Inject constructor(
     val isDuplicateCheck: StateFlow<Boolean> = _isDuplicateCheck
 
     private val _finalNickname = MutableStateFlow("")
-    val finalNickname: StateFlow<String> = _finalNickname
 
     fun checkDuplication(nickname: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -71,7 +71,7 @@ class AddScreenVM @Inject constructor(
 
     fun itemLevelValueChange(newValue: String) {
         val maxLength = 7
-        val maxLevel = 1714.17
+        val maxLevel = AddCharacter.MAX_LEVEL
 
         if (newValue.length <= maxLength && newValue.toFloatOrNull() != null && newValue.toFloat() <= maxLevel + 0.01f) {
             _itemLevel.value = newValue
@@ -130,7 +130,7 @@ class AddScreenVM @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val newCharacter = Character(
                 name = _nickname.value,
-                itemLevel = _itemLevel.value.ifEmpty { "0.00" },
+                itemLevel = _itemLevel.value.ifEmpty { AddCharacter.ZERO_LEVEL },
                 serverName = _serverSelect.value,
                 className = _classSelect.value,
                 avatarImage = false
