@@ -22,8 +22,7 @@ fun NavControl(characterRepository: CharacterRepository) {
 
     NavHost(
         navController = navController,
-//        startDestination = Screen.Home.route,
-        startDestination = Screen.AddCharacter.route
+        startDestination = Screen.Home.route,
     ) {
         composable(Screen.Home.route) {
             HomeView(

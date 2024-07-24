@@ -119,7 +119,7 @@ private fun ListFloatingButton(
                 }
 
                 IconButton(
-                    onClick = { /*TODO*/ }
+                    onClick = { navController.navigate(Screen.AddCharacter.route) }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
@@ -205,7 +205,7 @@ private fun HorizonFloatingButton(
                 }
 
                 IconButton(
-                    onClick = { /*TODO*/ }
+                    onClick = { navController.navigate(Screen.AddCharacter.route) }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
