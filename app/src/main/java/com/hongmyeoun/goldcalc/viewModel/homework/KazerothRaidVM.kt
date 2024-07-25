@@ -11,12 +11,14 @@ class KazerothRaidVM(val character: Character?) : ViewModel() {
     private val kzModel = KazerothRaidModel(character)
 
     val echidna = kzModel.echidna
+    val egir = kzModel.egir
 
     var totalGold by mutableStateOf(0)
 
     fun sumGold() {
         echidna.totalGold()
-        totalGold = echidna.totalGold
+        egir.totalGold()
+        totalGold = echidna.totalGold + egir.totalGold
     }
 
     init {
@@ -24,10 +26,17 @@ class KazerothRaidVM(val character: Character?) : ViewModel() {
     }
 
     var echiCheck by mutableStateOf(echidna.isChecked)
+    var egirCheck by mutableStateOf(egir.isChecked)
 
     fun onEchiCheck() {
         echiCheck = !echiCheck
         echidna.onShowChecked()
+        sumGold()
+    }
+
+    fun onEgirCheck() {
+        egirCheck = !egirCheck
+        egir.onShowChecked()
         sumGold()
     }
 
