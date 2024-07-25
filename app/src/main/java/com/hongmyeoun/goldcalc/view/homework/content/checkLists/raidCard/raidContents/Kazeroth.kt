@@ -112,7 +112,7 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
                     rotaR = egirRotaR,
 
                     name = viewModel.egir.name,
-                    raidBossImg = R.drawable.logo_echidna,
+                    raidBossImg = R.drawable.logo_egir,
                     totalGold = viewModel.egir.totalGold,
 
                     phaseOneLevel = viewModel.egir.onePhase.level,
