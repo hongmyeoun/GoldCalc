@@ -19,9 +19,16 @@ import com.hongmyeoun.goldcalc.viewModel.homework.KazerothRaidVM
 @Composable
 fun Kazeroth(viewModel: KazerothRaidVM) {
 
-    var roatated by remember { mutableStateOf(false) }
-    val rotaR by animateFloatAsState(
-        targetValue = if (roatated) 180f else 0f,
+    var echiRoatated by remember { mutableStateOf(false) }
+    val echiRotaR by animateFloatAsState(
+        targetValue = if (echiRoatated) 180f else 0f,
+        animationSpec = tween(500),
+        label = Labels.Animation.ROTATION
+    )
+
+    var egirRoatated by remember { mutableStateOf(false) }
+    val egirRotaR by animateFloatAsState(
+        targetValue = if (egirRoatated) 180f else 0f,
         animationSpec = tween(500),
         label = Labels.Animation.ROTATION
     )
@@ -33,17 +40,24 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
             checked = viewModel.echiCheck,
             onCheckedChange = { viewModel.onEchiCheck() }
         )
+
+        RaidCheckBox(
+            name = Raid.Name.EGIR,
+            modifier = modifier,
+            checked = viewModel.egirCheck,
+            onCheckedChange = { viewModel.onEgirCheck() }
+        )
     }
 
     if (viewModel.echiCheck) {
         RaidCard(
             bossImg = R.drawable.kazeroth_echidna,
-            isRotated = roatated,
-            rotaR = rotaR,
-            onClick = { roatated = !roatated },
+            isRotated = echiRoatated,
+            rotaR = echiRotaR,
+            onClick = { echiRoatated = !echiRoatated },
             phaseCard = {
                 TwoPhase(
-                    rotaR = rotaR,
+                    rotaR = echiRotaR,
 
                     name = viewModel.echidna.name,
                     raidBossImg = R.drawable.logo_echidna,
@@ -86,4 +100,57 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
             }
         )
     }
+
+    if (viewModel.egirCheck) {
+        RaidCard(
+            bossImg = R.drawable.kazeroth_egir,
+            isRotated = egirRoatated,
+            rotaR = egirRotaR,
+            onClick = { egirRoatated = !egirRoatated },
+            phaseCard = {
+                TwoPhase(
+                    rotaR = egirRotaR,
+
+                    name = viewModel.egir.name,
+                    raidBossImg = R.drawable.logo_echidna,
+                    totalGold = viewModel.egir.totalGold,
+
+                    phaseOneLevel = viewModel.egir.onePhase.level,
+                    phaseOneGold = viewModel.egir.onePhase.totalGold,
+                    phaseOneSMC = viewModel.egir.onePhase.seeMoreCheck,
+                    phaseOneCC = viewModel.egir.onePhase.clearCheck,
+                    onOnePhaseLevelClicked = {
+                        viewModel.egir.onePhase.onLevelClicked()
+                        viewModel.sumGold()
+                    },
+                    onOnePhaseClearCheckBoxChecked = {
+                        viewModel.egir.onePhase.onClearCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                    onOnePhaseSeeMoreCheckBoxChecked = {
+                        viewModel.egir.onePhase.onSeeMoreCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+
+                    phaseTwoLevel = viewModel.egir.twoPhase.level,
+                    phaseTwoGold = viewModel.egir.twoPhase.totalGold,
+                    phaseTwoSMC = viewModel.egir.twoPhase.seeMoreCheck,
+                    phaseTwoCC = viewModel.egir.twoPhase.clearCheck,
+                    onTwoPhaseLevelClicked = {
+                        viewModel.egir.twoPhase.onLevelClicked()
+                        viewModel.sumGold()
+                    },
+                    onTwoPhaseClearCheckBoxChecked = {
+                        viewModel.egir.twoPhase.onClearCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                    onTwoPhaseSeeMoreCheckBoxChecked = {
+                        viewModel.egir.twoPhase.onSeeMoreCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                )
+            }
+        )
+    }
+
 }

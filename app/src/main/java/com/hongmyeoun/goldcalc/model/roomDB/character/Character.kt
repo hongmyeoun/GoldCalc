@@ -36,6 +36,9 @@ data class Character(
 )
 
 data class RaidPhaseInfo(
+    @ColumnInfo("egirPhase") val egirPhase: Int = 0,
+    @ColumnInfo("egirTotalGold") val egirTotalGold: Int = 0,
+
     @ColumnInfo("behemothPhase") val behemothPhase: Int = 0,
     @ColumnInfo("behemothTotalGold") val behemothTotalGold: Int = 0,
 
@@ -108,6 +111,10 @@ data class CheckList(
     @ColumnInfo("Kazeroth") val kazeroth: List<RaidList> = listOf(
         RaidList(
             name = Raid.Name.ECHIDNA,
+            phases = listOf(Phase(), Phase())
+        ),
+        RaidList(
+            name = Raid.Name.EGIR,
             phases = listOf(Phase(), Phase())
         )
     ),

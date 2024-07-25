@@ -34,8 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
-import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.homework.AbyssDungeonVM
@@ -88,7 +88,7 @@ fun Summary(
                     Script(adVM)
                 }
 
-                if (kzVM.echiCheck) {
+                if (kzVM.echiCheck || kzVM.egirCheck) {
                     Script(kzVM)
                 }
 
@@ -300,6 +300,16 @@ private fun Script(kzVM: KazerothRaidVM) {
                     Text(text = "${Homework.PHASE_TWO} ${kzVM.echidna.twoPhase.level} : ${kzVM.echidna.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
                 }
             )
+            PhaseInfo(
+                isCheck = kzVM.egirCheck,
+                modifier = Modifier.weight(1f),
+                raidName = Raid.Name.EGIR,
+                phaseInfo = {
+                    Text(text = "${Homework.PHASE_ONE} ${kzVM.egir.onePhase.level} : ${kzVM.egir.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_TWO} ${kzVM.egir.twoPhase.level} : ${kzVM.egir.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
+                }
+            )
+
         }
     }
 }

@@ -14,6 +14,7 @@ class Gold {
             val IVORY_TOWER = listOf(600, 650, 1000)
 
             val ECHIDNA = listOf(2200, 3400)
+            val EGIR = listOf(3200, 5300)
 
             val BEHEMOTH = listOf(3100, 4900)
         }
@@ -30,6 +31,7 @@ class Gold {
             val IVORY_TOWER = listOf(1200, 1450, 2000)
 
             val ECHIDNA = listOf(2800, 4100)
+            val EGIR = listOf(4100, 6600)
 
             val BEHEMOTH = listOf(3100, 4900)
         }
@@ -59,6 +61,7 @@ class Gold {
             val IVORY_TOWER = listOf(1500, 2000, 3000)
 
             val ECHIDNA = listOf(5000, 9500)
+            val EGIR = listOf(7500, 15500)
 
             val BEHEMOTH = listOf(7000, 14500)
         }
@@ -75,6 +78,7 @@ class Gold {
             val IVORY_TOWER = listOf(3000, 4000, 6000)
 
             val ECHIDNA = listOf(6000, 12500)
+            val EGIR = listOf(9000, 18500)
 
             val BEHEMOTH = listOf(7000, 14500)
         }
