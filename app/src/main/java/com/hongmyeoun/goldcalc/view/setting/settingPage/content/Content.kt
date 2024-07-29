@@ -121,7 +121,7 @@ fun SettingContent(
                     itemTitle = Setting.UPDATE_CHECK,
                     icon = R.drawable.outline_restore,
                     onClicked = {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + context.packageName))
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(Setting.MARKETPLACE + context.packageName))
                         context.startActivity(intent)
                     }
                 )

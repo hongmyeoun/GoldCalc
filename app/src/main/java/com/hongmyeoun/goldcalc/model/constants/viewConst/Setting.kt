@@ -10,4 +10,6 @@ object Setting {
     const val UPDATE_CHECK = "업데이트 확인"
     const val VERSION = "앱 버전"
     const val SETTING = "설정"
+
+    const val MARKETPLACE = "market://details?id="
 }
