@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.view.profile.content.equipments
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
@@ -133,7 +135,9 @@ fun ExtraBracelet(
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                     if (it.specialEffect.isNotEmpty()) {
-                        Row {
+                        Row(
+                            modifier = Modifier.horizontalScroll(rememberScrollState())
+                        ) {
                             it.specialEffect.forEach { (effectName, _) ->
                                 TextChip(
                                     text = effectName,
