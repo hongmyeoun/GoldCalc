@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.absoluteValue
 
 class HomeContentVM @Inject constructor(
     private val characterRepository: CharacterRepository,
@@ -34,6 +35,11 @@ class HomeContentVM @Inject constructor(
 
     private val _totalGold = MutableStateFlow(0)
     val totalGold: StateFlow<Int> = _totalGold
+
+    private val _extraGold = MutableStateFlow(0)
+    private val _remainGold = MutableStateFlow(0)
+
+    private val _totalGoldPercentage = MutableStateFlow(0)
 
     private val _kamenTG = MutableStateFlow(0)
     private val _illiakanTG = MutableStateFlow(0)
@@ -56,14 +62,13 @@ class HomeContentVM @Inject constructor(
     val progressPercentage: StateFlow<Float> = _progressPercentage
 
     private fun updateProgressPercentage() {
-        _progressPercentage.value = if (_maxGold.value != 0) _totalGold.value.toFloat() / _maxGold.value else 0.0f
+        _progressPercentage.value = if (_maxGold.value != 0) 1 - (_remainGold.value.toFloat() / _totalGoldPercentage.value) else 0.0f
     }
 
     var enabled by mutableStateOf(true)
 
     init {
         getCharacter()
-        updateProgressPercentage()
     }
 
     private fun calcTotalGold() {
@@ -114,7 +119,13 @@ class HomeContentVM @Inject constructor(
         _egirTG.value = character.raidPhaseInfo.egirTotalGold
 
         _maxGold.value = character.weeklyGold
-        _progressPercentage.value = if (_maxGold.value != 0) _totalGold.value.toFloat() / _maxGold.value else 0.0f
+        _remainGold.value = _maxGold.value - _totalGold.value
+
+        _extraGold.value = character.plusGold.toInt() - character.minusGold.toInt()
+
+        _totalGoldPercentage.value = _maxGold.value + _extraGold.value.absoluteValue
+
+        _progressPercentage.value = if (_maxGold.value != 0) 1 - (_remainGold.value.toFloat() / _totalGoldPercentage.value) else 0.0f
     }
 
     private fun getModel(character: Character) {
