@@ -46,6 +46,7 @@ import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
+import kotlin.math.absoluteValue
 
 @Composable
 fun SimpleCurrent(viewModel: HomeVM) {
@@ -201,7 +202,15 @@ private fun Content(character: Character) {
 
         Spacer(modifier = Modifier.height(6.dp))
 
-        val percentage = if (character.weeklyGold != 0) character.earnGold.toFloat() / character.weeklyGold else 0.0f
+        val extraGold = character.plusGold.toInt() - character.minusGold.toInt()
+        val totalGold = character.earnGold + extraGold
+        val maxGold = character.weeklyGold
+        val remainGold = maxGold - totalGold
+        val totalPercentage = maxGold + extraGold.absoluteValue
+
+        val percentage = if (character.weeklyGold != 0) 1 - (remainGold.toFloat() / totalPercentage) else 0.0f
+
+
         Box(contentAlignment = Alignment.Center) {
             LinearProgressIndicator(
                 modifier = Modifier
