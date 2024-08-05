@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.absoluteValue
 
 @HiltViewModel
 class HomeVM @Inject constructor(
@@ -43,8 +44,8 @@ class HomeVM @Inject constructor(
         }
     }
 
-    private val _earnGold = MutableStateFlow(0)
-    val earnGold: StateFlow<Int> = _earnGold
+    private val _totalWeeklyEarnGold = MutableStateFlow(0)
+    val totalWeeklyEarnGold: StateFlow<Int> = _totalWeeklyEarnGold
 
     private val _remainGold = MutableStateFlow(0)
     val remainGold: StateFlow<Int> = _remainGold
@@ -56,16 +57,20 @@ class HomeVM @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             characterRepository.getAll().collect {
                 _characters.value = it
-                _earnGold.value = it.fastSumBy { character -> character.earnGold } + it.fastSumBy { character -> character.plusGold.toInt() } - it.fastSumBy { character -> character.minusGold.toInt() }
+                _totalWeeklyEarnGold.value = it.fastSumBy { character -> character.earnGold } + it.fastSumBy { character -> character.plusGold.toInt() } - it.fastSumBy { character -> character.minusGold.toInt() }
                 initProgressBar(it)
-                _remainGold.value = _maxGold.value - _earnGold.value
             }
         }
     }
 
     private fun initProgressBar(characterList: List<Character>) {
         _maxGold.value = characterList.fastSumBy { it.weeklyGold }
-        _progressPercentage.value = if (_maxGold.value != 0) _earnGold.value.toFloat() / _maxGold.value else 0.0f
+        _remainGold.value = _maxGold.value - _totalWeeklyEarnGold.value
+
+        val extraGold = characterList.fastSumBy { character -> character.plusGold.toInt() } - characterList.fastSumBy { character -> character.minusGold.toInt() }
+        val totalGold = _maxGold.value + extraGold.absoluteValue
+
+        _progressPercentage.value = if (_maxGold.value != 0) 1 - (_remainGold.value.toFloat() / totalGold) else 0.0f
     }
 
     private val _progressPercentage = MutableStateFlow(0.0f)

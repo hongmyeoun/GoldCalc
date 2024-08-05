@@ -26,7 +26,7 @@ import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
 fun CurrentGold(viewModel: HomeVM) {
-    val earnGold by viewModel.earnGold.collectAsState()
+    val earnGold by viewModel.totalWeeklyEarnGold.collectAsState()
     val remainGold by viewModel.remainGold.collectAsState()
 
     Row(
