@@ -523,14 +523,25 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
     }
 
     private fun itemTier(tooltip: JsonObject): Int {
-        return tooltip
+        val hasTier = tooltip
             .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_001)
             .getAsJsonObject(TooltipStrings.MemberName.VALUE)
             .get(TooltipStrings.MemberName.ITEM_LEVEL)
             .asString
-            .substringAfter(TooltipStrings.SubStringAfter.ITEM_TIER)
-            .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
-            .toInt()
+            .contains(TooltipStrings.Contains.TIER)
+
+        if (hasTier) {
+            return tooltip
+                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_001)
+                .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+                .get(TooltipStrings.MemberName.ITEM_LEVEL)
+                .asString
+                .substringAfter(TooltipStrings.SubStringAfter.ITEM_TIER)
+                .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
+                .toInt()
+        }
+
+        return 1
     }
 
     private fun getABStoneHPBonus(equipment: Equipment): String {

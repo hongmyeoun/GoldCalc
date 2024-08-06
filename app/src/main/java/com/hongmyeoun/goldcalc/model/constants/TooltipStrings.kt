@@ -27,6 +27,8 @@ class TooltipStrings {
     object Contains {
         const val LEVEL_DOT = "Lv."
 
+        const val TIER = "티어"
+
         const val ELIXIR = "[엘릭서]"
         const val ELIXIR_ADDITIONAL_EFFECT = "연성 추가 효과"
         const val TRANSCENDENCE = "[초월]"
