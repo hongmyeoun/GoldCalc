@@ -29,8 +29,9 @@ val ArkPassiveEnlightenment = Color(0xFF83E9FF)
 
 val YellowWarn = Color(0xFFFFD000)
 
-val EpicTextColor = Color(0xFFCE43FC)
-val LegendaryTextColor = Color(0xFFFE9600)
+val RareTextColor = Color(0xFF00B5FF)
+val EpicTextColor = Color(0xFFBF00FE)
+val LegendaryTextColor = Color(0xFFF39309)
 val RelicTextColor = Color(0xFFFF6600)
 
 val OrangeQual = Color(0xFFEA6811)

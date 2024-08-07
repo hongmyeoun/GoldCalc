@@ -168,10 +168,33 @@ private fun DetailUI(
                 ) {
                     val grindEffect = viewModel.grindEffects(accessory.grindEffect ?: GRIND)
                     grindEffect.forEach {
-                        Text(
-                            text = it,
-                            style = normalTextStyle()
-                        )
+                        val grindOptionLevel = viewModel.grindOptionLevel(it)
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (grindOptionLevel != EquipmentConsts.GRIND_ERROR) {
+                                TextChip(
+                                    text = grindOptionLevel,
+                                    customBGColor = viewModel.grindOptionColor(grindOptionLevel),
+                                    borderless = true,
+                                    customPadding = Modifier.padding(start = 4.dp, end = 4.dp, top = 2.dp, bottom = 2.dp)
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                            }
+
+                            Text(
+                                text = it.substringBefore('+'),
+                                style = normalTextStyle()
+                            )
+                            Text(
+                                text = "+ ${it.substringAfter('+')}",
+                                style = normalTextStyle(color = viewModel.grindOptionColor(grindOptionLevel))
+                            )
+                        }
+
+                        if (it != grindEffect.last()) {
+                            Spacer(modifier = Modifier.height(2.dp))
+                        }
                     }
                 }
             }

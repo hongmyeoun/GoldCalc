@@ -30,19 +30,24 @@ import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.WEAPON
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterEquipment
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
+import com.hongmyeoun.goldcalc.model.profile.equipment.GrindEffects
 import com.hongmyeoun.goldcalc.ui.theme.AncientBG
 import com.hongmyeoun.goldcalc.ui.theme.AncientColor
 import com.hongmyeoun.goldcalc.ui.theme.AncientMiddle
 import com.hongmyeoun.goldcalc.ui.theme.BlueQual
 import com.hongmyeoun.goldcalc.ui.theme.EpicBG
 import com.hongmyeoun.goldcalc.ui.theme.EpicColor
+import com.hongmyeoun.goldcalc.ui.theme.EpicTextColor
 import com.hongmyeoun.goldcalc.ui.theme.EsterColor
 import com.hongmyeoun.goldcalc.ui.theme.EstherBG
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
+import com.hongmyeoun.goldcalc.ui.theme.LegendaryTextColor
+import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.OrangeQual
 import com.hongmyeoun.goldcalc.ui.theme.PurpleQual
 import com.hongmyeoun.goldcalc.ui.theme.RareBG
 import com.hongmyeoun.goldcalc.ui.theme.RareColor
+import com.hongmyeoun.goldcalc.ui.theme.RareTextColor
 import com.hongmyeoun.goldcalc.ui.theme.RedQual
 import com.hongmyeoun.goldcalc.ui.theme.RelicBG
 import com.hongmyeoun.goldcalc.ui.theme.RelicColor
@@ -276,6 +281,19 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
 
     fun grindEffects(grind: String): List<String> {
         return grind.split("\n")
+    }
+
+    fun grindOptionLevel(grind: String): String {
+        return GrindEffects.effectsQual(grind)
+    }
+
+    fun grindOptionColor(grindOptionLevel: String): Color {
+        return when (grindOptionLevel) {
+            "상" -> LegendaryTextColor
+            "중" -> EpicTextColor
+            "하" -> RareTextColor
+            else -> LightGrayBG
+        }
     }
 
     fun nullEquipmentIcon(type: String): String {
