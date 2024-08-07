@@ -2,6 +2,10 @@ package com.hongmyeoun.goldcalc.viewModel.profile
 
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.util.fastSumBy
 import androidx.lifecycle.ViewModel
 import com.hongmyeoun.goldcalc.model.constants.NetworkConfig.Companion.NO_ABILLITY_STONE_ICON
@@ -27,6 +31,7 @@ import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.PANTS
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.RING
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.SHOULDER
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.WEAPON
+import com.hongmyeoun.goldcalc.model.profile.equipment.BraceletEffects
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterEquipment
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
@@ -293,6 +298,23 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
             "중" -> EpicTextColor
             "하" -> RareTextColor
             else -> LightGrayBG
+        }
+    }
+
+    fun braceletOptionLevel(effectName: String, tooltip: String) : String {
+        return BraceletEffects.effectQual(effectName, tooltip)
+    }
+
+    fun braceletColoredText(effectName: String, effectOptionLevel: String): AnnotatedString {
+        return buildAnnotatedString {
+            append("$effectName ")
+            withStyle(
+                style = SpanStyle(
+                    color = grindOptionColor(effectOptionLevel)
+                )
+            ) {
+                append(effectOptionLevel)
+            }
         }
     }
 
