@@ -160,16 +160,42 @@ private fun DetailUI(
                     )
                 }
             } else if (accessory.arkPassivePoint != null) {
-                Box(
+                Column(
                     modifier = Modifier
                         .background(LightGrayBG, RoundedCornerShape(4.dp))
                         .fillMaxWidth()
                         .padding(4.dp)
                 ) {
-                    Text(
-                        text = accessory.grindEffect ?: GRIND,
-                        style = normalTextStyle()
-                    )
+                    val grindEffect = viewModel.grindEffects(accessory.grindEffect ?: GRIND)
+                    grindEffect.forEach {
+                        val grindOptionLevel = viewModel.grindOptionLevel(it)
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (grindOptionLevel != EquipmentConsts.GRIND_ERROR) {
+                                TextChip(
+                                    text = grindOptionLevel,
+                                    customBGColor = viewModel.grindOptionColor(grindOptionLevel),
+                                    borderless = true,
+                                    customPadding = Modifier.padding(start = 4.dp, end = 4.dp, top = 2.dp, bottom = 2.dp)
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                            }
+
+                            Text(
+                                text = it.substringBefore('+'),
+                                style = normalTextStyle()
+                            )
+                            Text(
+                                text = "+ ${it.substringAfter('+')}",
+                                style = normalTextStyle(color = viewModel.grindOptionColor(grindOptionLevel))
+                            )
+                        }
+
+                        if (it != grindEffect.last()) {
+                            Spacer(modifier = Modifier.height(2.dp))
+                        }
+                    }
                 }
             }
         }

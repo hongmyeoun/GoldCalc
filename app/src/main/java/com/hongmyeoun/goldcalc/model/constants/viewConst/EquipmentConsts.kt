@@ -77,4 +77,6 @@ object EquipmentConsts {
 
     const val LOSE_DAMAGE = "받는 피해 감소"
     const val LOSE_DAMAGE_SHORT = "받피감"
+
+    const val GRIND_ERROR = "연마 효과 없음"
 }
