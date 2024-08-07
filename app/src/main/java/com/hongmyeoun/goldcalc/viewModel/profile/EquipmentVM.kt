@@ -274,6 +274,10 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
         return match?.value?.toInt() ?: 0
     }
 
+    fun grindEffects(grind: String): List<String> {
+        return grind.split("\n")
+    }
+
     fun nullEquipmentIcon(type: String): String {
         return when(type) {
             HEAD ->  NO_HEAD_ICON

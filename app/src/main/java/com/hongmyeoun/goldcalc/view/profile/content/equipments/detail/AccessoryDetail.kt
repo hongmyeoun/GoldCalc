@@ -160,16 +160,19 @@ private fun DetailUI(
                     )
                 }
             } else if (accessory.arkPassivePoint != null) {
-                Box(
+                Column(
                     modifier = Modifier
                         .background(LightGrayBG, RoundedCornerShape(4.dp))
                         .fillMaxWidth()
                         .padding(4.dp)
                 ) {
-                    Text(
-                        text = accessory.grindEffect ?: GRIND,
-                        style = normalTextStyle()
-                    )
+                    val grindEffect = viewModel.grindEffects(accessory.grindEffect ?: GRIND)
+                    grindEffect.forEach {
+                        Text(
+                            text = it,
+                            style = normalTextStyle()
+                        )
+                    }
                 }
             }
         }
