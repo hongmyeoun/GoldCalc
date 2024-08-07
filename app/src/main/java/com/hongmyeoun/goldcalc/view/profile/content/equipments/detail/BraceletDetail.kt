@@ -69,7 +69,7 @@ fun BraceletDetail(
                         }
 
                         it.specialEffect.forEach { (effectName, tooltip) ->
-                            Effects(effectName, tooltip)
+                            Effects(effectName, tooltip, viewModel)
                         }
                     }
                 }
@@ -130,7 +130,9 @@ private fun Stats(statName: String, statValue: String) {
 }
 
 @Composable
-private fun Effects(effectName: String, tooltip: String) {
+private fun Effects(effectName: String, tooltip: String, viewModel: EquipmentVM) {
+    val effectOptionLevel = viewModel.braceletOptionLevel(effectName, tooltip)
+
     Column {
         Row {
             TextChip(
@@ -140,11 +142,19 @@ private fun Effects(effectName: String, tooltip: String) {
             )
             Spacer(modifier = Modifier.width(8.dp))
 
-            TextChip(
-                text = effectName,
-                borderless = true,
-                customBGColor = LightGrayBG
-            )
+            if (effectOptionLevel.isEmpty()) {
+                TextChip(
+                    text = effectName,
+                    borderless = true,
+                    customBGColor = LightGrayBG
+                )
+            } else {
+                TextChip(
+                    text = viewModel.braceletColoredText(effectName, effectOptionLevel),
+                    borderless = true,
+                    customBGColor = LightGrayBG
+                )
+            }
         }
         Spacer(modifier = Modifier.height(8.dp))
 

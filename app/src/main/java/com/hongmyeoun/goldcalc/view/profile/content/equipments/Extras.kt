@@ -138,13 +138,18 @@ fun ExtraBracelet(
                         Row(
                             modifier = Modifier.horizontalScroll(rememberScrollState())
                         ) {
-                            it.specialEffect.forEach { (effectName, _) ->
-                                TextChip(
-                                    text = effectName,
-                                    customRoundedCornerSize = 8.dp,
-                                    borderless = true
-                                )
-                                Spacer(modifier = Modifier.width(4.dp))
+                            it.specialEffect.forEach { (effectName, tooltip) ->
+                                if (effectName in EquipmentConsts.BRACELET_SPECIAL_EFFECT_LIST) {
+                                    val effectOptionLevel = viewModel.braceletOptionLevel(effectName, tooltip)
+
+                                    TextChip(
+                                        text = effectName,
+                                        customBGColor = viewModel.grindOptionColor(effectOptionLevel),
+                                        customRoundedCornerSize = 8.dp,
+                                        borderless = true
+                                    )
+                                    Spacer(modifier = Modifier.width(4.dp))
+                                }
                             }
                         }
                     }

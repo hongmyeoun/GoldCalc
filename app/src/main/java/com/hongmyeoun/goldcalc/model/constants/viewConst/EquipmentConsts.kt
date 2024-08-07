@@ -79,4 +79,6 @@ object EquipmentConsts {
     const val LOSE_DAMAGE_SHORT = "받피감"
 
     const val GRIND_ERROR = "연마 효과 없음"
+
+    val BRACELET_SPECIAL_EFFECT_LIST = listOf("마나회수", "비수", "약점노출", "응원", "정밀", "습격", "우월", "결투", "기습", "냉정", "열정", "쐐기", "망치", "순환")
 }
