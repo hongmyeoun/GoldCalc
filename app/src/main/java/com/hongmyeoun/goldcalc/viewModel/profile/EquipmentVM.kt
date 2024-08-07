@@ -34,16 +34,20 @@ import com.hongmyeoun.goldcalc.ui.theme.AncientBG
 import com.hongmyeoun.goldcalc.ui.theme.AncientColor
 import com.hongmyeoun.goldcalc.ui.theme.AncientMiddle
 import com.hongmyeoun.goldcalc.ui.theme.BlueQual
+import com.hongmyeoun.goldcalc.ui.theme.EpicBG
+import com.hongmyeoun.goldcalc.ui.theme.EpicColor
 import com.hongmyeoun.goldcalc.ui.theme.EsterColor
 import com.hongmyeoun.goldcalc.ui.theme.EstherBG
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
-import com.hongmyeoun.goldcalc.ui.theme.LegendaryBG
-import com.hongmyeoun.goldcalc.ui.theme.LegendaryColor
 import com.hongmyeoun.goldcalc.ui.theme.OrangeQual
 import com.hongmyeoun.goldcalc.ui.theme.PurpleQual
+import com.hongmyeoun.goldcalc.ui.theme.RareBG
+import com.hongmyeoun.goldcalc.ui.theme.RareColor
 import com.hongmyeoun.goldcalc.ui.theme.RedQual
 import com.hongmyeoun.goldcalc.ui.theme.RelicBG
 import com.hongmyeoun.goldcalc.ui.theme.RelicColor
+import com.hongmyeoun.goldcalc.ui.theme.UncommonBG
+import com.hongmyeoun.goldcalc.ui.theme.UncommonColor
 import com.hongmyeoun.goldcalc.ui.theme.YellowQual
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -172,7 +176,9 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
             EquipmentConsts.GRADE_ESTHER -> EstherBG
             EquipmentConsts.GRADE_ANCIENT -> AncientBG
             EquipmentConsts.GRADE_RELIC -> RelicBG
-            else -> LegendaryBG
+            EquipmentConsts.GRADE_EPIC -> EpicBG
+            EquipmentConsts.GRADE_RARE -> RareBG
+            else -> UncommonBG
         }
         return itemBG
     }
@@ -181,8 +187,9 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
         val itemBG = when (grade) {
             EquipmentConsts.GRADE_ESTHER -> EsterColor
             EquipmentConsts.GRADE_ANCIENT -> if (brightAncient) AncientColor else AncientMiddle
-            EquipmentConsts.GRADE_RELIC -> RelicColor
-            else -> LegendaryColor
+            EquipmentConsts.GRADE_EPIC -> EpicColor
+            EquipmentConsts.GRADE_RARE -> RareColor
+            else -> UncommonColor
         }
         return itemBG
     }
