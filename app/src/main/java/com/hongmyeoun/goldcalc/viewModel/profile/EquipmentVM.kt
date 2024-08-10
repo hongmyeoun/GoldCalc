@@ -285,7 +285,9 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
     }
 
     fun grindEffects(grind: String): List<String> {
-        return grind.split("\n")
+        return grind
+            .replace("세레나데, 신앙, 조화 게이지 획득량", "아이덴티티 게이지 획득량")
+            .split("\n")
     }
 
     fun grindOptionLevel(grind: String): String {
@@ -352,6 +354,7 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
             "정밀 단도" to "정단",
             "질량 증가" to "질증",
             "최대 마나 증가" to "최마증",
+            "마나의 흐름" to "마흐",
             "타격의 대가" to "타대",
             "폭발물 전문가" to "폭전",
             "분노의 망치" to "분망",

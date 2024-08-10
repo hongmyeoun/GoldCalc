@@ -72,7 +72,7 @@ object GrindEffects {
             } else if (input.contains("2.0")) {
                 return "상"
             }
-        } else if (input.startsWith("세레나데, 신앙, 조화 게이지 획득량")) {
+        } else if (input.startsWith("아이덴티티 게이지 획득량")) {
             if (input.contains("1.6")) {
                 return "하"
             } else if (input.contains("3.6")) {
