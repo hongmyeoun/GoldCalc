@@ -140,6 +140,8 @@ class HomeworkVM @Inject constructor(
                 townLevel = characterDetail.townLevel,
                 townName = characterDetail.townName,
                 characterImage = characterDetail.characterImage,
+                evolutionLevel = characterDetail.arkPassive.points[0].value,
+                enlightenmentLevel = characterDetail.arkPassive.points[1].value
             )
             characterRepository.update(newDetail)
         }

@@ -286,7 +286,7 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
 
     fun grindEffects(grind: String): List<String> {
         return grind
-            .replace("세레나데, 신앙, 조화 게이지 획득량", "아이덴티티 게이지 획득량")
+            .replace("세레나데, 신앙, 조화 게이지 획득량", "아이덴티티 게이지 획득량(폿)")
             .split("\n")
     }
 
