@@ -41,7 +41,6 @@ import com.hongmyeoun.goldcalc.ui.theme.AncientColor
 import com.hongmyeoun.goldcalc.ui.theme.AncientMiddle
 import com.hongmyeoun.goldcalc.ui.theme.BlueQual
 import com.hongmyeoun.goldcalc.ui.theme.EpicBG
-import com.hongmyeoun.goldcalc.ui.theme.EpicColor
 import com.hongmyeoun.goldcalc.ui.theme.EpicTextColor
 import com.hongmyeoun.goldcalc.ui.theme.EsterColor
 import com.hongmyeoun.goldcalc.ui.theme.EstherBG
@@ -51,11 +50,11 @@ import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.OrangeQual
 import com.hongmyeoun.goldcalc.ui.theme.PurpleQual
 import com.hongmyeoun.goldcalc.ui.theme.RareBG
-import com.hongmyeoun.goldcalc.ui.theme.RareColor
 import com.hongmyeoun.goldcalc.ui.theme.RareTextColor
 import com.hongmyeoun.goldcalc.ui.theme.RedQual
 import com.hongmyeoun.goldcalc.ui.theme.RelicBG
 import com.hongmyeoun.goldcalc.ui.theme.RelicColor
+import com.hongmyeoun.goldcalc.ui.theme.RelicTextColor
 import com.hongmyeoun.goldcalc.ui.theme.UncommonBG
 import com.hongmyeoun.goldcalc.ui.theme.UncommonColor
 import com.hongmyeoun.goldcalc.ui.theme.YellowQual
@@ -197,8 +196,10 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
         val itemBG = when (grade) {
             EquipmentConsts.GRADE_ESTHER -> EsterColor
             EquipmentConsts.GRADE_ANCIENT -> if (brightAncient) AncientColor else AncientMiddle
-            EquipmentConsts.GRADE_EPIC -> EpicColor
-            EquipmentConsts.GRADE_RARE -> RareColor
+            EquipmentConsts.GRADE_RELIC -> RelicTextColor
+            EquipmentConsts.GRADE_LEGENDARY -> LegendaryTextColor
+            EquipmentConsts.GRADE_EPIC -> EpicTextColor
+            EquipmentConsts.GRADE_RARE -> RareTextColor
             else -> UncommonColor
         }
         return itemBG
