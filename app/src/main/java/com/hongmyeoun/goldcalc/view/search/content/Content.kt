@@ -30,7 +30,6 @@ fun SearchContent(
 ) {
     val isLoading by viewModel.isLoading.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
-    val characterList by viewModel.characterList.collectAsState()
 
     Column(
         modifier = Modifier
@@ -57,7 +56,7 @@ fun SearchContent(
             }
 
             else -> {
-                SearchResults(characterList, navController, scrollState)
+                SearchResults(viewModel, navController, scrollState)
             }
         }
     }
