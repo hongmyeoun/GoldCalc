@@ -289,7 +289,7 @@ private fun Script(kzVM: KazerothRaidVM) {
         Divider()
 
         Row(
-            modifier = Modifier.padding(if (kzVM.echiCheck) 16.dp else 0.dp)
+            modifier = Modifier.padding(if (kzVM.echiCheck || kzVM.egirCheck) 16.dp else 0.dp)
         ) {
             PhaseInfo(
                 isCheck = kzVM.echiCheck,
