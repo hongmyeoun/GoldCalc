@@ -15,7 +15,7 @@ object AddCharacter {
     const val CLASS = "직업"
 
     const val ZERO_LEVEL = "0.00"
-    const val MAX_LEVEL = 1714.17
+    const val MAX_LEVEL = 1740
 
     const val ITEM_LEVEL_PLACEHOLDER = "0~${MAX_LEVEL}"
 }
