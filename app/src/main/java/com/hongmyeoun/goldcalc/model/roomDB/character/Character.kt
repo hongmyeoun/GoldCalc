@@ -30,6 +30,7 @@ data class Character(
 
     @ColumnInfo("arkPassiveEvolution") val evolutionLevel: Int = 0,
     @ColumnInfo("arkPassiveEnlightenment") val enlightenmentLevel: Int = 0,
+    @ColumnInfo("arkPassiveLeap") val leapLevel: Int = 0,
 
     @ColumnInfo("checkList") val checkList: CheckList = CheckList(),
     @ColumnInfo("raidPhaseInfo") val raidPhaseInfo: RaidPhaseInfo = RaidPhaseInfo(),

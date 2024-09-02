@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.hongmyeoun.goldcalc.model.constants.ErrorMessage.RECONNECT
 import com.hongmyeoun.goldcalc.model.constants.ErrorMessage.SEASON_3_NO_RECENT_CONNECT
 import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
+import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassive
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.ProfileTemplate
 import com.hongmyeoun.goldcalc.view.profile.content.card.Card
@@ -46,6 +47,7 @@ fun ProfileContent(
 
     // 캐릭터 정보
     val charProfile by viewModel.charProfile.collectAsState()
+    val arkPassive by viewModel.arkPassive.collectAsState()
     val isSaved by viewModel.isSaved.collectAsState()
 
     charProfile?.let { profile ->
@@ -59,14 +61,18 @@ fun ProfileContent(
         ) {
             ProfileTemplate(
                 profile = profile,
-                onGetClick = { viewModel.saveCharDetailToLocal(profile) },
+                arkPassive = arkPassive,
+                onGetClick = { viewModel.saveCharDetailToLocal(profile, arkPassive) },
                 getButtonEnabled = !isSaved
             )
 
-            ProfileDetails(
-                viewModel = viewModel,
-                profile = profile
-            )
+            arkPassive?.let {
+                ProfileDetails(
+                    viewModel = viewModel,
+                    profile = profile,
+                    arkPassive = it
+                )
+            }
         }
     } ?: run {
         NoCharacter(paddingValues = paddingValues)
@@ -76,7 +82,8 @@ fun ProfileContent(
 @Composable
 fun ProfileDetails(
     viewModel: ProfileVM,
-    profile: SearchedCharacterDetail
+    profile: SearchedCharacterDetail,
+    arkPassive: ArkPassive
 ) {
     Column(
         modifier = Modifier
@@ -85,11 +92,12 @@ fun ProfileDetails(
     ) {
         Engraving(
             viewModel = viewModel,
-            profile = profile
+            profile = profile,
+            arkPassive = arkPassive
         )
         Equipments(
             viewModel = viewModel,
-            profile = profile
+            arkPassive = arkPassive
         )
         Gem(viewModel = viewModel)
         Card(viewModel = viewModel)

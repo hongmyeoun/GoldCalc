@@ -2,6 +2,7 @@ package com.hongmyeoun.goldcalc.viewModel.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharArkPassive
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharCard
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharEngravings
@@ -9,6 +10,7 @@ import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharEquipment
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharGem
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharSkill
 import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
+import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassive
 import com.hongmyeoun.goldcalc.model.profile.card.CardEffects
 import com.hongmyeoun.goldcalc.model.profile.card.Cards
 import com.hongmyeoun.goldcalc.model.profile.engravings.SkillEngravings
@@ -42,7 +44,7 @@ class ProfileVM @Inject constructor(
     }
 
     // 버튼을 눌렀을시 character를 DB에 저장
-    fun saveCharDetailToLocal(charDetail: SearchedCharacterDetail) {
+    fun saveCharDetailToLocal(charDetail: SearchedCharacterDetail, arkPassive: ArkPassive?) {
         val avatarImage = !charDetail.characterImage.isNullOrEmpty() // 접속여부가 없다면 이미지가 null값임, 객체에서는 not null이기 때문에 경고가 뜸
 
         val character = Character(
@@ -59,8 +61,9 @@ class ProfileVM @Inject constructor(
             townName = charDetail.townName,
             characterImage = charDetail.characterImage,
             avatarImage = avatarImage,
-            evolutionLevel = charDetail.arkPassive.points[0].value,
-            enlightenmentLevel = charDetail.arkPassive.points[1].value
+            evolutionLevel = arkPassive?.points?.get(0)?.value ?: 0,
+            enlightenmentLevel = arkPassive?.points?.get(1)?.value ?: 0,
+            leapLevel = arkPassive?.points?.get(2)?.value ?: 0
         )
         saveCharacter(character)
     }
@@ -95,6 +98,9 @@ class ProfileVM @Inject constructor(
     private val _skills = MutableStateFlow<List<Skills>?>(null)
     val skills: StateFlow<List<Skills>?> = _skills
 
+    private val _arkPassive = MutableStateFlow<ArkPassive?>(null)
+    val arkPassive: StateFlow<ArkPassive?> = _arkPassive
+
     // API에서 character 정보들을 받아옴
     fun getCharDetails(charName: String) {
         viewModelScope.launch {
@@ -107,6 +113,7 @@ class ProfileVM @Inject constructor(
                 _cardsEffects.value = effects
             }
             _skills.value = getCharSkill(charName)
+            _arkPassive.value = getCharArkPassive(charName)
         }
     }
 }
