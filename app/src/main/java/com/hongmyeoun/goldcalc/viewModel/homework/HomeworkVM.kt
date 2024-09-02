@@ -8,8 +8,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.model.constants.viewConst.SnackbarMessage
+import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharArkPassive
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
+import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassive
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import kotlinx.coroutines.Dispatchers
@@ -128,7 +130,7 @@ class HomeworkVM @Inject constructor(
         selectedTab = index
     }
 
-    private fun updateCharacterDetail(characterDetail: SearchedCharacterDetail) {
+    private fun updateCharacterDetail(characterDetail: SearchedCharacterDetail, arkPassive: ArkPassive) {
         _character.value?.let {
             val newDetail = _character.value!!.copy(
                 itemLevel = characterDetail.itemMaxLevel,
@@ -140,8 +142,9 @@ class HomeworkVM @Inject constructor(
                 townLevel = characterDetail.townLevel,
                 townName = characterDetail.townName,
                 characterImage = characterDetail.characterImage,
-//                evolutionLevel = characterDetail.arkPassive.points[0].value,
-//                enlightenmentLevel = characterDetail.arkPassive.points[1].value
+                evolutionLevel = arkPassive.points[0].value,
+                enlightenmentLevel = arkPassive.points[1].value,
+                leapLevel = arkPassive.points[2].value
             )
             characterRepository.update(newDetail)
         }
@@ -151,8 +154,11 @@ class HomeworkVM @Inject constructor(
         characterName?.let {
             viewModelScope.launch(Dispatchers.IO) {
                 val characterDetail = getCharDetail(characterName)
-                characterDetail?.let {
-                    updateCharacterDetail(characterDetail)
+                val arkPassive = getCharArkPassive(characterName)
+                characterDetail?.let { characterDetails ->
+                    arkPassive?.let { arkPassives ->
+                        updateCharacterDetail(characterDetails, arkPassives)
+                    }
                 }
             }
             getCharacter(characterName)

@@ -31,6 +31,7 @@ import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassive
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.ArkPassiveEnlightenment
 import com.hongmyeoun.goldcalc.ui.theme.ArkPassiveEvolution
+import com.hongmyeoun.goldcalc.ui.theme.ArkPassiveLeap
 import com.hongmyeoun.goldcalc.ui.theme.VeryLightGrayTransBG
 import com.hongmyeoun.goldcalc.view.common.TextChip
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
@@ -279,6 +280,25 @@ fun ArkPassive(
                 textAlign = TextAlign.Center
             )
         }
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Box(
+            modifier = Modifier.size(width = 58.dp, height = 25.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            GlideImage(
+                model = R.drawable.bg_arkpassive_leap,
+                contentScale = ContentScale.FillBounds,
+                contentDescription = "도약"
+            )
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "   ${character.leapLevel}",
+                color = ArkPassiveLeap,
+                fontSize = 12.sp,
+                textAlign = TextAlign.Center
+            )
+        }
     }
     Spacer(modifier = Modifier.height(8.dp))
 }
@@ -321,6 +341,25 @@ fun ArkPassive(
                 modifier = Modifier.fillMaxWidth(),
                 text = "   ${arkPassive.points[1].value}",
                 color = ArkPassiveEnlightenment,
+                fontSize = 12.sp,
+                textAlign = TextAlign.Center
+            )
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Box(
+            modifier = Modifier.size(width = 58.dp, height = 25.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            GlideImage(
+                model = R.drawable.bg_arkpassive_leap,
+                contentScale = ContentScale.FillBounds,
+                contentDescription = "도약"
+            )
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "   ${arkPassive.points[2].value}",
+                color = ArkPassiveLeap,
                 fontSize = 12.sp,
                 textAlign = TextAlign.Center
             )

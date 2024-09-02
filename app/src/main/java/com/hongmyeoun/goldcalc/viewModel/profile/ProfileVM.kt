@@ -62,9 +62,8 @@ class ProfileVM @Inject constructor(
             characterImage = charDetail.characterImage,
             avatarImage = avatarImage,
             evolutionLevel = arkPassive?.points?.get(0)?.value ?: 0,
-            enlightenmentLevel = arkPassive?.points?.get(1)?.value ?: 0
-//            evolutionLevel = charDetail.arkPassive.points[0].value,
-//            enlightenmentLevel = charDetail.arkPassive.points[1].value
+            enlightenmentLevel = arkPassive?.points?.get(1)?.value ?: 0,
+            leapLevel = arkPassive?.points?.get(2)?.value ?: 0
         )
         saveCharacter(character)
     }

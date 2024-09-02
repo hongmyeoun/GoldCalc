@@ -26,6 +26,7 @@ val LightGrayBG = Color(0xFF2B313A)
 
 val ArkPassiveEvolution = Color(0xFFF2D694)
 val ArkPassiveEnlightenment = Color(0xFF83E9FF)
+val ArkPassiveLeap = Color(0xFFC2EA55)
 
 val YellowWarn = Color(0xFFFFD000)
 
