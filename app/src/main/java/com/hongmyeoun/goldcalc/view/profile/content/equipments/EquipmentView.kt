@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
-import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
+import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassive
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterItem
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
 import com.hongmyeoun.goldcalc.view.common.TextChip
@@ -35,11 +35,11 @@ import com.hongmyeoun.goldcalc.viewModel.profile.ProfileVM
 @Composable
 fun Equipments(
     viewModel: ProfileVM,
-    profile: SearchedCharacterDetail
+    arkPassive: ArkPassive
 ) {
     // 장비
     val equipment by viewModel.equipments.collectAsState()
-    val isArkPassive = profile.arkPassive.isArkPassive
+    val isArkPassive = arkPassive.isArkPassive
 
     equipment?.let { equipmentList ->
         val equipmentVM = EquipmentVM(equipmentList)

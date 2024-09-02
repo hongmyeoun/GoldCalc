@@ -10,16 +10,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
+import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassive
 import com.hongmyeoun.goldcalc.viewModel.profile.ProfileVM
 
 @Composable
 fun Engraving(
     viewModel: ProfileVM,
-    profile: SearchedCharacterDetail
+    profile: SearchedCharacterDetail,
+    arkPassive: ArkPassive
 ) {
     // 각인
     val engravings by viewModel.engravings.collectAsState()
-    val isArkPassive = profile.arkPassive.isArkPassive
+    val isArkPassive = arkPassive.isArkPassive
 
     Row {
         val modifier = Modifier.weight(1f)

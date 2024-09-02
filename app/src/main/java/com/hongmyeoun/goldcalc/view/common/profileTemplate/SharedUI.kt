@@ -27,6 +27,7 @@ import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
 import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
+import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassive
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.ArkPassiveEnlightenment
 import com.hongmyeoun.goldcalc.ui.theme.ArkPassiveEvolution
@@ -285,7 +286,7 @@ fun ArkPassive(
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ArkPassive(
-    profile: SearchedCharacterDetail,
+    arkPassive: ArkPassive,
 ) {
     Row {
         Box(
@@ -299,7 +300,7 @@ fun ArkPassive(
             )
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "   ${profile.arkPassive.points[0].value}",
+                text = "   ${arkPassive.points[0].value}",
                 color = ArkPassiveEvolution,
                 fontSize = 12.sp,
                 textAlign = TextAlign.Center
@@ -318,7 +319,7 @@ fun ArkPassive(
             )
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "   ${profile.arkPassive.points[1].value}",
+                text = "   ${arkPassive.points[1].value}",
                 color = ArkPassiveEnlightenment,
                 fontSize = 12.sp,
                 textAlign = TextAlign.Center

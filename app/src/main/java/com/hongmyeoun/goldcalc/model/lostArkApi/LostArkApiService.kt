@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.model.lostArkApi
 
 import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
+import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassive
 import com.hongmyeoun.goldcalc.model.profile.card.CardsWithEffects
 import com.hongmyeoun.goldcalc.model.profile.engravings.SkillEngravingsAndEffects
 import com.hongmyeoun.goldcalc.model.profile.equipment.Equipment
@@ -45,4 +46,9 @@ interface LostArkApiService {
     fun getCharacterEngravings(
         @Path(NetworkConfig.SEARCH_PATH) characterName: String
     ): Call<SkillEngravingsAndEffects>
+
+    @GET(NetworkConfig.ARK_PASSIVE)
+    fun getCharacterArkPassive(
+        @Path(NetworkConfig.SEARCH_PATH) characterName: String
+    ): Call<ArkPassive>
 }

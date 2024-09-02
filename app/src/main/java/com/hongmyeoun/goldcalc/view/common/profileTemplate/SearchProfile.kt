@@ -1,4 +1,3 @@
-
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +21,7 @@ import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
 import com.hongmyeoun.goldcalc.model.constants.viewConst.ButtonText
 import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
+import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassive
 import com.hongmyeoun.goldcalc.ui.theme.YellowWarn
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.ArkPassive
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.Extra
@@ -35,6 +35,7 @@ import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 @OptIn(ExperimentalGlideComposeApi::class)
 fun SearchProfile(
     profile: SearchedCharacterDetail,
+    arkPassive: ArkPassive,
     onGetClick: () -> Unit,
     enabled: Boolean
 ) {
@@ -61,7 +62,7 @@ fun SearchProfile(
             contentDescription = "캐릭터 이미지"
         )
 
-        if (profile.arkPassive.isArkPassive) {
+        if (arkPassive.isArkPassive) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.BottomEnd
@@ -86,17 +87,21 @@ fun SearchProfile(
             }
         }
 
+
         DefaultsProfilesWithGetButton(
             profile = profile,
+            arkPassive = arkPassive,
             enabled = enabled,
             onGetClick = onGetClick
         )
+
     }
 }
 
 @Composable
 private fun DefaultsProfilesWithGetButton(
     profile: SearchedCharacterDetail,
+    arkPassive: ArkPassive,
     enabled: Boolean,
     onGetClick: () -> Unit
 ) {
@@ -113,7 +118,7 @@ private fun DefaultsProfilesWithGetButton(
         )
         ItemLevel(level = profile.itemMaxLevel)
         Extra(profile = profile)
-        ArkPassive(profile = profile)
+        ArkPassive(arkPassive = arkPassive)
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally

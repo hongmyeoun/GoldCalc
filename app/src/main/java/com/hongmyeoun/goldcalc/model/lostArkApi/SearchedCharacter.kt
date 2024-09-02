@@ -30,7 +30,7 @@ data class SearchedCharacterDetail(
     @SerializedName("CharacterClassName") val characterClassName: String,
     @SerializedName("ItemAvgLevel") val itemAvgLevel: String,
     @SerializedName("ItemMaxLevel") val itemMaxLevel: String,
-    @SerializedName("ArkPassive") val arkPassive: ArkPassive
+//    @SerializedName("ArkPassive") val arkPassive: ArkPassive
 )
 
 data class Stats(
@@ -45,13 +45,3 @@ data class Tendency(
     @SerializedName("MaxPoint") val maxPoint: Int
 )
 
-data class ArkPassive(
-    @SerializedName("IsArkPassive") val isArkPassive: Boolean,
-    @SerializedName("Points") val points: List<ArkPassivePoint>
-)
-
-data class ArkPassivePoint(
-    @SerializedName("Name") val name: String,
-    @SerializedName("Value") val value: Int,
-    @SerializedName("Tooltip") val tooltip: String
-)
