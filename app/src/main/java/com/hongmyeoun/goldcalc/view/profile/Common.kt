@@ -36,7 +36,7 @@ fun titleBoldWhite12() = TextStyle(
 @Composable
 fun Title(
     title: String,
-    onClick: () -> Unit,
+    onClick: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
