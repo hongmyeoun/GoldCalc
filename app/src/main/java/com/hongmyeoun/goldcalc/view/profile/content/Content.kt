@@ -24,7 +24,7 @@ import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
 import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassive
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.ProfileTemplate
-import com.hongmyeoun.goldcalc.view.profile.content.arkPassive.ArkPassiveView
+import com.hongmyeoun.goldcalc.view.profile.content.arkPassive.ArkPassiveNode
 import com.hongmyeoun.goldcalc.view.profile.content.card.Card
 import com.hongmyeoun.goldcalc.view.profile.content.engraving.Engraving
 import com.hongmyeoun.goldcalc.view.profile.content.equipments.Equipments
@@ -106,7 +106,7 @@ fun ProfileDetails(
             viewModel = viewModel,
             profile = profile
         )
-        ArkPassiveView(viewModel = viewModel)
+        ArkPassiveNode(viewModel = viewModel)
     }
 }
 

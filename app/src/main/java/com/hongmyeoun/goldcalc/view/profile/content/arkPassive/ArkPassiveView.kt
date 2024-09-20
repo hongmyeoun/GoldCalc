@@ -2,13 +2,14 @@ package com.hongmyeoun.goldcalc.view.profile.content.arkPassive
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
@@ -21,25 +22,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
-import com.hongmyeoun.goldcalc.R
+import com.hongmyeoun.goldcalc.model.common.htmlStyledText
+import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassive
 import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassiveNode
-import com.hongmyeoun.goldcalc.ui.theme.ArkPassiveEnlightenment
-import com.hongmyeoun.goldcalc.ui.theme.ArkPassiveEvolution
-import com.hongmyeoun.goldcalc.ui.theme.ArkPassiveLeap
-import com.hongmyeoun.goldcalc.ui.theme.GoldCalcTheme
+import com.hongmyeoun.goldcalc.ui.theme.ImageBG
+import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
+import com.hongmyeoun.goldcalc.view.common.TextChip
 import com.hongmyeoun.goldcalc.view.common.noRippleClickable
 import com.hongmyeoun.goldcalc.view.profile.Title
+import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
+import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
+import com.hongmyeoun.goldcalc.viewModel.profile.ArkPassiveVM
 import com.hongmyeoun.goldcalc.viewModel.profile.ProfileVM
 
 @Composable
-fun ArkPassiveView(
+fun ArkPassiveNode(
     viewModel: ProfileVM
 ) {
     val arkPassive by viewModel.arkPassive.collectAsState()
@@ -47,56 +52,74 @@ fun ArkPassiveView(
 
     arkPassive?.let {
         arkPassiveNodes?.let { arkPassiveNodes ->
-            Column(
-                modifier = Modifier
-                    .background(LightGrayTransBG, RoundedCornerShape(8.dp))
-                    .clip(RoundedCornerShape(8.dp))
-                    .padding(8.dp)
-            ) {
-                Title(title = "아크패시브")
-                Spacer(modifier = Modifier.height(8.dp))
-                if (it.isArkPassive) {
-                    ArkPassiveNodeBox(it.points[0].name, arkPassiveNodes, it.points[0].value)
-                    ArkPassiveNodeBox(it.points[1].name, arkPassiveNodes, it.points[1].value)
-                    ArkPassiveNodeBox(it.points[2].name, arkPassiveNodes, it.points[2].value)
-                }
-            }
+            ArkPassiveView(arkPassive = it, arkPassiveNodes = arkPassiveNodes)
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun ArkPassiveTest() {
-    GoldCalcTheme {
-        Column(modifier = Modifier
+fun ArkPassiveView(
+    arkPassive: ArkPassive,
+    arkPassiveNodes: List<ArkPassiveNode>,
+    viewModel: ArkPassiveVM = viewModel()
+) {
+    val showDialog by viewModel.showDialog.collectAsState()
+
+    if (showDialog) {
+        Description(
+            viewModel = viewModel,
+            arkPassiveNodes = arkPassiveNodes
+        )
+    }
+
+    Column(
+        modifier = Modifier
             .background(LightGrayTransBG, RoundedCornerShape(8.dp))
             .clip(RoundedCornerShape(8.dp))
-            .noRippleClickable { }
             .padding(8.dp)
-        ) {
-            ArkPassiveNodeBoxTest("진화")
-            ArkPassiveNodeBoxTest("깨달음")
-            ArkPassiveNodeBoxTest("도약")
+    ) {
+        Title(title = "아크패시브")
+        Spacer(modifier = Modifier.height(8.dp))
+        if (arkPassive.isArkPassive) {
+            ArkPassiveNodeBox(
+                arkPassiveType = arkPassive.points[0].name,
+                arkPassiveNodes = arkPassiveNodes,
+                arkPassivePoints = arkPassive.points[0].value,
+                viewModel = viewModel
+            )
+            ArkPassiveNodeBox(
+                arkPassiveType = arkPassive.points[1].name,
+                arkPassiveNodes = arkPassiveNodes,
+                arkPassivePoints = arkPassive.points[1].value,
+                viewModel = viewModel
+            )
+            ArkPassiveNodeBox(
+                arkPassiveType = arkPassive.points[2].name,
+                arkPassiveNodes = arkPassiveNodes,
+                arkPassivePoints = arkPassive.points[2].value,
+                viewModel = viewModel
+            )
         }
     }
 }
+
 
 @Composable
 private fun ArkPassiveNodeBox(
     arkPassiveType: String,
     arkPassiveNodes: List<ArkPassiveNode>,
     arkPassivePoints: Int,
+    viewModel: ArkPassiveVM
 ) {
-    val arkPassiveColor =
-        if (arkPassiveType == "진화") ArkPassiveEvolution else if (arkPassiveType == "깨달음") ArkPassiveEnlightenment else if (arkPassiveType == "도약") ArkPassiveLeap else Color.White
-
     Column {
-        ArkPassiveNodeTable(arkPassiveType, arkPassivePoints, arkPassiveColor)
+        ArkPassiveNodeTable(arkPassiveType, arkPassivePoints, viewModel)
         Column(modifier = Modifier.padding(12.dp)) {
             arkPassiveNodes.forEach {
                 if (it.type == arkPassiveType) {
-                    ArkPassiveContents(arkPassiveColor, it)
+                    ArkPassiveContents(
+                        arkPassiveNode = it,
+                        viewModel = viewModel
+                    )
                     if (it != arkPassiveNodes.last()) {
                         Spacer(modifier = Modifier.height(4.dp))
                     }
@@ -111,10 +134,10 @@ private fun ArkPassiveNodeBox(
 private fun ArkPassiveNodeTable(
     arkPassiveType: String,
     arkPassivePoints: Int,
-    arkPassiveColor: Color
+    viewModel: ArkPassiveVM
 ) {
-    val arkPassiveIcon =
-        if (arkPassiveType == "진화") R.drawable.ico_arkpassive_evolution else if (arkPassiveType == "깨달음") R.drawable.ico_arkpassive_enlightenment else if (arkPassiveType == "도약") R.drawable.ico_arkpassive_leap else R.drawable.ico_arkpassive_evolution
+    val arkPassiveColor = viewModel.textColor(arkPassiveType)
+    val arkPassiveIcon = viewModel.arkPassiveIcon(arkPassiveType)
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -161,10 +184,13 @@ private fun ArkPassiveNodeTable(
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
 private fun ArkPassiveContents(
-    textColor: Color,
     arkPassiveNode: ArkPassiveNode,
+    viewModel: ArkPassiveVM
 ) {
+    val arkPassiveColor = viewModel.textColor(arkPassiveNode.type)
+
     Row(
+        modifier = Modifier.noRippleClickable { viewModel.onClicked(arkPassiveNode.name) },
         verticalAlignment = Alignment.CenterVertically,
     ) {
         GlideImage(
@@ -183,129 +209,97 @@ private fun ArkPassiveContents(
 
         Text(
             text = "${arkPassiveNode.name} ${arkPassiveNode.level}",
-            color = textColor,
+            color = arkPassiveColor,
             fontSize = 12.sp
         )
     }
 }
 
-
 @Composable
-private fun ArkPassiveNodeBoxTest(
-    type: String
+private fun Description(
+    viewModel: ArkPassiveVM,
+    arkPassiveNodes: List<ArkPassiveNode>,
 ) {
-    val arkPassiveIcon =
-        if (type == "진화") R.drawable.ico_arkpassive_evolution else if (type == "깨달음") R.drawable.ico_arkpassive_enlightenment else if (type == "도약") R.drawable.ico_arkpassive_leap else R.drawable.ico_arkpassive_evolution
-    val arkPassiveColor =
-        if (type == "진화") ArkPassiveEvolution else if (type == "깨달음") ArkPassiveEnlightenment else if (type == "도약") ArkPassiveLeap else Color.White
+    val arkPassiveNode = viewModel.getArkPassive(arkPassiveNodes)
 
-    Column {
-        ArkPassiveNodeTableTest(arkPassiveColor, arkPassiveIcon)
-        Box(modifier = Modifier.padding(12.dp)) {
-            ArkPassiveContentsTest(arkPassiveColor)
-        }
-    }
-}
-
-@Composable
-@OptIn(ExperimentalGlideComposeApi::class)
-private fun ArkPassiveNodeTableTest(arkPassiveColor: Color, arkPassiveIcon: Int) {
-    Row(
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Box(
-            modifier = Modifier
-                .border(
-                    width = 0.5.dp,
-                    color = arkPassiveColor,
-                    shape = RoundedCornerShape(16.dp),
-                )
-                .padding(4.dp)
+    arkPassiveNode?.let {
+        Dialog(
+            onDismissRequest = { viewModel.onDismissRequest() }
         ) {
-            Row(
-                horizontalArrangement = Arrangement.Center
+            Column(
+                modifier = Modifier
+                    .background(ImageBG, RoundedCornerShape(16.dp))
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.Start
             ) {
-                GlideImage(
-                    model = arkPassiveIcon,
-                    loading = placeholder(arkPassiveIcon),
-                    contentDescription = ""
+                Text(
+                    text = "아크패시브 노드",
+                    style = titleTextStyle()
                 )
-                Text(text = "진화 ", color = Color.White)
-                Text(text = "140", color = arkPassiveColor)
-                Spacer(modifier = Modifier.width(4.dp))
+
+                Spacer(modifier = Modifier.height(8.dp))
+                Divider()
+                Spacer(modifier = Modifier.height(8.dp))
+
+                ArkPassiveDetail(arkPassiveNode = arkPassiveNode, viewModel = viewModel)
             }
         }
-        Divider(
-            modifier = Modifier.align(Alignment.CenterVertically),
-            thickness = 0.5.dp,
-            color = arkPassiveColor,
-        )
     }
 }
 
-//@Composable
-//@OptIn(ExperimentalGlideComposeApi::class)
-//private fun ArkPassiveContents(
-//    arkPassiveNode: ArkPassiveNode
-//) {
-//    Row(
-//        horizontalArrangement = Arrangement.Center
-//    ) {
-//        GlideImage(
-//            modifier = Modifier.clip(RoundedCornerShape(16.dp)),
-//            model = R.drawable.ark_passive_evolution_1,
-//            loading = placeholder(R.drawable.ark_passive_evolution_1),
-//            contentDescription = "아크패시브"
-//        )
-//        GlideImage(
-//            modifier = Modifier.clip(RoundedCornerShape(16.dp)), model = arkPassiveNode.icon, contentDescription = "아크패시브"
-//        )
-//        Spacer(modifier = Modifier.width(8.dp))
-//
-//        Text(
-//            text = "1티어", color = Color.White
-//        )
-//        Text(
-//            text = arkPassiveNode.tier, color = Color.White
-//        )
-//        Spacer(modifier = Modifier.width(8.dp))
-//
-//        Text(
-//            text = "치명 Lv.10",
-//            color = ArkPassiveEvolution,
-//        )
-//        Text(
-//            text = "${arkPassiveNode.name} ${arkPassiveNode.level}",
-//            color = ArkPassiveEvolution,
-//        )
-//    }
-//}
-
-
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
-private fun ArkPassiveContentsTest(
-    textColor: Color,
+private fun ArkPassiveDetail(
+    arkPassiveNode: ArkPassiveNode,
+    viewModel: ArkPassiveVM
 ) {
     Row(
-        horizontalArrangement = Arrangement.Center
+        verticalAlignment = Alignment.CenterVertically
     ) {
         GlideImage(
-            modifier = Modifier.clip(RoundedCornerShape(16.dp)),
-            model = R.drawable.ark_passive_evolution_1,
-            loading = placeholder(R.drawable.ark_passive_evolution_1),
-            contentDescription = "아크패시브"
+            modifier = Modifier
+                .size(54.dp)
+                .clip(RoundedCornerShape(8.dp)),
+            model = arkPassiveNode.icon,
+            contentDescription = "각인 아이콘"
         )
         Spacer(modifier = Modifier.width(8.dp))
 
         Text(
-            text = "1티어", color = Color.White
+            text = arkPassiveNode.name,
+            style = titleTextStyle(
+                fontSize = 15.sp,
+                color = viewModel.textColor(arkPassiveNode.type)
+            )
         )
-        Spacer(modifier = Modifier.width(8.dp))
 
+        Spacer(modifier = Modifier.width(4.dp))
+        TextChip(
+            text = arkPassiveNode.tier,
+            borderless = true,
+            customBGColor = LightGrayBG
+        )
+
+        Spacer(modifier = Modifier.width(4.dp))
+        TextChip(
+            text = arkPassiveNode.type,
+            borderless = true,
+            textColor = viewModel.textColor(arkPassiveNode.type)
+        )
+    }
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Box(
+        modifier = Modifier
+            .background(LightGrayBG, RoundedCornerShape(4.dp))
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
         Text(
-            text = "치명 Lv.10",
-            color = textColor,
+            text = htmlStyledText(arkPassiveNode.script),
+            style = normalTextStyle(fontSize = 12.sp),
+            lineHeight = 16.sp,
+            softWrap = true
         )
     }
 }
