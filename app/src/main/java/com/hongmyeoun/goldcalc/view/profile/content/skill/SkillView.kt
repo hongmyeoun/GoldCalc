@@ -76,6 +76,7 @@ fun SkillView(
             Simple(skills, gemList, viewModel)
         }
     }
+    Spacer(modifier = Modifier.height(8.dp))
 }
 
 @Composable

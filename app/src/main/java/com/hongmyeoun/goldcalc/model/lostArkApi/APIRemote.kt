@@ -1,12 +1,13 @@
 package com.hongmyeoun.goldcalc.model.lostArkApi
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.hongmyeoun.goldcalc.BuildConfig
 import com.hongmyeoun.goldcalc.model.constants.ErrorMessage
 import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
 import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassive
+import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassiveDetail
+import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassiveNode
 import com.hongmyeoun.goldcalc.model.profile.card.CardDetail
 import com.hongmyeoun.goldcalc.model.profile.card.CardEffects
 import com.hongmyeoun.goldcalc.model.profile.card.Cards
@@ -204,10 +205,31 @@ object APIRemote {
                 if (response.isSuccessful) {
                     val arkPassive = response.body()
                     arkPassive?.let {
-//                        val arkPassiveDetail = ArkPassiveDetail(arkPassive)
-//                        val detailedEngravings = arkPassiveDetail.getArkPassiveDetail()
-                        Log.d("아크패시브", "$arkPassive")
                         return@withContext it
+                    }
+                } else {
+                    null
+                }
+            } catch (e: IOException) {
+                null
+            }
+        }
+    }
+
+    suspend fun getCharArkPassiveNode(characterName: String): List<ArkPassiveNode>? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = lostArkApiService.getCharacterArkPassive(characterName).execute()
+                if (response.isSuccessful) {
+                    val arkPassive = response.body()
+                    arkPassive?.let {
+                        if (arkPassive.effects.isNotEmpty()) {
+                            val arkPassiveDetail = ArkPassiveDetail(arkPassive)
+
+                            return@withContext arkPassiveDetail.getArkPassiveDetail()
+                        } else {
+                            return@withContext null
+                        }
                     }
                 } else {
                     null

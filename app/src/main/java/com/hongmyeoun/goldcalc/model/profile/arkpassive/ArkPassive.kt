@@ -18,6 +18,14 @@ data class ArkPassiveSkillEffects(
     @SerializedName("Name") val name: String,
     @SerializedName("Description") val description: String,
     @SerializedName("Icon") val icon: String,
-    @SerializedName("Tooltip") val tooltip: String
+    @SerializedName("ToolTip") val tooltip: String
 )
 
+data class ArkPassiveNode(
+    val type: String,
+    val tier: String,
+    val name: String,
+    val level: String,
+    val icon: String,
+    val script: String,
+)
