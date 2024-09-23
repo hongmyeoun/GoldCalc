@@ -70,6 +70,7 @@ fun AnnotatedString.Builder.appendWithNewlineHandling(text: String) {
     val newlineText = text
         .replace("||<BR>", "")  // ||<BR>을 줄바꿈 처리
         .replace("<BR> ", "\n")    // <BR>도 줄바꿈 처리
+        .replace("<BR>", "\n")
 
     append(newlineText)
 }
