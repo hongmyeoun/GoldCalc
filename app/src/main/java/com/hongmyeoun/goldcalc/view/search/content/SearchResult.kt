@@ -49,6 +49,7 @@ fun SearchResults(
 ) {
     val characterList by viewModel.characterList.collectAsState()
     val charName by viewModel.characterName.collectAsState()
+    val isSearched  by viewModel.isSearched.collectAsState()
 
     if (characterList.isNotEmpty()) {
         LazyColumn(
@@ -78,9 +79,7 @@ fun SearchResults(
                 }
             }
         }
-    }
-
-    if (characterList.isEmpty() && charName.isNotEmpty()) {
+    } else if (isSearched) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
@@ -92,6 +91,8 @@ fun SearchResults(
             )
         }
     }
+
+
 }
 
 @Composable

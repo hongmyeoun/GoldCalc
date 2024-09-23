@@ -41,12 +41,17 @@ class SearchVM @Inject constructor(
     private val _characterName = MutableStateFlow("")
     val characterName: StateFlow<String> = _characterName
 
+    private val _isSearched = MutableStateFlow(false)
+    val isSearched: StateFlow<Boolean> = _isSearched
+
     fun onCharacterNameValueChange(newValue: String) {
         _characterName.value = newValue
+        _isSearched.value = false
     }
 
     fun characterClear() {
         _characterName.value = ""
+        _isSearched.value = false
     }
 
     private val _isLoading = MutableStateFlow(false)
@@ -84,6 +89,7 @@ class SearchVM @Inject constructor(
         if (_characterName.value.isNotEmpty()) {
             getCharacterList()
             addHistory()
+            _isSearched.value = true
         }
         loadingFalse()
     }
