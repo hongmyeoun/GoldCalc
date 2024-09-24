@@ -53,6 +53,7 @@ class HomeContentVM @Inject constructor(
 
     private val _echidnaTG = MutableStateFlow(0)
     private val _egirTG = MutableStateFlow(0)
+    private val _ablreshudTG2 = MutableStateFlow(0)
 
     private val _behemothTG = MutableStateFlow(0)
 
@@ -74,7 +75,7 @@ class HomeContentVM @Inject constructor(
     private fun calcTotalGold() {
         val commandTG = _kamenTG.value + _illiakanTG.value + _abrelshudTG.value + _koukuSatonTG.value + _biackissTG.value + _valtanTG.value
         val abyssDungeonTG = _ivoryTowerTG.value + _kayangelTG.value
-        val kazerothTG = _echidnaTG.value + _egirTG.value
+        val kazerothTG = _ablreshudTG2.value + _egirTG.value + _echidnaTG.value
         val epicTG = _behemothTG.value
         _totalGold.value = commandTG + abyssDungeonTG + kazerothTG + epicTG
         updateProgressPercentage()
@@ -117,6 +118,7 @@ class HomeContentVM @Inject constructor(
         _echidnaTG.value = character.raidPhaseInfo.echidnaTotalGold
         _behemothTG.value = character.raidPhaseInfo.behemothTotalGold
         _egirTG.value = character.raidPhaseInfo.egirTotalGold
+        _ablreshudTG2.value = character.raidPhaseInfo.abrel2TotalGold
 
         _maxGold.value = character.weeklyGold
         _remainGold.value = _maxGold.value - _totalGold.value
@@ -331,6 +333,22 @@ class HomeContentVM @Inject constructor(
             characterRepository.update(update)
         }
     }
+
+    fun abrel2GoldCalc(nowPhase: Int) {
+        _ablreshudTG2.value = when (nowPhase) {
+            1 -> { _kzModel.value.abrelshud.onePhase.totalGold }
+            2 -> { _kzModel.value.abrelshud.totalGold }
+            else -> { 0 }
+        }
+
+        calcTotalGold()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val update = _character.value.copy(earnGold = _totalGold.value,raidPhaseInfo = _character.value.raidPhaseInfo.copy(egirPhase = nowPhase, egirTotalGold = _ablreshudTG2.value))
+            characterRepository.update(update)
+        }
+    }
+
 }
 
 class GoldContentStateVM(initPhase: Int) : ViewModel() {
@@ -358,6 +376,7 @@ class GoldContentStateVM(initPhase: Int) : ViewModel() {
             Raid.Name.ECHIDNA -> R.drawable.kazeroth_echidna
             Raid.Name.BEHEMOTH -> R.drawable.epic_behemoth
             Raid.Name.EGIR -> R.drawable.kazeroth_egir
+            Raid.Name.ABRELSHUD_2 -> R.drawable.kazeroth_echidna
             else -> R.drawable.kazeroth_echidna
         }
     }
