@@ -1,5 +1,6 @@
 package com.hongmyeoun.goldcalc.viewModel.home
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -84,6 +85,7 @@ class HomeContentVM @Inject constructor(
     private fun getCharacter() {
         viewModelScope.launch(Dispatchers.IO) {
             characterRepository.getCharacterByName(charName).collect { character ->
+                Log.d("${character.name}", "${character.checkList.kazeroth[2]}")
                 character?.let { // 이걸 안하면 삭제시 없는 페이지에 없는 character(null)값이 들어와서 객체들을 불러오지 못해 튕김
                     _character.value = it
                     getModel(it)

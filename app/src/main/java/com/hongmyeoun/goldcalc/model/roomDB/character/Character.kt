@@ -7,7 +7,8 @@ import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 
 @Entity
 data class Character(
-    @PrimaryKey(autoGenerate = false) val name: String = "",
+    @PrimaryKey(autoGenerate = false)
+    @ColumnInfo("name") val name: String = "",
     @ColumnInfo("itemLevel") val itemLevel: String = "",
     @ColumnInfo("className") val className: String = "",
     @ColumnInfo("serverName") val serverName: String = "",
@@ -69,6 +70,9 @@ data class RaidPhaseInfo(
 
     @ColumnInfo("valtanPhase") val valtanPhase: Int = 0,
     @ColumnInfo("valtanTotalGold") val valtanTotalGold: Int = 0,
+
+    @ColumnInfo("abrel2Phase") val abrel2Phase: Int = 0,
+    @ColumnInfo("abrel2TotalGold") val abrel2TotalGold: Int = 0,
 )
 
 
@@ -117,7 +121,11 @@ data class CheckList(
         RaidList(
             name = Raid.Name.EGIR,
             phases = listOf(Phase(), Phase())
-        )
+        ),
+        RaidList(
+            name = Raid.Name.ABRELSHUD_2,
+            phases = listOf(Phase(), Phase())
+        ),
     ),
     @ColumnInfo("Epic") val epic: List<RaidList> = listOf(
         RaidList(
@@ -133,7 +141,6 @@ data class RaidList(
         Phase(difficulty = Raid.Difficulty.KR_NORMAL, isClear = false, mCheck = false)
     ),
     @ColumnInfo("isCheck") val isCheck: Boolean = true,
-
 )
 
 data class Phase(
