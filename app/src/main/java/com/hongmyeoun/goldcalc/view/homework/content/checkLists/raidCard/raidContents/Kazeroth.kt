@@ -33,6 +33,13 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
         label = Labels.Animation.ROTATION
     )
 
+    var abrelRoatated by remember { mutableStateOf(false) }
+    val abrelRotaR by animateFloatAsState(
+        targetValue = if (abrelRoatated) 180f else 0f,
+        animationSpec = tween(500),
+        label = Labels.Animation.ROTATION
+    )
+
     RaidCheckLists(maxItem = 2) { modifier ->
         RaidCheckBox(
             name = Raid.Name.ECHIDNA,
@@ -46,6 +53,13 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
             modifier = modifier,
             checked = viewModel.egirCheck,
             onCheckedChange = { viewModel.onEgirCheck() }
+        )
+
+        RaidCheckBox(
+            name = Raid.Name.ABRELSHUD_2,
+            modifier = modifier,
+            checked = viewModel.abrelCheck,
+            onCheckedChange = { viewModel.onAbrelCheck() }
         )
     }
 
@@ -153,4 +167,55 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
         )
     }
 
+    if (viewModel.abrelCheck) {
+        RaidCard(
+            bossImg = R.drawable.kazeroth_echidna,
+            isRotated = abrelRoatated,
+            rotaR = abrelRotaR,
+            onClick = { abrelRoatated = !abrelRoatated },
+            phaseCard = {
+                TwoPhase(
+                    rotaR = abrelRotaR,
+
+                    name = viewModel.abrelshud2.name,
+                    raidBossImg = R.drawable.logo_echidna,
+                    totalGold = viewModel.abrelshud2.totalGold,
+
+                    phaseOneLevel = viewModel.abrelshud2.onePhase.level,
+                    phaseOneGold = viewModel.abrelshud2.onePhase.totalGold,
+                    phaseOneSMC = viewModel.abrelshud2.onePhase.seeMoreCheck,
+                    phaseOneCC = viewModel.abrelshud2.onePhase.clearCheck,
+                    onOnePhaseLevelClicked = {
+                        viewModel.abrelshud2.onePhase.onLevelClicked()
+                        viewModel.sumGold()
+                    },
+                    onOnePhaseClearCheckBoxChecked = {
+                        viewModel.abrelshud2.onePhase.onClearCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                    onOnePhaseSeeMoreCheckBoxChecked = {
+                        viewModel.abrelshud2.onePhase.onSeeMoreCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+
+                    phaseTwoLevel = viewModel.abrelshud2.twoPhase.level,
+                    phaseTwoGold = viewModel.abrelshud2.twoPhase.totalGold,
+                    phaseTwoSMC = viewModel.abrelshud2.twoPhase.seeMoreCheck,
+                    phaseTwoCC = viewModel.abrelshud2.twoPhase.clearCheck,
+                    onTwoPhaseLevelClicked = {
+                        viewModel.abrelshud2.twoPhase.onLevelClicked()
+                        viewModel.sumGold()
+                    },
+                    onTwoPhaseClearCheckBoxChecked = {
+                        viewModel.abrelshud2.twoPhase.onClearCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                    onTwoPhaseSeeMoreCheckBoxChecked = {
+                        viewModel.abrelshud2.twoPhase.onSeeMoreCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                )
+            }
+        )
+    }
 }
