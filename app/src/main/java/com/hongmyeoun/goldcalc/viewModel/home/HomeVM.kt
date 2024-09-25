@@ -57,7 +57,6 @@ class HomeVM @Inject constructor(
     private fun getCharacters() {
         viewModelScope.launch(Dispatchers.IO) {
             characterRepository.getAll().collect {
-                Log.d("히힛", "${it}")
                 _characters.value = it
                 _totalWeeklyEarnGold.value = it.fastSumBy { character -> character.earnGold } + it.fastSumBy { character -> character.plusGold.toInt() } - it.fastSumBy { character -> character.minusGold.toInt() }
                 initProgressBar(it)

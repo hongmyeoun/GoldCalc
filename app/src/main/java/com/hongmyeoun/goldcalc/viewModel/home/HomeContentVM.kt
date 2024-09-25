@@ -1,6 +1,5 @@
 package com.hongmyeoun.goldcalc.viewModel.home
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -15,6 +14,7 @@ import com.hongmyeoun.goldcalc.model.homework.KazerothRaidModel
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.model.roomDB.character.Phase
+import com.hongmyeoun.goldcalc.model.roomDB.character.RaidList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -85,10 +85,26 @@ class HomeContentVM @Inject constructor(
     private fun getCharacter() {
         viewModelScope.launch(Dispatchers.IO) {
             characterRepository.getCharacterByName(charName).collect { character ->
-                Log.d("${character.name}", "${character.checkList.kazeroth[2]}")
                 character?.let { // 이걸 안하면 삭제시 없는 페이지에 없는 character(null)값이 들어와서 객체들을 불러오지 못해 튕김
-                    _character.value = it
-                    getModel(it)
+                    if (it.checkList.kazeroth.size < 3) {
+                        val abrelshud2 = RaidList(
+                            name = Raid.Name.ABRELSHUD_2,
+                            phases = listOf(Phase(), Phase())
+                        )
+
+                        val update = it.checkList.kazeroth.toMutableList()
+                        update.add(abrelshud2)
+
+                        val updateCheckList = it.checkList.copy(kazeroth = update)
+                        val updateChar = it.copy(checkList = updateCheckList)
+
+                        characterRepository.update(updateChar)
+                        _character.value = updateChar
+                        getModel(updateChar)
+                    } else {
+                        _character.value = it
+                        getModel(it)
+                    }
                 }
                 initTG(_character.value)
             }
