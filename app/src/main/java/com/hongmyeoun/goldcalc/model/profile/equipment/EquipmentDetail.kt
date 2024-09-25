@@ -688,8 +688,15 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
 
         withLineBreaks.split("\n").forEach { line ->
             namePattern.find(line)?.let { matchResult ->
-                val key = matchResult.groupValues[1].replace("\\s+".toRegex(), "").replace("</FONT>", "")
-                val value = matchResult.groupValues[2].replace("<BR>", "\n\n").trim()
+                // Clean up <FONT COLOR='...'> and </FONT> tags
+                val key = matchResult.groupValues[1]
+                    .replace(Regex("<FONT\\s+COLOR='[^']*'>"), "") // Removes <FONT COLOR='...'>
+                    .replace("</FONT>", "") // Removes </FONT>
+                    .replace("\\s+".toRegex(), "") // Removes extra spaces
+
+                val value = matchResult.groupValues[2]
+                    .replace("<BR>", "\n\n").trim()
+
                 nameValueList.add(key to value)
             }
         }
