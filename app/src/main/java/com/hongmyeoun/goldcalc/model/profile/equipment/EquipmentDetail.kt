@@ -445,7 +445,7 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
     private fun getGrindEffect(equipment: Equipment): String? {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
 
-        for (index in 5..6) {
+        for (index in 5..8) {
             val elementKey = Common.currentElementKey(index)
 
             if (tooltip.has(elementKey)) {
@@ -486,7 +486,7 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
     private fun getArkPassivePoint(equipment: Equipment): String? {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
 
-        for (index in 5..6) {
+        for (index in 5..8) {
             val elementKey = Common.currentElementKey(index)
 
             if (tooltip.has(elementKey)) {
