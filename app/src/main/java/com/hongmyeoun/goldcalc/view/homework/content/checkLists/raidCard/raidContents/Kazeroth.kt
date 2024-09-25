@@ -169,7 +169,7 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
 
     if (viewModel.abrelCheck) {
         RaidCard(
-            bossImg = R.drawable.kazeroth_echidna,
+            bossImg = R.drawable.kazeroth_abrelshud,
             isRotated = abrelRoatated,
             rotaR = abrelRotaR,
             onClick = { abrelRoatated = !abrelRoatated },
@@ -178,7 +178,7 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
                     rotaR = abrelRotaR,
 
                     name = viewModel.abrelshud2.name,
-                    raidBossImg = R.drawable.logo_echidna,
+                    raidBossImg = R.drawable.logo_abrelshud2,
                     totalGold = viewModel.abrelshud2.totalGold,
 
                     phaseOneLevel = viewModel.abrelshud2.onePhase.level,

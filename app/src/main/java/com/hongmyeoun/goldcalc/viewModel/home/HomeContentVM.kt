@@ -394,7 +394,7 @@ class GoldContentStateVM(initPhase: Int) : ViewModel() {
             Raid.Name.ECHIDNA -> R.drawable.kazeroth_echidna
             Raid.Name.BEHEMOTH -> R.drawable.epic_behemoth
             Raid.Name.EGIR -> R.drawable.kazeroth_egir
-            Raid.Name.ABRELSHUD_2 -> R.drawable.kazeroth_echidna
+            Raid.Name.ABRELSHUD_2 -> R.drawable.kazeroth_abrelshud
             else -> R.drawable.kazeroth_echidna
         }
     }
