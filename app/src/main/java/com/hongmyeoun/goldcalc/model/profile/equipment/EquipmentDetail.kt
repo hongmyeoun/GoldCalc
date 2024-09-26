@@ -661,12 +661,18 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                     val value = element.getAsJsonObject(TooltipStrings.MemberName.VALUE)
 
                     if (value.get(TooltipStrings.MemberName.ELEMENT_000).asString.contains(TooltipStrings.Contains.BRACELET)) {
+                        val itemTier = itemTier(tooltip)
                         val effect = value.get(TooltipStrings.MemberName.ELEMENT_001).asString
+                        if (itemTier >= 4) {
+                            val (effects, allStats, extra) = bracelet4tierSpliter(effect)
 
-                        val (effects, keyStats) = processStringFiltered(effect)
-                        val allStats = processString(effect)
+                            return Triple(effects, allStats, extra)
+                        } else {
+                            val (effects, keyStats) = bracelet3tierSpliter(effect)
+                            val allStats = threeTierAllStats(effect)
 
-                        return Triple(effects, keyStats, allStats)
+                            return Triple(effects, keyStats, allStats)
+                        }
                     }
                 }
             }
@@ -675,7 +681,57 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         return Triple(emptyList(), emptyList(), emptyList())
     }
 
-    private fun processStringFiltered(input: String): Pair<List<Pair<String, String>>, List<Pair<String, String>>> {
+    private fun bracelet4tierSpliter(input: String): Triple<List<Pair<String, String>>, List<Pair<String, String>>, List<Pair<String, String>>> {
+        val result = input.replace(Regex("<img[^>]*>"), "").replace("</img>", "")
+        val parts = result.split(Regex("<BR>", RegexOption.IGNORE_CASE))
+
+        val newInput = parts.map { it.trim() }.filter { it.isNotEmpty() }
+        return parseAndFilter(newInput)
+    }
+
+    private fun parseAndFilter(input: List<String>): Triple<List<Pair<String, String>>, List<Pair<String, String>>, List<Pair<String, String>>> {
+        val keywords = EquipmentConsts.COMBAT_STAT_LIST
+
+        // extra은 추가 특성(힘민지, 무공, 치적 등) (key, value 쌍)
+        val extra = mutableListOf<Pair<String, String>>()
+
+        // allstats는 전투 특성(치특신제인숙) (key, value 쌍)
+        val allstats = mutableListOf<Pair<String, String>>()
+
+        // effects는 특수 효과(추가특성 +a, 완전 특수 효과 등) (key, value 쌍)
+        val effects = mutableListOf<Pair<String, String>>()
+
+        for (item in input) {
+            // 조건 1: 항목이 "." 또는 ")"로 끝나는지 확인
+            if (item.endsWith(".") || item.endsWith(")")) {
+                effects.add(Pair("특수 효과", item)) // output3에 추가
+            } else {
+                // 각 아이템의 첫 단어가 키워드 리스트에 있는지 확인
+                val keyword = keywords.find { item.split(" ")[0] == it } // 첫 단어가 정확히 일치해야 함
+
+                if (keyword != null) {
+                    // 매칭된 경우: "키워드"와 그 뒤의 값으로 분리
+                    val value = item.removePrefix(keyword).trim() // 키워드를 제거하고 뒤의 값을 추출
+                    allstats.add(Pair(keyword, value)) // 키워드와 값의 쌍을 output2에 추가
+                } else {
+                    // 매칭되지 않은 경우: "+" 기준으로 key와 value로 분리
+                    val plusIndex = item.indexOf("+")
+                    if (plusIndex != -1) {
+                        val key = item.substring(0, plusIndex).trim() // "+" 앞 부분을 key로 설정
+                        val value = item.substring(plusIndex).trim() // "+"부터 끝까지를 value로 설정
+                        extra.add(Pair(key, value))
+                    } else {
+                        // "+"가 없을 경우 해당 항목을 처리하지 않음 (혹은 처리 방식에 따라 달라질 수 있음)
+                        extra.add(Pair(item, "")) // "+"가 없는 경우 value는 빈 값으로 처리
+                    }
+                }
+            }
+        }
+
+        return Triple(effects, allstats, allstats + extra) // 세 개의 결과를 반환
+    }
+
+    private fun bracelet3tierSpliter(input: String): Pair<List<Pair<String, String>>, List<Pair<String, String>>> {
         // <BR> 태그를 줄 나누기로 변환
         var withLineBreaks = input.replace(Regex("(?i)<BR>(?=[<\\[])"), "\n<BR>")
 
@@ -726,7 +782,7 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         return nameValueList to keyValueList
     }
 
-    private fun processString(input: String): List<Pair<String, String>> {
+    private fun threeTierAllStats(input: String): List<Pair<String, String>> {
         // <BR> 태그를 줄 나누기로 변환
         var withLineBreaks = input.replace(Regex("(?i)<BR>(?=[<\\[])"), "\n<BR>")
 
