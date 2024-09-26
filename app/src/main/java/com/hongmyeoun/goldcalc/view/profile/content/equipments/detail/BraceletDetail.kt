@@ -143,11 +143,13 @@ private fun Effects(effectName: String, tooltip: String, viewModel: EquipmentVM)
             Spacer(modifier = Modifier.width(8.dp))
 
             if (effectOptionLevel.isEmpty()) {
-                TextChip(
-                    text = effectName,
-                    borderless = true,
-                    customBGColor = LightGrayBG
-                )
+                if (effectName != Profile.EFFECT) {
+                    TextChip(
+                        text = effectName,
+                        borderless = true,
+                        customBGColor = LightGrayBG
+                    )
+                }
             } else {
                 TextChip(
                     text = viewModel.braceletColoredText(effectName, effectOptionLevel),

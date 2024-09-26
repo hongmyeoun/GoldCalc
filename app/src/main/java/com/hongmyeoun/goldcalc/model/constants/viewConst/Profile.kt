@@ -15,7 +15,7 @@ object Profile {
     const val MIDDLE_DOT = "·"
 
     const val STAT = "특성"
-    const val EFFECT = "효과"
+    const val EFFECT = "특수 효과"
 
     const val ACC_QUAL = "악세 품질"
     const val TOTAL_STAT = "특성합"

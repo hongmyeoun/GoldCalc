@@ -343,6 +343,7 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
             "결투의 대가" to "결대",
             "급소 타격" to "급타",
             "기습의 대가" to "기습",
+            "구슬동자" to "구동",
             "돌격대장" to "돌대",
             "속전속결" to "속속",
             "슈퍼 차지" to "슈차",
