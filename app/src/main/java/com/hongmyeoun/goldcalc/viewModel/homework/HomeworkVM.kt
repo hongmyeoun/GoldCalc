@@ -405,7 +405,24 @@ class HomeworkVM @Inject constructor(
                             ),
                         ),
                         isCheck = kazerothRaid.egirCheck
-                    )
+                    ),
+                    originalCheckList.kazeroth[2].copy( // 아브렐슈드2
+                        phases = listOf(
+                            originalCheckList.kazeroth[2].phases[0].copy(
+                                // 1페
+                                difficulty = kazerothRaid.abrelshud2.onePhase.level,
+                                isClear =  if (kazerothRaid.abrelCheck) kazerothRaid.abrelshud2.onePhase.clearCheck else false,
+                                mCheck = if (kazerothRaid.abrelCheck) kazerothRaid.abrelshud2.onePhase.seeMoreCheck else false,
+                            ),
+                            originalCheckList.kazeroth[1].phases[1].copy(
+                                // 2페
+                                difficulty = kazerothRaid.abrelshud2.twoPhase.level,
+                                isClear =  if (kazerothRaid.abrelCheck) kazerothRaid.abrelshud2.twoPhase.clearCheck else false,
+                                mCheck = if (kazerothRaid.abrelCheck) kazerothRaid.abrelshud2.twoPhase.seeMoreCheck else false,
+                            ),
+                        ),
+                        isCheck = kazerothRaid.abrelCheck
+                    ),
                 ),
                 epic = listOf(
                     originalCheckList.epic[0].copy( // 베히모스
@@ -429,6 +446,8 @@ class HomeworkVM @Inject constructor(
             )
 
             val updatedRaidInfo = originalRaidInfo?.copy(
+                abrel2Phase = if (!kazerothRaid.abrelCheck) 0 else originalRaidInfo.abrel2Phase,
+                abrel2TotalGold = if (!kazerothRaid.abrelCheck) 0 else originalRaidInfo.abrel2TotalGold,
                 egirPhase = if (!kazerothRaid.egirCheck) 0 else originalRaidInfo.egirPhase,
                 egirTotalGold = if (!kazerothRaid.egirCheck) 0 else originalRaidInfo.egirTotalGold,
                 behemothPhase = if (!epicRaid.beheCheck) 0 else originalRaidInfo.behemothPhase,
@@ -455,7 +474,7 @@ class HomeworkVM @Inject constructor(
 
             var updateEarnGold = original.earnGold
             updatedRaidInfo?.let {
-                updateEarnGold = updatedRaidInfo.egirTotalGold + updatedRaidInfo.behemothTotalGold + updatedRaidInfo.echidnaTotalGold + updatedRaidInfo.kamenTotalGold + updatedRaidInfo.ivoryTotalGold + updatedRaidInfo.illiakanTotalGold + updatedRaidInfo.kayangelTotalGold + updatedRaidInfo.abrelTotalGold + updatedRaidInfo.koukuTotalGold + updatedRaidInfo.biackissTotalGold + updatedRaidInfo.valtanTotalGold
+                updateEarnGold = updatedRaidInfo.abrel2TotalGold + updatedRaidInfo.egirTotalGold + updatedRaidInfo.behemothTotalGold + updatedRaidInfo.echidnaTotalGold + updatedRaidInfo.kamenTotalGold + updatedRaidInfo.ivoryTotalGold + updatedRaidInfo.illiakanTotalGold + updatedRaidInfo.kayangelTotalGold + updatedRaidInfo.abrelTotalGold + updatedRaidInfo.koukuTotalGold + updatedRaidInfo.biackissTotalGold + updatedRaidInfo.valtanTotalGold
             }
 
             original.copy(

@@ -31,6 +31,7 @@ import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.PANTS
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.RING
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.SHOULDER
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.WEAPON
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
 import com.hongmyeoun.goldcalc.model.profile.equipment.BraceletEffects
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterAccessory
 import com.hongmyeoun.goldcalc.model.profile.equipment.CharacterEquipment
@@ -46,7 +47,6 @@ import com.hongmyeoun.goldcalc.ui.theme.EsterColor
 import com.hongmyeoun.goldcalc.ui.theme.EstherBG
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.LegendaryTextColor
-import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
 import com.hongmyeoun.goldcalc.ui.theme.OrangeQual
 import com.hongmyeoun.goldcalc.ui.theme.PurpleQual
 import com.hongmyeoun.goldcalc.ui.theme.RareBG
@@ -300,7 +300,7 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
             "상" -> LegendaryTextColor
             "중" -> EpicTextColor
             "하" -> RareTextColor
-            else -> LightGrayBG
+            else -> Color.White
         }
     }
 
@@ -310,13 +310,32 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
 
     fun braceletColoredText(effectName: String, effectOptionLevel: String): AnnotatedString {
         return buildAnnotatedString {
-            append("$effectName ")
+            if (effectName != Profile.EFFECT) {
+                append("$effectName ")
+            }
             withStyle(
                 style = SpanStyle(
                     color = grindOptionColor(effectOptionLevel)
                 )
             ) {
                 append(effectOptionLevel)
+            }
+        }
+    }
+
+    fun statLevel(name: String, tooltip: String) : String {
+        return BraceletEffects.extraStatQual(name, tooltip)
+    }
+
+    fun statColoredText(name: String, statLevel: String, statValue: String) : AnnotatedString {
+        return buildAnnotatedString {
+            append("$name ")
+            withStyle(
+                style = SpanStyle(
+                    color = grindOptionColor(statLevel)
+                )
+            ) {
+                append(statValue)
             }
         }
     }
@@ -343,6 +362,7 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
             "결투의 대가" to "결대",
             "급소 타격" to "급타",
             "기습의 대가" to "기습",
+            "구슬동자" to "구동",
             "돌격대장" to "돌대",
             "속전속결" to "속속",
             "슈퍼 차지" to "슈차",

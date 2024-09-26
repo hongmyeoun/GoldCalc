@@ -69,6 +69,19 @@ fun HomeworkProgress(
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
+        if (character.checkList.kazeroth[2].phases[0].isClear) {
+            item {
+                val abrel2VM = remember { GoldContentStateVM(character.raidPhaseInfo.abrel2Phase) }
+
+                ProgressState(
+                    enabled = viewModel.enabled,
+                    phase = viewModel.phaseCalc(character.checkList.kazeroth[2].phases),
+                    raidName = Raid.Name.ABRELSHUD_2,
+                    viewModel = abrel2VM,
+                    isListView = isListView
+                ) { viewModel.abrel2GoldCalc(it) }
+            }
+        }
         if (character.checkList.kazeroth[1].phases[0].isClear) {
             item {
                 val egirVM = remember { GoldContentStateVM(character.raidPhaseInfo.egirPhase) }

@@ -65,7 +65,7 @@ fun BraceletDetail(
                         IconAndName(viewModel, it)
 
                         it.extraStats.forEach { (statName, statValue) ->
-                            Stats(statName, statValue)
+                            Stats(statName, statValue, viewModel)
                         }
 
                         it.specialEffect.forEach { (effectName, tooltip) ->
@@ -111,7 +111,9 @@ private fun IconAndName(
 }
 
 @Composable
-private fun Stats(statName: String, statValue: String) {
+private fun Stats(statName: String, statValue: String, viewModel: EquipmentVM) {
+    val statLevel = viewModel.statLevel(statName, statValue)
+
     Row {
         TextChip(
             text = Profile.STAT,
@@ -121,7 +123,7 @@ private fun Stats(statName: String, statValue: String) {
         Spacer(modifier = Modifier.width(8.dp))
 
         TextChip(
-            text = "$statName $statValue",
+            text = viewModel.statColoredText(statName, statLevel, statValue),
             borderless = true,
             customBGColor = LightGrayBG
         )
@@ -143,11 +145,13 @@ private fun Effects(effectName: String, tooltip: String, viewModel: EquipmentVM)
             Spacer(modifier = Modifier.width(8.dp))
 
             if (effectOptionLevel.isEmpty()) {
-                TextChip(
-                    text = effectName,
-                    borderless = true,
-                    customBGColor = LightGrayBG
-                )
+                if (effectName != Profile.EFFECT) {
+                    TextChip(
+                        text = effectName,
+                        borderless = true,
+                        customBGColor = LightGrayBG
+                    )
+                }
             } else {
                 TextChip(
                     text = viewModel.braceletColoredText(effectName, effectOptionLevel),

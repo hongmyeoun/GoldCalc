@@ -14,6 +14,7 @@ import com.hongmyeoun.goldcalc.model.homework.KazerothRaidModel
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.model.roomDB.character.Phase
+import com.hongmyeoun.goldcalc.model.roomDB.character.RaidList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -53,6 +54,7 @@ class HomeContentVM @Inject constructor(
 
     private val _echidnaTG = MutableStateFlow(0)
     private val _egirTG = MutableStateFlow(0)
+    private val _ablreshudTG2 = MutableStateFlow(0)
 
     private val _behemothTG = MutableStateFlow(0)
 
@@ -74,7 +76,7 @@ class HomeContentVM @Inject constructor(
     private fun calcTotalGold() {
         val commandTG = _kamenTG.value + _illiakanTG.value + _abrelshudTG.value + _koukuSatonTG.value + _biackissTG.value + _valtanTG.value
         val abyssDungeonTG = _ivoryTowerTG.value + _kayangelTG.value
-        val kazerothTG = _echidnaTG.value + _egirTG.value
+        val kazerothTG = _ablreshudTG2.value + _egirTG.value + _echidnaTG.value
         val epicTG = _behemothTG.value
         _totalGold.value = commandTG + abyssDungeonTG + kazerothTG + epicTG
         updateProgressPercentage()
@@ -84,8 +86,25 @@ class HomeContentVM @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             characterRepository.getCharacterByName(charName).collect { character ->
                 character?.let { // 이걸 안하면 삭제시 없는 페이지에 없는 character(null)값이 들어와서 객체들을 불러오지 못해 튕김
-                    _character.value = it
-                    getModel(it)
+                    if (it.checkList.kazeroth.size < 3) {
+                        val abrelshud2 = RaidList(
+                            name = Raid.Name.ABRELSHUD_2,
+                            phases = listOf(Phase(), Phase())
+                        )
+
+                        val update = it.checkList.kazeroth.toMutableList()
+                        update.add(abrelshud2)
+
+                        val updateCheckList = it.checkList.copy(kazeroth = update)
+                        val updateChar = it.copy(checkList = updateCheckList)
+
+                        characterRepository.update(updateChar)
+                        _character.value = updateChar
+                        getModel(updateChar)
+                    } else {
+                        _character.value = it
+                        getModel(it)
+                    }
                 }
                 initTG(_character.value)
             }
@@ -117,6 +136,7 @@ class HomeContentVM @Inject constructor(
         _echidnaTG.value = character.raidPhaseInfo.echidnaTotalGold
         _behemothTG.value = character.raidPhaseInfo.behemothTotalGold
         _egirTG.value = character.raidPhaseInfo.egirTotalGold
+        _ablreshudTG2.value = character.raidPhaseInfo.abrel2TotalGold
 
         _maxGold.value = character.weeklyGold
         _remainGold.value = _maxGold.value - _totalGold.value
@@ -331,6 +351,22 @@ class HomeContentVM @Inject constructor(
             characterRepository.update(update)
         }
     }
+
+    fun abrel2GoldCalc(nowPhase: Int) {
+        _ablreshudTG2.value = when (nowPhase) {
+            1 -> { _kzModel.value.abrelshud.onePhase.totalGold }
+            2 -> { _kzModel.value.abrelshud.totalGold }
+            else -> { 0 }
+        }
+
+        calcTotalGold()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val update = _character.value.copy(earnGold = _totalGold.value,raidPhaseInfo = _character.value.raidPhaseInfo.copy(egirPhase = nowPhase, egirTotalGold = _ablreshudTG2.value))
+            characterRepository.update(update)
+        }
+    }
+
 }
 
 class GoldContentStateVM(initPhase: Int) : ViewModel() {
@@ -358,6 +394,7 @@ class GoldContentStateVM(initPhase: Int) : ViewModel() {
             Raid.Name.ECHIDNA -> R.drawable.kazeroth_echidna
             Raid.Name.BEHEMOTH -> R.drawable.epic_behemoth
             Raid.Name.EGIR -> R.drawable.kazeroth_egir
+            Raid.Name.ABRELSHUD_2 -> R.drawable.kazeroth_abrelshud
             else -> R.drawable.kazeroth_echidna
         }
     }
