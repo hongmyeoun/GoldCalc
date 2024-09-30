@@ -682,8 +682,10 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
     }
 
     private fun bracelet4tierSpliter(input: String): Triple<List<Pair<String, String>>, List<Pair<String, String>>, List<Pair<String, String>>> {
-        val result = input.replace(Regex("<img[^>]*>"), "").replace("</img>", "")
-        val parts = result.split(Regex("<BR>", RegexOption.IGNORE_CASE))
+        val result = input.replace(Regex("<BR>(?=<img[^>]*>)", RegexOption.IGNORE_CASE), "")
+            .replace(Regex("<img[^>]*>"), "SPLIT_MARKER")
+            .replace("</img>", "")
+        val parts = result.split("SPLIT_MARKER")
 
         val newInput = parts.map { it.trim() }.filter { it.isNotEmpty() }
         return parseAndFilter(newInput)
