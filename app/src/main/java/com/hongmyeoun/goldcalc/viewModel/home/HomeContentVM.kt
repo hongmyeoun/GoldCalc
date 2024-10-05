@@ -362,7 +362,7 @@ class HomeContentVM @Inject constructor(
         calcTotalGold()
 
         viewModelScope.launch(Dispatchers.IO) {
-            val update = _character.value.copy(earnGold = _totalGold.value,raidPhaseInfo = _character.value.raidPhaseInfo.copy(egirPhase = nowPhase, egirTotalGold = _ablreshudTG2.value))
+            val update = _character.value.copy(earnGold = _totalGold.value,raidPhaseInfo = _character.value.raidPhaseInfo.copy(abrel2Phase = nowPhase, abrel2TotalGold = _ablreshudTG2.value))
             characterRepository.update(update)
         }
     }
