@@ -309,7 +309,20 @@ private fun Script(kzVM: KazerothRaidVM) {
                     Text(text = "${Homework.PHASE_TWO} ${kzVM.egir.twoPhase.level} : ${kzVM.egir.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
                 }
             )
+        }
 
+        Row(
+            modifier = Modifier.padding(if (kzVM.abrelCheck) 16.dp else 0.dp)
+        ) {
+            PhaseInfo(
+                isCheck = kzVM.abrelCheck,
+                modifier = Modifier.weight(1f),
+                raidName = Raid.Name.ABRELSHUD_2,
+                phaseInfo = {
+                    Text(text = "${Homework.PHASE_ONE} ${kzVM.abrelshud2.onePhase.level} : ${kzVM.abrelshud2.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_TWO} ${kzVM.abrelshud2.twoPhase.level} : ${kzVM.abrelshud2.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
+                }
+            )
         }
     }
 }

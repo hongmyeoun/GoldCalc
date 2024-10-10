@@ -24,9 +24,9 @@ class Raid {
 
         const val KAZEROTH = "카제로스"
         const val KAZEROTH_RAID = "카제로스 레이드"
-        const val ECHIDNA = "서막(에키드나)"
-        const val EGIR = "1막(에기르)"
-        const val ABRELSHUD_2 = "2막(아브렐슈드)"
+        const val ECHIDNA = "서막 : 에키드나"
+        const val EGIR = "1막 : 에기르"
+        const val ABRELSHUD_2 = "2막 : 아브렐슈드"
 
         const val EPIC = "에픽"
         const val EPIC_RAID = "에픽 레이드"
