@@ -15,15 +15,17 @@ android {
         applicationId = "com.hongmyeoun.goldcalc"
         minSdk = 26
         targetSdk = 34
-        versionCode = 20
-        versionName = "1.1.3"
+        versionCode = 21
+        versionName = "1.1.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
 
-        buildConfigField("String", "API_KEY", getApiKey("apiKey"))
+        buildConfigField("String", "API_KEY", getKey("apiKey"))
+        buildConfigField("String", "AD_APP_ID", getKey("admobString"))
+        manifestPlaceholders["Admob_ID"] = getKey("admobID")
     }
 
     buildTypes {
@@ -109,8 +111,11 @@ dependencies {
 
     // Reorderable List : Drag N Drop
     implementation("sh.calvin.reorderable:reorderable:2.1.1")
+
+    // ADMob
+    implementation("com.google.android.gms:play-services-ads:23.3.0")
 }
 
-fun getApiKey(propertyKey: String): String {
+fun getKey(propertyKey: String): String {
     return gradleLocalProperties(rootDir).getProperty(propertyKey)
 }

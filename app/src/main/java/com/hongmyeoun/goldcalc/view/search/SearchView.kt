@@ -15,6 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
+import com.hongmyeoun.goldcalc.view.common.BannersAds
 import com.hongmyeoun.goldcalc.view.search.content.SearchContent
 import com.hongmyeoun.goldcalc.view.search.topbar.SearchTopBar
 import com.hongmyeoun.goldcalc.viewModel.search.SearchVM
@@ -48,6 +49,7 @@ fun SearchView(
                 focusState = focusState
             )
         },
+        bottomBar = { BannersAds() },
         containerColor = ImageBG,
         contentWindowInsets = WindowInsets(0,0,0,0)
     ) { paddingValues ->
