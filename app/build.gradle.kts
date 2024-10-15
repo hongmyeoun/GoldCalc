@@ -15,8 +15,8 @@ android {
         applicationId = "com.hongmyeoun.goldcalc"
         minSdk = 26
         targetSdk = 34
-        versionCode = 21
-        versionName = "1.1.4"
+        versionCode = 22
+        versionName = "1.1.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -24,7 +24,7 @@ android {
         }
 
         buildConfigField("String", "API_KEY", getKey("apiKey"))
-        buildConfigField("String", "AD_APP_ID", getKey("admobString"))
+        buildConfigField("String", "AD_BANNER", getKey("admobBanner"))
         manifestPlaceholders["Admob_ID"] = getKey("admobID")
     }
 
