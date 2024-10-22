@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -49,12 +50,13 @@ fun ProfileContent(
     val verticalScrollState = rememberScrollState()
 
     var isLoading by remember { mutableStateOf(true) }
+    var isDelay by remember { mutableStateOf(true) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(charName) {
         viewModel.getCharDetails(charName)
         viewModel.isSavedName(charName)
-        delay(500L)
-        isLoading = false
+        delay(2000L)
+        isDelay = false
     }
 
     // 캐릭터 정보
@@ -62,10 +64,18 @@ fun ProfileContent(
     val arkPassive by viewModel.arkPassive.collectAsState()
     val isSaved by viewModel.isSaved.collectAsState()
 
+    LaunchedEffect(charProfile, arkPassive) {
+        if (charProfile != null && arkPassive != null) {
+            snapshotFlow { true }.collect {
+                isLoading = false
+            }
+        }
+    }
+
     charProfile?.let { profile ->
         Crossfade(targetState = isLoading, label = Labels.Crossfade.Loading) { loading ->
             if (loading) {
-                LoadingScreen()
+                LoadingScreen(isBackground = false)
             } else {
                 Column(
                     modifier = Modifier
@@ -93,7 +103,11 @@ fun ProfileContent(
             }
         }
     } ?: run {
-        NoCharacter(paddingValues = paddingValues)
+        if (!isDelay) {
+            NoCharacter(paddingValues = paddingValues)
+        } else {
+            LoadingScreen(isBackground = false)
+        }
     }
 }
 
