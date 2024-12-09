@@ -479,8 +479,8 @@ class HomeworkVM @Inject constructor(
 
             original.copy(
                 weeklyGold = totalGold,
-                plusGold = plusGold,
-                minusGold = minusGold,
+                plusGold = plusGold.ifEmpty { "0" },
+                minusGold = minusGold.ifEmpty { "0" },
                 earnGold = updateEarnGold,
                 checkList = updatedCheckList?: original.checkList,
                 raidPhaseInfo = updatedRaidInfo?: original.raidPhaseInfo
