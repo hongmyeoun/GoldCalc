@@ -13,11 +13,13 @@ enum class KazerothRaid(
         boss = Raid.Name.ECHIDNA,
         seeMoreGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.ECHIDNA,
-            Raid.Difficulty.HARD to Gold.SeeMore.Hard.ECHIDNA
+            Raid.Difficulty.HARD to Gold.SeeMore.Hard.ECHIDNA,
+            Raid.Difficulty.SOLO to Gold.SeeMore.Solo.ECHIDNA
         ),
         clearGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.Clear.Normal.ECHIDNA,
-            Raid.Difficulty.HARD to Gold.Clear.Hard.ECHIDNA
+            Raid.Difficulty.HARD to Gold.Clear.Hard.ECHIDNA,
+            Raid.Difficulty.SOLO to Gold.Clear.Solo.ECHIDNA
         )
     ),
     EGIR(
@@ -73,9 +75,9 @@ class KazerothRaidModel(character: Character?) {
 class Echidna(character: Character?) {
     val name = KazerothRaid.ECHIDNA.boss
     private val seeMoreGold =
-        KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.NORMAL).first + KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.HARD).first
+        KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.NORMAL).first + KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.HARD).first + KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.SOLO).first
     private val clearGold =
-        KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.NORMAL).second + KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.HARD).second
+        KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.NORMAL).second + KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.HARD).second + KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.SOLO).second
 
     var isChecked = character?.checkList?.kazeroth?.get(0)?.isCheck ?: false
 
@@ -90,10 +92,13 @@ class Echidna(character: Character?) {
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
         isChecked = isChecked,
+        noSolo = false,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[2],
+        seeMoreGoldS = seeMoreGold[4],
         clearGoldN = clearGold[0],
-        clearGoldH = clearGold[2]
+        clearGoldH = clearGold[2],
+        clearGoldS = clearGold[4]
     )
 
     private val getTwoPhase = character?.checkList?.kazeroth?.get(0)?.phases?.get(1)
@@ -107,10 +112,13 @@ class Echidna(character: Character?) {
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
         isChecked = isChecked,
+        noSolo = false,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[3],
+        seeMoreGoldS = seeMoreGold[5],
         clearGoldN = clearGold[1],
-        clearGoldH = clearGold[3]
+        clearGoldH = clearGold[3],
+        clearGoldS = clearGold[5]
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold

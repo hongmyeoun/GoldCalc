@@ -78,11 +78,13 @@ enum class CommandBoss(
         boss = Raid.Name.KAMEN,
         seeMoreGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.KAMEN,
-            Raid.Difficulty.HARD to Gold.SeeMore.Hard.KAMEN
+            Raid.Difficulty.HARD to Gold.SeeMore.Hard.KAMEN,
+            Raid.Difficulty.SOLO to Gold.SeeMore.Solo.KAMEN
         ),
         clearGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.Clear.Normal.KAMEN,
-            Raid.Difficulty.HARD to Gold.Clear.Hard.KAMEN
+            Raid.Difficulty.HARD to Gold.Clear.Hard.KAMEN,
+            Raid.Difficulty.SOLO to Gold.Clear.Solo.KAMEN
         )
     );
 
@@ -539,8 +541,8 @@ class Illiakan(character: Character?) {
 
 class Kamen(character: Character?) {
     var name = CommandBoss.KAMEN.boss
-    private val seeMoreGold = CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.HARD).first
-    private val clearGold = CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.HARD).second
+    private val seeMoreGold = CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.HARD).first + CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.SOLO).first
+    private val clearGold = CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.HARD).second + CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.SOLO).second
 
     var isChecked = character?.checkList?.command?.get(5)?.isCheck ?: false
 
@@ -555,10 +557,13 @@ class Kamen(character: Character?) {
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
         isChecked = isChecked,
+        noSolo = false,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[4],
+        seeMoreGoldS = seeMoreGold[8],
         clearGoldN = clearGold[0],
-        clearGoldH = clearGold[4]
+        clearGoldH = clearGold[4],
+        clearGoldS = clearGold[8]
     )
 
     private val getTwoPhase = character?.checkList?.command?.get(5)?.phases?.get(1)
@@ -572,10 +577,13 @@ class Kamen(character: Character?) {
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
         isChecked = isChecked,
+        noSolo = false,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[5],
+        seeMoreGoldS = seeMoreGold[9],
         clearGoldN = clearGold[1],
-        clearGoldH = clearGold[5]
+        clearGoldH = clearGold[5],
+        clearGoldS = clearGold[9]
     )
 
     private val getThreePhase = character?.checkList?.command?.get(5)?.phases?.get(2)
@@ -588,10 +596,13 @@ class Kamen(character: Character?) {
         isClearCheck = threePhaseIsClear,
         moreCheck = threePhaseMCheck,
         isChecked = isChecked,
+        noSolo = false,
         seeMoreGoldN = seeMoreGold[2],
         seeMoreGoldH = seeMoreGold[6],
+        seeMoreGoldS = seeMoreGold[10],
         clearGoldN = clearGold[2],
-        clearGoldH = clearGold[6]
+        clearGoldH = clearGold[6],
+        clearGoldS = clearGold[10]
     )
 
     private val getFourPhase = character?.checkList?.command?.get(5)?.phases?.get(3)
@@ -604,10 +615,13 @@ class Kamen(character: Character?) {
         isClearCheck = fourPhaseIsClear,
         moreCheck = fourPhaseMCheck,
         isChecked = isChecked,
+        noSolo = false,
         seeMoreGoldN = seeMoreGold[3],
         seeMoreGoldH = seeMoreGold[7],
+        seeMoreGoldS = seeMoreGold[11],
         clearGoldN = clearGold[3],
-        clearGoldH = clearGold[7]
+        clearGoldH = clearGold[7],
+        clearGoldS = clearGold[11]
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold + fourPhase.totalGold
