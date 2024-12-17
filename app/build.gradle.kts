@@ -15,8 +15,8 @@ android {
         applicationId = "com.hongmyeoun.goldcalc"
         minSdk = 26
         targetSdk = 34
-        versionCode = 23
-        versionName = "1.1.6"
+        versionCode = 24
+        versionName = "1.1.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
