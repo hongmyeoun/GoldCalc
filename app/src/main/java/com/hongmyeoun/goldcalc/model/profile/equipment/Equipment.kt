@@ -26,7 +26,6 @@ data class CharacterEquipment(
   val transcendenceLevel: String, // 초월 단계
   val transcendenceTotal: String, // 초월 레벨
   val highUpgradeLevel: String, // 상급 재련 강화단계
-  val setOption: String, // 세트옵션(ex: 갈망)
   val elixirSetOption: String // 엘릭서 세트옵
 ) : CharacterItem
 
@@ -36,11 +35,6 @@ data class CharacterAccessory(
   val name: String,
   val itemQuality: Int,
   val itemIcon: String,
-  val combatStat1: String?,
-  val combatStat2: String?,
-  val engraving1: String,
-  val engraving2: String,
-  val engraving3: String,
   val grindEffect: String?,
   val arkPassivePoint: String?
 ) : CharacterItem
