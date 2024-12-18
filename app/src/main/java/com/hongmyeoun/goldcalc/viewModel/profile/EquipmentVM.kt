@@ -93,55 +93,11 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
 
     init {
         _accessoryAvgQuality.value = getAccessoryAvgQuality(characterEquipment)
-        _setOption.value = getSetoption(characterEquipment)
-        _totalCombatStat.value = getSumCombatStat(characterEquipment)
     }
 
     private fun getAccessoryAvgQuality(equipment: List<CharacterItem>): Double {
         val accessoryTotalQuality = equipment.filterIsInstance<CharacterAccessory>().map { it.itemQuality }
         return if (accessoryTotalQuality.isNotEmpty()) accessoryTotalQuality.average() else 0.0
-    }
-
-    private fun getSetoption(equipment: List<CharacterItem>): String {
-        val setOptions = equipment.filterIsInstance<CharacterEquipment>().map { it.setOption }
-        val setOptionGroups = setOptions.map {
-            val parts = it.split(" ")
-            val option = parts.dropLast(1).joinToString(" ")
-            val level = parts.last().toIntOrNull() ?: 0 // 숫자로 변환이 안되면 0으로 처리
-            option to level
-        }.groupBy({ it.first }, { it.second })
-
-        val formattedSetOptions = setOptionGroups.map { (option, levels) ->
-            val count = levels.size
-            val averageLevel = levels.average()
-
-            val formattedLevel = if (averageLevel % 1 == 0.0) averageLevel.toInt().toString() else "%.1f".format(averageLevel)
-
-            "$count$option Lv.$formattedLevel"
-        }
-
-        return formattedSetOptions.joinToString(", ")
-    }
-
-    private fun getSumCombatStat(equipment: List<CharacterItem>): Int {
-        var combatStatOne = 0
-        var combatStatTwo = 0
-
-        equipment.filterIsInstance<CharacterAccessory>().forEach { accessory ->
-            accessory.combatStat1?.let {
-                combatStatOne += it.split(" ")[1].removePrefix("+").toIntOrNull() ?: 0
-            }
-            accessory.combatStat2?.let {
-                combatStatTwo += it.split(" ")[1].removePrefix("+").toIntOrNull() ?: 0
-            }
-        }
-
-        return combatStatOne + combatStatTwo
-    }
-
-
-    fun setOptionName(equipment: CharacterEquipment): String {
-        return equipment.setOption.split(" ").first()
     }
 
     fun sumElixirLevel(equipment: List<CharacterItem>): Int {
@@ -232,51 +188,20 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
     }
 
     fun getStoneColor(level: String): Color {
-        return if (level.toInt() >= 9) {
+        return if (level.toInt() >= 3) {
             OrangeQual
-        } else if (level.toInt() in 7 until 9) {
+        } else if (level.toInt() == 2) {
             PurpleQual
-        } else if (level.toInt() in 5 until 7) {
+        } else if (level.toInt() == 1 ) {
             BlueQual
         } else {
             RedQual
         }
     }
 
-    fun simplyEngravingName(engraving: String): String {
-        val setOption = onlySetOption(engraving)
-        val level = engraving.split(" ").last()
-        return "$setOption $level"
-    }
-
-    fun onlySetOption(engraving: String): String {
-        val regex = Regex("""^[^\d]+""")
-        val match = regex.find(engraving)?.value?.trim() ?: ""
-        return getSimpleEngraving(match)
-    }
-
     fun grindEffectSize(input: String?): String {
         val inputSize = input?.split("\n")?.size
         return if (inputSize != null) "연마 +$inputSize" else "연마 없음"
-    }
-
-    fun arkPassiveEngLv(engLv: Int?): String? {
-        return when (engLv) {
-            6 -> { "Lv.1" }
-            in 7..8 -> { "Lv.2" }
-            9 -> { "Lv.3" }
-            10 -> { "Lv.4" }
-            else -> null
-        }
-    }
-
-    fun arkPassiveEngPenLv(engLv: Int?): String? {
-        return when (engLv) {
-            in 5..6 -> { "Lv.1" }
-            in 7..9 -> { "Lv.2" }
-            10 -> { "Lv.3" }
-            else -> null
-        }
     }
 
     fun arkPoint(input: String): Int {

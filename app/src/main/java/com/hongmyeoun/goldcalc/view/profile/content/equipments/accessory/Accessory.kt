@@ -115,8 +115,7 @@ fun Accessory(
         if (abilityStone.find { it.type == EquipmentConsts.ABILITY_STONE } != null) {
             AbilityStoneUI(
                 abilityStone = abilityStone.find { it.type == EquipmentConsts.ABILITY_STONE }!!,
-                viewModel = viewModel,
-                isArkPassive = isArkPassive
+                viewModel = viewModel
             )
         } else {
             EquipmentIcon(
@@ -154,28 +153,12 @@ fun AccessoryUI(
                 viewModel = viewModel,
                 grade = accessory.grade
             )
-            if (!accessory.combatStat1.isNullOrEmpty()) {
-                val textColor = if (isArkPassive) Color(0xFF787878) else Color.White
-                Column {
-                    Text(
-                        text = accessory.combatStat1,
-                        style = normalTextStyle(textColor)
-                    )
-                    if (!accessory.combatStat2.isNullOrEmpty() && accessory.type == EquipmentConsts.NECKLACE) {
-                        Text(
-                            text = accessory.combatStat2,
-                            style = normalTextStyle(textColor)
-                        )
-                    }
-                }
-            } else if (!accessory.arkPassivePoint.isNullOrEmpty()) {
-                Column {
-                    Spacer(modifier = Modifier.height(6.dp))
-                    Text(
-                        text = viewModel.grindEffectSize(accessory.grindEffect),
-                        style = normalTextStyle()
-                    )
-                }
+            Column {
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = viewModel.grindEffectSize(accessory.grindEffect),
+                    style = normalTextStyle()
+                )
             }
         }
     }
@@ -185,8 +168,7 @@ fun AccessoryUI(
 @Composable
 fun AbilityStoneUI(
     abilityStone: AbilityStone,
-    viewModel: EquipmentVM,
-    isArkPassive: Boolean
+    viewModel: EquipmentVM
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -203,22 +185,19 @@ fun AbilityStoneUI(
             EngravingStr(
                 viewModel = viewModel,
                 engravingName = abilityStone.engraving1Op,
-                engravingLv = abilityStone.engraving1Lv,
-                isArkPassive = isArkPassive
+                engravingLv = abilityStone.engraving1Lv
             )
 
             EngravingStr(
                 viewModel = viewModel,
                 engravingName = abilityStone.engraving2Op,
-                engravingLv = abilityStone.engraving2Lv,
-                isArkPassive = isArkPassive
+                engravingLv = abilityStone.engraving2Lv
             )
 
             EngravingStr(
                 viewModel = viewModel,
                 engravingName = abilityStone.engraving3Op,
                 engravingLv = abilityStone.engraving3Lv,
-                isArkPassive = isArkPassive,
                 isLast = true
             )
         }
@@ -233,7 +212,6 @@ fun EngravingStr(
     viewModel: EquipmentVM,
     engravingName: String,
     engravingLv: Int?,
-    isArkPassive: Boolean,
     isLast: Boolean = false,
     lastSpacer: Boolean = false
 ) {
@@ -249,19 +227,17 @@ fun EngravingStr(
         )
         Spacer(modifier = Modifier.width(4.dp))
 
-        if (viewModel.arkPassiveEngLv(engravingLv) != null && isArkPassive) {
-            GlideImage(
-                modifier = Modifier.size(15.dp),
-                model = img,
-                contentDescription = "돌 각성 포인트"
-            )
-            Spacer(modifier = Modifier.width(2.dp))
+        GlideImage(
+            modifier = Modifier.size(15.dp),
+            model = img,
+            contentDescription = "돌 각성 포인트"
+        )
+        Spacer(modifier = Modifier.width(2.dp))
 
-            Text(
-                text = if (isLast) viewModel.arkPassiveEngPenLv(engravingLv)!! else viewModel.arkPassiveEngLv(engravingLv)!!,
-                style = normalTextStyle(color = textColor)
-            )
-        }
+        Text(
+            text = "${engravingLv ?: 0}",
+            style = normalTextStyle(color = textColor)
+        )
     }
 
     if (!isLast || lastSpacer) {

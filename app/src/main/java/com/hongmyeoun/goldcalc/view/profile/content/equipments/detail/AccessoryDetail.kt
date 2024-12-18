@@ -121,80 +121,40 @@ private fun DetailUI(
             }
             Spacer(modifier = Modifier.height(4.dp))
 
-            if (accessory.combatStat1 != null) {
-                Row {
-                    Text(
-                        text = accessory.combatStat1,
-                        style = normalTextStyle(fontSize = 12.sp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
+            Column(
+                modifier = Modifier
+                    .background(LightGrayBG, RoundedCornerShape(4.dp))
+                    .fillMaxWidth()
+                    .padding(4.dp)
+            ) {
+                val grindEffect = viewModel.grindEffects(accessory.grindEffect ?: GRIND)
+                grindEffect.forEach {
+                    val grindOptionLevel = viewModel.grindOptionLevel(it)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        if (grindOptionLevel != EquipmentConsts.GRIND_ERROR) {
+                            TextChip(
+                                text = grindOptionLevel,
+                                customBGColor = viewModel.grindOptionColor(grindOptionLevel),
+                                borderless = true,
+                                customPadding = Modifier.padding(start = 4.dp, end = 4.dp, top = 2.dp, bottom = 2.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                        }
 
-                    if (accessory.combatStat2 != null && accessory.type == EquipmentConsts.NECKLACE) {
                         Text(
-                            text = accessory.combatStat2,
-                            style = normalTextStyle(fontSize = 12.sp)
+                            text = it.substringBefore('+'),
+                            style = normalTextStyle()
+                        )
+                        Text(
+                            text = "+ ${it.substringAfter('+')}",
+                            style = normalTextStyle(color = viewModel.grindOptionColor(grindOptionLevel))
                         )
                     }
-                }
-                Spacer(modifier = Modifier.height(8.dp))
 
-                Row {
-                    TextChip(
-                        text = viewModel.simplyEngravingName(accessory.engraving1),
-                        customBGColor = LightGrayBG,
-                        borderless = true
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    TextChip(
-                        text = viewModel.simplyEngravingName(accessory.engraving2),
-                        customBGColor = LightGrayBG,
-                        borderless = true
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    TextChip(
-                        text = accessory.engraving3,
-                        customBGColor = RedQual,
-                        borderless = true
-                    )
-                }
-            } else if (accessory.arkPassivePoint != null) {
-                Column(
-                    modifier = Modifier
-                        .background(LightGrayBG, RoundedCornerShape(4.dp))
-                        .fillMaxWidth()
-                        .padding(4.dp)
-                ) {
-                    val grindEffect = viewModel.grindEffects(accessory.grindEffect ?: GRIND)
-                    grindEffect.forEach {
-                        val grindOptionLevel = viewModel.grindOptionLevel(it)
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            if (grindOptionLevel != EquipmentConsts.GRIND_ERROR) {
-                                TextChip(
-                                    text = grindOptionLevel,
-                                    customBGColor = viewModel.grindOptionColor(grindOptionLevel),
-                                    borderless = true,
-                                    customPadding = Modifier.padding(start = 4.dp, end = 4.dp, top = 2.dp, bottom = 2.dp)
-                                )
-                                Spacer(modifier = Modifier.width(4.dp))
-                            }
-
-                            Text(
-                                text = it.substringBefore('+'),
-                                style = normalTextStyle()
-                            )
-                            Text(
-                                text = "+ ${it.substringAfter('+')}",
-                                style = normalTextStyle(color = viewModel.grindOptionColor(grindOptionLevel))
-                            )
-                        }
-
-                        if (it != grindEffect.last()) {
-                            Spacer(modifier = Modifier.height(2.dp))
-                        }
+                    if (it != grindEffect.last()) {
+                        Spacer(modifier = Modifier.height(2.dp))
                     }
                 }
             }
@@ -231,7 +191,7 @@ fun DetailUI(
 
                 if (isArkPassive && abilityStone.engraving3Lv != null) {
                     TextChip(
-                        text = "${viewModel.getSimpleEngraving(abilityStone.engraving3Op)}${viewModel.arkPassiveEngPenLv(abilityStone.engraving3Lv) ?: ""}",
+                        text = "${viewModel.getSimpleEngraving(abilityStone.engraving3Op)}${abilityStone.engraving3Lv}",
                         textColor = RedQual,
                         customBGColor = LightGrayBG,
                         borderless = true
@@ -280,15 +240,13 @@ fun DetailUI(
                         EngravingStr(
                             viewModel = viewModel,
                             engravingName = abilityStone.engraving1Op,
-                            engravingLv = abilityStone.engraving1Lv,
-                            isArkPassive = isArkPassive
+                            engravingLv = abilityStone.engraving1Lv
                         )
 
                         EngravingStr(
                             viewModel = viewModel,
                             engravingName = abilityStone.engraving2Op,
                             engravingLv = abilityStone.engraving2Lv,
-                            isArkPassive = isArkPassive,
                             lastSpacer = true
                         )
                     }

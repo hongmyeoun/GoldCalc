@@ -140,7 +140,6 @@ fun EquipmentUI(
     viewModel: EquipmentVM,
     isArkPassive: Boolean
 ) {
-    val setOptionName = viewModel.setOptionName(equipment)
     val arkPassiveOffsetValue = if (isArkPassive) Modifier.offset(x = (-8).dp, y = (-8).dp) else Modifier
 
     Row(
@@ -164,11 +163,10 @@ fun EquipmentUI(
                 upgrade = equipment.upgradeLevel,
                 itemLevel = equipment.itemLevel,
             )
-            if (equipment.transcendenceLevel.isNotEmpty() || equipment.highUpgradeLevel.isNotEmpty() || setOptionName.isNotEmpty()) {
+            if (equipment.transcendenceLevel.isNotEmpty() || equipment.highUpgradeLevel.isNotEmpty()) {
                 TranscendenceLevelRow(
                     level = equipment.transcendenceLevel,
                     upgrade = equipment.highUpgradeLevel,
-                    setOption = setOptionName
                 )
             }
         }
@@ -197,7 +195,10 @@ fun EquipmentUI(
 }
 
 @Composable
-private fun TranscendenceLevelRow(level: String, upgrade: String, setOption: String) {
+private fun TranscendenceLevelRow(
+    level: String,
+    upgrade: String,
+) {
     Row(
         modifier = Modifier.height(24.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -225,12 +226,6 @@ private fun TranscendenceLevelRow(level: String, upgrade: String, setOption: Str
                 style = normalTextStyle()
             )
             Spacer(modifier = Modifier.width(4.dp))
-        }
-        if (setOption.isNotEmpty()) {
-            Text(
-                text = setOption,
-                style = normalTextStyle()
-            )
         }
     }
 }

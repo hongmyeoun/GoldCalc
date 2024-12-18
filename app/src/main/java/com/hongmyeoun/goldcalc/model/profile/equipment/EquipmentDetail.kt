@@ -34,7 +34,6 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                         transcendenceLevel = getTranscendenceLevel(equipment),
                         transcendenceTotal = getTranscendenceTotal(equipment),
                         highUpgradeLevel = getHigherUpgradeLevel(equipment),
-                        setOption = getSetOption(equipment),
                         elixirSetOption = getElixirSetOption(equipment)
                     )
                     characterEquipmentList.add(characterEquipment)
@@ -47,11 +46,6 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                         name = getAccName(equipment),
                         itemQuality = getItemQuality(equipment),
                         itemIcon = getItemIcon(equipment),
-                        combatStat1 = getAccCombatStats(equipment)?.first,
-                        combatStat2 = getAccCombatStats(equipment)?.second,
-                        engraving1 = getAccFirstEngraving(equipment),
-                        engraving2 = getAccSecondEngraving(equipment),
-                        engraving3 = getAccThirdEngraving(equipment),
                         grindEffect = getGrindEffect(equipment),
                         arkPassivePoint = getArkPassivePoint(equipment)
                     )
@@ -466,15 +460,11 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                         .contains(TooltipStrings.Contains.GRIND)
 
                     if (isGrind) {
-                        val itemTier = itemTier(tooltip)
+                        val rawGrinding = value
+                            .get(TooltipStrings.MemberName.ELEMENT_001)
+                            .asString
 
-                        if (itemTier >= 4) {
-                            val rawGrinding = value
-                                .get(TooltipStrings.MemberName.ELEMENT_001)
-                                .asString
-
-                            return accGrindingProcess(rawGrinding).ifEmpty { TooltipStrings.NoResult.GRIND }
-                        }
+                        return accGrindingProcess(rawGrinding).ifEmpty { TooltipStrings.NoResult.GRIND }
                     }
                 }
             }
@@ -507,13 +497,9 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                         .contains(TooltipStrings.Contains.ARK_PASSIVE_POINT)
 
                     if (isGrind) {
-                        val itemTier = itemTier(tooltip)
-
-                        if (itemTier >= 4) {
-                            return value
-                                .get(TooltipStrings.MemberName.ELEMENT_001)
-                                .asString
-                        }
+                        return value
+                            .get(TooltipStrings.MemberName.ELEMENT_001)
+                            .asString
                     }
                 }
             }
@@ -830,7 +816,8 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
     }
 
     private fun testAbilityStone(input: String): Pair<String, Int?> {
-        val pattern = """\[<FONT COLOR='#(?:787878|FFFFFF|FFFFAC|FE2E2E)'>\s*([^<]+)\s*<\/FONT>\]\s*활성도\s*(\d+)""".toRegex()
+        val pattern =
+            """<FONT COLOR='#(?:787878|FFFFFF|FFFFAC|FE2E2E)'>\[<FONT COLOR='#(?:787878|FFFFFF|FFFFAC|FE2E2E)'>\s*([^<]+)\s*<\/FONT>\]\s*<img.*?>Lv\.(\d+)<\/FONT>""".toRegex()
         val matchResult = pattern.find(input)
 
         if (matchResult != null) {
