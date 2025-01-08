@@ -95,10 +95,12 @@ class ClassName {
         const val DEFAULT = "스페셜리스트"
         const val ARTIST = "도화가"
         const val AEROMANCER = "기상술사"
+        const val ALCHEMIST = "환수사"
 
         const val DEFAULT_EN = "specialist"
         const val ARTIST_EN = "artist"
         const val AEROMANCER_EN = "weather_artist"
+        const val ALCHEMIST_EN = "alchemist"
     }
 
     object ClassLists {
@@ -121,11 +123,35 @@ class ClassName {
             Fighter.STRIKER,
             Fighter.BREAKER
         )
-        private val HUNTER_LIST =
-            listOf(Hunter.DEFAULT, Hunter.DEVILHUNTER, Hunter.BLASTER, Hunter.HAWKEYE, Hunter.SCOUTER, Hunter.DEFAULT_FEMALE, Hunter.GUNSLINGER)
-        private val MAGICIAN_LIST = listOf(Magician.DEFAULT, Magician.BARD, Magician.SUMMONER, Magician.ARCANA, Magician.SORCERESS)
-        private val DELAIN_LIST = listOf(Delain.DEFAULT, Delain.BLADE, Delain.DEMONIC, Delain.REAPER, Delain.SOUL_EATER)
-        private val SPECIALIST_LIST = listOf(Specialist.DEFAULT, Specialist.ARTIST, Specialist.AEROMANCER)
+        private val HUNTER_LIST = listOf(
+            Hunter.DEFAULT,
+            Hunter.DEVILHUNTER,
+            Hunter.BLASTER,
+            Hunter.HAWKEYE,
+            Hunter.SCOUTER,
+            Hunter.DEFAULT_FEMALE,
+            Hunter.GUNSLINGER
+        )
+        private val MAGICIAN_LIST = listOf(
+            Magician.DEFAULT,
+            Magician.BARD,
+            Magician.SUMMONER,
+            Magician.ARCANA,
+            Magician.SORCERESS
+        )
+        private val DELAIN_LIST = listOf(
+            Delain.DEFAULT,
+            Delain.BLADE,
+            Delain.DEMONIC,
+            Delain.REAPER,
+            Delain.SOUL_EATER
+        )
+        private val SPECIALIST_LIST = listOf(
+            Specialist.DEFAULT,
+            Specialist.ARTIST,
+            Specialist.AEROMANCER,
+            Specialist.ALCHEMIST
+        )
 
         val CHARACTER_LIST = WARRIOR_LIST + FIGHTER_LIST + HUNTER_LIST + MAGICIAN_LIST + DELAIN_LIST + SPECIALIST_LIST
     }
