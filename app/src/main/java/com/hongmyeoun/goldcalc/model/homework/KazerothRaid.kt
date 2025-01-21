@@ -43,6 +43,17 @@ enum class KazerothRaid(
             Raid.Difficulty.NORMAL to Gold.Clear.Normal.ABRELSHUD_2,
             Raid.Difficulty.HARD to Gold.Clear.Hard.ABRELSHUD_2
         )
+    ),
+    MORDUM(
+        boss = Raid.Name.MORDUM,
+        seeMoreGold = mapOf(
+            Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.MORDUM,
+            Raid.Difficulty.HARD to Gold.SeeMore.Hard.MORDUM
+        ),
+        clearGold = mapOf(
+            Raid.Difficulty.NORMAL to Gold.Clear.Normal.MORDUM,
+            Raid.Difficulty.HARD to Gold.Clear.Hard.MORDUM
+        )
     );
 
     fun getBossInfo(mode: String): Pair<List<Int>, List<Int>> {
@@ -69,6 +80,12 @@ class KazerothRaidModel(character: Character?) {
         Abrelshud2(character)
     } else {
         Abrelshud2(null)
+    }
+
+    val mordum: Mordum = if (character != null) {
+        Mordum(character)
+    } else {
+        Mordum(null)
     }
 }
 
@@ -236,5 +253,76 @@ class Abrelshud2(character: Character?) {
     fun onShowChecked() {
         onePhase.onShowChecked()
         twoPhase.onShowChecked()
+    }
+}
+
+class Mordum(character: Character?) {
+    val name = KazerothRaid.MORDUM.boss
+    private val seeMoreGold = KazerothRaid.MORDUM.getBossInfo(Raid.Difficulty.NORMAL).first + KazerothRaid.MORDUM.getBossInfo(Raid.Difficulty.HARD).first
+    private val clearGold = KazerothRaid.MORDUM.getBossInfo(Raid.Difficulty.NORMAL).second + KazerothRaid.MORDUM.getBossInfo(Raid.Difficulty.HARD).second
+
+    var isChecked = character?.checkList?.kazeroth?.get(3)?.isCheck ?: false
+
+    private val getOnePhase = character?.checkList?.kazeroth?.get(3)?.phases?.get(0)
+
+    private val onePhaseDifficulty = getOnePhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val onePhaseIsClear = getOnePhase?.isClear ?: false
+    private val onePhaseMCheck = getOnePhase?.mCheck ?: false
+
+    val onePhase = PhaseInfo(
+        difficulty = onePhaseDifficulty,
+        isClearCheck = onePhaseIsClear,
+        moreCheck = onePhaseMCheck,
+        isChecked = isChecked,
+        seeMoreGoldN = seeMoreGold[0],
+        seeMoreGoldH = seeMoreGold[3],
+        clearGoldN = clearGold[0],
+        clearGoldH = clearGold[3],
+    )
+
+    private val getTwoPhase = character?.checkList?.kazeroth?.get(3)?.phases?.get(1)
+
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val twoPhaseIsClear = getTwoPhase?.isClear ?: false
+    private val twoPhaseMCheck = getTwoPhase?.mCheck ?: false
+
+    val twoPhase = PhaseInfo(
+        difficulty = twoPhaseDifficulty,
+        isClearCheck = twoPhaseIsClear,
+        moreCheck = twoPhaseMCheck,
+        isChecked = isChecked,
+        seeMoreGoldN = seeMoreGold[1],
+        seeMoreGoldH = seeMoreGold[4],
+        clearGoldN = clearGold[1],
+        clearGoldH = clearGold[4]
+    )
+
+    private val getThreePhase = character?.checkList?.kazeroth?.get(3)?.phases?.get(2)
+
+    private val threePhaseDifficulty = getThreePhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val threePhaseIsClear = getThreePhase?.isClear ?: false
+    private val threePhaseMCheck = getThreePhase?.mCheck ?: false
+
+    val threePhase = PhaseInfo(
+        difficulty = threePhaseDifficulty,
+        isClearCheck = threePhaseIsClear,
+        moreCheck = threePhaseMCheck,
+        isChecked = isChecked,
+        seeMoreGoldN = seeMoreGold[2],
+        seeMoreGoldH = seeMoreGold[5],
+        clearGoldN = clearGold[2],
+        clearGoldH = clearGold[5]
+    )
+
+    var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
+
+    fun totalGold() {
+        totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
+    }
+
+    fun onShowChecked() {
+        onePhase.onShowChecked()
+        twoPhase.onShowChecked()
+        threePhase.onShowChecked()
     }
 }

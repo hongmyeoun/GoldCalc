@@ -13,6 +13,7 @@ class KazerothRaidVM(val character: Character?) : ViewModel() {
     val echidna = kzModel.echidna
     val egir = kzModel.egir
     val abrelshud2 = kzModel.abrelshud
+    val mordum = kzModel.mordum
 
     var totalGold by mutableStateOf(0)
 
@@ -20,7 +21,8 @@ class KazerothRaidVM(val character: Character?) : ViewModel() {
         echidna.totalGold()
         egir.totalGold()
         abrelshud2.totalGold()
-        totalGold = echidna.totalGold + egir.totalGold + abrelshud2.totalGold
+        mordum.totalGold()
+        totalGold = echidna.totalGold + egir.totalGold + abrelshud2.totalGold + mordum.totalGold
     }
 
     init {
@@ -30,6 +32,7 @@ class KazerothRaidVM(val character: Character?) : ViewModel() {
     var echiCheck by mutableStateOf(echidna.isChecked)
     var egirCheck by mutableStateOf(egir.isChecked)
     var abrelCheck by mutableStateOf(abrelshud2.isChecked)
+    var mordumCheck by mutableStateOf(mordum.isChecked)
 
     fun onEchiCheck() {
         echiCheck = !echiCheck
@@ -46,6 +49,12 @@ class KazerothRaidVM(val character: Character?) : ViewModel() {
     fun onAbrelCheck() {
         abrelCheck = !abrelCheck
         abrelshud2.onShowChecked()
+        sumGold()
+    }
+
+    fun onKamenCheck() {
+        mordumCheck = !mordumCheck
+        mordum.onShowChecked()
         sumGold()
     }
 }

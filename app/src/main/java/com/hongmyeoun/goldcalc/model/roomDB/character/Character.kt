@@ -73,6 +73,9 @@ data class RaidPhaseInfo(
 
     @ColumnInfo("abrel2Phase") val abrel2Phase: Int = 0,
     @ColumnInfo("abrel2TotalGold") val abrel2TotalGold: Int = 0,
+
+    @ColumnInfo("mordumPhase") val mordumPhase: Int = 0,
+    @ColumnInfo("mordumTotalGold") val mordumTotalGold: Int = 0
 )
 
 
@@ -126,6 +129,10 @@ data class CheckList(
             name = Raid.Name.ABRELSHUD_2,
             phases = listOf(Phase(), Phase())
         ),
+        RaidList(
+            name = Raid.Name.MORDUM,
+            phases = listOf(Phase(), Phase(), Phase())
+        )
     ),
     @ColumnInfo("Epic") val epic: List<RaidList> = listOf(
         RaidList(

@@ -414,7 +414,7 @@ class HomeworkVM @Inject constructor(
                                 isClear =  if (kazerothRaid.abrelCheck) kazerothRaid.abrelshud2.onePhase.clearCheck else false,
                                 mCheck = if (kazerothRaid.abrelCheck) kazerothRaid.abrelshud2.onePhase.seeMoreCheck else false,
                             ),
-                            originalCheckList.kazeroth[1].phases[1].copy(
+                            originalCheckList.kazeroth[2].phases[1].copy(
                                 // 2페
                                 difficulty = kazerothRaid.abrelshud2.twoPhase.level,
                                 isClear =  if (kazerothRaid.abrelCheck) kazerothRaid.abrelshud2.twoPhase.clearCheck else false,
@@ -422,6 +422,29 @@ class HomeworkVM @Inject constructor(
                             ),
                         ),
                         isCheck = kazerothRaid.abrelCheck
+                    ),
+                    originalCheckList.kazeroth[3].copy( // 3막 : 칠흑, 폭풍의 밤
+                        phases = listOf(
+                            originalCheckList.kazeroth[3].phases[0].copy(
+                                // 1페
+                                difficulty = kazerothRaid.mordum.onePhase.level,
+                                isClear =  if (kazerothRaid.mordumCheck) kazerothRaid.mordum.onePhase.clearCheck else false,
+                                mCheck = if (kazerothRaid.mordumCheck) kazerothRaid.mordum.onePhase.seeMoreCheck else false,
+                            ),
+                            originalCheckList.kazeroth[3].phases[1].copy(
+                                // 2페
+                                difficulty = kazerothRaid.mordum.twoPhase.level,
+                                isClear =  if (kazerothRaid.mordumCheck) kazerothRaid.mordum.twoPhase.clearCheck else false,
+                                mCheck = if (kazerothRaid.mordumCheck) kazerothRaid.mordum.twoPhase.seeMoreCheck else false,
+                            ),
+                            originalCheckList.kazeroth[3].phases[2].copy(
+                                // 2페
+                                difficulty = kazerothRaid.mordum.threePhase.level,
+                                isClear =  if (kazerothRaid.mordumCheck) kazerothRaid.mordum.threePhase.clearCheck else false,
+                                mCheck = if (kazerothRaid.mordumCheck) kazerothRaid.mordum.threePhase.seeMoreCheck else false,
+                            ),
+                        ),
+                        isCheck = kazerothRaid.mordumCheck
                     ),
                 ),
                 epic = listOf(
@@ -446,6 +469,8 @@ class HomeworkVM @Inject constructor(
             )
 
             val updatedRaidInfo = originalRaidInfo?.copy(
+                mordumPhase = if (!kazerothRaid.mordumCheck) 0 else originalRaidInfo.mordumPhase,
+                mordumTotalGold = if (!kazerothRaid.mordumCheck) 0 else originalRaidInfo.mordumTotalGold,
                 abrel2Phase = if (!kazerothRaid.abrelCheck) 0 else originalRaidInfo.abrel2Phase,
                 abrel2TotalGold = if (!kazerothRaid.abrelCheck) 0 else originalRaidInfo.abrel2TotalGold,
                 egirPhase = if (!kazerothRaid.egirCheck) 0 else originalRaidInfo.egirPhase,
@@ -474,7 +499,7 @@ class HomeworkVM @Inject constructor(
 
             var updateEarnGold = original.earnGold
             updatedRaidInfo?.let {
-                updateEarnGold = updatedRaidInfo.abrel2TotalGold + updatedRaidInfo.egirTotalGold + updatedRaidInfo.behemothTotalGold + updatedRaidInfo.echidnaTotalGold + updatedRaidInfo.kamenTotalGold + updatedRaidInfo.ivoryTotalGold + updatedRaidInfo.illiakanTotalGold + updatedRaidInfo.kayangelTotalGold + updatedRaidInfo.abrelTotalGold + updatedRaidInfo.koukuTotalGold + updatedRaidInfo.biackissTotalGold + updatedRaidInfo.valtanTotalGold
+                updateEarnGold = updatedRaidInfo.mordumTotalGold + updatedRaidInfo.abrel2TotalGold + updatedRaidInfo.egirTotalGold + updatedRaidInfo.behemothTotalGold + updatedRaidInfo.echidnaTotalGold + updatedRaidInfo.kamenTotalGold + updatedRaidInfo.ivoryTotalGold + updatedRaidInfo.illiakanTotalGold + updatedRaidInfo.kayangelTotalGold + updatedRaidInfo.abrelTotalGold + updatedRaidInfo.koukuTotalGold + updatedRaidInfo.biackissTotalGold + updatedRaidInfo.valtanTotalGold
             }
 
             original.copy(
