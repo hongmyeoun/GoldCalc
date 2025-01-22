@@ -88,7 +88,7 @@ fun Summary(
                     Script(adVM)
                 }
 
-                if (kzVM.echiCheck || kzVM.egirCheck) {
+                if (kzVM.echiCheck || kzVM.egirCheck || kzVM.abrelCheck || kzVM.mordumCheck) {
                     Script(kzVM)
                 }
 
@@ -300,6 +300,7 @@ private fun Script(kzVM: KazerothRaidVM) {
                     Text(text = "${Homework.PHASE_TWO} ${kzVM.echidna.twoPhase.level} : ${kzVM.echidna.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
                 }
             )
+
             PhaseInfo(
                 isCheck = kzVM.egirCheck,
                 modifier = Modifier.weight(1f),
@@ -321,6 +322,17 @@ private fun Script(kzVM: KazerothRaidVM) {
                 phaseInfo = {
                     Text(text = "${Homework.PHASE_ONE} ${kzVM.abrelshud2.onePhase.level} : ${kzVM.abrelshud2.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
                     Text(text = "${Homework.PHASE_TWO} ${kzVM.abrelshud2.twoPhase.level} : ${kzVM.abrelshud2.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
+                }
+            )
+
+            PhaseInfo(
+                isCheck = kzVM.mordumCheck,
+                modifier = Modifier.weight(1f),
+                raidName = Raid.Name.MORDUM,
+                phaseInfo =  {
+                    Text(text = "${Homework.PHASE_ONE} ${kzVM.mordum.onePhase.level} : ${kzVM.mordum.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_TWO} ${kzVM.mordum.twoPhase.level} : ${kzVM.mordum.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_TWO} ${kzVM.mordum.threePhase.level} : ${kzVM.mordum.threePhase.totalGold.formatWithCommas()} G", color = Color.White)
                 }
             )
         }
