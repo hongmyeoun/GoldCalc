@@ -13,6 +13,7 @@ import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCard
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckBox
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckLists
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.ThreePhase
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.TwoPhase
 import com.hongmyeoun.goldcalc.viewModel.homework.KazerothRaidVM
 
@@ -40,6 +41,13 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
         label = Labels.Animation.ROTATION
     )
 
+    var mordumRotated by remember { mutableStateOf(false) }
+    val mordumRotaR by animateFloatAsState(
+        targetValue = if (mordumRotated) 180f else 0f,
+        animationSpec = tween(500),
+        label = Labels.Animation.ROTATION
+    )
+
     RaidCheckLists(maxItem = 2) { modifier ->
         RaidCheckBox(
             name = Raid.Name.ECHIDNA,
@@ -60,6 +68,13 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
             modifier = modifier,
             checked = viewModel.abrelCheck,
             onCheckedChange = { viewModel.onAbrelCheck() }
+        )
+
+        RaidCheckBox(
+            name = Raid.Name.MORDUM,
+            modifier = modifier,
+            checked = viewModel.mordumCheck,
+            onCheckedChange = { viewModel.onKamenCheck() }
         )
     }
 
@@ -218,4 +233,74 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
             }
         )
     }
+
+    if (viewModel.mordumCheck) {
+        RaidCard(
+            bossImg = R.drawable.kazeroth_mordum,
+            isRotated = mordumRotated,
+            rotaR = mordumRotaR,
+            onClick = { mordumRotated = !mordumRotated },
+            phaseCard = {
+                ThreePhase(
+                    rotaR = mordumRotaR,
+
+                    name = viewModel.mordum.name,
+                    raidBossImg = R.drawable.logo_mordum,
+                    totalGold = viewModel.mordum.totalGold,
+
+                    phaseOneLevel = viewModel.mordum.onePhase.level,
+                    phaseOneGold = viewModel.mordum.onePhase.totalGold,
+                    phaseOneSMC = viewModel.mordum.onePhase.seeMoreCheck,
+                    phaseOneCC = viewModel.mordum.onePhase.clearCheck,
+                    onOnePhaseLevelClicked = {
+                        viewModel.mordum.onePhase.onLevelClicked()
+                        viewModel.sumGold()
+                    },
+                    onOnePhaseClearCheckBoxChecked = {
+                        viewModel.mordum.onePhase.onClearCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                    onOnePhaseSeeMoreCheckBoxChecked = {
+                        viewModel.mordum.onePhase.onSeeMoreCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+
+                    phaseTwoLevel = viewModel.mordum.twoPhase.level,
+                    phaseTwoGold = viewModel.mordum.twoPhase.totalGold,
+                    phaseTwoSMC = viewModel.mordum.twoPhase.seeMoreCheck,
+                    phaseTwoCC = viewModel.mordum.twoPhase.clearCheck,
+                    onTwoPhaseLevelClicked = {
+                        viewModel.mordum.twoPhase.onLevelClicked()
+                        viewModel.sumGold()
+                    },
+                    onTwoPhaseClearCheckBoxChecked = {
+                        viewModel.mordum.twoPhase.onClearCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                    onTwoPhaseSeeMoreCheckBoxChecked = {
+                        viewModel.mordum.twoPhase.onSeeMoreCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+
+                    phaseThreeLevel = viewModel.mordum.threePhase.level,
+                    phaseThreeGold = viewModel.mordum.threePhase.totalGold,
+                    phaseThreeSMC = viewModel.mordum.threePhase.seeMoreCheck,
+                    phaseThreeCC = viewModel.mordum.threePhase.clearCheck,
+                    onThreePhaseLevelClicked = {
+                        viewModel.mordum.threePhase.onLevelClicked()
+                        viewModel.sumGold()
+                    },
+                    onThreePhaseClearCheckBoxChecked = {
+                        viewModel.mordum.threePhase.onClearCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                    onThreePhaseSeeMoreCheckBoxChecked = {
+                        viewModel.mordum.threePhase.onSeeMoreCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                )
+            }
+        )
+    }
+
 }
