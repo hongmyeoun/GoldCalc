@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -114,6 +115,10 @@ dependencies {
 
     // ADMob
     implementation("com.google.android.gms:play-services-ads:23.3.0")
+
+    // firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
+    implementation("com.google.firebase:firebase-storage")
 }
 
 fun getKey(propertyKey: String): String {
