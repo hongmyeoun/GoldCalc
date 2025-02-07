@@ -5,12 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.model.homework.AbyssDungeonModel
 import com.hongmyeoun.goldcalc.model.homework.CommandBossModel
 import com.hongmyeoun.goldcalc.model.homework.EpicRaidModel
 import com.hongmyeoun.goldcalc.model.homework.KazerothRaidModel
+import com.hongmyeoun.goldcalc.model.imageLoader.FirebaseStorage
+import com.hongmyeoun.goldcalc.model.imageLoader.FirebaseStoragePath
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.model.roomDB.character.Phase
@@ -413,22 +414,35 @@ class GoldContentStateVM(initPhase: Int) : ViewModel() {
         return nowPhase
     }
 
-    fun raidImg(raidName: String) : Int {
+    private val _imageUrl = MutableStateFlow<String?>(null)
+    val imageUrl: StateFlow<String?> = _imageUrl
+
+    fun getImageModel(raidName: String) {
+        val imagePath = FirebaseStoragePath.RaidImage.ROOT + raidImgPath(raidName) + FirebaseStoragePath.JPG
+
+        viewModelScope.launch {
+            FirebaseStorage.getFirebaseImageUrl(imagePath) { url ->
+                _imageUrl.value = url
+            }
+        }
+    }
+
+    private fun raidImgPath(raidName: String) : String {
         return when (raidName) {
-            Raid.Name.VALTAN -> R.drawable.command_valtan
-            Raid.Name.BIACKISS -> R.drawable.command_biackiss
-            Raid.Name.KOUKU_SATON -> R.drawable.command_kouku
-            Raid.Name.ABRELSHUD -> R.drawable.command_abrelshud
-            Raid.Name.ILLIAKAN -> R.drawable.command_illiakan
-            Raid.Name.KAMEN -> R.drawable.command_kamen
-            Raid.Name.KAYANGEL -> R.drawable.abyss_dungeon_kayangel
-            Raid.Name.IVORY_TOWER_LONG -> R.drawable.abyss_dungeon_ivory_tower
-            Raid.Name.ECHIDNA -> R.drawable.kazeroth_echidna
-            Raid.Name.BEHEMOTH -> R.drawable.epic_behemoth
-            Raid.Name.EGIR -> R.drawable.kazeroth_egir
-            Raid.Name.ABRELSHUD_2 -> R.drawable.kazeroth_abrelshud
-            Raid.Name.MORDUM -> R.drawable.kazeroth_mordum
-            else -> R.drawable.kazeroth_echidna
+            Raid.Name.VALTAN -> FirebaseStoragePath.RaidImage.COMMAND + Raid.EngName.VALTAN
+            Raid.Name.BIACKISS -> FirebaseStoragePath.RaidImage.COMMAND + Raid.EngName.BIACKISS
+            Raid.Name.KOUKU_SATON -> FirebaseStoragePath.RaidImage.COMMAND + Raid.EngName.KOUKU_SATON
+            Raid.Name.ABRELSHUD -> FirebaseStoragePath.RaidImage.COMMAND + Raid.EngName.ABRELSHUD
+            Raid.Name.ILLIAKAN -> FirebaseStoragePath.RaidImage.COMMAND + Raid.EngName.ILLIAKAN
+            Raid.Name.KAMEN -> FirebaseStoragePath.RaidImage.COMMAND + Raid.EngName.KAMEN
+            Raid.Name.KAYANGEL -> FirebaseStoragePath.RaidImage.ABYSS_DUNGEON + Raid.EngName.KAYANGEL
+            Raid.Name.IVORY_TOWER_LONG -> FirebaseStoragePath.RaidImage.ABYSS_DUNGEON + Raid.EngName.IVORY_TOWER
+            Raid.Name.BEHEMOTH -> FirebaseStoragePath.RaidImage.EPIC + Raid.EngName.BEHEMOTH
+            Raid.Name.ECHIDNA -> FirebaseStoragePath.RaidImage.KAZEROTH + Raid.EngName.ECHIDNA
+            Raid.Name.EGIR -> FirebaseStoragePath.RaidImage.KAZEROTH + Raid.EngName.EGIR
+            Raid.Name.ABRELSHUD_2 -> FirebaseStoragePath.RaidImage.KAZEROTH + Raid.EngName.ABRELSHUD
+            Raid.Name.MORDUM -> FirebaseStoragePath.RaidImage.KAZEROTH + Raid.EngName.MORDUM
+            else -> FirebaseStoragePath.RaidImage.KAZEROTH + Raid.EngName.ECHIDNA
         }
     }
 }
