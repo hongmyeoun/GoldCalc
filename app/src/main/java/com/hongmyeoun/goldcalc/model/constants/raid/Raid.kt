@@ -38,6 +38,24 @@ class Raid {
         val RAID_LIST = listOf(COMMAND, ABYSS_DUNGEON, KAZEROTH, EPIC, ETC)
     }
 
+    object EngName {
+        const val VALTAN = "valtan"
+        const val BIACKISS = "biackiss"
+        const val KOUKU_SATON = "kouku"
+        const val ABRELSHUD = "abrelshud"
+        const val ILLIAKAN = "illiakan"
+        const val KAMEN = "kamen"
+
+        const val KAYANGEL = "kayangel"
+        const val IVORY_TOWER = "ivory_tower"
+
+        const val ECHIDNA = "echidna"
+        const val EGIR = "egir"
+        const val MORDUM = "mordum"
+
+        const val BEHEMOTH = "behemoth"
+    }
+
     object Difficulty {
         const val NORMAL = "normal"
         const val HARD = "hard"
