@@ -29,12 +29,13 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
+import com.hongmyeoun.goldcalc.view.common.LoadingScreen
 import com.hongmyeoun.goldcalc.view.common.noRippleClickable
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun RaidCard(
-    bossImg: Int,
+    bossImg: String?,
     isRotated: Boolean,
     rotaR: Float,
     onClick: () -> Unit,
@@ -59,12 +60,16 @@ fun RaidCard(
         )
     ) {
         if (!isRotated) {
-            GlideImage(
-                modifier = Modifier.aspectRatio(21f / 9f),
-                contentScale = ContentScale.Crop,
-                model = bossImg,
-                contentDescription = "보스 이미지"
-            )
+            if (bossImg != null) {
+                GlideImage(
+                    modifier = Modifier.aspectRatio(21f / 9f),
+                    contentScale = ContentScale.Crop,
+                    model = bossImg,
+                    contentDescription = "보스 이미지"
+                )
+            } else {
+                LoadingScreen(isBackground = false)
+            }
         } else {
             phaseCard()
         }
