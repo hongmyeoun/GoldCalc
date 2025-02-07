@@ -45,6 +45,7 @@ import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework.ABREL_4GOLD
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework.KAMEN_4GOLD
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework.WEEK_GOLD
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
+import com.hongmyeoun.goldcalc.view.common.LoadingScreen
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.home.GoldContentStateVM
@@ -280,6 +281,11 @@ fun ProgressState(
     onClicked: (Int) -> Unit
 ) {
     val clear = viewModel.nowPhase / phase == 1
+    val imageUrl by viewModel.imageUrl.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.getImageModel(raidName)
+    }
 
     Box(
         modifier = Modifier
@@ -290,14 +296,17 @@ fun ProgressState(
                 onClicked(viewModel.onClicked(phase))
             }
     ) {
-        GlideImage(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentScale = ContentScale.Crop,
-            model = viewModel.raidImg(raidName),
-            colorFilter = if (clear) ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(0f) }) else null,
-            contentDescription = "보스이미지"
-        )
+        if (imageUrl != null) {
+            GlideImage(
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop,
+                model = imageUrl,
+                colorFilter = if (clear) ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(0f) }) else null,
+                contentDescription = "보스이미지"
+            )
+        } else {
+            LoadingScreen(isBackground = false)
+        }
 
         if ((raidName == Raid.Name.ABRELSHUD || raidName == Raid.Name.KAMEN) && phase == 4) {
             if (isListView) {
