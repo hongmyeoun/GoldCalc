@@ -3,6 +3,8 @@ package com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidCo
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +31,12 @@ fun Command(
     var abrelshudRotated by remember { mutableStateOf(false) }
     var illiakanRotated by remember { mutableStateOf(false) }
     var kamenRotated by remember { mutableStateOf(false) }
+
+    val imageUrls by viewModel.imageUrls.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.getImageModel()
+    }
 
     val valtanRotaR by animateFloatAsState(
         targetValue = if (valtanRotated) 180f else 0f,
@@ -107,7 +115,7 @@ fun Command(
 
     if (viewModel.valtanCheck) {
         RaidCard(
-            bossImg = R.drawable.command_valtan,
+            bossImg = imageUrls[0],
             isRotated = valtanRotated,
             rotaR = valtanRotaR,
             onClick = { valtanRotated = !valtanRotated },
@@ -160,7 +168,7 @@ fun Command(
 
     if (viewModel.biaCheck) {
         RaidCard(
-            bossImg = R.drawable.command_biackiss,
+            bossImg = imageUrls[1],
             isRotated = biackissRotated,
             rotaR = biackissRotaR,
             onClick = { biackissRotated = !biackissRotated },
@@ -212,7 +220,7 @@ fun Command(
 
     if (viewModel.koukuCheck) {
         RaidCard(
-            bossImg = R.drawable.command_kouku,
+            bossImg = imageUrls[2],
             isRotated = koukuSatonRotated,
             rotaR = koukuSatonRotaR,
             onClick = { koukuSatonRotated = !koukuSatonRotated },
@@ -281,7 +289,7 @@ fun Command(
 
     if (viewModel.abreCheck) {
         RaidCard(
-            bossImg = R.drawable.command_abrelshud,
+            bossImg = imageUrls[3],
             isRotated = abrelshudRotated,
             rotaR = abrelshudRotaR,
             onClick = { abrelshudRotated = !abrelshudRotated },
@@ -367,7 +375,7 @@ fun Command(
 
     if (viewModel.illiCheck) {
         RaidCard(
-            bossImg = R.drawable.command_illiakan,
+            bossImg = imageUrls[4],
             isRotated = illiakanRotated,
             rotaR = illiakanRotaR,
             onClick = { illiakanRotated = !illiakanRotated },
@@ -436,7 +444,7 @@ fun Command(
 
     if (viewModel.kamenCheck) {
         RaidCard(
-            bossImg = R.drawable.command_kamen,
+            bossImg = imageUrls[5],
             isRotated = kamenRotated,
             rotaR = kamenRotaR,
             onClick = { kamenRotated = !kamenRotated },

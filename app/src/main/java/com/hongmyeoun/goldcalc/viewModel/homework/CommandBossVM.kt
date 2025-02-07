@@ -4,8 +4,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.model.homework.CommandBossModel
+import com.hongmyeoun.goldcalc.model.imageLoader.FirebaseStorage
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class CommandBossVM(val character: Character?): ViewModel() {
     private val cbModel = CommandBossModel(character)
@@ -70,5 +78,24 @@ class CommandBossVM(val character: Character?): ViewModel() {
         kamenCheck = !kamenCheck
         kamen.onShowChecked()
         sumGold()
+    }
+
+    private val _imageUrls = MutableStateFlow<List<String?>>(List(6) { null }) // 6개의 이미지 URL을 저장
+    val imageUrls: StateFlow<List<String?>> = _imageUrls
+
+    fun getImageModel() {
+        val raidNames = Raid.Name.COMMAND_RAID_LIST
+
+        viewModelScope.launch {
+            val urls = raidNames.map { raidName ->
+                val imagePath = FirebaseStorage.getImagePath(raidName)
+                suspendCoroutine { continuation ->
+                    FirebaseStorage.getFirebaseImageUrl(imagePath) { url ->
+                        continuation.resume(url)
+                    }
+                }
+            }
+            _imageUrls.value = urls
+        }
     }
 }

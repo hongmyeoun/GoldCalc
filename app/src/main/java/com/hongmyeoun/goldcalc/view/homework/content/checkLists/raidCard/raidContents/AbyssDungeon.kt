@@ -3,6 +3,8 @@ package com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidCo
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,6 +22,12 @@ import com.hongmyeoun.goldcalc.viewModel.homework.AbyssDungeonVM
 fun AbyssDungeon(viewModel: AbyssDungeonVM) {
     var kayangelRotated by remember { mutableStateOf(false) }
     var ivoryTowerRotated by remember { mutableStateOf(false) }
+
+    val imageUrls by viewModel.imageUrls.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.getImageModel()
+    }
 
     val kayangelRotaR by animateFloatAsState(
         targetValue = if (kayangelRotated) 180f else 0f,
@@ -50,7 +58,7 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
 
     if (viewModel.kayangelCheck) {
         RaidCard(
-            bossImg = R.drawable.abyss_dungeon_kayangel,
+            bossImg = imageUrls[0],
             isRotated = kayangelRotated,
             rotaR = kayangelRotaR,
             onClick = { kayangelRotated = !kayangelRotated },
@@ -120,7 +128,7 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
 
     if (viewModel.ivoryCheck) {
         RaidCard(
-            bossImg = R.drawable.abyss_dungeon_ivory_tower,
+            bossImg = imageUrls[1],
             isRotated = ivoryTowerRotated,
             rotaR = ivoryTowerRotaR,
             onClick = { ivoryTowerRotated = !ivoryTowerRotated },

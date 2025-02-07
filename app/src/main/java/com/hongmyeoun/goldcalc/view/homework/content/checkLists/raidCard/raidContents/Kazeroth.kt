@@ -3,6 +3,8 @@ package com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidCo
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,6 +21,11 @@ import com.hongmyeoun.goldcalc.viewModel.homework.KazerothRaidVM
 
 @Composable
 fun Kazeroth(viewModel: KazerothRaidVM) {
+    val imageUrls by viewModel.imageUrls.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.getImageModel()
+    }
 
     var echiRoatated by remember { mutableStateOf(false) }
     val echiRotaR by animateFloatAsState(
@@ -80,7 +87,7 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
 
     if (viewModel.echiCheck) {
         RaidCard(
-            bossImg = R.drawable.kazeroth_echidna,
+            bossImg = imageUrls[0],
             isRotated = echiRoatated,
             rotaR = echiRotaR,
             onClick = { echiRoatated = !echiRoatated },
@@ -132,7 +139,7 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
 
     if (viewModel.egirCheck) {
         RaidCard(
-            bossImg = R.drawable.kazeroth_egir,
+            bossImg = imageUrls[1],
             isRotated = egirRoatated,
             rotaR = egirRotaR,
             onClick = { egirRoatated = !egirRoatated },
@@ -184,7 +191,7 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
 
     if (viewModel.abrelCheck) {
         RaidCard(
-            bossImg = R.drawable.kazeroth_abrelshud,
+            bossImg = imageUrls[2],
             isRotated = abrelRoatated,
             rotaR = abrelRotaR,
             onClick = { abrelRoatated = !abrelRoatated },
@@ -236,7 +243,7 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
 
     if (viewModel.mordumCheck) {
         RaidCard(
-            bossImg = R.drawable.kazeroth_mordum,
+            bossImg = imageUrls[3],
             isRotated = mordumRotated,
             rotaR = mordumRotaR,
             onClick = { mordumRotated = !mordumRotated },

@@ -4,8 +4,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.model.homework.AbyssDungeonModel
+import com.hongmyeoun.goldcalc.model.imageLoader.FirebaseStorage
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class AbyssDungeonVM(val character: Character?): ViewModel() {
     private val adModel = AbyssDungeonModel(character)
@@ -40,4 +48,22 @@ class AbyssDungeonVM(val character: Character?): ViewModel() {
         sumGold()
     }
 
+    private val _imageUrls = MutableStateFlow<List<String?>>(List(2) { null })
+    val imageUrls: StateFlow<List<String?>> = _imageUrls
+
+    fun getImageModel() {
+        val raidNames = Raid.Name.ABYSS_DUNGEON_LIST
+
+        viewModelScope.launch {
+            val urls = raidNames.map { raidName ->
+                val imagePath = FirebaseStorage.getImagePath(raidName)
+                suspendCoroutine { continuation ->
+                    FirebaseStorage.getFirebaseImageUrl(imagePath) { url ->
+                        continuation.resume(url)
+                    }
+                }
+            }
+            _imageUrls.value = urls
+        }
+    }
 }
