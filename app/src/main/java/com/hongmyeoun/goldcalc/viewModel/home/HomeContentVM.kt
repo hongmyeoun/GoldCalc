@@ -11,7 +11,6 @@ import com.hongmyeoun.goldcalc.model.homework.CommandBossModel
 import com.hongmyeoun.goldcalc.model.homework.EpicRaidModel
 import com.hongmyeoun.goldcalc.model.homework.KazerothRaidModel
 import com.hongmyeoun.goldcalc.model.imageLoader.FirebaseStorage
-import com.hongmyeoun.goldcalc.model.imageLoader.FirebaseStoragePath
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.model.roomDB.character.Phase
@@ -418,31 +417,12 @@ class GoldContentStateVM(initPhase: Int) : ViewModel() {
     val imageUrl: StateFlow<String?> = _imageUrl
 
     fun getImageModel(raidName: String) {
-        val imagePath = FirebaseStoragePath.RaidImage.ROOT + raidImgPath(raidName) + FirebaseStoragePath.JPG
+        val imagePath = FirebaseStorage.getImagePath(raidName)
 
         viewModelScope.launch {
             FirebaseStorage.getFirebaseImageUrl(imagePath) { url ->
                 _imageUrl.value = url
             }
-        }
-    }
-
-    private fun raidImgPath(raidName: String) : String {
-        return when (raidName) {
-            Raid.Name.VALTAN -> FirebaseStoragePath.RaidImage.COMMAND + Raid.EngName.VALTAN
-            Raid.Name.BIACKISS -> FirebaseStoragePath.RaidImage.COMMAND + Raid.EngName.BIACKISS
-            Raid.Name.KOUKU_SATON -> FirebaseStoragePath.RaidImage.COMMAND + Raid.EngName.KOUKU_SATON
-            Raid.Name.ABRELSHUD -> FirebaseStoragePath.RaidImage.COMMAND + Raid.EngName.ABRELSHUD
-            Raid.Name.ILLIAKAN -> FirebaseStoragePath.RaidImage.COMMAND + Raid.EngName.ILLIAKAN
-            Raid.Name.KAMEN -> FirebaseStoragePath.RaidImage.COMMAND + Raid.EngName.KAMEN
-            Raid.Name.KAYANGEL -> FirebaseStoragePath.RaidImage.ABYSS_DUNGEON + Raid.EngName.KAYANGEL
-            Raid.Name.IVORY_TOWER_LONG -> FirebaseStoragePath.RaidImage.ABYSS_DUNGEON + Raid.EngName.IVORY_TOWER
-            Raid.Name.BEHEMOTH -> FirebaseStoragePath.RaidImage.EPIC + Raid.EngName.BEHEMOTH
-            Raid.Name.ECHIDNA -> FirebaseStoragePath.RaidImage.KAZEROTH + Raid.EngName.ECHIDNA
-            Raid.Name.EGIR -> FirebaseStoragePath.RaidImage.KAZEROTH + Raid.EngName.EGIR
-            Raid.Name.ABRELSHUD_2 -> FirebaseStoragePath.RaidImage.KAZEROTH + Raid.EngName.ABRELSHUD
-            Raid.Name.MORDUM -> FirebaseStoragePath.RaidImage.KAZEROTH + Raid.EngName.MORDUM
-            else -> FirebaseStoragePath.RaidImage.KAZEROTH + Raid.EngName.ECHIDNA
         }
     }
 }
