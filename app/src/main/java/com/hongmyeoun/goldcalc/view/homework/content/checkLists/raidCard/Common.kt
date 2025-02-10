@@ -68,7 +68,7 @@ fun RaidCard(
                     contentDescription = "보스 이미지"
                 )
             } else {
-                LoadingScreen(isBackground = false)
+                LoadingScreen(isBackground = true)
             }
         } else {
             phaseCard()
