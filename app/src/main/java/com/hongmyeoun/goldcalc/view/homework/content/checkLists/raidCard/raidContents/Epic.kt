@@ -9,7 +9,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.constants.Labels
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCard
@@ -22,7 +21,8 @@ import com.hongmyeoun.goldcalc.viewModel.homework.EpicRaidVM
 fun Epic(viewModel: EpicRaidVM) {
     var behemothRotated by remember { mutableStateOf(false) }
 
-    val imageUrls by viewModel.imageUrls.collectAsState()
+    val mainImageUrls by viewModel.mainImageUrls.collectAsState()
+    val logoImageUrl by viewModel.logoImageUrls.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getImageModel()
@@ -45,7 +45,7 @@ fun Epic(viewModel: EpicRaidVM) {
 
     if (viewModel.beheCheck) {
         RaidCard(
-            bossImg = imageUrls[0],
+            bossImg = mainImageUrls[0],
             isRotated = behemothRotated,
             rotaR = behemothRotaR,
             onClick = { behemothRotated = !behemothRotated },
@@ -54,7 +54,7 @@ fun Epic(viewModel: EpicRaidVM) {
                     rotaR = behemothRotaR,
 
                     name = viewModel.behemoth.name,
-                    raidBossImg = R.drawable.logo_behemoth,
+                    raidBossImg = logoImageUrl[0],
                     totalGold = viewModel.behemoth.totalGold,
 
                     phaseOneGold = viewModel.behemoth.onePhase.totalGold,

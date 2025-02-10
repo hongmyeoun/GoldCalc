@@ -9,7 +9,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.constants.Labels
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCard
@@ -21,7 +20,8 @@ import com.hongmyeoun.goldcalc.viewModel.homework.KazerothRaidVM
 
 @Composable
 fun Kazeroth(viewModel: KazerothRaidVM) {
-    val imageUrls by viewModel.imageUrls.collectAsState()
+    val mainImageUrls by viewModel.mainImageUrls.collectAsState()
+    val logoImageUrls by viewModel.logoImageUrls.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getImageModel()
@@ -87,7 +87,7 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
 
     if (viewModel.echiCheck) {
         RaidCard(
-            bossImg = imageUrls[0],
+            bossImg = mainImageUrls[0],
             isRotated = echiRoatated,
             rotaR = echiRotaR,
             onClick = { echiRoatated = !echiRoatated },
@@ -96,7 +96,7 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
                     rotaR = echiRotaR,
 
                     name = viewModel.echidna.name,
-                    raidBossImg = R.drawable.logo_echidna,
+                    raidBossImg = logoImageUrls[0],
                     totalGold = viewModel.echidna.totalGold,
 
                     phaseOneLevel = viewModel.echidna.onePhase.level,
@@ -139,7 +139,7 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
 
     if (viewModel.egirCheck) {
         RaidCard(
-            bossImg = imageUrls[1],
+            bossImg = mainImageUrls[1],
             isRotated = egirRoatated,
             rotaR = egirRotaR,
             onClick = { egirRoatated = !egirRoatated },
@@ -148,7 +148,7 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
                     rotaR = egirRotaR,
 
                     name = viewModel.egir.name,
-                    raidBossImg = R.drawable.logo_egir,
+                    raidBossImg = logoImageUrls[1],
                     totalGold = viewModel.egir.totalGold,
 
                     phaseOneLevel = viewModel.egir.onePhase.level,
@@ -191,7 +191,7 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
 
     if (viewModel.abrelCheck) {
         RaidCard(
-            bossImg = imageUrls[2],
+            bossImg = mainImageUrls[2],
             isRotated = abrelRoatated,
             rotaR = abrelRotaR,
             onClick = { abrelRoatated = !abrelRoatated },
@@ -200,7 +200,7 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
                     rotaR = abrelRotaR,
 
                     name = viewModel.abrelshud2.name,
-                    raidBossImg = R.drawable.logo_abrelshud2,
+                    raidBossImg = logoImageUrls[2],
                     totalGold = viewModel.abrelshud2.totalGold,
 
                     phaseOneLevel = viewModel.abrelshud2.onePhase.level,
@@ -243,7 +243,7 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
 
     if (viewModel.mordumCheck) {
         RaidCard(
-            bossImg = imageUrls[3],
+            bossImg = mainImageUrls[3],
             isRotated = mordumRotated,
             rotaR = mordumRotaR,
             onClick = { mordumRotated = !mordumRotated },
@@ -252,7 +252,7 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
                     rotaR = mordumRotaR,
 
                     name = viewModel.mordum.name,
-                    raidBossImg = R.drawable.logo_mordum,
+                    raidBossImg = logoImageUrls[3],
                     totalGold = viewModel.mordum.totalGold,
 
                     phaseOneLevel = viewModel.mordum.onePhase.level,

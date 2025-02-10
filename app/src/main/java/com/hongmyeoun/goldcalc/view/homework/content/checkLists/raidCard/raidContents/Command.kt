@@ -9,7 +9,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.constants.Labels
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCard
@@ -32,7 +31,8 @@ fun Command(
     var illiakanRotated by remember { mutableStateOf(false) }
     var kamenRotated by remember { mutableStateOf(false) }
 
-    val imageUrls by viewModel.imageUrls.collectAsState()
+    val mainImageUrls by viewModel.mainImageUrls.collectAsState()
+    val logoImageUrls by viewModel.logoImageUrls.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getImageModel()
@@ -115,7 +115,7 @@ fun Command(
 
     if (viewModel.valtanCheck) {
         RaidCard(
-            bossImg = imageUrls[0],
+            bossImg = mainImageUrls[0],
             isRotated = valtanRotated,
             rotaR = valtanRotaR,
             onClick = { valtanRotated = !valtanRotated },
@@ -124,7 +124,7 @@ fun Command(
                     rotaR = valtanRotaR,
 
                     name = viewModel.valtan.name,
-                    raidBossImg = R.drawable.logo_valtan,
+                    raidBossImg = logoImageUrls[0],
                     totalGold = viewModel.valtan.totalGold,
 
                     phaseOneLevel = viewModel.valtan.onePhase.level,
@@ -168,7 +168,7 @@ fun Command(
 
     if (viewModel.biaCheck) {
         RaidCard(
-            bossImg = imageUrls[1],
+            bossImg = mainImageUrls[1],
             isRotated = biackissRotated,
             rotaR = biackissRotaR,
             onClick = { biackissRotated = !biackissRotated },
@@ -177,7 +177,7 @@ fun Command(
                     rotaR = biackissRotaR,
 
                     name = viewModel.biackiss.name,
-                    raidBossImg = R.drawable.logo_biackiss,
+                    raidBossImg = logoImageUrls[1],
                     totalGold = viewModel.biackiss.totalGold,
 
                     phaseOneLevel = viewModel.biackiss.onePhase.level,
@@ -220,7 +220,7 @@ fun Command(
 
     if (viewModel.koukuCheck) {
         RaidCard(
-            bossImg = imageUrls[2],
+            bossImg = mainImageUrls[2],
             isRotated = koukuSatonRotated,
             rotaR = koukuSatonRotaR,
             onClick = { koukuSatonRotated = !koukuSatonRotated },
@@ -229,7 +229,7 @@ fun Command(
                     rotaR = koukuSatonRotaR,
 
                     name = viewModel.koukuSaton.name,
-                    raidBossImg = R.drawable.logo_saton,
+                    raidBossImg = logoImageUrls[2],
                     totalGold = viewModel.koukuSaton.totalGold,
 
                     phaseOneLevel = viewModel.koukuSaton.onePhase.level,
@@ -289,7 +289,7 @@ fun Command(
 
     if (viewModel.abreCheck) {
         RaidCard(
-            bossImg = imageUrls[3],
+            bossImg = mainImageUrls[3],
             isRotated = abrelshudRotated,
             rotaR = abrelshudRotaR,
             onClick = { abrelshudRotated = !abrelshudRotated },
@@ -298,7 +298,7 @@ fun Command(
                     rotaR = abrelshudRotaR,
 
                     name = viewModel.abrelshud.name,
-                    raidBossImg = R.drawable.logo_abrelshud,
+                    raidBossImg = logoImageUrls[3],
                     totalGold = viewModel.abrelshud.totalGold,
 
                     phaseOneLevel = viewModel.abrelshud.onePhase.level,
@@ -375,7 +375,7 @@ fun Command(
 
     if (viewModel.illiCheck) {
         RaidCard(
-            bossImg = imageUrls[4],
+            bossImg = mainImageUrls[4],
             isRotated = illiakanRotated,
             rotaR = illiakanRotaR,
             onClick = { illiakanRotated = !illiakanRotated },
@@ -384,7 +384,7 @@ fun Command(
                     rotaR = illiakanRotaR,
 
                     name = viewModel.illiakan.name,
-                    raidBossImg = R.drawable.logo_illiakan,
+                    raidBossImg = logoImageUrls[4],
                     totalGold = viewModel.illiakan.totalGold,
 
                     phaseOneLevel = viewModel.illiakan.onePhase.level,
@@ -444,7 +444,7 @@ fun Command(
 
     if (viewModel.kamenCheck) {
         RaidCard(
-            bossImg = imageUrls[5],
+            bossImg = mainImageUrls[5],
             isRotated = kamenRotated,
             rotaR = kamenRotaR,
             onClick = { kamenRotated = !kamenRotated },
@@ -453,7 +453,7 @@ fun Command(
                     rotaR = kamenRotaR,
 
                     name = viewModel.kamen.name,
-                    raidBossImg = R.drawable.logo_kamen,
+                    raidBossImg = logoImageUrls[5],
                     totalGold = viewModel.kamen.totalGold,
 
                     phaseOneLevel = viewModel.kamen.onePhase.level,

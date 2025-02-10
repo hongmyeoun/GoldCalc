@@ -12,8 +12,6 @@ import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class AbyssDungeonVM(val character: Character?): ViewModel() {
     private val adModel = AbyssDungeonModel(character)
@@ -48,22 +46,21 @@ class AbyssDungeonVM(val character: Character?): ViewModel() {
         sumGold()
     }
 
-    private val _imageUrls = MutableStateFlow<List<String?>>(List(2) { null })
-    val imageUrls: StateFlow<List<String?>> = _imageUrls
+    private val _mainImageUrls = MutableStateFlow<List<String?>>(List(2) { null })
+    val mainImageUrls: StateFlow<List<String?>> = _mainImageUrls
+
+    private val _logoImageUrls = MutableStateFlow<List<String?>>(List(2) { null })
+    val logoImageUrls: StateFlow<List<String?>> = _logoImageUrls
 
     fun getImageModel() {
         val raidNames = Raid.Name.ABYSS_DUNGEON_LIST
+        getImage(raidNames, FirebaseStorage::getRaidMainPath, _mainImageUrls)
+        getImage(raidNames, FirebaseStorage::getRaidLogoPath, _logoImageUrls)
+    }
 
+    private fun getImage(raidNames: List<String>, pathProvider: (String) -> String, stateFlow: MutableStateFlow<List<String?>>) {
         viewModelScope.launch {
-            val urls = raidNames.map { raidName ->
-                val imagePath = FirebaseStorage.getImagePath(raidName)
-                suspendCoroutine { continuation ->
-                    FirebaseStorage.getFirebaseImageUrl(imagePath) { url ->
-                        continuation.resume(url)
-                    }
-                }
-            }
-            _imageUrls.value = urls
+            stateFlow.value = FirebaseStorage.getUrlList(raidNames, pathProvider)
         }
     }
 }

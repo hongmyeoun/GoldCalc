@@ -9,7 +9,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.constants.Labels
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCard
@@ -23,7 +22,8 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
     var kayangelRotated by remember { mutableStateOf(false) }
     var ivoryTowerRotated by remember { mutableStateOf(false) }
 
-    val imageUrls by viewModel.imageUrls.collectAsState()
+    val mainImageUrls by viewModel.mainImageUrls.collectAsState()
+    val logoImageUrls by viewModel.logoImageUrls.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getImageModel()
@@ -58,7 +58,7 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
 
     if (viewModel.kayangelCheck) {
         RaidCard(
-            bossImg = imageUrls[0],
+            bossImg = mainImageUrls[0],
             isRotated = kayangelRotated,
             rotaR = kayangelRotaR,
             onClick = { kayangelRotated = !kayangelRotated },
@@ -67,7 +67,7 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
                     rotaR = kayangelRotaR,
 
                     name = viewModel.kayangel.name,
-                    raidBossImg = R.drawable.logo_kayangel,
+                    raidBossImg = logoImageUrls[0],
                     totalGold = viewModel.kayangel.totalGold,
 
                     phaseOneLevel = viewModel.kayangel.onePhase.level,
@@ -128,7 +128,7 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
 
     if (viewModel.ivoryCheck) {
         RaidCard(
-            bossImg = imageUrls[1],
+            bossImg = mainImageUrls[1],
             isRotated = ivoryTowerRotated,
             rotaR = ivoryTowerRotaR,
             onClick = { ivoryTowerRotated = !ivoryTowerRotated },
@@ -137,7 +137,7 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
                     rotaR = ivoryTowerRotaR,
 
                     name = viewModel.ivoryTower.name,
-                    raidBossImg = R.drawable.logo_ivory_tower,
+                    raidBossImg = logoImageUrls[1],
                     totalGold = viewModel.ivoryTower.totalGold,
 
                     phaseOneLevel = viewModel.ivoryTower.onePhase.level,
