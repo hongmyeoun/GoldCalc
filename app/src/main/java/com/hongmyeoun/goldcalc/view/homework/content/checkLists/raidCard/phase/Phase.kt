@@ -32,7 +32,7 @@ fun TwoPhase(
     rotaR: Float,
 
     name: String,
-    raidBossImg: Int,
+    raidBossImg: String?,
     totalGold: Int,
 
     phaseOneLevel: String,
@@ -91,7 +91,7 @@ fun ThreePhase(
     rotaR: Float,
 
     name: String,
-    raidBossImg: Int,
+    raidBossImg: String?,
     totalGold: Int,
 
     phaseOneLevel: String,
@@ -169,7 +169,7 @@ fun FourPhase(
     rotaR: Float,
 
     name: String,
-    raidBossImg: Int,
+    raidBossImg: String?,
     totalGold: Int,
 
     phaseOneLevel: String,

@@ -33,7 +33,7 @@ fun TwoPhaseNoHard(
     rotaR: Float,
 
     name: String,
-    raidBossImg: Int,
+    raidBossImg: String?,
     totalGold: Int,
 
     phaseOneGold: Int,
@@ -86,7 +86,7 @@ fun FourPhaseLastHard(
     rotaR: Float,
 
     name: String,
-    raidBossImg: Int,
+    raidBossImg: String?,
     totalGold: Int,
 
     phaseOneLevel: String,

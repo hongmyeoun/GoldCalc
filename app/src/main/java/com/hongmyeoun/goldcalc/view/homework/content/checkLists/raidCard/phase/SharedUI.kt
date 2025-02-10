@@ -29,19 +29,20 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.common.ImageReturn.goldImage
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
-import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.RedQual
 import com.hongmyeoun.goldcalc.ui.theme.YellowQual
+import com.hongmyeoun.goldcalc.view.common.LoadingScreen
 import com.hongmyeoun.goldcalc.view.common.noRippleClickable
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun BossCard(
     rotaR: Float,
-    raidBossImg: Int,
+    raidBossImg: String?,
     totalGold: Int,
     phaseGoldTextUI: @Composable () -> Unit,
     phaseCheckUI: @Composable () -> Unit,
@@ -60,14 +61,19 @@ fun BossCard(
                 .padding(vertical = 4.dp),
             verticalAlignment = Alignment.Top
         ) {
-            GlideImage(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(16.dp))
-                    .weight(1f),
-                contentScale = ContentScale.Crop,
-                model = raidBossImg,
-                contentDescription = "보스 아이콘"
-            )
+            if (raidBossImg != null) {
+                GlideImage(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .weight(1f),
+                    contentScale = ContentScale.Crop,
+                    model = raidBossImg,
+                    contentDescription = "보스 아이콘"
+                )
+            } else {
+                LoadingScreen(isBackground = true)
+            }
+
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -223,7 +229,9 @@ fun ClearMoreCheckBox(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
-            modifier = Modifier.weight(1f).noRippleClickable {  },
+            modifier = Modifier
+                .weight(1f)
+                .noRippleClickable { },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(
@@ -239,7 +247,9 @@ fun ClearMoreCheckBox(
         }
 
         Row(
-            modifier = Modifier.weight(1f).noRippleClickable {  },
+            modifier = Modifier
+                .weight(1f)
+                .noRippleClickable { },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(
@@ -270,7 +280,7 @@ fun Level(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .noRippleClickable {  }
+            .noRippleClickable { }
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
