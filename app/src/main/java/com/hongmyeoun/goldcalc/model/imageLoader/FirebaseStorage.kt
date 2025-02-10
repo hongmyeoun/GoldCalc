@@ -4,6 +4,8 @@ import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.storage.storage
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class FirebaseStorage {
     companion object {
@@ -16,8 +18,23 @@ class FirebaseStorage {
             }
         }
 
-        fun getImagePath(raidName: String) : String {
-            return FirebaseStoragePath.RaidImage.ROOT + raidImgPath(raidName) + FirebaseStoragePath.JPG
+        suspend fun getUrlList(raidNames: List<String>, pathProvider: (String) -> String): List<String?> {
+            return raidNames.map { raidName ->
+                val imagePath = pathProvider(raidName)
+                suspendCoroutine { continuation ->
+                    getFirebaseImageUrl(imagePath) { url ->
+                        continuation.resume(url)
+                    }
+                }
+            }
+        }
+
+        fun getRaidMainPath(raidName: String) : String {
+            return FirebaseStoragePath.RaidImage.MAIN_ROUTE + raidImgPath(raidName) + FirebaseStoragePath.JPG
+        }
+
+        fun getRaidLogoPath(raidName: String) : String {
+            return FirebaseStoragePath.RaidImage.LOGO_ROUTE + raidImgPath(raidName) + FirebaseStoragePath.PNG
         }
 
         private fun raidImgPath(raidName: String) : String {
