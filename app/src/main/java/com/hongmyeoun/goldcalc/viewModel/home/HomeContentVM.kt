@@ -417,7 +417,7 @@ class GoldContentStateVM(initPhase: Int) : ViewModel() {
     val imageUrl: StateFlow<String?> = _imageUrl
 
     fun getImageModel(raidName: String) {
-        val imagePath = FirebaseStorage.getRaidMainPath(raidName)
+        val imagePath = FirebaseStorage.RaidImageLoader.getRaidMainPath(raidName)
 
         viewModelScope.launch {
             FirebaseStorage.getFirebaseImageUrl(imagePath) { url ->

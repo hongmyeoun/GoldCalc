@@ -54,8 +54,8 @@ class AbyssDungeonVM(val character: Character?): ViewModel() {
 
     fun getImageModel() {
         val raidNames = Raid.Name.ABYSS_DUNGEON_LIST
-        getImage(raidNames, FirebaseStorage::getRaidMainPath, _mainImageUrls)
-        getImage(raidNames, FirebaseStorage::getRaidLogoPath, _logoImageUrls)
+        getImage(raidNames, FirebaseStorage.RaidImageLoader::getRaidMainPath, _mainImageUrls)
+        getImage(raidNames, FirebaseStorage.RaidImageLoader::getRaidLogoPath, _logoImageUrls)
     }
 
     private fun getImage(raidNames: List<String>, pathProvider: (String) -> String, stateFlow: MutableStateFlow<List<String?>>) {
