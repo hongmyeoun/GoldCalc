@@ -19,6 +19,7 @@ class ClassName {
 
         const val DEFAULT_FEMALE_EN = "warrior_female"
         const val SLAYER_EN = "berserker_female"
+        const val SLAYER_EN2 = "slayer"
     }
 
     object Fighter {
@@ -40,7 +41,9 @@ class ClassName {
 
         const val DEFAULT_MALE_EN = "fighter_male"
         const val STRIKER_EN = "battle_master_male"
+        const val STRIKER_EN2 = "striker"
         const val BREAKER_EN = "infighter_male"
+        const val BREAKER_EN2 = "breaker"
     }
 
     object Hunter {
@@ -61,6 +64,7 @@ class ClassName {
 
         const val DEFAULT_FEMALE_EN = "hunter_female"
         const val GUNSLINGER_EN = "devil_hunter_female"
+        const val GUNSLINGER_EN2 = "gunslinger"
     }
 
     object Magician {
@@ -89,6 +93,7 @@ class ClassName {
         const val DEMONIC_EN = "demonic"
         const val REAPER_EN = "reaper"
         const val SOUL_EATER_EN = "soul_eater"
+        const val SOUL_EATER_EN2 = "souleater"
     }
 
     object Specialist {
@@ -100,7 +105,9 @@ class ClassName {
         const val DEFAULT_EN = "specialist"
         const val ARTIST_EN = "artist"
         const val AEROMANCER_EN = "weather_artist"
+        const val AEROMANCER_EN2 = "aeromancer"
         const val ALCHEMIST_EN = "alchemist"
+        const val ALCHEMIST_EN2 = "wildsoul"
     }
 
     object ClassLists {
