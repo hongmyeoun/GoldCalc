@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -46,10 +47,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.DarkModeGray
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
+import com.hongmyeoun.goldcalc.viewModel.setting.CharacterListItemVM
 import com.hongmyeoun.goldcalc.viewModel.setting.SettingVM
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
@@ -82,6 +83,8 @@ fun ReorderPageContent(it: PaddingValues, viewModel: SettingVM) {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(items = list, key = { item -> item.name }) { character ->
+            val characterListItemVM = CharacterListItemVM(character.className)
+
             ReorderableItem(state = reorderableLazyListState, key = character.name) { isDragging ->
 
                 SwipeDeleteAndDraggableList(
@@ -103,7 +106,8 @@ fun ReorderPageContent(it: PaddingValues, viewModel: SettingVM) {
                                 viewModel.saveReorderList(list)
                             },
                         ),
-                    character = character
+                    character = character,
+                    characterListItemVM = characterListItemVM
                 )
             }
         }
@@ -117,7 +121,8 @@ private fun SwipeDeleteAndDraggableList(
     onSwipeDelete: () -> Unit,
     modifier: Modifier,
     draggableHandlerModifier: Modifier,
-    character: Character
+    character: Character,
+    characterListItemVM: CharacterListItemVM,
 ) {
     val elevation by animateDpAsState(if (isDragging) 4.dp else 0.dp)
     val surfaceBGColor = if (isDragging) DarkModeGray else LightGrayBG
@@ -155,6 +160,7 @@ private fun SwipeDeleteAndDraggableList(
             ) {
                 CharacterListItem(
                     character = character,
+                    viewModel = characterListItemVM,
                     modifier = draggableHandlerModifier,
                 )
             }
@@ -166,8 +172,15 @@ private fun SwipeDeleteAndDraggableList(
 @Composable
 private fun CharacterListItem(
     character: Character,
+    viewModel: CharacterListItemVM,
     modifier: Modifier,
 ) {
+    val imageUrl by viewModel.imageUrl.collectAsState()
+
+//    LaunchedEffect(Unit) {
+//        viewModel.getImageModel(character.className)
+//    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -178,12 +191,16 @@ private fun CharacterListItem(
             modifier = Modifier.weight(1.5f),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            GlideImage(
-                modifier = Modifier.size(48.dp),
-                contentScale = ContentScale.Crop,
-                model = CharacterResourceMapper.getClassEmblem(character.className),
-                contentDescription = "직업 이미지"
-            )
+            if (imageUrl != null) {
+                GlideImage(
+                    modifier = Modifier.size(48.dp),
+                    contentScale = ContentScale.Crop,
+                    model = imageUrl,
+                    contentDescription = "직업 이미지"
+                )
+            } else {
+                CircularProgressIndicator(color = Color.White)
+            }
             Spacer(modifier = Modifier.width(8.dp))
 
             Column {

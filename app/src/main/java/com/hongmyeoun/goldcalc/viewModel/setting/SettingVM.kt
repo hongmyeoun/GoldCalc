@@ -5,6 +5,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hongmyeoun.goldcalc.model.constants.viewConst.SnackbarMessage
+import com.hongmyeoun.goldcalc.model.imageLoader.FirebaseStorage
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.model.roomDB.character.RaidPhaseInfo
@@ -173,5 +174,24 @@ class SettingVM @Inject constructor(
     init {
         getCharacters()
         getHistories()
+    }
+}
+
+class CharacterListItemVM(private val charClassName: String): ViewModel() {
+    private val _imageUrl = MutableStateFlow<String?>(null)
+    val imageUrl: StateFlow<String?> = _imageUrl
+
+    init {
+        getImageModel()
+    }
+
+    fun getImageModel() {
+        val imagePath = FirebaseStorage.CharacterImageLoader.getCharEmblemPath(charClassName)
+
+        viewModelScope.launch {
+            FirebaseStorage.getFirebaseImageUrl(imagePath) { url ->
+                _imageUrl.value = url
+            }
+        }
     }
 }
