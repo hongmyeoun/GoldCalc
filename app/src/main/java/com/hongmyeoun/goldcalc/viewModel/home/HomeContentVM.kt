@@ -399,6 +399,19 @@ class HomeContentVM @Inject constructor(
             characterRepository.update(update)
         }
     }
+
+    private val _imageUrl = MutableStateFlow<String?>(null)
+    val imageUrl: StateFlow<String?> = _imageUrl
+
+    fun getImageModel(raidName: String) {
+        val imagePath = FirebaseStorage.CharacterImageLoader.getCharEmblemPath(raidName)
+
+        viewModelScope.launch {
+            FirebaseStorage.getFirebaseImageUrl(imagePath) { url ->
+                _imageUrl.value = url
+            }
+        }
+    }
 }
 
 class GoldContentStateVM(initPhase: Int) : ViewModel() {

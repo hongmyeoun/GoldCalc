@@ -16,12 +16,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -40,7 +42,6 @@ import com.hongmyeoun.goldcalc.model.common.ImageReturn.goldImage
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
 import com.hongmyeoun.goldcalc.model.common.toPercentage
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Home
-import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
@@ -74,6 +75,11 @@ fun ClassAndName(
     viewModel: HomeContentVM
 ) {
     val character by viewModel.character.collectAsState()
+    val imageUrl by viewModel.imageUrl.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.getImageModel(character.className)
+    }
 
     Row(
         modifier = modifier,
@@ -86,12 +92,18 @@ fun ClassAndName(
                 .background(CharacterEmblemBG),
             contentAlignment = Alignment.Center
         ) {
-            GlideImage(
-                modifier = Modifier.size(46.dp).padding(6.dp),
-                contentScale = ContentScale.Crop,
-                model = CharacterResourceMapper.getClassEmblem(character.className),
-                contentDescription = "직업군"
-            )
+            if (imageUrl != null) {
+                GlideImage(
+                    modifier = Modifier
+                        .size(46.dp)
+                        .padding(6.dp),
+                    contentScale = ContentScale.Crop,
+                    model = imageUrl,
+                    contentDescription = "직업군"
+                )
+            } else {
+                CircularProgressIndicator(color = Color.White)
+            }
         }
 
         Spacer(modifier = Modifier.width(10.dp))
