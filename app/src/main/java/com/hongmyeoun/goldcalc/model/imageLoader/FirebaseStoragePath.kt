@@ -11,6 +11,13 @@ class FirebaseStoragePath {
         const val KAZEROTH = "kazeroth/"
     }
 
+    object CharacterImage {
+        const val MAIN_ROUTE = "character_images/"
+
+        const val DETAIL = "detail/"
+        const val EMBLEM = "emblem/"
+    }
+
     companion object {
         const val JPG = ".jpg"
         const val PNG = ".png"
