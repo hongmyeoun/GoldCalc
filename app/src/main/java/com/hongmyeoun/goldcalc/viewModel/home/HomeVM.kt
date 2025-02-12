@@ -1,11 +1,11 @@
 package com.hongmyeoun.goldcalc.viewModel.home
 
-import android.util.Log
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.util.fastSumBy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hongmyeoun.goldcalc.model.constants.viewConst.SnackbarMessage
+import com.hongmyeoun.goldcalc.model.imageLoader.FirebaseStorage
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.model.roomDB.character.RaidPhaseInfo
@@ -128,5 +128,24 @@ class HomeVM @Inject constructor(
     init {
         getCharacters()
         mainScreenloading()
+    }
+}
+
+class SimpleCurrentVM(val className: String): ViewModel() {
+    private val _imageUrl = MutableStateFlow<String?>(null)
+    val imageUrl: StateFlow<String?> = _imageUrl
+
+    init {
+        getImageModel()
+    }
+
+    fun getImageModel() {
+        val imagePath = FirebaseStorage.CharacterImageLoader.getCharEmblemPath(className)
+
+        viewModelScope.launch {
+            FirebaseStorage.getFirebaseImageUrl(imagePath) { url ->
+                _imageUrl.value = url
+            }
+        }
     }
 }

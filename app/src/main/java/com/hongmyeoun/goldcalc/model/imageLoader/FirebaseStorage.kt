@@ -13,6 +13,7 @@ class FirebaseStorage {
         fun getFirebaseImageUrl(imagePath: String, onUrlReceived: (String) -> Unit) {
             val storageRef = Firebase.storage.reference.child(imagePath)
             storageRef.downloadUrl.addOnSuccessListener { uri ->
+                Log.d("헤응", "$uri")
                 onUrlReceived(uri.toString())
             }.addOnFailureListener {
                 Log.e("Firebase", "이미지 URL 가져오기 실패", it)

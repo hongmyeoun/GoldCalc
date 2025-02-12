@@ -38,14 +38,15 @@ import com.hongmyeoun.goldcalc.model.common.ImageReturn
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
 import com.hongmyeoun.goldcalc.model.common.toPercentage
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Home
-import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.CharacterEmblemBG
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
+import com.hongmyeoun.goldcalc.view.common.LoadingScreen
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
+import com.hongmyeoun.goldcalc.viewModel.home.SimpleCurrentVM
 import kotlin.math.absoluteValue
 
 @Composable
@@ -84,14 +85,17 @@ private fun CurrentContents(viewModel: HomeVM) {
     val characterList by viewModel.characters.collectAsState()
     LazyColumn {
         items(characterList, key = { item -> item.name }) {
-            Content(it)
+            val currentVM = SimpleCurrentVM(it.className)
+            Content(it, currentVM)
         }
     }
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-private fun Content(character: Character) {
+private fun Content(character: Character, viewModel: SimpleCurrentVM) {
+    val imageUrl by viewModel.imageUrl.collectAsState()
+
     Column(
         modifier = Modifier
             .background(
@@ -115,14 +119,18 @@ private fun Content(character: Character) {
                         .background(CharacterEmblemBG),
                     contentAlignment = Alignment.Center
                 ) {
-                    GlideImage(
-                        modifier = Modifier
-                            .size(35.dp)
-                            .padding(3.dp),
-                        contentScale = ContentScale.Crop,
-                        model = CharacterResourceMapper.getClassEmblem(character.className),
-                        contentDescription = "직업군"
-                    )
+                    if (imageUrl != null) {
+                        GlideImage(
+                            modifier = Modifier
+                                .size(35.dp)
+                                .padding(3.dp),
+                            contentScale = ContentScale.Crop,
+                            model = imageUrl,
+                            contentDescription = "직업군"
+                        )
+                    } else {
+                        LoadingScreen()
+                    }
                 }
 
                 Spacer(modifier = Modifier.width(5.dp))

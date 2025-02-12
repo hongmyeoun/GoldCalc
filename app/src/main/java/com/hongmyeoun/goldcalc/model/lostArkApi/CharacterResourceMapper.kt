@@ -5,57 +5,6 @@ import com.hongmyeoun.goldcalc.model.constants.ClassName
 import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
 
 object CharacterResourceMapper {
-    fun getClassEmblem(characterClassName: String): Int {
-        val classImageMap = mapOf(
-            ClassName.Warrior.DEFAULT to R.drawable.emblem_warrior,
-            ClassName.Warrior.DESTROYER to R.drawable.emblem_destroyer,
-            ClassName.Warrior.WARLOARD to R.drawable.emblem_warlord,
-            ClassName.Warrior.BERSERKER to R.drawable.emblem_berserker,
-            ClassName.Warrior.HOLYKNIGHT to R.drawable.emblem_holyknight,
-
-            ClassName.Warrior.DEFAULT_FEMALE to R.drawable.emblem_warrior_female,
-            ClassName.Warrior.SLAYER to R.drawable.emblem_berserker_female,
-
-            ClassName.Fighter.DEFAULT_MALE to R.drawable.emblem_fighter_male,
-            ClassName.Fighter.STRIKER to R.drawable.emblem_battle_master_male,
-            ClassName.Fighter.BREAKER to R.drawable.emblem_infighter_male,
-
-            ClassName.Fighter.DEFAULT to R.drawable.emblem_fighter,
-            ClassName.Fighter.BATTLE_MASTER to R.drawable.emblem_battle_master,
-            ClassName.Fighter.INFIGHTER to R.drawable.emblem_infighter,
-            ClassName.Fighter.SOUL_MASTER to R.drawable.emblem_force_master,
-            ClassName.Fighter.LANCE_MASTER to R.drawable.emblem_lance_master,
-
-            ClassName.Hunter.DEFAULT to R.drawable.emblem_hunter,
-            ClassName.Hunter.DEVILHUNTER to R.drawable.emblem_devil_hunter,
-            ClassName.Hunter.BLASTER to R.drawable.emblem_blaster,
-            ClassName.Hunter.HAWKEYE to R.drawable.emblem_hawk_eye,
-            ClassName.Hunter.SCOUTER to R.drawable.emblem_scouter,
-
-            ClassName.Hunter.DEFAULT_FEMALE to R.drawable.emblem_hunter_female,
-            ClassName.Hunter.GUNSLINGER to R.drawable.emblem_devil_hunter_female,
-
-            ClassName.Magician.DEFAULT to R.drawable.emblem_magician,
-            ClassName.Magician.BARD to R.drawable.emblem_bard,
-            ClassName.Magician.SUMMONER to R.drawable.emblem_summoner,
-            ClassName.Magician.ARCANA to R.drawable.emblem_arcana,
-            ClassName.Magician.SORCERESS to R.drawable.emblem_elemental_master,
-
-            ClassName.Delain.DEFAULT to R.drawable.emblem_delain,
-            ClassName.Delain.BLADE to R.drawable.emblem_blade,
-            ClassName.Delain.DEMONIC to R.drawable.emblem_demonic,
-            ClassName.Delain.REAPER to R.drawable.emblem_reaper,
-            ClassName.Delain.SOUL_EATER to R.drawable.emblem_soul_eater,
-
-            ClassName.Specialist.DEFAULT to R.drawable.emblem_specialist,
-            ClassName.Specialist.ARTIST to R.drawable.emblem_yinyangshi,
-            ClassName.Specialist.AEROMANCER to R.drawable.emblem_weather_artist,
-            ClassName.Specialist.ALCHEMIST to R.drawable.emblem_alchemist
-        )
-
-        return classImageMap[characterClassName] ?: R.drawable.emblem_specialist
-    }
-
     fun getClassDefaultImg(characterClassName: String): Int {
         val classImageMap = mapOf(
             ClassName.Warrior.DEFAULT to R.drawable.img_detail_warlord,
