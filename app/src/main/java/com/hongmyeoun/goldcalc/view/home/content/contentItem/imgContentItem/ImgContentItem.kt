@@ -17,6 +17,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,10 +30,10 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.common.ImageReturn
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
-import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
+import com.hongmyeoun.goldcalc.view.common.LoadingScreen
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.ItemLevel
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
@@ -47,7 +49,7 @@ fun ImgContent(
         modifier = Modifier.padding(top = 4.dp, bottom = 4.dp, start = 8.dp, end = 8.dp)
     ) {
         ImgContentTop(character, cardViewModel, navController)
-        CharacterImg(character)
+        CharacterImg(character, cardViewModel)
         ImgContentBottom(character)
     }
 }
@@ -100,7 +102,9 @@ private fun ImgContentTop(
 
 @Composable
 @OptIn(ExperimentalGlideComposeApi::class)
-private fun CharacterImg(character: Character) {
+private fun CharacterImg(character: Character, cardViewModel: HomeContentVM) {
+    val detailImgUrl by cardViewModel.detailImageUrl.collectAsState()
+
     Box {
         if (character.avatarImage) {
             GlideImage(
@@ -116,11 +120,15 @@ private fun CharacterImg(character: Character) {
                         shape = RoundedCornerShape(8.dp)
                     )
             ) {
-                GlideImage(
-                    model = CharacterResourceMapper.getClassDefaultImg(character.className),
-                    contentScale = ContentScale.Inside,
-                    contentDescription = "캐릭터 이미지"
-                )
+                if (detailImgUrl != null) {
+                    GlideImage(
+                        model = detailImgUrl,
+                        contentScale = ContentScale.Inside,
+                        contentDescription = "캐릭터 이미지"
+                    )
+                } else {
+                    LoadingScreen()
+                }
             }
         }
     }

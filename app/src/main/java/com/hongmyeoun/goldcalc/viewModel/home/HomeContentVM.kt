@@ -123,6 +123,7 @@ class HomeContentVM @Inject constructor(
                     }
                 }
                 initTG(_character.value)
+                getImageModel()
             }
         }
     }
@@ -402,13 +403,19 @@ class HomeContentVM @Inject constructor(
 
     private val _imageUrl = MutableStateFlow<String?>(null)
     val imageUrl: StateFlow<String?> = _imageUrl
+    private val _detailImageUrl = MutableStateFlow<String?>(null)
+    val detailImageUrl: StateFlow<String?> = _detailImageUrl
 
-    fun getImageModel(raidName: String) {
-        val imagePath = FirebaseStorage.CharacterImageLoader.getCharEmblemPath(raidName)
+    fun getImageModel() {
+        val emblemPath = FirebaseStorage.CharacterImageLoader.getCharEmblemPath(_character.value.className)
+        val detailPath = FirebaseStorage.CharacterImageLoader.getCharDetailPath(_character.value.className)
 
         viewModelScope.launch {
-            FirebaseStorage.getFirebaseImageUrl(imagePath) { url ->
+            FirebaseStorage.getFirebaseImageUrl(emblemPath) { url ->
                 _imageUrl.value = url
+            }
+            FirebaseStorage.getFirebaseImageUrl(detailPath) { url ->
+                _detailImageUrl.value = url
             }
         }
     }

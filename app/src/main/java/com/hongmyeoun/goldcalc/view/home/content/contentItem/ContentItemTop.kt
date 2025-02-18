@@ -23,7 +23,6 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -76,10 +75,6 @@ fun ClassAndName(
 ) {
     val character by viewModel.character.collectAsState()
     val imageUrl by viewModel.imageUrl.collectAsState()
-
-    LaunchedEffect(Unit) {
-        viewModel.getImageModel(character.className)
-    }
 
     Row(
         modifier = modifier,
