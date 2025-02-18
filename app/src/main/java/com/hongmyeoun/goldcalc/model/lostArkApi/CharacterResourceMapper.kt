@@ -1,61 +1,9 @@
 package com.hongmyeoun.goldcalc.model.lostArkApi
 
-import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.constants.ClassName
 import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
 
 object CharacterResourceMapper {
-    fun getClassDefaultImg(characterClassName: String): Int {
-        val classImageMap = mapOf(
-            ClassName.Warrior.DEFAULT to R.drawable.img_detail_warlord,
-            ClassName.Warrior.DESTROYER to R.drawable.img_detail_destroyer,
-            ClassName.Warrior.WARLOARD to R.drawable.img_detail_warlord,
-            ClassName.Warrior.BERSERKER to R.drawable.img_detail_berserker,
-            ClassName.Warrior.HOLYKNIGHT to R.drawable.img_detail_holyknight,
-
-            ClassName.Warrior.DEFAULT_FEMALE to R.drawable.img_detail_slayer,
-            ClassName.Warrior.SLAYER to R.drawable.img_detail_slayer,
-
-            ClassName.Fighter.DEFAULT_MALE to R.drawable.img_detail_striker,
-            ClassName.Fighter.STRIKER to R.drawable.img_detail_striker,
-            ClassName.Fighter.BREAKER to R.drawable.img_detail_breaker,
-
-            ClassName.Fighter.DEFAULT to R.drawable.img_detail_battlemaster,
-            ClassName.Fighter.BATTLE_MASTER to R.drawable.img_detail_battlemaster,
-            ClassName.Fighter.INFIGHTER to R.drawable.img_detail_infighter,
-            ClassName.Fighter.SOUL_MASTER to R.drawable.img_detail_soulmaster,
-            ClassName.Fighter.LANCE_MASTER to R.drawable.img_detail_lancemaster,
-
-            ClassName.Hunter.DEFAULT to R.drawable.img_detail_devilhunter,
-            ClassName.Hunter.DEVILHUNTER to R.drawable.img_detail_devilhunter,
-            ClassName.Hunter.BLASTER to R.drawable.img_detail_blaster,
-            ClassName.Hunter.HAWKEYE to R.drawable.img_detail_hawkeye,
-            ClassName.Hunter.SCOUTER to R.drawable.img_detail_scouter,
-
-            ClassName.Hunter.DEFAULT_FEMALE to R.drawable.img_detail_gunslinger,
-            ClassName.Hunter.GUNSLINGER to R.drawable.img_detail_gunslinger,
-
-            ClassName.Magician.DEFAULT to R.drawable.img_detail_summoner,
-            ClassName.Magician.BARD to R.drawable.img_detail_bard,
-            ClassName.Magician.SUMMONER to R.drawable.img_detail_summoner,
-            ClassName.Magician.ARCANA to R.drawable.img_detail_arcana,
-            ClassName.Magician.SORCERESS to R.drawable.img_detail_sorceress,
-
-            ClassName.Delain.DEFAULT to R.drawable.img_detail_reaper,
-            ClassName.Delain.BLADE to R.drawable.img_detail_blade,
-            ClassName.Delain.DEMONIC to R.drawable.img_detail_demonic,
-            ClassName.Delain.REAPER to R.drawable.img_detail_reaper,
-            ClassName.Delain.SOUL_EATER to R.drawable.img_detail_souleater,
-
-            ClassName.Specialist.DEFAULT to R.drawable.img_detail_artist,
-            ClassName.Specialist.ARTIST to R.drawable.img_detail_artist,
-            ClassName.Specialist.AEROMANCER to R.drawable.img_detail_aeromancer,
-            ClassName.Specialist.ALCHEMIST to R.drawable.img_detail_wildsoul
-        )
-
-        return classImageMap[characterClassName] ?: R.drawable.img_detail_breaker
-    }
-
     fun getCharacterThumbURL(characterClassName: String): String {
         val startURL = NetworkConfig.CHARACTER_THUMB
         val endURL = NetworkConfig.END_POINT_PNG

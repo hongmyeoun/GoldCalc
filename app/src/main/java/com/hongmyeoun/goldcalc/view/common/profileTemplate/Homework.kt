@@ -33,10 +33,10 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.constants.Labels
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
-import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
+import com.hongmyeoun.goldcalc.view.common.LoadingScreen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -44,7 +44,8 @@ import kotlinx.coroutines.launch
 fun HomeworkProfile(
     it: Character,
     onAvatarClick: () -> Unit,
-    onReloadClick: () -> Unit
+    onReloadClick: () -> Unit,
+    imgUrl: String?
 ) {
     var isBlinking by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
@@ -59,7 +60,8 @@ fun HomeworkProfile(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .height(300.dp),
-            character = it
+            character = it,
+            imgUrl = imgUrl
         )
 
         DefaultsProfiles(character = it)
@@ -90,7 +92,8 @@ fun HomeworkProfile(
 @Composable
 private fun CharImage(
     modifier: Modifier,
-    character: Character
+    character: Character,
+    imgUrl: String?
 ) {
     if (character.avatarImage) {
         GlideImage(
@@ -99,12 +102,16 @@ private fun CharImage(
             contentDescription = "캐릭터 이미지"
         )
     } else {
-        GlideImage(
-            modifier = modifier,
-            contentScale = ContentScale.FillHeight,
-            model = CharacterResourceMapper.getClassDefaultImg(character.className),
-            contentDescription = "캐릭터 이미지"
-        )
+        if (imgUrl != null) {
+            GlideImage(
+                modifier = modifier,
+                contentScale = ContentScale.FillHeight,
+                model = imgUrl,
+                contentDescription = "캐릭터 이미지"
+            )
+        } else {
+            LoadingScreen()
+        }
     }
 }
 

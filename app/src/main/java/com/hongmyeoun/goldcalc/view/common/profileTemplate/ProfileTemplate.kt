@@ -14,14 +14,15 @@ fun ProfileTemplate(
     onReloadClick: () -> Unit = {},
     onAvatarClick: () -> Unit = {},
     onGetClick: () -> Unit = {},
-    getButtonEnabled: Boolean = false
+    getButtonEnabled: Boolean = false,
+    imgUrl: String? = null
 ) {
     character?.let {
-        HomeworkProfile(it, onAvatarClick, onReloadClick)
+        HomeworkProfile(it, onAvatarClick, onReloadClick, imgUrl)
     }
     profile?.let { profiles ->
         arkPassive?.let { arkPassives ->
-            SearchProfile(profiles, arkPassives, onGetClick, getButtonEnabled)
+            SearchProfile(profiles, arkPassives, onGetClick, getButtonEnabled, imgUrl)
         }
     }
 }

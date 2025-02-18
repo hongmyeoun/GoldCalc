@@ -63,6 +63,7 @@ fun ProfileContent(
     val charProfile by viewModel.charProfile.collectAsState()
     val arkPassive by viewModel.arkPassive.collectAsState()
     val isSaved by viewModel.isSaved.collectAsState()
+    val imgUrl by viewModel.detailImageUrl.collectAsState()
 
     LaunchedEffect(charProfile, arkPassive) {
         if (charProfile != null && arkPassive != null) {
@@ -89,7 +90,8 @@ fun ProfileContent(
                         profile = profile,
                         arkPassive = arkPassive,
                         onGetClick = { viewModel.saveCharDetailToLocal(profile, arkPassive) },
-                        getButtonEnabled = !isSaved
+                        getButtonEnabled = !isSaved,
+                        imgUrl = imgUrl
                     )
 
                     arkPassive?.let {

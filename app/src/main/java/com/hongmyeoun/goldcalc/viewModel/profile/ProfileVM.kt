@@ -2,6 +2,7 @@ package com.hongmyeoun.goldcalc.viewModel.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hongmyeoun.goldcalc.model.imageLoader.FirebaseStorage
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharArkPassive
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharArkPassiveNode
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharCard
@@ -120,6 +121,22 @@ class ProfileVM @Inject constructor(
             _skills.value = getCharSkill(charName)
             _arkPassive.value = getCharArkPassive(charName)
             _arkPassiveNode.value = getCharArkPassiveNode(charName)
+        }
+        getImageModel(_characterDetail.value)
+    }
+
+    private val _detailImageUrl = MutableStateFlow<String?>(null)
+    val detailImageUrl: StateFlow<String?> = _detailImageUrl
+
+    fun getImageModel(character: SearchedCharacterDetail?) {
+        character?.let {
+            val detailPath = FirebaseStorage.CharacterImageLoader.getCharDetailPath(it.characterClassName)
+
+            viewModelScope.launch {
+                FirebaseStorage.getFirebaseImageUrl(detailPath) { url ->
+                    _detailImageUrl.value = url
+                }
+            }
         }
     }
 }

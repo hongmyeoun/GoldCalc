@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.model.constants.viewConst.SnackbarMessage
+import com.hongmyeoun.goldcalc.model.imageLoader.FirebaseStorage
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharArkPassive
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharDetail
 import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
@@ -56,6 +57,7 @@ class HomeworkVM @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             characterRepository.getCharacterByName(charName).collect { character ->
                 _character.value = character
+                getImageModel(character)
             }
         }
         _isLoading.value = false
@@ -515,6 +517,19 @@ class HomeworkVM @Inject constructor(
         update?.let {
             viewModelScope.launch(Dispatchers.IO) {
                 characterRepository.update(update)
+            }
+        }
+    }
+
+    private val _detailImageUrl = MutableStateFlow<String?>(null)
+    val detailImageUrl: StateFlow<String?> = _detailImageUrl
+
+    fun getImageModel(character: Character) {
+        val detailPath = FirebaseStorage.CharacterImageLoader.getCharDetailPath(character.className)
+
+        viewModelScope.launch {
+            FirebaseStorage.getFirebaseImageUrl(detailPath) { url ->
+                _detailImageUrl.value = url
             }
         }
     }

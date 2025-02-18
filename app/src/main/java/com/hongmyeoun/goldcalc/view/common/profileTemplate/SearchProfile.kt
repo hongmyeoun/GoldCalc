@@ -1,3 +1,4 @@
+
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,7 +20,6 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
 import com.hongmyeoun.goldcalc.model.constants.viewConst.ButtonText
-import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
 import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassive
 import com.hongmyeoun.goldcalc.ui.theme.YellowWarn
@@ -37,12 +37,13 @@ fun SearchProfile(
     profile: SearchedCharacterDetail,
     arkPassive: ArkPassive,
     onGetClick: () -> Unit,
-    enabled: Boolean
+    enabled: Boolean,
+    imgUrl: String?
 ) {
     val height = if (enabled) 336.dp else 290.dp
 
     val characterImage = if (profile.characterImage.isNullOrEmpty()) {
-        CharacterResourceMapper.getClassDefaultImg(profile.characterClassName)
+        imgUrl
     } else {
         profile.characterImage
     }

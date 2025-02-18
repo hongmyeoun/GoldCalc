@@ -38,6 +38,7 @@ fun HomeworkContent(
 ) {
     val character by viewModel.character.collectAsState()
     val showDetail by viewModel.showDetail.collectAsState()
+    val imgUrl by viewModel.detailImageUrl.collectAsState()
 
     LazyColumn(
         modifier = Modifier
@@ -54,7 +55,8 @@ fun HomeworkContent(
                 ProfileTemplate(
                     character = character,
                     onReloadClick = { viewModel.onReloadClick(character?.name, snackbarHostState) },
-                    onAvatarClick = { viewModel.onAvatarClick(character) }
+                    onAvatarClick = { viewModel.onAvatarClick(character) },
+                    imgUrl = imgUrl
                 )
             }
         }
