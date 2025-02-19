@@ -30,7 +30,6 @@ data class SearchedCharacterDetail(
     @SerializedName("CharacterClassName") val characterClassName: String,
     @SerializedName("ItemAvgLevel") val itemAvgLevel: String,
     @SerializedName("ItemMaxLevel") val itemMaxLevel: String,
-//    @SerializedName("ArkPassive") val arkPassive: ArkPassive
 )
 
 data class Stats(
