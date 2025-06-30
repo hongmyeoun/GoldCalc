@@ -8,9 +8,12 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Refresh
@@ -124,7 +127,14 @@ private fun DefaultsProfiles(
             title = character.title,
             name = character.name
         )
-        ItemLevel(level = character.itemLevel)
+
+        Row {
+            ItemLevelOrCombatPower(level = character.itemLevel)
+            Spacer(modifier = Modifier.size(8.dp))
+            ItemLevelOrCombatPower(level = character.combatPower, isCombatPower = true)
+        }
+        Spacer(modifier = Modifier.height(12.dp))
+
         Extra(character = character)
         ArkPassive(character = character)
         Levels(character = character)

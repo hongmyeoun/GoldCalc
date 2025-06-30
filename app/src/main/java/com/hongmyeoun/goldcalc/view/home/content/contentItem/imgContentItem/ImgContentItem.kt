@@ -32,7 +32,7 @@ import com.hongmyeoun.goldcalc.model.lostArkApi.CharacterResourceMapper
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.navigation.Screen
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
-import com.hongmyeoun.goldcalc.view.common.profileTemplate.ItemLevel
+import com.hongmyeoun.goldcalc.view.common.profileTemplate.ItemLevelOrCombatPower
 import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.home.HomeContentVM
@@ -161,7 +161,7 @@ private fun ImgContentBottom(character: Character) {
                     text = "아이템 레벨",
                     style = normalTextStyle(fontSize = 11.sp)
                 )
-                ItemLevel(
+                ItemLevelOrCombatPower(
                     level = character.itemLevel,
                     noSpace = true
                 )

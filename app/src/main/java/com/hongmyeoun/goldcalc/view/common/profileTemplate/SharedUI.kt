@@ -81,11 +81,14 @@ fun TitleCharName(title: String?, name: String) {
 // 아이템 레벨
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ItemLevel(level: String, noSpace: Boolean = false) {
+fun ItemLevelOrCombatPower(level: String, noSpace: Boolean = false, isCombatPower: Boolean = false) {
+    val iconModel = if (isCombatPower) NetworkConfig.COMBAT_POWER_ICON else NetworkConfig.ITEM_LEVEL_ICON
+    val textColor = if (isCombatPower) Color(0xFFF7B838) else Color(0xFFFF009B)
+
     Row(verticalAlignment = Alignment.CenterVertically) {
         GlideImage(
             modifier = Modifier.size(24.dp),
-            model = NetworkConfig.ITEM_LEVEL_ICON,
+            model = iconModel,
             contentScale = ContentScale.FillHeight,
             contentDescription = "아이템 레벨"
         )
@@ -98,7 +101,7 @@ fun ItemLevel(level: String, noSpace: Boolean = false) {
                     style = SpanStyle(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.ExtraBold,
-                        color = Color.White
+                        color = textColor
                     )
                 ) {
                     append(beforeDot)
@@ -107,7 +110,7 @@ fun ItemLevel(level: String, noSpace: Boolean = false) {
                     style = SpanStyle(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.ExtraBold,
-                        color = Color.White
+                        color = textColor
                     )
                 ) {
                     append(dot)
@@ -116,7 +119,7 @@ fun ItemLevel(level: String, noSpace: Boolean = false) {
                     style = SpanStyle(
                         fontSize = 15.sp,
                         fontWeight = FontWeight.ExtraBold,
-                        color = Color.White
+                        color = textColor
                     )
                 ) {
                     append(afterDot)
