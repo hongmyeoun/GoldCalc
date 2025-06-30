@@ -268,38 +268,6 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         return ""
     }
 
-    private fun getSetOption(equipment: Equipment): String {
-        val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
-
-        for (index in 7..13) {
-            val elementKey = Common.currentElementKey(index)
-
-            if (tooltipJson.has(elementKey)) {
-                val element = tooltipJson
-                    .getAsJsonObject(elementKey)
-
-                if (Common.itemPartBox(element)) {
-                    val value = element
-                        .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-                        .get(TooltipStrings.MemberName.ELEMENT_001).asString
-
-                    if (value.contains(TooltipStrings.Contains.LEVEL_DOT)) {
-                        val setOption = value
-                            .substringBefore(TooltipStrings.SubStringBefore.SPACE_FONT_EMPTY)
-
-                        val setLevel = value
-                            .substringAfterLast(TooltipStrings.SubStringAfter.LEVEL_DOT)
-                            .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
-
-                        return "$setOption $setLevel"
-                    }
-                }
-            }
-        }
-
-        return ""
-    }
-
     private fun getElixirSetOption(equipment: Equipment): String {
         val tooltipJson = JsonParser.parseString(equipment.tooltip).asJsonObject
 
@@ -358,82 +326,6 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
 
     private fun getAccName(equipment: Equipment): String {
         return equipment.name
-    }
-
-    private fun getAccCombatStats(equipment: Equipment): Pair<String?, String?>? {
-        val combatStat = combatStatElement(equipment)
-
-        if (combatStat != null) {
-            return combatStatProcess(combatStat)
-        }
-
-        return null
-    }
-
-    private fun combatStatElement(equipment: Equipment): String? {
-        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
-
-        val itemTier = itemTier(tooltip)
-
-        if (itemTier < 4) {
-            return tooltip
-                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_005)
-                .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-                .get(TooltipStrings.MemberName.ELEMENT_001).asString
-        }
-
-        return null
-    }
-
-    private fun getAccFirstEngraving(equipment: Equipment): String {
-        return accEngraving(equipment, TooltipStrings.MemberName.ELEMENT_000)
-    }
-
-    private fun getAccSecondEngraving(equipment: Equipment): String {
-        return accEngraving(equipment, TooltipStrings.MemberName.ELEMENT_001)
-    }
-
-    private fun getAccThirdEngraving(equipment: Equipment): String {
-        return accEngraving(equipment, TooltipStrings.MemberName.ELEMENT_002)
-    }
-
-    private fun accEngraving(equipment: Equipment, memberName: String): String {
-        val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
-
-        val itemTier = itemTier(tooltip)
-
-        if (itemTier < 4) {
-            val element = tooltip
-                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_006)
-
-            val slicingOptionAfter =
-                if (memberName == TooltipStrings.MemberName.ELEMENT_002) TooltipStrings.SubStringAfter.FONT_ENGRAVING_COLOR_THIRD else TooltipStrings.SubStringAfter.FONT_ENGRAVING_COLOR
-
-            if (Common.notSingleTextBox(element)) {
-                val contentStr = tooltip
-                    .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_006)
-                    .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-                    .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
-                    .getAsJsonObject(TooltipStrings.MemberName.CONTENT)
-
-                if (contentStr.has(memberName)) {
-                    val engraving = contentStr
-                        .getAsJsonObject(memberName)
-                        .get(TooltipStrings.MemberName.CONTENT).asString
-
-                    val option = engraving
-                        .substringAfter(slicingOptionAfter)
-                        .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
-
-                    val activation = engraving
-                        .substringAfter(TooltipStrings.SubStringAfter.AWAKEN_PLUS)
-                        .substringBefore(TooltipStrings.SubStringBefore.ENTER_HTML)
-
-                    return "$option $activation"
-                }
-            }
-        }
-        return ""
     }
 
     private fun getGrindEffect(equipment: Equipment): String? {
@@ -794,25 +686,19 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
     }
 
     private fun accGrindingProcess(input: String): String {
-        return input.replace(Regex("<img[^>]*>"), "") // Remove <img> tags
-            .replace("</img>", "")           // Remove </img> tags
-            .replace("<BR>", "\n")           // Replace <BR> with newline
-            .replace("&nbsp;", " ")          // Replace non-breaking space
-            .trim()                          // Trim leading/trailing whitespace
-    }
+        val regex = Regex(
+            ">([^<]+?)<FONT COLOR=['\"]?#?([A-Fa-f0-9]{6})['\"]?>([+\\d\\.\\d%]+)</FONT>",
+            RegexOption.IGNORE_CASE
+        )
 
-    private fun combatStatProcess(input: String): Pair<String?, String?> {
-        val cleanedInput = input.replace(Regex("<FONT COLOR[^>]*>"), "")
-            .replace("</FONT>", "")
-            .replace("<BR>", "\n")
-            .replace("&nbsp;", " ")
-            .trim()
+        return regex.findAll(input)
+            .map { match ->
+                val name = match.groupValues[1].trim()
+                val value = match.groupValues[3]
 
-        val parts = cleanedInput.split("\n")
-        val firstPart = parts.getOrNull(0)
-        val secondPart = parts.getOrNull(1)
-
-        return Pair(firstPart, secondPart)
+                "$name $value"
+            }
+            .joinToString("\n")
     }
 
     private fun testAbilityStone(input: String): Pair<String, Int?> {
