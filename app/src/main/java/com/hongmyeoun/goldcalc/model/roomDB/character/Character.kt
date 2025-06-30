@@ -10,6 +10,7 @@ data class Character(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo("name") val name: String = "",
     @ColumnInfo("itemLevel") val itemLevel: String = "",
+    @ColumnInfo("combatPower") val combatPower: String = "",
     @ColumnInfo("className") val className: String = "",
     @ColumnInfo("serverName") val serverName: String = "",
     @ColumnInfo("weeklyGold") val weeklyGold: Int = 0,
