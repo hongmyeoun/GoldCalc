@@ -116,7 +116,7 @@ private fun DefaultsProfilesWithGetButton(
             title = profile.title,
             name = profile.characterName
         )
-        ItemLevel(level = profile.itemMaxLevel)
+        ItemLevel(level = profile.itemAvgLevel)
         Extra(profile = profile)
         ArkPassive(arkPassive = arkPassive)
 

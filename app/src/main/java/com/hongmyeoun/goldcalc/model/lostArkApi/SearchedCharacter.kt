@@ -8,7 +8,7 @@ data class SearchedCharacter(
     @SerializedName("CharacterLevel") val characterLevel: Int,
     @SerializedName("CharacterClassName") val characterClassName: String,
     @SerializedName("ItemAvgLevel") val itemAvgLevel: String,
-    @SerializedName("ItemMaxLevel") val itemMaxLevel: String,
+//    @SerializedName("ItemMaxLevel") val itemMaxLevel: String,
 )
 
 data class SearchedCharacterDetail(
@@ -29,7 +29,7 @@ data class SearchedCharacterDetail(
     @SerializedName("CharacterLevel") val characterLevel: Int,
     @SerializedName("CharacterClassName") val characterClassName: String,
     @SerializedName("ItemAvgLevel") val itemAvgLevel: String,
-    @SerializedName("ItemMaxLevel") val itemMaxLevel: String,
+//    @SerializedName("ItemMaxLevel") val itemMaxLevel: String,
 //    @SerializedName("ArkPassive") val arkPassive: ArkPassive
 )
 

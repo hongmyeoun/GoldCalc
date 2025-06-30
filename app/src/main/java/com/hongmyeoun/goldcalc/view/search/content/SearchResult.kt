@@ -141,7 +141,7 @@ fun ResultItem(
                 color = Color.White
             )
             Text(
-                text = "${character.itemMaxLevel} ${character.characterClassName}(${character.serverName})",
+                text = "${character.itemAvgLevel} ${character.characterClassName}(${character.serverName})",
                 fontSize = 12.sp,
                 color = Color.Gray
             )

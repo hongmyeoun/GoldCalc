@@ -181,9 +181,9 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
             val elementKey = Common.currentElementKey(index)
 
             if (tooltipJson.has(elementKey)) {
-                val element = tooltipJson.getAsJsonObject(elementKey)
+                val element = tooltipJson[elementKey]?.takeIf { it.isJsonObject }?.asJsonObject
 
-                if (Common.indentStringGroup(element)) {
+                if (element != null && Common.indentStringGroup(element)) {
                     val testValue = element.get(TooltipStrings.MemberName.VALUE)
 
                     if (testValue == null || !testValue.isJsonObject) {
@@ -240,9 +240,9 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
             val elementKey = Common.currentElementKey(index)
 
             if (tooltipJson.has(elementKey)) {
-                val element = tooltipJson.getAsJsonObject(elementKey)
+                val element = tooltipJson[elementKey]?.takeIf { it.isJsonObject }?.asJsonObject
 
-                if (Common.indentStringGroup(element)) {
+                if (element != null && Common.indentStringGroup(element)) {
                     val testValue = element.get(TooltipStrings.MemberName.VALUE)
 
                     if (testValue == null || !testValue.isJsonObject) {
@@ -307,9 +307,9 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
             val elementKey = Common.currentElementKey(index)
 
             if (tooltipJson.has(elementKey)) {
-                val element = tooltipJson.getAsJsonObject(elementKey)
+                val element = tooltipJson[elementKey]?.takeIf { it.isJsonObject }?.asJsonObject
 
-                if (Common.indentStringGroup(element)) {
+                if (element != null && Common.indentStringGroup(element)) {
                     val testValue = element.get(TooltipStrings.MemberName.VALUE)
 
                     if (testValue == null || !testValue.isJsonObject) {
@@ -443,9 +443,9 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
             val elementKey = Common.currentElementKey(index)
 
             if (tooltip.has(elementKey)) {
-                val element = tooltip.getAsJsonObject(elementKey)
+                val element = tooltip[elementKey]?.takeIf { it.isJsonObject }?.asJsonObject
 
-                if (Common.itemPartBox(element)) {
+                if (element != null && Common.itemPartBox(element)) {
                     val testValue = element.get(TooltipStrings.MemberName.VALUE)
 
                     if (testValue == null || !testValue.isJsonObject) {
@@ -480,9 +480,9 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
             val elementKey = Common.currentElementKey(index)
 
             if (tooltip.has(elementKey)) {
-                val element = tooltip.getAsJsonObject(elementKey)
+                val element = tooltip[elementKey]?.takeIf { it.isJsonObject }?.asJsonObject
 
-                if (Common.itemPartBox(element)) {
+                if (element != null && Common.itemPartBox(element)) {
                     val testValue = element.get(TooltipStrings.MemberName.VALUE)
 
                     if (testValue == null || !testValue.isJsonObject) {
@@ -537,9 +537,9 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
             val elementKey = Common.currentElementKey(index)
 
             if (tooltip.has(elementKey)) {
-                val element = tooltip.getAsJsonObject(elementKey)
+                val element = tooltip[elementKey]?.takeIf { it.isJsonObject }?.asJsonObject
 
-                if (Common.itemPartBox(element)) {
+                if (element != null && Common.itemPartBox(element)) {
                     val value = element
                         .getAsJsonObject(TooltipStrings.MemberName.VALUE)
 
@@ -596,9 +596,9 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
             val elementKey = Common.currentElementKey(index)
 
             if (tooltip.has(elementKey)) {
-                val element = tooltip.getAsJsonObject(elementKey)
+                val element = tooltip[elementKey]?.takeIf { it.isJsonObject }?.asJsonObject
 
-                if (Common.indentStringGroup(element)) {
+                if (element != null && Common.indentStringGroup(element)) {
                     val testValue = element
                         .get(TooltipStrings.MemberName.VALUE)
 
@@ -634,9 +634,9 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
             val elementKey = Common.currentElementKey(index)
 
             if (tooltip.has(elementKey)) {
-                val element = tooltip.getAsJsonObject(elementKey)
+                val element = tooltip[elementKey]?.takeIf { it.isJsonObject }?.asJsonObject
 
-                if (Common.itemPartBox(element)) {
+                if (element != null && Common.itemPartBox(element)) {
                     val testValue = element
                         .get(TooltipStrings.MemberName.VALUE)
 

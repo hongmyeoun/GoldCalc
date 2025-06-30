@@ -51,7 +51,7 @@ class ProfileVM @Inject constructor(
 
         val character = Character(
             name = charDetail.characterName,
-            itemLevel = charDetail.itemMaxLevel,
+            itemLevel = charDetail.itemAvgLevel,
             serverName = charDetail.serverName,
             className = charDetail.characterClassName,
             guildName = charDetail.guildName,
