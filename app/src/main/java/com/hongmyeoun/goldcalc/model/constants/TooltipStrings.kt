@@ -23,6 +23,7 @@ class TooltipStrings {
         const val ELEMENT_004 = "Element_004"
         const val ELEMENT_005 = "Element_005"
         const val ELEMENT_006 = "Element_006"
+        const val ELEMENT_007 = "Element_007"
     }
 
     object Contains {

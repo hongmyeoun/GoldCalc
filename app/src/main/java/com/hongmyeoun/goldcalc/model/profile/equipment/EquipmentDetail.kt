@@ -484,7 +484,24 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
     private fun abStoneEngravingContentSTR(equipment: Equipment, memberName: String): String {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
 
-        for (index in 5..6) {
+//        val value = tooltip.getAsJsonObject(TooltipStrings.MemberName.ELEMENT_007)
+//
+//        val topStr = value
+//            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+//            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
+//            .get(TooltipStrings.MemberName.TOP).asString
+//
+//        if (topStr.contains(TooltipStrings.Contains.ABILITY_STONE_ENGRAVING)) {
+//
+//            return value
+//                .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+//                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
+//                .getAsJsonObject(TooltipStrings.MemberName.CONTENT)
+//                .getAsJsonObject(memberName)
+//                .get(TooltipStrings.MemberName.CONTENT).asString
+//        }
+
+        for (index in 5..7) {
             val elementKey = Common.currentElementKey(index)
 
             if (tooltip.has(elementKey)) {
