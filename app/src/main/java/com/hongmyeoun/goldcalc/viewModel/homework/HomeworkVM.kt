@@ -134,6 +134,7 @@ class HomeworkVM @Inject constructor(
         _character.value?.let {
             val newDetail = _character.value!!.copy(
                 itemLevel = characterDetail.itemAvgLevel,
+                combatPower = characterDetail.combatPower,
                 guildName = characterDetail.guildName,
                 title = characterDetail.title,
                 characterLevel = characterDetail.characterLevel,
