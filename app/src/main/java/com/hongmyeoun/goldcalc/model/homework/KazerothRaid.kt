@@ -26,11 +26,13 @@ enum class KazerothRaid(
         boss = Raid.Name.EGIR,
         seeMoreGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.EGIR,
-            Raid.Difficulty.HARD to Gold.SeeMore.Hard.EGIR
+            Raid.Difficulty.HARD to Gold.SeeMore.Hard.EGIR,
+            Raid.Difficulty.SOLO to Gold.SeeMore.Solo.EGIR
         ),
         clearGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.Clear.Normal.EGIR,
-            Raid.Difficulty.HARD to Gold.Clear.Hard.EGIR
+            Raid.Difficulty.HARD to Gold.Clear.Hard.EGIR,
+            Raid.Difficulty.SOLO to Gold.Clear.Solo.EGIR
         )
     ),
     ABRELSHUD(
@@ -152,8 +154,8 @@ class Echidna(character: Character?) {
 
 class Egir(character: Character?) {
     val name = KazerothRaid.EGIR.boss
-    private val seeMoreGold = KazerothRaid.EGIR.getBossInfo(Raid.Difficulty.NORMAL).first + KazerothRaid.EGIR.getBossInfo(Raid.Difficulty.HARD).first
-    private val clearGold = KazerothRaid.EGIR.getBossInfo(Raid.Difficulty.NORMAL).second + KazerothRaid.EGIR.getBossInfo(Raid.Difficulty.HARD).second
+    private val seeMoreGold = KazerothRaid.EGIR.getBossInfo(Raid.Difficulty.NORMAL).first + KazerothRaid.EGIR.getBossInfo(Raid.Difficulty.HARD).first + KazerothRaid.EGIR.getBossInfo(Raid.Difficulty.SOLO).first
+    private val clearGold = KazerothRaid.EGIR.getBossInfo(Raid.Difficulty.NORMAL).second + KazerothRaid.EGIR.getBossInfo(Raid.Difficulty.HARD).second + KazerothRaid.EGIR.getBossInfo(Raid.Difficulty.SOLO).second
 
     var isChecked = character?.checkList?.kazeroth?.get(1)?.isCheck ?: false
 
@@ -168,10 +170,13 @@ class Egir(character: Character?) {
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
         isChecked = isChecked,
+        noSolo = false,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[2],
+        seeMoreGoldS = seeMoreGold[4],
         clearGoldN = clearGold[0],
-        clearGoldH = clearGold[2]
+        clearGoldH = clearGold[2],
+        clearGoldS = clearGold[4]
     )
 
     private val getTwoPhase = character?.checkList?.kazeroth?.get(1)?.phases?.get(1)
@@ -185,10 +190,13 @@ class Egir(character: Character?) {
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
         isChecked = isChecked,
+        noSolo = false,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[3],
+        seeMoreGoldS = seeMoreGold[5],
         clearGoldN = clearGold[1],
-        clearGoldH = clearGold[3]
+        clearGoldH = clearGold[3],
+        clearGoldS = clearGold[5]
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold
