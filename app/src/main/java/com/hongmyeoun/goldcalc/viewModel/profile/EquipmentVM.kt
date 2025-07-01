@@ -229,8 +229,22 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
         }
     }
 
-    fun braceletOptionLevel(effectName: String, tooltip: String) : String {
-        return BraceletEffects.effectQual(effectName, tooltip)
+    fun braceletOptionLevel(tooltip: String) : String {
+        val output = if (tooltip.contains("00B5FF")) {
+            "하"
+        } else if (tooltip.contains("CE43FC")) {
+            "중"
+        } else if (tooltip.contains("FE9600")){
+            "상"
+        } else {
+            "3티어"
+        }
+
+        return output
+    }
+
+    fun braceletEffectShorts(tooltip: String) : String {
+        return BraceletEffects.effectShortName(tooltip)
     }
 
     fun braceletColoredText(effectName: String, effectOptionLevel: String): AnnotatedString {
@@ -244,23 +258,6 @@ class EquipmentVM(characterEquipment: List<CharacterItem>) : ViewModel() {
                 )
             ) {
                 append(effectOptionLevel)
-            }
-        }
-    }
-
-    fun statLevel(name: String, tooltip: String) : String {
-        return BraceletEffects.extraStatQual(name, tooltip)
-    }
-
-    fun statColoredText(name: String, statLevel: String, statValue: String) : AnnotatedString {
-        return buildAnnotatedString {
-            append("$name ")
-            withStyle(
-                style = SpanStyle(
-                    color = grindOptionColor(statLevel)
-                )
-            ) {
-                append(statValue)
             }
         }
     }

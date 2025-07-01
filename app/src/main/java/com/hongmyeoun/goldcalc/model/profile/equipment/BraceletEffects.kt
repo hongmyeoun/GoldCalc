@@ -370,116 +370,51 @@ object BraceletEffects {
         return  ""
     }
 
-    fun extraStatQual(name: String, tooltip: String): String {
-        if (name == "마법 방어력") {
-            if (tooltip.contains("4000")) {
-                return "하"
-            } else if (tooltip.contains("5000")) {
-                return "중"
-            } else if (tooltip.contains("6000")) {
-                return "상"
-            }
-        }
-
-        if (name == "물리 방어력") {
-            if (tooltip.contains("4000")) {
-                return "하"
-            } else if (tooltip.contains("5000")) {
-                return "중"
-            } else if (tooltip.contains("6000")) {
-                return "상"
-            }
-        }
-
-        if (name == "전투 중 생명력 회복량") {
-            if (tooltip.contains("80")) {
-                return "하"
-            } else if (tooltip.contains("100")) {
-                return "중"
-            } else if (tooltip.contains("130")) {
-                return "상"
-            }
-        }
-
-        if (name == "전투자원 자연 회복량") {
-            if (tooltip.contains("6.00")) {
-                return "하"
-            } else if (tooltip.contains("8.00")) {
-                return "중"
-            } else if (tooltip.contains("10.00")) {
-                return "상"
-            }
-        }
-
-        if (name == "최대 생명력") {
-            if (tooltip.contains("8400")) {
-                return "하"
-            } else if (tooltip.contains("11200")) {
-                return "중"
-            } else if (tooltip.contains("14000")) {
-                return "상"
-            }
-        }
-
-
-        if (name == "무기 공격력") {
-            if (tooltip.contains("6300")) {
-                return "하"
-            } else if (tooltip.contains("7200")) {
-                return "중"
-            } else if (tooltip.contains("8100")) {
-                return "상"
-            }
-        }
-
-        if (name == "추가 피해") {
-            if (tooltip.contains("2.50")) {
-                return "하"
-            } else if (tooltip.contains("3.00")) {
-                return "중"
-            } else if (tooltip.contains("3.50")) {
-                return "상"
-            }
-        }
-
-        if (name == "치명타 적중률") {
-            if (tooltip.contains("2.60")) {
-                return "하"
-            } else if (tooltip.contains("3.40")) {
-                return "중"
-            } else if (tooltip.contains("4.20")) {
-                return "상"
-            }
-        }
-
-        if (name == "치명타 피해") {
-            if (tooltip.contains("5.20")) {
-                return "하"
-            } else if (tooltip.contains("6.80")) {
-                return "중"
-            } else if (tooltip.contains("8.40")) {
-                return "상"
-            }
-        }
-
-        if (name == "아군 공격력 강화 효과") {
-            if (tooltip.contains("3.00")) {
-                return "하"
-            } else if (tooltip.contains("4.00")) {
-                return "중"
-            } else if (tooltip.contains("5.00")) {
-                return "상"
-            }
-        }
-
-        if (name == "아군 피해량 강화 효과") {
-            if (tooltip.contains("4.50")) {
-                return "하"
-            } else if (tooltip.contains("6.00")) {
-                return "중"
-            } else if (tooltip.contains("7.50")) {
-                return "상"
-            }
+    fun effectShortName(tooltip: String): String {
+        if (tooltip.contains("치명타 적중률이")) {
+            return "치적+"
+        } else if (tooltip.contains("치명타 피해가")) {
+            return "치피+"
+        } else if (tooltip.contains("증가하며, 무력화 상태의")) {
+            return "적주피+"
+        } else if (tooltip.contains("추가 피해가")) {
+            return "추피+"
+        } else if (tooltip.contains("스킬의 재사용 대기 시간이")) {
+            return "쿨적주피"
+        } else if (tooltip.contains("대상의 방어력을")) {
+            return "비수"
+        } else if (tooltip.contains("대상의 치명타 저항을")) {
+            return "약노"
+        } else if (tooltip.contains("파티 효과로 보호 효과가 적용된 대상이")) {
+            return "응원"
+        } else if (tooltip.contains("대상의 치명타 피해 저항을")) {
+            return "치피감"
+        } else if (tooltip.contains("공격 적중 시 매 초 마다 10초 동안 무기 공격력이")) {
+            return "무공이속"
+        } else if (tooltip.contains("자신의 생명력이 50% 이상일 경우 적에게 공격 적중 시")) {
+            return "무공+"
+        } else if (tooltip.contains("추가 피해 ")) {
+            return "추피"
+        } else if (tooltip.contains("백어택 스킬이 적에게 ")) {
+            return "기습"
+        } else if (tooltip.contains("헤드어택 스킬이 적에게")) {
+            return "결대"
+        } else if (tooltip.contains("방향성 공격이 아닌 스킬이 적에게 ")) {
+            return "타대"
+        } else if (tooltip.contains("파티원 보호 및 회복 효과가 ")) {
+            return "전문의"
+        } else if (tooltip.contains("아군 공격력 강화 효과 ")) {
+            return "아공강"
+        } else if (tooltip.contains("아군 피해량 강화 효과 ")) {
+            return "아피강"
+        } else if (tooltip.contains("치명타 적중률 ")) {
+            return "치적"
+        } else if (tooltip.contains("치명타 피해 ")) {
+            return "치피"
+        } else if (tooltip.contains("무기 공격력 ")) {
+            return "무공"
+        } else if (tooltip.contains("적에게 주는 피해가 ")) {
+            return "적주피"
         }
 
         return ""

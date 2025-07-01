@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.model.common.extractTextFromFontTag
+import com.hongmyeoun.goldcalc.model.common.htmlStyledText
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.NO_BRACELET
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
@@ -122,11 +124,11 @@ fun ExtraBracelet(
                 }
                 Spacer(modifier = Modifier.width(4.dp))
                 Column {
-                    if (it.stats.isNotEmpty()) {
+                    if (it.combat.isNotEmpty()) {
                         Row {
-                            it.stats.forEach { (statName, stat) ->
+                            it.combat.forEach { (statName, stat) ->
                                 Text(
-                                    text = "$statName $stat",
+                                    text = "$statName ${htmlStyledText(stat)}",
                                     style = normalTextStyle()
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
@@ -134,22 +136,32 @@ fun ExtraBracelet(
                         }
                     }
                     Spacer(modifier = Modifier.height(4.dp))
-                    if (it.specialEffect.isNotEmpty()) {
+                    if (it.special.isNotEmpty()) {
                         Row(
                             modifier = Modifier.horizontalScroll(rememberScrollState())
                         ) {
-                            it.specialEffect.forEach { (effectName, tooltip) ->
-                                if (effectName in EquipmentConsts.BRACELET_SPECIAL_EFFECT_LIST) {
-                                    val effectOptionLevel = viewModel.braceletOptionLevel(effectName, tooltip)
+                            it.special.forEach { (effectName, tooltip) ->
+                                val effectShortName = viewModel.braceletEffectShorts(tooltip)
+                                val effectOptionLevel = viewModel.braceletOptionLevel(tooltip)
 
+                                if (effectOptionLevel == "3티어") {
+                                    val name = extractTextFromFontTag(effectName)
+                                    val optionLevel = viewModel.braceletOptionLevel(effectName)
                                     TextChip(
-                                        text = effectName,
+                                        text = name,
+                                        customBGColor = viewModel.grindOptionColor(optionLevel),
+                                        customRoundedCornerSize = 8.dp,
+                                        borderless = true
+                                    )
+                                } else {
+                                    TextChip(
+                                        text = effectShortName,
                                         customBGColor = viewModel.grindOptionColor(effectOptionLevel),
                                         customRoundedCornerSize = 8.dp,
                                         borderless = true
                                     )
-                                    Spacer(modifier = Modifier.width(4.dp))
                                 }
+                                Spacer(modifier = Modifier.width(4.dp))
                             }
                         }
                     }

@@ -64,6 +64,11 @@ fun htmlStyledText(htmlText: String): AnnotatedString {
     return annotatedString
 }
 
+fun extractTextFromFontTag(tag: String): String {
+    val regex = Regex("<FONT[^>]*>(.*?)</FONT>")
+    return regex.find(tag)?.groupValues?.get(1) ?: ""
+}
+
 // 줄바꿈 태그(<BR> 및 ||<BR>) 처리 함수
 fun AnnotatedString.Builder.appendWithNewlineHandling(text: String) {
     // ||<BR>를 먼저 처리하고 그 후에 <BR>을 처리
