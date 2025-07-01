@@ -180,7 +180,7 @@ private fun TripodInfo(
         verticalAlignment = Alignment.CenterVertically
     ) {
         TextChip(
-            text = "${tripod.level}",
+            text = "${tripod.slot}",
             borderless = true,
             customBGColor = viewModel.getIndexColor(selectedIndex)
         )

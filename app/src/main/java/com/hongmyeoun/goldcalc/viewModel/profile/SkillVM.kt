@@ -2,10 +2,8 @@ package com.hongmyeoun.goldcalc.viewModel.profile
 
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.util.fastSumBy
 import androidx.lifecycle.ViewModel
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
-import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.COOLTIME_GEM_2_TIER_SHORT
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.COOLTIME_GEM_3_TIER
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.COOLTIME_GEM_3_TIER_SHORT
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.COOLTIME_GEM_4_TIER
@@ -16,6 +14,7 @@ import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.DEAL_GE
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.DEAL_GEM_3_TIER_SHORT
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.DEAL_GEM_4_TIER
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.DEAL_GEM_4_TIER_SHORT
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.PUBLIC_GEM_4_TIER_SHORT
 import com.hongmyeoun.goldcalc.model.profile.gem.Gem
 import com.hongmyeoun.goldcalc.model.profile.skills.Skills
 import com.hongmyeoun.goldcalc.ui.theme.AncientBG
@@ -39,12 +38,6 @@ class SkillVM: ViewModel() {
 
     fun onDetailClicked() {
         _isDetail.value = !_isDetail.value
-    }
-
-    fun tripodLevel54(skills: List<Skills>): Pair<Int, Int> {
-        val fiveLevel = skills.fastSumBy { skill -> skill.tripods.count { tripod -> tripod.isSelected && tripod.level == 5 } }
-        val fourLevel = skills.fastSumBy { skill -> skill.tripods.count { tripod -> tripod.isSelected && tripod.level == 4 } }
-        return Pair(fiveLevel, fourLevel)
     }
 
     fun getGradeBG(grade: String): Color {
@@ -84,10 +77,6 @@ class SkillVM: ViewModel() {
         return gemList.filter { gem -> gem.skill == skill.name }
     }
 
-//    private fun typeTrans(gem: Gem): Char {
-//        return if (gem.type.contains('멸')) '멸' else '홍'
-//    }
-
     private fun typeTrans(gem: Gem): Char {
         return when(gem.name) {
             DEAL_GEM_4_TIER -> DEAL_GEM_4_TIER_SHORT
@@ -95,7 +84,7 @@ class SkillVM: ViewModel() {
             DEAL_GEM_3_TIER -> DEAL_GEM_3_TIER_SHORT
             COOLTIME_GEM_3_TIER -> COOLTIME_GEM_3_TIER_SHORT
             DEAL_GEM_2_TIER -> DEAL_GEM_2_TIER_SHORT
-            else -> COOLTIME_GEM_2_TIER_SHORT
+            else -> PUBLIC_GEM_4_TIER_SHORT
         }
     }
 

@@ -65,9 +65,7 @@ fun SkillView(
         )
 
         SkillPoint(
-            characterDetail = characterDetail,
-            skills = skills,
-            viewModel = viewModel
+            characterDetail = characterDetail
         )
 
         if (isDetail) {
@@ -82,8 +80,6 @@ fun SkillView(
 @Composable
 fun SkillPoint(
     characterDetail: SearchedCharacterDetail?,
-    skills: List<Skills>,
-    viewModel: SkillVM,
 ) {
     Row(
         modifier = Modifier
@@ -92,15 +88,6 @@ fun SkillPoint(
         characterDetail?.let { characterDetail ->
             TextChip(text = "스킬 포인트 ${characterDetail.usingSkillPoint}/${characterDetail.totalSkillPoint}")
             Spacer(modifier = Modifier.width(8.dp))
-        }
-        val (fiveLevel, fourLevel) = viewModel.tripodLevel54(skills)
-
-        if (fiveLevel > 0) {
-            TextChip(text = "Lv.5 x$fiveLevel")
-            Spacer(modifier = Modifier.width(8.dp))
-        }
-        if (fourLevel > 0) {
-            TextChip(text = "Lv.4 x$fourLevel")
         }
     }
     Spacer(modifier = Modifier.height(4.dp))

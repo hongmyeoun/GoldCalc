@@ -49,23 +49,13 @@ fun SkillIcon(it: Skills, isSimple: Boolean = false) {
                     if (isSimple) {
                         Column(modifier = Modifier.padding(2.dp)) {
                             var tripodSlots = ""
-                            var tripodLevels = ""
                             it.tripods.forEach { tripods ->
                                 if (tripods.isSelected) {
                                     tripodSlots += tripods.slot.toString()
-                                    tripodLevels += tripods.level.toString()
                                 }
                             }
                             TextChip(
                                 text = tripodSlots,
-                                borderless = true,
-                                customTextSize = 8.sp,
-                                customBGColor = BlackTransBG,
-                                customPadding = Modifier.padding(start = 2.dp, end = 2.dp)
-                            )
-                            Spacer(modifier = Modifier.height(1.dp))
-                            TextChip(
-                                text = tripodLevels,
                                 borderless = true,
                                 customTextSize = 8.sp,
                                 customBGColor = BlackTransBG,

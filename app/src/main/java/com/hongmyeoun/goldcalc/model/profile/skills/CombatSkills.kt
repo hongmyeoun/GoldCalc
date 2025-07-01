@@ -18,7 +18,6 @@ data class Tripods(
     @SerializedName("Slot") val slot: Int,
     @SerializedName("Name") val name: String,
     @SerializedName("Icon") val icon: String,
-    @SerializedName("Level") val level: Int,
     @SerializedName("IsSelected") val isSelected: Boolean,
     @SerializedName("Tooltip") val tooltip: String,
 )
