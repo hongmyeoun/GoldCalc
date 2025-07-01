@@ -32,6 +32,7 @@ data class Skills(
 
 data class Gem(
     val type: String,
+    val name: String,
     val grade: String,
     val level: Int,
     val gemIcon: String,
