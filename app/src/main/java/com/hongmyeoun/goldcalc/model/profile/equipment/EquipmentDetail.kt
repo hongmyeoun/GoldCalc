@@ -74,15 +74,15 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                 }
 
                 EquipmentConsts.BRACELET -> {
-                    val (specialEffect, stats, extraStats) = getBraceletEffect(equipment)
+                    val (basic, combat, special) = getBraceletEffect(equipment)
                     val bracelet = Bracelet(
                         type = getEquipmentType(equipment),
                         grade = getEquipmentGrade(equipment),
                         name = getAccName(equipment),
                         itemIcon = getItemIcon(equipment),
-                        specialEffect = specialEffect,
-                        stats = stats,
-                        extraStats = extraStats
+                        combat = combat,
+                        basic = basic,
+                        special = special,
                     )
                     characterEquipmentList.add(bracelet)
                 }
@@ -400,28 +400,6 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         return null
     }
 
-    private fun itemTier(tooltip: JsonObject): Int {
-        val hasTier = tooltip
-            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_001)
-            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-            .get(TooltipStrings.MemberName.ITEM_LEVEL)
-            .asString
-            .contains(TooltipStrings.Contains.TIER)
-
-        if (hasTier) {
-            return tooltip
-                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_001)
-                .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-                .get(TooltipStrings.MemberName.ITEM_LEVEL)
-                .asString
-                .substringAfter(TooltipStrings.SubStringAfter.ITEM_TIER)
-                .substringBefore(TooltipStrings.SubStringBefore.FONT_END)
-                .toInt()
-        }
-
-        return 1
-    }
-
     private fun getABStoneHPBonus(equipment: Equipment): String {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
 
@@ -556,18 +534,10 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                     val value = element.getAsJsonObject(TooltipStrings.MemberName.VALUE)
 
                     if (value.get(TooltipStrings.MemberName.ELEMENT_000).asString.contains(TooltipStrings.Contains.BRACELET)) {
-                        val itemTier = itemTier(tooltip)
                         val effect = value.get(TooltipStrings.MemberName.ELEMENT_001).asString
-                        if (itemTier >= 4) {
-                            val (effects, allStats, extra) = bracelet4tierSpliter(effect)
+                        val (basic, combat, special) = braceletSpliter(effect)
 
-                            return Triple(effects, allStats, extra)
-                        } else {
-                            val (effects, keyStats) = bracelet3tierSpliter(effect)
-                            val allStats = threeTierAllStats(effect)
-
-                            return Triple(effects, keyStats, allStats)
-                        }
+                        return Triple(basic, combat, special)
                     }
                 }
             }
@@ -576,130 +546,63 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         return Triple(emptyList(), emptyList(), emptyList())
     }
 
-    private fun bracelet4tierSpliter(input: String): Triple<List<Pair<String, String>>, List<Pair<String, String>>, List<Pair<String, String>>> {
-        val result = input.replace(Regex("<BR>(?=<img[^>]*>)", RegexOption.IGNORE_CASE), "")
-            .replace(Regex("<img[^>]*>"), "SPLIT_MARKER")
-            .replace("</img>", "")
-        val parts = result.split("SPLIT_MARKER")
+    private fun braceletSpliter(input: String): Triple<List<Pair<String, String>>, List<Pair<String, String>>, List<Pair<String, String>>> {
+        val newInput = input
+            .replace(
+                Regex("(?i)<br>\\s*<img\\s+src=['\"]emoticon_tooltip_bracelet_locked['\"][^>]*></img> "),
+                "\n"
+            )
+            .replace(
+                Regex("(?i)<br>\\s*<img\\s+src=['\"]emoticon_tooltip_bracelet_changeable['\"][^>]*></img>"),
+                "\n"
+            )
+            .replace(
+                Regex("<img\\s+src=['\"]emoticon_tooltip_bracelet_locked['\"][^>]*></img> "),
+                ""
+            )
 
-        val newInput = parts.map { it.trim() }.filter { it.isNotEmpty() }
         return parseAndFilter(newInput)
     }
 
-    private fun parseAndFilter(input: List<String>): Triple<List<Pair<String, String>>, List<Pair<String, String>>, List<Pair<String, String>>> {
-        val keywords = EquipmentConsts.COMBAT_STAT_LIST
+    private fun parseAndFilter(input: String): Triple<List<Pair<String, String>>, List<Pair<String, String>>, List<Pair<String, String>>> {
+        val basicStats = setOf("힘", "민첩", "지능", "체력")
+        val combatStats = setOf("치명", "특화", "신속", "제압", "숙련", "인내")
 
-        // extra은 추가 특성(힘민지, 무공, 치적 등) (key, value 쌍)
-        val extra = mutableListOf<Pair<String, String>>()
+        val basic = mutableListOf<Pair<String, String>>()
+        val combat = mutableListOf<Pair<String, String>>()
+        val special = mutableListOf<Pair<String, String>>()
 
-        // allstats는 전투 특성(치특신제인숙) (key, value 쌍)
-        val allstats = mutableListOf<Pair<String, String>>()
+        // 정규식: [<FONT COLOR='#XXXXXX'>이름</FONT>]
+        val tagPattern = Regex("""\[(<FONT\s+COLOR=['"]?#?[A-Fa-f0-9]{6}['"]?>.*?</FONT>)]""")
 
-        // effects는 특수 효과(추가특성 +a, 완전 특수 효과 등) (key, value 쌍)
-        val effects = mutableListOf<Pair<String, String>>()
+        input.split("\n")
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+            .forEach { line ->
+                val firstWord = line.substringBefore(" ").trim()
 
-        for (item in input) {
-            // 조건 1: 항목이 "." 또는 ")"로 끝나는지 확인
-            if (item.endsWith(".") || item.endsWith(")")) {
-                effects.add(Pair("특수 효과", item)) // output3에 추가
-            } else {
-                // 각 아이템의 첫 단어가 키워드 리스트에 있는지 확인
-                val keyword = keywords.find { item.split(" ")[0] == it } // 첫 단어가 정확히 일치해야 함
+                when {
+                    basicStats.contains(firstWord) ->
+                        basic += firstWord to line.removePrefix(firstWord).trim()
 
-                if (keyword != null) {
-                    // 매칭된 경우: "키워드"와 그 뒤의 값으로 분리
-                    val value = item.removePrefix(keyword).trim() // 키워드를 제거하고 뒤의 값을 추출
-                    allstats.add(Pair(keyword, value)) // 키워드와 값의 쌍을 output2에 추가
-                } else {
-                    // 매칭되지 않은 경우: "+" 기준으로 key와 value로 분리
-                    val plusIndex = item.indexOf("+")
-                    if (plusIndex != -1) {
-                        val key = item.substring(0, plusIndex).trim() // "+" 앞 부분을 key로 설정
-                        val value = item.substring(plusIndex).trim() // "+"부터 끝까지를 value로 설정
-                        extra.add(Pair(key, value))
-                    } else {
-                        // "+"가 없을 경우 해당 항목을 처리하지 않음 (혹은 처리 방식에 따라 달라질 수 있음)
-                        extra.add(Pair(item, "")) // "+"가 없는 경우 value는 빈 값으로 처리
+                    combatStats.contains(firstWord) ->
+                        combat += firstWord to line.removePrefix(firstWord).trim()
+
+                    else -> {
+                        // 특수효과 처리
+                        val tagMatch = tagPattern.find(line)
+                        if (tagMatch != null) {
+                            val tag = tagMatch.groupValues[1]
+                            val description = line.removePrefix(tagMatch.value).trim()
+                            special += tag to description
+                        } else {
+                            special += "특수 효과" to line
+                        }
                     }
                 }
             }
-        }
 
-        return Triple(effects, allstats, allstats + extra) // 세 개의 결과를 반환
-    }
-
-    private fun bracelet3tierSpliter(input: String): Pair<List<Pair<String, String>>, List<Pair<String, String>>> {
-        // <BR> 태그를 줄 나누기로 변환
-        var withLineBreaks = input.replace(Regex("(?i)<BR>(?=[<\\[])"), "\n<BR>")
-
-        // <FONT COLOR='#...'>(...)</FONT> 형식의 태그를 남기되, color 속성 값이 빈 값인 태그는 제거
-        withLineBreaks = withLineBreaks.replace(Regex("<FONT COLOR='\\s*'>"), "")
-
-        // [이름] 값 패턴 찾아서 key와 값을 분리하여 리스트에 저장
-        val namePattern = Regex("\\[([^\\[\\]]+)\\]\\s*(.+)")
-        val nameValueList = mutableListOf<Pair<String, String>>()
-
-        withLineBreaks.split("\n").forEach { line ->
-            namePattern.find(line)?.let { matchResult ->
-                // Clean up <FONT COLOR='...'> and </FONT> tags
-                val key = matchResult.groupValues[1]
-                    .replace(Regex("<FONT\\s+COLOR='[^']*'>"), "") // Removes <FONT COLOR='...'>
-                    .replace("</FONT>", "") // Removes </FONT>
-                    .replace("\\s+".toRegex(), "") // Removes extra spaces
-
-                val value = matchResult.groupValues[2]
-                    .replace("<BR>", "\n\n").trim()
-
-                nameValueList.add(key to value)
-            }
-        }
-
-        // <BR> 태그를 줄 나누기로 변환
-        var withLineBreaks2 = input.replace(Regex("(?i)<BR>(?=[<\\[])"), "\n<BR>")
-
-        // HTML 태그 제거
-        withLineBreaks2 = withLineBreaks2.replace(Regex("<[^>]*>"), "")
-
-        // 키워드 패턴과 값 찾아서 리스트에 저장
-        val keywords = EquipmentConsts.FILTERED_COMBAT_STAT_LIST
-        val keyValuePattern = Regex("(\\S+)\\s*\\+\\s*(.+)")
-        val keyValueList = mutableListOf<Pair<String, String>>()
-
-        withLineBreaks2.split("\n").forEach { line ->
-            keyValuePattern.find(line)?.let { matchResult ->
-                val key = matchResult.groupValues[1]
-                val value = matchResult.groupValues[2].trim()
-                if (keywords.contains(key)) {
-                    keyValueList.add(key to value)
-                }
-            }
-        }
-
-        // 결과 반환
-        return nameValueList to keyValueList
-    }
-
-    private fun threeTierAllStats(input: String): List<Pair<String, String>> {
-        // <BR> 태그를 줄 나누기로 변환
-        var withLineBreaks = input.replace(Regex("(?i)<BR>(?=[<\\[])"), "\n<BR>")
-
-        // HTML 태그 제거
-        withLineBreaks = withLineBreaks.replace(Regex("<[^>]*>"), "")
-
-        // 키 + 값 패턴 찾아서 key와 값을 분리하여 리스트에 저장
-        val keyValuePattern = Regex("(\\S+)\\s*\\+\\s*(.+)")
-        val keyValueList = mutableListOf<Pair<String, String>>()
-
-        withLineBreaks.split("\n").forEach { line ->
-            keyValuePattern.find(line)?.let { matchResult ->
-                val key = matchResult.groupValues[1]
-                val value = matchResult.groupValues[2].trim()
-                keyValueList.add(key to value)
-            }
-        }
-
-        // 결과 반환
-        return keyValueList
+        return Triple(basic, combat, special)
     }
 
     private fun accGrindingProcess(input: String): String {
