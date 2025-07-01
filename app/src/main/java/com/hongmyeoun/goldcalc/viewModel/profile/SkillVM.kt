@@ -89,7 +89,7 @@ class SkillVM: ViewModel() {
 //    }
 
     private fun typeTrans(gem: Gem): Char {
-        return when(gem.type) {
+        return when(gem.name) {
             DEAL_GEM_4_TIER -> DEAL_GEM_4_TIER_SHORT
             COOLTIME_GEM_4_TIER -> COOLTIME_GEM_4_TIER_SHORT
             DEAL_GEM_3_TIER -> DEAL_GEM_3_TIER_SHORT

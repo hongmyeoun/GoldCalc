@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.COOLTIME
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.COOLTIME_SHORT
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.DEAL
@@ -81,9 +80,7 @@ private fun GemDetail(
             )
         }
 
-        val type = if (effectType == DEAL) EquipmentConsts.DEAL_GEM_LIST else EquipmentConsts.COOLTIME_GEM_LIST
-
-        gemList.filter { it.type in type }.forEach { gem ->
+        gemList.filter { it.type == effectType }.forEach { gem ->
             Row(
                 modifier = Modifier.padding(4.dp),
                 verticalAlignment = Alignment.CenterVertically
