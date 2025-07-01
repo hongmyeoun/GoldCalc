@@ -183,7 +183,7 @@ class Valtan(character: Character?) {
         seeMoreGoldS = seeMoreGold[5],
         clearGoldN = clearGold[1],
         clearGoldH = clearGold[3],
-        clearGoldS = seeMoreGold[5]
+        clearGoldS = clearGold[5]
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold
@@ -248,7 +248,7 @@ class Biackiss(character: Character?) {
         seeMoreGoldS = seeMoreGold[5],
         clearGoldN = clearGold[1],
         clearGoldH = clearGold[3],
-        clearGoldS = seeMoreGold[5]
+        clearGoldS = clearGold[5]
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold
