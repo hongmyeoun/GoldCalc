@@ -15,6 +15,7 @@ object CharacterResourceMapper {
 
             ClassName.Warrior.DEFAULT_FEMALE to R.drawable.emblem_warrior_female,
             ClassName.Warrior.SLAYER to R.drawable.emblem_berserker_female,
+            ClassName.Warrior.VALKYRIE to R.drawable.emblem_holyknight_female,
 
             ClassName.Fighter.DEFAULT_MALE to R.drawable.emblem_fighter_male,
             ClassName.Fighter.STRIKER to R.drawable.emblem_battle_master_male,
@@ -66,6 +67,7 @@ object CharacterResourceMapper {
 
             ClassName.Warrior.DEFAULT_FEMALE to R.drawable.img_detail_slayer,
             ClassName.Warrior.SLAYER to R.drawable.img_detail_slayer,
+            ClassName.Warrior.VALKYRIE to R.drawable.img_detail_valkyrie,
 
             ClassName.Fighter.DEFAULT_MALE to R.drawable.img_detail_striker,
             ClassName.Fighter.STRIKER to R.drawable.img_detail_striker,
@@ -119,6 +121,7 @@ object CharacterResourceMapper {
 
             ClassName.Warrior.DEFAULT_FEMALE to ClassName.Warrior.DEFAULT_FEMALE_EN,
             ClassName.Warrior.SLAYER to ClassName.Warrior.SLAYER_EN,
+            ClassName.Warrior.VALKYRIE to ClassName.Warrior.VALKYRIE_EN,
 
             ClassName.Fighter.DEFAULT_MALE to ClassName.Fighter.DEFAULT_MALE_EN,
             ClassName.Fighter.STRIKER to ClassName.Fighter.STRIKER_EN,

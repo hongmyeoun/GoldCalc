@@ -10,6 +10,7 @@ class ClassName {
 
         const val DEFAULT_FEMALE = "전사(여)"
         const val SLAYER = "슬레이어"
+        const val VALKYRIE = "발키리"
 
         const val DEFAULT_EN = "warrior"
         const val DESTROYER_EN = "destroyer"
@@ -19,6 +20,7 @@ class ClassName {
 
         const val DEFAULT_FEMALE_EN = "warrior_female"
         const val SLAYER_EN = "berserker_female"
+        const val VALKYRIE_EN = "holyknight_female"
     }
 
     object Fighter {
@@ -33,10 +35,10 @@ class ClassName {
         const val BREAKER = "브레이커"
 
         const val DEFAULT_EN = "fighter"
-        const val BATTLE_MASTER_EN = "battlemaster"
+        const val BATTLE_MASTER_EN = "battle_master"
         const val INFIGHTER_EN = "infighter"
-        const val SOUL_MASTER_EN = "soulmaster"
-        const val LANCE_MASTER_EN = "lancemaster"
+        const val SOUL_MASTER_EN = "force_master"
+        const val LANCE_MASTER_EN = "lance_master"
 
         const val DEFAULT_MALE_EN = "fighter_male"
         const val STRIKER_EN = "battle_master_male"
@@ -54,9 +56,9 @@ class ClassName {
         const val GUNSLINGER = "건슬링어"
 
         const val DEFAULT_EN = "hunter"
-        const val DEVILHUNTER_EN = "devilhunter"
+        const val DEVILHUNTER_EN = "devil_hunter"
         const val BLASTER_EN = "blaster"
-        const val HAWKEYE_EN = "hawkeye"
+        const val HAWKEYE_EN = "hawk_eye"
         const val SCOUTER_EN = "scouter"
 
         const val DEFAULT_FEMALE_EN = "hunter_female"
@@ -74,7 +76,7 @@ class ClassName {
         const val BARD_EN = "bard"
         const val SUMMONER_EN = "summoner"
         const val ARCANA_EN = "arcana"
-        const val SORCERESS_EN = "sorceress"
+        const val SORCERESS_EN = "elemental_master"
     }
 
     object Delain {
@@ -98,7 +100,7 @@ class ClassName {
         const val ALCHEMIST = "환수사"
 
         const val DEFAULT_EN = "specialist"
-        const val ARTIST_EN = "artist"
+        const val ARTIST_EN = "yinyangshi"
         const val AEROMANCER_EN = "weather_artist"
         const val ALCHEMIST_EN = "alchemist"
     }
@@ -111,7 +113,8 @@ class ClassName {
             Warrior.BERSERKER,
             Warrior.HOLYKNIGHT,
             Warrior.DEFAULT_FEMALE,
-            Warrior.SLAYER
+            Warrior.SLAYER,
+            Warrior.VALKYRIE
         )
         private val FIGHTER_LIST = listOf(
             Fighter.DEFAULT,
