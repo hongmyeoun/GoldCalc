@@ -20,6 +20,7 @@ class NetworkConfig {
         const val CHARACTER_THUMB = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/"
 
         const val ITEM_LEVEL_ICON = "https://cdn-lostark.game.onstove.com/efui_iconatlas/tooltip/tooltip_0_12.png"
+        const val COMBAT_POWER_ICON ="https://cdn-lostark.game.onstove.com/efui_iconatlas/tooltip/tooltip_0_11.png"
         const val TRANSCENDENCE_ICON = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png"
 
         const val ARK_PASSIVE_ACTIVATION_ICON = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_arkpassive.png"

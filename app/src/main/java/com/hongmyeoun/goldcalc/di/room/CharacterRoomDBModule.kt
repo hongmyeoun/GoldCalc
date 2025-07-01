@@ -66,6 +66,12 @@ object CharacterRoomDBModule {
         }
     }
 
+    private val MIGRATION_2_3 = object : Migration(2, 3) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL("ALTER TABLE character ADD COLUMN combatPower TEXT NOT NULL DEFAULT ''")
+        }
+    }
+
     @Provides
     @Singleton // synchronized와 유사효과
     fun provideCharacterDB(@ApplicationContext appContext: Context): CharacterDB {
@@ -74,7 +80,7 @@ object CharacterRoomDBModule {
             klass = CharacterDB::class.java,
             name = "character.db"
         )
-            .addMigrations(MIGRATION_1_2)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
             .build()
     }
 

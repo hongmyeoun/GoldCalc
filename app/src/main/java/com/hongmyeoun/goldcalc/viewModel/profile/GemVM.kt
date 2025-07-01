@@ -3,6 +3,8 @@ package com.hongmyeoun.goldcalc.viewModel.profile
 import androidx.compose.ui.graphics.Brush
 import androidx.lifecycle.ViewModel
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.COOLTIME
+import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts.DEAL
 import com.hongmyeoun.goldcalc.model.profile.gem.Gem
 import com.hongmyeoun.goldcalc.ui.theme.AncientBG
 import com.hongmyeoun.goldcalc.ui.theme.EpicBG
@@ -23,7 +25,7 @@ class GemVM: ViewModel() {
     }
 
     fun countDealGem(gemList: List<Gem>): Pair<Int, Int> {
-        val deal = gemList.count { it.type in EquipmentConsts.DEAL_GEM_LIST }
+        val deal = gemList.count { it.type == DEAL }
         val coolTime = gemList.size - deal
 
         return Pair(deal, coolTime)
@@ -40,27 +42,27 @@ class GemVM: ViewModel() {
     }
 
     fun t4Deal(gemList: List<Gem>): Int {
-        return gemList.count { it.type == EquipmentConsts.DEAL_GEM_4_TIER }
+        return gemList.count { (it.name == EquipmentConsts.DEAL_GEM_4_TIER) || (it.name == EquipmentConsts.PUBLIC_GEM_4_TIER && (it.type == DEAL)) }
     }
 
     fun t4Cool(gemList: List<Gem>): Int {
-        return gemList.count { it.type == EquipmentConsts.COOLTIME_GEM_4_TIER }
+        return gemList.count { (it.name == EquipmentConsts.COOLTIME_GEM_4_TIER) || (it.name == EquipmentConsts.PUBLIC_GEM_4_TIER && (it.type == COOLTIME)) }
     }
 
     fun t3Deal(gemList: List<Gem>): Int {
-        return gemList.count { it.type == EquipmentConsts.DEAL_GEM_3_TIER }
+        return gemList.count { it.name == EquipmentConsts.DEAL_GEM_3_TIER }
     }
 
     fun t3Cool(gemList: List<Gem>): Int {
-        return gemList.count { it.type == EquipmentConsts.COOLTIME_GEM_3_TIER }
+        return gemList.count { it.name == EquipmentConsts.COOLTIME_GEM_3_TIER }
     }
 
     fun t2Deal(gemList: List<Gem>): Int {
-        return gemList.count { it.type == EquipmentConsts.DEAL_GEM_2_TIER }
+        return gemList.count { it.name == EquipmentConsts.DEAL_GEM_2_TIER }
     }
 
     fun t2Cool(gemList: List<Gem>): Int {
-        return gemList.count { it.type == EquipmentConsts.COOLTIME_GEM_2_TIER }
+        return gemList.count { it.name == EquipmentConsts.COOLTIME_GEM_2_TIER }
     }
 
     fun totalIncrease(gemList: List<Gem>): String {

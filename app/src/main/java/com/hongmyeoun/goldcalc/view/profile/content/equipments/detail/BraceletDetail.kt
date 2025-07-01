@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.model.common.extractTextFromFontTag
 import com.hongmyeoun.goldcalc.model.common.htmlStyledText
 import com.hongmyeoun.goldcalc.model.constants.viewConst.EquipmentConsts
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Profile
@@ -63,12 +64,15 @@ fun BraceletDetail(
                 when (it) {
                     is Bracelet -> {
                         IconAndName(viewModel, it)
-
-                        it.extraStats.forEach { (statName, statValue) ->
-                            Stats(statName, statValue, viewModel)
+                        it.basic.forEach { (statName, statValue) ->
+                            Stats(statName, statValue)
                         }
 
-                        it.specialEffect.forEach { (effectName, tooltip) ->
+                        it.combat.forEach { (statName, statValue) ->
+                            Stats(statName, statValue)
+                        }
+
+                        it.special.forEach { (effectName, tooltip) ->
                             Effects(effectName, tooltip, viewModel)
                         }
                     }
@@ -111,19 +115,17 @@ private fun IconAndName(
 }
 
 @Composable
-private fun Stats(statName: String, statValue: String, viewModel: EquipmentVM) {
-    val statLevel = viewModel.statLevel(statName, statValue)
-
+private fun Stats(statName: String, statValue: String) {
     Row {
         TextChip(
-            text = Profile.STAT,
+            text = statName,
             borderless = true,
             customBGColor = LightGrayBG
         )
         Spacer(modifier = Modifier.width(8.dp))
 
         TextChip(
-            text = viewModel.statColoredText(statName, statLevel, statValue),
+            text = htmlStyledText(statValue),
             borderless = true,
             customBGColor = LightGrayBG
         )
@@ -133,7 +135,8 @@ private fun Stats(statName: String, statValue: String, viewModel: EquipmentVM) {
 
 @Composable
 private fun Effects(effectName: String, tooltip: String, viewModel: EquipmentVM) {
-    val effectOptionLevel = viewModel.braceletOptionLevel(effectName, tooltip)
+    val effectShortName = viewModel.braceletEffectShorts(tooltip)
+    val effectOptionLevel = viewModel.braceletOptionLevel(tooltip)
 
     Column {
         Row {
@@ -144,17 +147,17 @@ private fun Effects(effectName: String, tooltip: String, viewModel: EquipmentVM)
             )
             Spacer(modifier = Modifier.width(8.dp))
 
-            if (effectOptionLevel.isEmpty()) {
-                if (effectName != Profile.EFFECT) {
-                    TextChip(
-                        text = effectName,
-                        borderless = true,
-                        customBGColor = LightGrayBG
-                    )
-                }
+            if (effectOptionLevel == "3티어") {
+                val name = extractTextFromFontTag(effectName)
+                val optionLevel = viewModel.braceletOptionLevel(effectName)
+                TextChip(
+                    text = viewModel.braceletColoredText(name, optionLevel),
+                    borderless = true,
+                    customBGColor = LightGrayBG
+                )
             } else {
                 TextChip(
-                    text = viewModel.braceletColoredText(effectName, effectOptionLevel),
+                    text = viewModel.braceletColoredText(effectShortName, effectOptionLevel),
                     borderless = true,
                     customBGColor = LightGrayBG
                 )

@@ -180,7 +180,7 @@ private fun TripodInfo(
         verticalAlignment = Alignment.CenterVertically
     ) {
         TextChip(
-            text = "${tripod.level}",
+            text = "${tripod.slot}",
             borderless = true,
             customBGColor = viewModel.getIndexColor(selectedIndex)
         )
@@ -291,7 +291,7 @@ private fun RuneAndGem(
                         Row {
                             Spacer(modifier = Modifier.width(8.dp))
                             TextChip(
-                                text = "${gem.level}레벨 ${gem.type}의 보석",
+                                text = "${gem.level}레벨 ${gem.name}의 보석",
                                 customTextSize = 12.sp,
                                 borderless = true,
                                 customBGColor = viewModel.getGradeBG(gem.grade)

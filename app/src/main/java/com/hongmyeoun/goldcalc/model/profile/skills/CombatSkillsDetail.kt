@@ -64,7 +64,7 @@ class CombatSkillsDetail(private val combatSkills: List<CombatSkills>) {
         val tooltip = JsonParser.parseString(rune.tooltip).asJsonObject
 
         return tooltip
-            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_002)
+            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_003)
             .getAsJsonObject(TooltipStrings.MemberName.VALUE)
             .get(TooltipStrings.MemberName.ELEMENT_001).asString
     }

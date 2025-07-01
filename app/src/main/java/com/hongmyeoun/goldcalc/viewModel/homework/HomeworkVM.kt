@@ -133,7 +133,8 @@ class HomeworkVM @Inject constructor(
     private fun updateCharacterDetail(characterDetail: SearchedCharacterDetail, arkPassive: ArkPassive) {
         _character.value?.let {
             val newDetail = _character.value!!.copy(
-                itemLevel = characterDetail.itemMaxLevel,
+                itemLevel = characterDetail.itemAvgLevel,
+                combatPower = characterDetail.combatPower,
                 guildName = characterDetail.guildName,
                 title = characterDetail.title,
                 characterLevel = characterDetail.characterLevel,

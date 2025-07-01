@@ -1,5 +1,8 @@
+
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,7 +28,7 @@ import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassive
 import com.hongmyeoun.goldcalc.ui.theme.YellowWarn
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.ArkPassive
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.Extra
-import com.hongmyeoun.goldcalc.view.common.profileTemplate.ItemLevel
+import com.hongmyeoun.goldcalc.view.common.profileTemplate.ItemLevelOrCombatPower
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.Levels
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.ServerClassName
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.TitleCharName
@@ -116,7 +119,14 @@ private fun DefaultsProfilesWithGetButton(
             title = profile.title,
             name = profile.characterName
         )
-        ItemLevel(level = profile.itemMaxLevel)
+
+        Row {
+            ItemLevelOrCombatPower(level = profile.itemAvgLevel)
+            Spacer(modifier = Modifier.size(8.dp))
+            ItemLevelOrCombatPower(level = profile.combatPower, isCombatPower = true)
+        }
+        Spacer(modifier = Modifier.height(12.dp))
+
         Extra(profile = profile)
         ArkPassive(arkPassive = arkPassive)
 
