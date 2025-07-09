@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.hongmyeoun.goldcalc"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.hongmyeoun.goldcalc"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 30
         versionName = "1.3.1"
 
