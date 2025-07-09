@@ -19,6 +19,8 @@ class Gold {
             val MORDUM = listOf(2400, 3200, 4200)
 
             val BEHEMOTH = listOf(920, 1960)
+
+            val EVENT_RAID = listOf(0)
         }
 
         object Hard {
@@ -38,6 +40,8 @@ class Gold {
             val MORDUM = listOf(2700, 4100, 5800)
 
             val BEHEMOTH = listOf(920, 1960)
+
+            val EVENT_RAID = listOf(0)
         }
 
         object Solo {
@@ -74,6 +78,8 @@ class Gold {
             val MORDUM = listOf(6000, 9500, 12500)
 
             val BEHEMOTH = listOf(2800, 6000)
+
+            val EVENT_RAID = listOf(15000)
         }
 
         object Hard {
@@ -93,6 +99,8 @@ class Gold {
             val MORDUM = listOf(7000, 11000, 20000)
 
             val BEHEMOTH = listOf(2800, 6000)
+
+            val EVENT_RAID = listOf(30000)
         }
 
         object Solo {
