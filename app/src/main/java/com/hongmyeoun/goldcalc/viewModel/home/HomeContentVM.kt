@@ -10,6 +10,7 @@ import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.model.homework.AbyssDungeonModel
 import com.hongmyeoun.goldcalc.model.homework.CommandBossModel
 import com.hongmyeoun.goldcalc.model.homework.EpicRaidModel
+import com.hongmyeoun.goldcalc.model.homework.EventRaidModel
 import com.hongmyeoun.goldcalc.model.homework.KazerothRaidModel
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
@@ -33,6 +34,7 @@ class HomeContentVM @Inject constructor(
     private val _abModel = MutableStateFlow(AbyssDungeonModel(null))
     private val _kzModel = MutableStateFlow(KazerothRaidModel(null))
     private val _epModel = MutableStateFlow(EpicRaidModel(null))
+    private val _eventModel = MutableStateFlow(EventRaidModel(null))
 
     private val _totalGold = MutableStateFlow(0)
     val totalGold: StateFlow<Int> = _totalGold
@@ -58,6 +60,7 @@ class HomeContentVM @Inject constructor(
     private val _mordumTG = MutableStateFlow(0)
 
     private val _behemothTG = MutableStateFlow(0)
+    private val _eventTG = MutableStateFlow(0)
 
     private val _maxGold = MutableStateFlow(0)
 
@@ -79,7 +82,8 @@ class HomeContentVM @Inject constructor(
         val abyssDungeonTG = _ivoryTowerTG.value + _kayangelTG.value
         val kazerothTG = _mordumTG.value + _ablreshudTG2.value + _egirTG.value + _echidnaTG.value
         val epicTG = _behemothTG.value
-        _totalGold.value = commandTG + abyssDungeonTG + kazerothTG + epicTG
+        val eventTG = _eventTG.value
+        _totalGold.value = commandTG + abyssDungeonTG + kazerothTG + epicTG + eventTG
         updateProgressPercentage()
     }
 
@@ -118,12 +122,27 @@ class HomeContentVM @Inject constructor(
                         _character.value = updateChar
                         getModel(updateChar)
                     } else {
-                        _character.value = it
-                        getModel(it)
+                        val newInfo = ensureRaidPhaseInfoUpdated(it)
+                        _character.value = newInfo
+                        getModel(newInfo)
                     }
                 }
                 initTG(_character.value)
             }
+        }
+    }
+
+    private fun ensureRaidPhaseInfoUpdated(character: Character): Character {
+        val oldInfo = character.raidPhaseInfo
+        return if (oldInfo.eventPhase == 0 && oldInfo.eventTotalGold == 0) {
+            character.copy(
+                raidPhaseInfo = oldInfo.copy(
+                    eventPhase = 0,
+                    eventTotalGold = 0
+                )
+            )
+        } else {
+            character
         }
     }
 
@@ -154,6 +173,7 @@ class HomeContentVM @Inject constructor(
         _egirTG.value = character.raidPhaseInfo.egirTotalGold
         _ablreshudTG2.value = character.raidPhaseInfo.abrel2TotalGold
         _mordumTG.value = character.raidPhaseInfo.mordumTotalGold
+        _eventTG.value = character.raidPhaseInfo.eventTotalGold
 
         _maxGold.value = character.weeklyGold
         _remainGold.value = _maxGold.value - _totalGold.value
@@ -170,6 +190,7 @@ class HomeContentVM @Inject constructor(
         _abModel.value = AbyssDungeonModel(character)
         _kzModel.value = KazerothRaidModel(character)
         _epModel.value = EpicRaidModel(character)
+        _eventModel.value = EventRaidModel(character)
     }
 
     fun phaseCalc(phases: List<Phase>): Int {
@@ -399,6 +420,20 @@ class HomeContentVM @Inject constructor(
             characterRepository.update(update)
         }
     }
+
+    fun eventGoldCalc(nowPhase: Int) {
+        _eventTG.value = when(nowPhase) {
+            1 -> { _eventModel.value.event.onePhase.totalGold }
+            else -> { 0 }
+        }
+
+        calcTotalGold()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(eventPhase = nowPhase, eventTotalGold = _eventTG.value))
+            characterRepository.update(update)
+        }
+    }
 }
 
 class GoldContentStateVM(initPhase: Int) : ViewModel() {
@@ -428,6 +463,7 @@ class GoldContentStateVM(initPhase: Int) : ViewModel() {
             Raid.Name.EGIR -> R.drawable.kazeroth_egir
             Raid.Name.ABRELSHUD_2 -> R.drawable.kazeroth_abrelshud
             Raid.Name.MORDUM -> R.drawable.kazeroth_mordum
+            Raid.Name.EVENT_RAID -> R.drawable.event_kamen
             else -> R.drawable.kazeroth_echidna
         }
     }
