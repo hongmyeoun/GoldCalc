@@ -21,12 +21,25 @@ class Converters {
         return Gson().toJson(raidPhaseInfo)
     }
 
+//    @TypeConverter
+//    fun toRaidPhaseInfo(raidPhaseInfoString: String?): RaidPhaseInfo {
+//        if (raidPhaseInfoString.isNullOrEmpty()) {
+//            return RaidPhaseInfo() // 또는 원하는 기본값으로 초기화
+//        }
+//        val type = object : TypeToken<RaidPhaseInfo>() {}.type
+//        return Gson().fromJson(raidPhaseInfoString, type)
+//    }
+
     @TypeConverter
     fun toRaidPhaseInfo(raidPhaseInfoString: String?): RaidPhaseInfo {
         if (raidPhaseInfoString.isNullOrEmpty()) {
-            return RaidPhaseInfo() // 또는 원하는 기본값으로 초기화
+            return RaidPhaseInfo()
         }
-        val type = object : TypeToken<RaidPhaseInfo>() {}.type
-        return Gson().fromJson(raidPhaseInfoString, type)
+        return try {
+            Gson().fromJson(raidPhaseInfoString, object : TypeToken<RaidPhaseInfo>() {}.type)
+        } catch (e: Exception) {
+            // 혹시나 파싱 실패 시 디폴트 객체 반환
+            RaidPhaseInfo()
+        }
     }
 }

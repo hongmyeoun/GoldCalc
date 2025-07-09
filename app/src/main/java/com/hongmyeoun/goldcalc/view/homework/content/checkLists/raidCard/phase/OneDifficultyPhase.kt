@@ -133,7 +133,7 @@ fun FourPhaseLastHard(
             )
         },
         phaseCheckUI = {
-            OnePhase(
+            BasePhase(
                 phase = 1,
                 difficulty = phaseOneLevel,
                 clearCheck = phaseOneCC,
@@ -143,7 +143,7 @@ fun FourPhaseLastHard(
                 onMoreClicked = { onOnePhaseSeeMoreCheckBoxChecked(it) }
             )
 
-            OnePhase(
+            BasePhase(
                 phase = 2,
                 difficulty = phaseTwoLevel,
                 clearCheck = phaseTwoCC,
@@ -153,7 +153,7 @@ fun FourPhaseLastHard(
                 onMoreClicked = { onTwoPhaseSeeMoreCheckBoxChecked(it) }
             )
 
-            OnePhase(
+            BasePhase(
                 phase = 3,
                 difficulty = phaseThreeLevel,
                 clearCheck = phaseThreeCC,

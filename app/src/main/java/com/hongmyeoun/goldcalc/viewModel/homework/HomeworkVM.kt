@@ -107,13 +107,13 @@ class HomeworkVM @Inject constructor(
     }
 
     var totalGold by mutableStateOf(0)
-    private fun calcTotalGold(cb: Int, ad: Int, kz: Int, ep: Int) {
+    private fun calcTotalGold(cb: Int, ad: Int, kz: Int, ep: Int, ev: Int) {
         calcETCGold()
-        totalGold = cb + ad + kz + ep + etcGold
+        totalGold = cb + ad + kz + ep + ev + etcGold
     }
 
-    fun updateTotalGold(cb: Int, ad: Int, kz: Int, ep: Int) {
-        calcTotalGold(cb, ad, kz, ep)
+    fun updateTotalGold(cb: Int, ad: Int, kz: Int, ep: Int, ev: Int) {
+        calcTotalGold(cb, ad, kz, ep, ev)
     }
 
     var expanded by mutableStateOf(false)
@@ -183,7 +183,7 @@ class HomeworkVM @Inject constructor(
         }
     }
 
-    fun onDoneClick(commandRaid: CommandBossVM, abyssDungeon: AbyssDungeonVM, kazerothRaid: KazerothRaidVM, epicRaid: EpicRaidVM) {
+    fun onDoneClick(commandRaid: CommandBossVM, abyssDungeon: AbyssDungeonVM, kazerothRaid: KazerothRaidVM, epicRaid: EpicRaidVM, eventRaid: EventRaidVM) {
         val originalCharacter = _character.value
         val originalCheckList = originalCharacter?.checkList
         val originalRaidInfo = originalCharacter?.raidPhaseInfo
@@ -467,9 +467,24 @@ class HomeworkVM @Inject constructor(
                         isCheck = epicRaid.beheCheck
                     )
                 ),
+                event = listOf(
+                    originalCheckList.event[0].copy( // 이벤트 레이드
+                        phases = listOf(
+                            originalCheckList.event[0].phases[0].copy(
+                                // 1페
+                                difficulty = eventRaid.event.onePhase.level,
+                                isClear = if (eventRaid.eventCheck) eventRaid.event.onePhase.clearCheck else false,
+                                mCheck = if (eventRaid.eventCheck) eventRaid.event.onePhase.seeMoreCheck else false,
+                            )
+                        ),
+                        isCheck = eventRaid.eventCheck
+                    )
+                )
             )
 
             val updatedRaidInfo = originalRaidInfo?.copy(
+                eventPhase = if (!eventRaid.eventCheck) 0 else originalRaidInfo.eventPhase,
+                eventTotalGold = if (!eventRaid.eventCheck) 0 else originalRaidInfo.eventTotalGold,
                 mordumPhase = if (!kazerothRaid.mordumCheck) 0 else originalRaidInfo.mordumPhase,
                 mordumTotalGold = if (!kazerothRaid.mordumCheck) 0 else originalRaidInfo.mordumTotalGold,
                 abrel2Phase = if (!kazerothRaid.abrelCheck) 0 else originalRaidInfo.abrel2Phase,
@@ -500,7 +515,7 @@ class HomeworkVM @Inject constructor(
 
             var updateEarnGold = original.earnGold
             updatedRaidInfo?.let {
-                updateEarnGold = updatedRaidInfo.mordumTotalGold + updatedRaidInfo.abrel2TotalGold + updatedRaidInfo.egirTotalGold + updatedRaidInfo.behemothTotalGold + updatedRaidInfo.echidnaTotalGold + updatedRaidInfo.kamenTotalGold + updatedRaidInfo.ivoryTotalGold + updatedRaidInfo.illiakanTotalGold + updatedRaidInfo.kayangelTotalGold + updatedRaidInfo.abrelTotalGold + updatedRaidInfo.koukuTotalGold + updatedRaidInfo.biackissTotalGold + updatedRaidInfo.valtanTotalGold
+                updateEarnGold = updatedRaidInfo.eventTotalGold + updatedRaidInfo.mordumTotalGold + updatedRaidInfo.abrel2TotalGold + updatedRaidInfo.egirTotalGold + updatedRaidInfo.behemothTotalGold + updatedRaidInfo.echidnaTotalGold + updatedRaidInfo.kamenTotalGold + updatedRaidInfo.ivoryTotalGold + updatedRaidInfo.illiakanTotalGold + updatedRaidInfo.kayangelTotalGold + updatedRaidInfo.abrelTotalGold + updatedRaidInfo.koukuTotalGold + updatedRaidInfo.biackissTotalGold + updatedRaidInfo.valtanTotalGold
             }
 
             original.copy(

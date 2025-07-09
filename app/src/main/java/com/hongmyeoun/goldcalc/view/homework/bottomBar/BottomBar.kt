@@ -49,6 +49,7 @@ import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.homework.AbyssDungeonVM
 import com.hongmyeoun.goldcalc.viewModel.homework.CommandBossVM
 import com.hongmyeoun.goldcalc.viewModel.homework.EpicRaidVM
+import com.hongmyeoun.goldcalc.viewModel.homework.EventRaidVM
 import com.hongmyeoun.goldcalc.viewModel.homework.HomeworkVM
 import com.hongmyeoun.goldcalc.viewModel.homework.KazerothRaidVM
 
@@ -59,16 +60,17 @@ fun HomeworkBottomBar(
     adVM: AbyssDungeonVM,
     kzVM: KazerothRaidVM,
     epVM: EpicRaidVM,
+    eventVM: EventRaidVM,
     navController: NavHostController
 ) {
     if (viewModel.expanded) {
-        Summary(viewModel, cbVM, adVM, kzVM, epVM, navController)
+        Summary(viewModel, cbVM, adVM, kzVM, epVM, eventVM, navController)
     }
 
     BottomBar(
         viewModel = viewModel,
         navController = navController
-    ) { viewModel.onDoneClick(cbVM, adVM, kzVM, epVM) }
+    ) { viewModel.onDoneClick(cbVM, adVM, kzVM, epVM, eventVM) }
 }
 
 

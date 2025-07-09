@@ -11,10 +11,12 @@ import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.TitleCa
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidContents.AbyssDungeon
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidContents.Command
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidContents.Epic
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidContents.Event
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidContents.Kazeroth
 import com.hongmyeoun.goldcalc.viewModel.homework.AbyssDungeonVM
 import com.hongmyeoun.goldcalc.viewModel.homework.CommandBossVM
 import com.hongmyeoun.goldcalc.viewModel.homework.EpicRaidVM
+import com.hongmyeoun.goldcalc.viewModel.homework.EventRaidVM
 import com.hongmyeoun.goldcalc.viewModel.homework.HomeworkVM
 import com.hongmyeoun.goldcalc.viewModel.homework.KazerothRaidVM
 
@@ -25,6 +27,7 @@ fun CheckLists(
     adVM: AbyssDungeonVM,
     kzVM: KazerothRaidVM,
     epVM: EpicRaidVM,
+    eventVM: EventRaidVM
 ) {
     Crossfade(
         targetState = viewModel.selectedTab,
@@ -72,9 +75,17 @@ fun CheckLists(
                 }
 
                 4 -> {
+                    TitleCard(
+                        totalGold = eventVM.totalGold
+                    ) {
+                        Event(viewModel = eventVM)
+                    }
+                }
+
+                5 -> {
                     ETCGold(
                         viewModel = viewModel,
-                        onDone = { viewModel.updateTotalGold(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold) },
+                        onDone = { viewModel.updateTotalGold(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold, eventVM.totalGold) },
                     )
                 }
             }

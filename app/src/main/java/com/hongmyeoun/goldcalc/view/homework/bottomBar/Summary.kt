@@ -41,6 +41,7 @@ import com.hongmyeoun.goldcalc.view.profile.titleTextStyle
 import com.hongmyeoun.goldcalc.viewModel.homework.AbyssDungeonVM
 import com.hongmyeoun.goldcalc.viewModel.homework.CommandBossVM
 import com.hongmyeoun.goldcalc.viewModel.homework.EpicRaidVM
+import com.hongmyeoun.goldcalc.viewModel.homework.EventRaidVM
 import com.hongmyeoun.goldcalc.viewModel.homework.HomeworkVM
 import com.hongmyeoun.goldcalc.viewModel.homework.KazerothRaidVM
 
@@ -52,6 +53,7 @@ fun Summary(
     adVM: AbyssDungeonVM,
     kzVM: KazerothRaidVM,
     epVM: EpicRaidVM,
+    eventVM: EventRaidVM,
     navController: NavHostController
 ) {
     val configuration = LocalConfiguration.current
@@ -96,6 +98,10 @@ fun Summary(
                     Script(epVM)
                 }
 
+                if (eventVM.eventCheck) {
+                    Script(eventVM)
+                }
+
                 if ((viewModel.plusGold.toIntOrNull() ?: 0) > 0) {
                     Script(viewModel)
                 }
@@ -107,7 +113,7 @@ fun Summary(
                         navController = navController,
                         onDoneClicked = {
                             viewModel.close()
-                            viewModel.onDoneClick(cbVM, adVM, kzVM, epVM)
+                            viewModel.onDoneClick(cbVM, adVM, kzVM, epVM, eventVM)
                         }
                     )
                 }
@@ -364,6 +370,32 @@ private fun Script(epVM: EpicRaidVM) {
         }
     }
 }
+
+@Composable
+private fun Script(eventVM: EventRaidVM) {
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
+    ) {
+        RaidTitle(title = Raid.Name.EPIC_RAID, totalGold = eventVM.totalGold)
+        Divider()
+
+        Row(
+            modifier = Modifier.padding(if (eventVM.eventCheck) 16.dp else 0.dp)
+        ) {
+            PhaseInfo(
+                isCheck = eventVM.eventCheck,
+                modifier = Modifier.weight(1f),
+                raidName = Raid.Name.EVENT_RAID,
+                phaseInfo = {
+                    Text(text = "${Homework.PHASE_ONE} ${eventVM.event.onePhase.level} : ${eventVM.event.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
+                }
+            )
+        }
+    }
+}
+
 
 @Composable
 private fun Script(viewModel: HomeworkVM) {

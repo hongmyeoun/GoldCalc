@@ -76,7 +76,10 @@ data class RaidPhaseInfo(
     @ColumnInfo("abrel2TotalGold") val abrel2TotalGold: Int = 0,
 
     @ColumnInfo("mordumPhase") val mordumPhase: Int = 0,
-    @ColumnInfo("mordumTotalGold") val mordumTotalGold: Int = 0
+    @ColumnInfo("mordumTotalGold") val mordumTotalGold: Int = 0,
+
+    @ColumnInfo("eventPhase") val eventPhase: Int = 0,
+    @ColumnInfo("eventTotalGold") val eventTotalGold: Int = 0
 )
 
 
@@ -139,6 +142,12 @@ data class CheckList(
         RaidList(
             name = Raid.Name.BEHEMOTH,
             phases = listOf(Phase(), Phase())
+        )
+    ),
+    @ColumnInfo("Event") val event: List<RaidList> = listOf(
+        RaidList(
+            name = Raid.Name.EVENT_RAID,
+            phases = listOf(Phase())
         )
     )
 )

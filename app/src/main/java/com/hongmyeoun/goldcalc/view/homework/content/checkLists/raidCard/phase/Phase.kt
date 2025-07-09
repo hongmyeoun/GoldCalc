@@ -3,7 +3,7 @@ package com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase
 import androidx.compose.runtime.Composable
 
 @Composable
-fun OnePhase(
+fun BasePhase(
     phase: Int,
     difficulty: String,
     clearCheck: Boolean,
@@ -24,6 +24,46 @@ fun OnePhase(
         onClearClicked = { onClearClicked(it) },
         moreCheck = moreCheck,
         onMoreClicked = { onMoreClicked(it) }
+    )
+}
+
+@Composable
+fun OnePhase(
+    rotaR: Float,
+
+    name: String,
+    raidBossImg: Int,
+    totalGold: Int,
+
+    phaseOneLevel: String,
+    phaseOneGold: Int,
+    phaseOneSMC: Boolean,
+    phaseOneCC: Boolean,
+    onOnePhaseLevelClicked: () -> Unit,
+    onOnePhaseClearCheckBoxChecked: (Boolean) -> Unit,
+    onOnePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
+) {
+    BossCard(
+        rotaR = rotaR,
+        raidBossImg = raidBossImg,
+        totalGold = totalGold,
+        phaseGoldTextUI = {
+            OneGoldText(
+                name = name,
+                phaseOneGold = phaseOneGold,
+            )
+        },
+        phaseCheckUI = {
+            BasePhase(
+                phase = 1,
+                difficulty = phaseOneLevel,
+                clearCheck = phaseOneCC,
+                moreCheck = phaseOneSMC,
+                onLevelClicked = { onOnePhaseLevelClicked() },
+                onClearClicked = { onOnePhaseClearCheckBoxChecked(it) },
+                onMoreClicked = { onOnePhaseSeeMoreCheckBoxChecked(it) }
+            )
+        }
     )
 }
 
@@ -63,7 +103,7 @@ fun TwoPhase(
             )
         },
         phaseCheckUI = {
-            OnePhase(
+            BasePhase(
                 phase = 1,
                 difficulty = phaseOneLevel,
                 clearCheck = phaseOneCC,
@@ -73,7 +113,7 @@ fun TwoPhase(
                 onMoreClicked = { onOnePhaseSeeMoreCheckBoxChecked(it) }
             )
 
-            OnePhase(
+            BasePhase(
                 phase = 2,
                 difficulty = phaseTwoLevel,
                 clearCheck = phaseTwoCC,
@@ -131,7 +171,7 @@ fun ThreePhase(
             )
         },
         phaseCheckUI = {
-            OnePhase(
+            BasePhase(
                 phase = 1,
                 difficulty = phaseOneLevel,
                 clearCheck = phaseOneCC,
@@ -141,7 +181,7 @@ fun ThreePhase(
                 onMoreClicked = { onOnePhaseSeeMoreCheckBoxChecked(it) }
             )
 
-            OnePhase(
+            BasePhase(
                 phase = 2,
                 difficulty = phaseTwoLevel,
                 clearCheck = phaseTwoCC,
@@ -151,7 +191,7 @@ fun ThreePhase(
                 onMoreClicked = { onTwoPhaseSeeMoreCheckBoxChecked(it) }
             )
 
-            OnePhase(
+            BasePhase(
                 phase = 3,
                 difficulty = phaseThreeLevel,
                 clearCheck = phaseThreeCC,
@@ -218,7 +258,7 @@ fun FourPhase(
             )
         },
         phaseCheckUI = {
-            OnePhase(
+            BasePhase(
                 phase = 1,
                 difficulty = phaseOneLevel,
                 clearCheck = phaseOneCC,
@@ -228,7 +268,7 @@ fun FourPhase(
                 onMoreClicked = { onOnePhaseSeeMoreCheckBoxChecked(it) }
             )
 
-            OnePhase(
+            BasePhase(
                 phase = 2,
                 difficulty = phaseTwoLevel,
                 clearCheck = phaseTwoCC,
@@ -238,7 +278,7 @@ fun FourPhase(
                 onMoreClicked = { onTwoPhaseSeeMoreCheckBoxChecked(it) }
             )
 
-            OnePhase(
+            BasePhase(
                 phase = 3,
                 difficulty = phaseThreeLevel,
                 clearCheck = phaseThreeCC,
@@ -248,7 +288,7 @@ fun FourPhase(
                 onMoreClicked = { onThreePhaseSeeMoreCheckBoxChecked(it) }
             )
 
-            OnePhase(
+            BasePhase(
                 phase = 4,
                 difficulty = phaseFourLevel,
                 clearCheck = phaseFourCC,
