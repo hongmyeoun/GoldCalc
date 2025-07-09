@@ -24,7 +24,7 @@ import com.hongmyeoun.goldcalc.model.common.formatWithCommas
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun TitleCard(
-    raidImg: Int,
+    raidImg: Int? = null,
     totalGold: Int,
     raidContent: @Composable () -> Unit
 ) {
@@ -32,30 +32,32 @@ fun TitleCard(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        GlideImage(
-            modifier = Modifier.fillMaxWidth(),
-            contentScale = ContentScale.FillWidth,
-            model = raidImg,
-            contentDescription = "던전 아이콘"
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .align(Alignment.CenterEnd)
-                .padding(end = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End
-        ) {
+        if (raidImg != null) {
             GlideImage(
-                modifier = Modifier.size(25.dp),
-                model = ImageReturn.goldImage(totalGold),
-                contentDescription = "골드 아이콘"
+                modifier = Modifier.fillMaxWidth(),
+                contentScale = ContentScale.FillWidth,
+                model = raidImg,
+                contentDescription = "던전 아이콘"
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = totalGold.formatWithCommas(),
-                color = Color.White
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                GlideImage(
+                    modifier = Modifier.size(25.dp),
+                    model = ImageReturn.goldImage(totalGold),
+                    contentDescription = "골드 아이콘"
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = totalGold.formatWithCommas(),
+                    color = Color.White
+                )
+            }
         }
     }
 

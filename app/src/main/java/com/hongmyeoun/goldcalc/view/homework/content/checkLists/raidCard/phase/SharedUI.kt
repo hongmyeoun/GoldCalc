@@ -29,8 +29,8 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.common.ImageReturn.goldImage
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
-import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
+import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.ui.theme.RedQual
@@ -128,7 +128,7 @@ private fun RaidNameText(name: String) {
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-private fun OneGoldText(
+private fun BaseGoldText(
     phase: String,
     phaseGold: Int
 ) {
@@ -154,6 +154,19 @@ private fun OneGoldText(
 }
 
 @Composable
+fun OneGoldText(
+    name: String,
+    phaseOneGold: Int
+) {
+    RaidNameText(name = name)
+
+    BaseGoldText(
+        phase = Homework.PHASE_ONE_NUM,
+        phaseGold = phaseOneGold
+    )
+}
+
+@Composable
 fun TwoGoldText(
     name: String,
     phaseOneGold: Int,
@@ -161,11 +174,11 @@ fun TwoGoldText(
 ) {
     RaidNameText(name = name)
 
-    OneGoldText(
+    BaseGoldText(
         phase = Homework.PHASE_ONE_NUM,
         phaseGold = phaseOneGold
     )
-    OneGoldText(
+    BaseGoldText(
         phase = Homework.PHASE_TWO_NUM,
         phaseGold = phaseTwoGold
     )
@@ -183,7 +196,7 @@ fun ThreeGoldText(
         phaseOneGold = phaseOneGold,
         phaseTwoGold = phaseTwoGold
     )
-    OneGoldText(
+    BaseGoldText(
         phase = Homework.PHASE_THREE_NUM,
         phaseGold = phaseThreeGold
     )
@@ -203,7 +216,7 @@ fun FourGoldText(
         phaseTwoGold = phaseTwoGold,
         phaseThreeGold = phaseThreeGold
     )
-    OneGoldText(
+    BaseGoldText(
         phase = Homework.PHASE_FOUR_NUM,
         phaseGold = phaseFourGold
     )
