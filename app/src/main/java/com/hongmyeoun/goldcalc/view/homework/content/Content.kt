@@ -21,6 +21,7 @@ import com.hongmyeoun.goldcalc.view.homework.content.checkLists.CheckLists
 import com.hongmyeoun.goldcalc.viewModel.homework.AbyssDungeonVM
 import com.hongmyeoun.goldcalc.viewModel.homework.CommandBossVM
 import com.hongmyeoun.goldcalc.viewModel.homework.EpicRaidVM
+import com.hongmyeoun.goldcalc.viewModel.homework.EventRaidVM
 import com.hongmyeoun.goldcalc.viewModel.homework.HomeworkVM
 import com.hongmyeoun.goldcalc.viewModel.homework.KazerothRaidVM
 
@@ -35,6 +36,7 @@ fun HomeworkContent(
     adVM: AbyssDungeonVM,
     kzVM: KazerothRaidVM,
     epVM: EpicRaidVM,
+    eventVM: EventRaidVM,
 ) {
     val character by viewModel.character.collectAsState()
     val showDetail by viewModel.showDetail.collectAsState()
@@ -59,6 +61,6 @@ fun HomeworkContent(
             }
         }
         stickyHeader { RaidHeader(viewModel) }
-        item { CheckLists(viewModel, cbVM, adVM, kzVM, epVM) }
+        item { CheckLists(viewModel, cbVM, adVM, kzVM, epVM, eventVM) }
     }
 }
