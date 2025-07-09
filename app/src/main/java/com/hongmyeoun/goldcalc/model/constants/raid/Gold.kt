@@ -111,7 +111,7 @@ class Gold {
             val ILLIAKAN = listOf(425, 775, 1150)
             val KAMEN = listOf(800, 1000, 1400, 0)
 
-            val KAYANGEL = listOf(375, 559, 725)
+            val KAYANGEL = listOf(375, 550, 725)
             val IVORY_TOWER = listOf(600, 800, 1200)
 
             val ECHIDNA = listOf(1150, 2500)
