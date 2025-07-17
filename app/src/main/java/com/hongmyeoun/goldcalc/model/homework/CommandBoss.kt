@@ -14,12 +14,10 @@ enum class CommandBoss(
         seeMoreGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.VALTAN,
             Raid.Difficulty.HARD to Gold.SeeMore.Hard.VALTAN,
-            Raid.Difficulty.SOLO to Gold.SeeMore.Solo.VALTAN
         ),
         clearGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.Clear.Normal.VALTAN,
             Raid.Difficulty.HARD to Gold.Clear.Hard.VALTAN,
-            Raid.Difficulty.SOLO to Gold.Clear.Solo.VALTAN
         )
     ),
     BIACKISS(
@@ -27,12 +25,10 @@ enum class CommandBoss(
         seeMoreGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.BIACKISS,
             Raid.Difficulty.HARD to Gold.SeeMore.Hard.BIACKISS,
-            Raid.Difficulty.SOLO to Gold.SeeMore.Solo.BIACKISS
         ),
         clearGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.Clear.Normal.BIACKISS,
             Raid.Difficulty.HARD to Gold.Clear.Hard.BIACKISS,
-            Raid.Difficulty.SOLO to Gold.Clear.Solo.BIACKISS
         )
     ),
     KOUKU_SATON(
@@ -40,12 +36,10 @@ enum class CommandBoss(
         seeMoreGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.KOUKU_SATON,
             Raid.Difficulty.HARD to Gold.SeeMore.Hard.KOUKU_SATON,
-            Raid.Difficulty.SOLO to Gold.SeeMore.Solo.KOUKU_SATON
         ),
         clearGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.Clear.Normal.KOUKU_SATON,
             Raid.Difficulty.HARD to Gold.Clear.Hard.KOUKU_SATON,
-            Raid.Difficulty.SOLO to Gold.Clear.Solo.KOUKU_SATON
         )
     ),
     ABRELSHUD(
@@ -53,12 +47,10 @@ enum class CommandBoss(
         seeMoreGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.ABRELSHUD,
             Raid.Difficulty.HARD to Gold.SeeMore.Hard.ABRELSHUD,
-            Raid.Difficulty.SOLO to Gold.SeeMore.Solo.ABRELSHUD
         ),
         clearGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.Clear.Normal.ABRELSHUD,
             Raid.Difficulty.HARD to Gold.Clear.Hard.ABRELSHUD,
-            Raid.Difficulty.SOLO to Gold.Clear.Solo.ABRELSHUD
         )
     ),
     ILLIAKAN(
@@ -66,12 +58,10 @@ enum class CommandBoss(
         seeMoreGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.ILLIAKAN,
             Raid.Difficulty.HARD to Gold.SeeMore.Hard.ILLIAKAN,
-            Raid.Difficulty.SOLO to Gold.SeeMore.Solo.ILLIAKAN
         ),
         clearGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.Clear.Normal.ILLIAKAN,
             Raid.Difficulty.HARD to Gold.Clear.Hard.ILLIAKAN,
-            Raid.Difficulty.SOLO to Gold.Clear.Solo.ILLIAKAN
         )
     ),
     KAMEN(
@@ -79,12 +69,10 @@ enum class CommandBoss(
         seeMoreGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.KAMEN,
             Raid.Difficulty.HARD to Gold.SeeMore.Hard.KAMEN,
-            Raid.Difficulty.SOLO to Gold.SeeMore.Solo.KAMEN
         ),
         clearGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.Clear.Normal.KAMEN,
             Raid.Difficulty.HARD to Gold.Clear.Hard.KAMEN,
-            Raid.Difficulty.SOLO to Gold.Clear.Solo.KAMEN
         )
     );
 
@@ -135,14 +123,8 @@ class CommandBossModel(character: Character?) {
 
 class Valtan(character: Character?) {
     var name = CommandBoss.VALTAN.boss
-    private val seeMoreGold =
-        CommandBoss.VALTAN.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.VALTAN.getBossInfo(Raid.Difficulty.HARD).first + CommandBoss.VALTAN.getBossInfo(
-            Raid.Difficulty.SOLO
-        ).first
-    private val clearGold =
-        CommandBoss.VALTAN.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.VALTAN.getBossInfo(Raid.Difficulty.HARD).second + CommandBoss.VALTAN.getBossInfo(
-            Raid.Difficulty.SOLO
-        ).second
+    private val seeMoreGold = CommandBoss.VALTAN.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.VALTAN.getBossInfo(Raid.Difficulty.HARD).first
+    private val clearGold = CommandBoss.VALTAN.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.VALTAN.getBossInfo(Raid.Difficulty.HARD).second
 
     var isChecked = character?.checkList?.command?.get(0)?.isCheck ?: false
 
@@ -157,13 +139,10 @@ class Valtan(character: Character?) {
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[2],
-        seeMoreGoldS = seeMoreGold[4],
         clearGoldN = clearGold[0],
         clearGoldH = clearGold[2],
-        clearGoldS = clearGold[4]
     )
 
     private val getTwoPhase = character?.checkList?.command?.get(0)?.phases?.get(1)
@@ -177,13 +156,10 @@ class Valtan(character: Character?) {
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[3],
-        seeMoreGoldS = seeMoreGold[5],
         clearGoldN = clearGold[1],
         clearGoldH = clearGold[3],
-        clearGoldS = clearGold[5]
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold
@@ -200,14 +176,8 @@ class Valtan(character: Character?) {
 
 class Biackiss(character: Character?) {
     var name = CommandBoss.BIACKISS.boss
-    private val seeMoreGold =
-        CommandBoss.BIACKISS.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.BIACKISS.getBossInfo(Raid.Difficulty.HARD).first + CommandBoss.BIACKISS.getBossInfo(
-            Raid.Difficulty.SOLO
-        ).first
-    private val clearGold =
-        CommandBoss.BIACKISS.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.BIACKISS.getBossInfo(Raid.Difficulty.HARD).second + CommandBoss.BIACKISS.getBossInfo(
-            Raid.Difficulty.SOLO
-        ).second
+    private val seeMoreGold = CommandBoss.BIACKISS.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.BIACKISS.getBossInfo(Raid.Difficulty.HARD).first
+    private val clearGold = CommandBoss.BIACKISS.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.BIACKISS.getBossInfo(Raid.Difficulty.HARD).second
 
     var isChecked = character?.checkList?.command?.get(1)?.isCheck ?: false
 
@@ -222,13 +192,10 @@ class Biackiss(character: Character?) {
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[2],
-        seeMoreGoldS = seeMoreGold[4],
         clearGoldN = clearGold[0],
         clearGoldH = clearGold[2],
-        clearGoldS = clearGold[4]
     )
 
     private val getTwoPhase = character?.checkList?.command?.get(1)?.phases?.get(1)
@@ -242,13 +209,10 @@ class Biackiss(character: Character?) {
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[3],
-        seeMoreGoldS = seeMoreGold[5],
         clearGoldN = clearGold[1],
         clearGoldH = clearGold[3],
-        clearGoldS = clearGold[5]
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold
@@ -265,14 +229,8 @@ class Biackiss(character: Character?) {
 
 class KoukuSaton(character: Character?) {
     var name = CommandBoss.KOUKU_SATON.boss
-    private val seeMoreGold =
-        CommandBoss.KOUKU_SATON.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.KOUKU_SATON.getBossInfo(Raid.Difficulty.HARD).first + CommandBoss.KOUKU_SATON.getBossInfo(
-            Raid.Difficulty.SOLO
-        ).first
-    private val clearGold =
-        CommandBoss.KOUKU_SATON.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.KOUKU_SATON.getBossInfo(Raid.Difficulty.HARD).second + CommandBoss.KOUKU_SATON.getBossInfo(
-            Raid.Difficulty.SOLO
-        ).second
+    private val seeMoreGold = CommandBoss.KOUKU_SATON.getBossInfo(Raid.Difficulty.NORMAL).first
+    private val clearGold = CommandBoss.KOUKU_SATON.getBossInfo(Raid.Difficulty.NORMAL).second
 
     var isChecked = character?.checkList?.command?.get(2)?.isCheck ?: false
 
@@ -287,13 +245,10 @@ class KoukuSaton(character: Character?) {
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
         isChecked = isChecked,
-        noHardWithSolo = true,
         seeMoreGoldN = seeMoreGold[0],
-        seeMoreGoldH = seeMoreGold[3],
-        seeMoreGoldS = seeMoreGold[6],
+        seeMoreGoldH = seeMoreGold[0],
         clearGoldN = clearGold[0],
-        clearGoldH = clearGold[3],
-        clearGoldS = clearGold[6]
+        clearGoldH = clearGold[0],
     )
 
     private val getTwoPhase = character?.checkList?.command?.get(2)?.phases?.get(1)
@@ -307,13 +262,10 @@ class KoukuSaton(character: Character?) {
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
         isChecked = isChecked,
-        noHardWithSolo = true,
         seeMoreGoldN = seeMoreGold[1],
-        seeMoreGoldH = seeMoreGold[4],
-        seeMoreGoldS = seeMoreGold[7],
+        seeMoreGoldH = seeMoreGold[1],
         clearGoldN = clearGold[1],
-        clearGoldH = clearGold[4],
-        clearGoldS = clearGold[7]
+        clearGoldH = clearGold[1],
     )
 
     private val getThreePhase = character?.checkList?.command?.get(2)?.phases?.get(2)
@@ -326,13 +278,10 @@ class KoukuSaton(character: Character?) {
         isClearCheck = threePhaseIsClear,
         moreCheck = threePhaseMCheck,
         isChecked = isChecked,
-        noHardWithSolo = true,
         seeMoreGoldN = seeMoreGold[2],
-        seeMoreGoldH = seeMoreGold[5],
-        seeMoreGoldS = seeMoreGold[8],
+        seeMoreGoldH = seeMoreGold[2],
         clearGoldN = clearGold[2],
-        clearGoldH = clearGold[5],
-        clearGoldS = clearGold[8]
+        clearGoldH = clearGold[2],
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
@@ -350,14 +299,8 @@ class KoukuSaton(character: Character?) {
 
 class Abrelshud(character: Character?) {
     var name = CommandBoss.ABRELSHUD.boss
-    private val seeMoreGold =
-        CommandBoss.ABRELSHUD.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.ABRELSHUD.getBossInfo(Raid.Difficulty.HARD).first + CommandBoss.ABRELSHUD.getBossInfo(
-            Raid.Difficulty.SOLO
-        ).first
-    private val clearGold =
-        CommandBoss.ABRELSHUD.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.ABRELSHUD.getBossInfo(Raid.Difficulty.HARD).second + CommandBoss.ABRELSHUD.getBossInfo(
-            Raid.Difficulty.SOLO
-        ).second
+    private val seeMoreGold = CommandBoss.ABRELSHUD.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.ABRELSHUD.getBossInfo(Raid.Difficulty.HARD).first
+    private val clearGold = CommandBoss.ABRELSHUD.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.ABRELSHUD.getBossInfo(Raid.Difficulty.HARD).second
 
     var isChecked = character?.checkList?.command?.get(3)?.isCheck ?: false
 
@@ -372,13 +315,10 @@ class Abrelshud(character: Character?) {
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[4],
-        seeMoreGoldS = seeMoreGold[8],
         clearGoldN = clearGold[0],
         clearGoldH = clearGold[4],
-        clearGoldS = clearGold[8]
     )
 
     private val getTwoPhase = character?.checkList?.command?.get(3)?.phases?.get(1)
@@ -392,13 +332,10 @@ class Abrelshud(character: Character?) {
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[5],
-        seeMoreGoldS = seeMoreGold[9],
         clearGoldN = clearGold[1],
         clearGoldH = clearGold[5],
-        clearGoldS = clearGold[9]
     )
 
     private val getThreePhase = character?.checkList?.command?.get(3)?.phases?.get(2)
@@ -411,13 +348,10 @@ class Abrelshud(character: Character?) {
         isClearCheck = threePhaseIsClear,
         moreCheck = threePhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[2],
         seeMoreGoldH = seeMoreGold[6],
-        seeMoreGoldS = seeMoreGold[10],
         clearGoldN = clearGold[2],
         clearGoldH = clearGold[6],
-        clearGoldS = clearGold[10]
     )
 
     private val getFourPhase = character?.checkList?.command?.get(3)?.phases?.get(3)
@@ -430,13 +364,10 @@ class Abrelshud(character: Character?) {
         isClearCheck = fourPhaseIsClear,
         moreCheck = fourPhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[3],
         seeMoreGoldH = seeMoreGold[7],
-        seeMoreGoldS = seeMoreGold[11],
         clearGoldN = clearGold[3],
         clearGoldH = clearGold[7],
-        clearGoldS = clearGold[11]
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold + fourPhase.totalGold
@@ -455,14 +386,8 @@ class Abrelshud(character: Character?) {
 
 class Illiakan(character: Character?) {
     var name = CommandBoss.ILLIAKAN.boss
-    private val seeMoreGold =
-        CommandBoss.ILLIAKAN.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.ILLIAKAN.getBossInfo(Raid.Difficulty.HARD).first + CommandBoss.ILLIAKAN.getBossInfo(
-            Raid.Difficulty.SOLO
-        ).first
-    private val clearGold =
-        CommandBoss.ILLIAKAN.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.ILLIAKAN.getBossInfo(Raid.Difficulty.HARD).second + CommandBoss.ILLIAKAN.getBossInfo(
-            Raid.Difficulty.SOLO
-        ).second
+    private val seeMoreGold = CommandBoss.ILLIAKAN.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.ILLIAKAN.getBossInfo(Raid.Difficulty.HARD).first
+    private val clearGold = CommandBoss.ILLIAKAN.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.ILLIAKAN.getBossInfo(Raid.Difficulty.HARD).second
 
     var isChecked = character?.checkList?.command?.get(4)?.isCheck ?: false
 
@@ -477,13 +402,10 @@ class Illiakan(character: Character?) {
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[3],
-        seeMoreGoldS = seeMoreGold[6],
         clearGoldN = clearGold[0],
         clearGoldH = clearGold[3],
-        clearGoldS = clearGold[6]
     )
 
     private val getTwoPhase = character?.checkList?.command?.get(4)?.phases?.get(1)
@@ -497,13 +419,10 @@ class Illiakan(character: Character?) {
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[4],
-        seeMoreGoldS = seeMoreGold[7],
         clearGoldN = clearGold[1],
         clearGoldH = clearGold[4],
-        clearGoldS = clearGold[7]
     )
 
     private val getThreePhase = character?.checkList?.command?.get(4)?.phases?.get(2)
@@ -516,13 +435,10 @@ class Illiakan(character: Character?) {
         isClearCheck = threePhaseIsClear,
         moreCheck = threePhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[2],
         seeMoreGoldH = seeMoreGold[5],
-        seeMoreGoldS = seeMoreGold[8],
         clearGoldN = clearGold[2],
         clearGoldH = clearGold[5],
-        clearGoldS = clearGold[8]
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
@@ -541,8 +457,8 @@ class Illiakan(character: Character?) {
 
 class Kamen(character: Character?) {
     var name = CommandBoss.KAMEN.boss
-    private val seeMoreGold = CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.HARD).first + CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.SOLO).first
-    private val clearGold = CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.HARD).second + CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.SOLO).second
+    private val seeMoreGold = CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.NORMAL).first + CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.HARD).first
+    private val clearGold = CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.NORMAL).second + CommandBoss.KAMEN.getBossInfo(Raid.Difficulty.HARD).second
 
     var isChecked = character?.checkList?.command?.get(5)?.isCheck ?: false
 
@@ -557,13 +473,10 @@ class Kamen(character: Character?) {
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[4],
-        seeMoreGoldS = seeMoreGold[8],
         clearGoldN = clearGold[0],
         clearGoldH = clearGold[4],
-        clearGoldS = clearGold[8]
     )
 
     private val getTwoPhase = character?.checkList?.command?.get(5)?.phases?.get(1)
@@ -577,13 +490,10 @@ class Kamen(character: Character?) {
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[5],
-        seeMoreGoldS = seeMoreGold[9],
         clearGoldN = clearGold[1],
         clearGoldH = clearGold[5],
-        clearGoldS = clearGold[9]
     )
 
     private val getThreePhase = character?.checkList?.command?.get(5)?.phases?.get(2)
@@ -596,13 +506,10 @@ class Kamen(character: Character?) {
         isClearCheck = threePhaseIsClear,
         moreCheck = threePhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[2],
         seeMoreGoldH = seeMoreGold[6],
-        seeMoreGoldS = seeMoreGold[10],
         clearGoldN = clearGold[2],
         clearGoldH = clearGold[6],
-        clearGoldS = clearGold[10]
     )
 
     private val getFourPhase = character?.checkList?.command?.get(5)?.phases?.get(3)
@@ -615,13 +522,10 @@ class Kamen(character: Character?) {
         isClearCheck = fourPhaseIsClear,
         moreCheck = fourPhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[3],
         seeMoreGoldH = seeMoreGold[7],
-        seeMoreGoldS = seeMoreGold[11],
         clearGoldN = clearGold[3],
         clearGoldH = clearGold[7],
-        clearGoldS = clearGold[11]
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold + fourPhase.totalGold

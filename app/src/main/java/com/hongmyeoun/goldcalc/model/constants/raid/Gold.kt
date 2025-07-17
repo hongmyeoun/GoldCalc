@@ -45,34 +45,23 @@ class Gold {
         }
 
         object Solo {
-            val VALTAN = listOf(75, 100)
-            val BIACKISS = listOf(100, 150)
-            val KOUKU_SATON = listOf(100, 150, 200)
-            val ABRELSHUD = listOf(100, 150, 200, 375)
-            val ILLIAKAN = listOf(190, 230, 330)
-            val KAMEN = listOf(360, 440, 640, 0)
-
-            val KAYANGEL = listOf(180, 200, 270)
-            val IVORY_TOWER = listOf(180, 220, 300)
-
-            val ECHIDNA = listOf(380, 840)
             val EGIR = listOf(1030, 2400)
         }
     }
 
     class Clear {
         object Normal {
-            val VALTAN = listOf(500/2, 700/2)
-            val BIACKISS = listOf(600/2, 1000/2)
-            val KOUKU_SATON = listOf(600/2, 900/2, 1500/2)
-            val ABRELSHUD = listOf(1000/2, 1000/2, 1000/2, 1600/2)
-            val ILLIAKAN = listOf(850/2, 1550/2, 2300/2)
-            val KAMEN = listOf(1600/2, 2000/2, 2800/2, 0)
+            val VALTAN = listOf(250, 350)
+            val BIACKISS = listOf(300, 500)
+            val KOUKU_SATON = listOf(300, 450, 750)
+            val ABRELSHUD = listOf(500, 500, 500, 800)
+            val ILLIAKAN = listOf(425, 775, 1150)
+            val KAMEN = listOf(800, 1000, 1400, 0)
 
-            val KAYANGEL = listOf(750/2, 1100/2, 1450/2)
-            val IVORY_TOWER = listOf(1200/2, 1600/2, 2400/2)
+            val KAYANGEL = listOf(325, 550, 725)
+            val IVORY_TOWER = listOf(600, 800, 1200)
 
-            val ECHIDNA = listOf(2300/2, 5000/2)
+            val ECHIDNA = listOf(1150, 2500)
             val EGIR = listOf(4750, 10750)
             val ABRELSHUD_2 = listOf(7250, 14250)
             val MORDUM = listOf(6000, 9500, 12500)
@@ -83,15 +72,15 @@ class Gold {
         }
 
         object Hard {
-            val VALTAN = listOf(700/2, 1100/2)
-            val BIACKISS = listOf(900/2, 1500/2)
-            val KOUKU_SATON = listOf(600/2, 900/2, 1500/2)
-            val ABRELSHUD = listOf(1200/2, 1200/2, 1200/2, 2000/2)
-            val ILLIAKAN = listOf(1200/2, 2000/2, 2800/2)
-            val KAMEN = listOf(2000/2, 2400/2, 3600/2, 5000/2)
+            val VALTAN = listOf(350, 550)
+            val BIACKISS = listOf(450, 750)
+            val KOUKU_SATON = listOf(300, 450, 750)
+            val ABRELSHUD = listOf(600, 600, 600, 1000)
+            val ILLIAKAN = listOf(600, 1000, 1400)
+            val KAMEN = listOf(1000, 1200, 1800, 2500)
 
-            val KAYANGEL = listOf(900/2, 1400/2, 2000/2)
-            val IVORY_TOWER = listOf(1400/2, 2000/2, 3800/2)
+            val KAYANGEL = listOf(450, 700, 1000)
+            val IVORY_TOWER = listOf(700, 1000, 1900)
 
             val ECHIDNA = listOf(2800, 6000)
             val EGIR = listOf(8000, 16500)
@@ -104,17 +93,6 @@ class Gold {
         }
 
         object Solo {
-            val VALTAN = listOf(250, 350)
-            val BIACKISS = listOf(300, 500)
-            val KOUKU_SATON = listOf(300, 450, 750)
-            val ABRELSHUD = listOf(500, 500, 500, 800)
-            val ILLIAKAN = listOf(425, 775, 1150)
-            val KAMEN = listOf(800, 1000, 1400, 0)
-
-            val KAYANGEL = listOf(375, 550, 725)
-            val IVORY_TOWER = listOf(600, 800, 1200)
-
-            val ECHIDNA = listOf(1150, 2500)
             val EGIR = listOf(2375, 5375)
         }
     }
