@@ -14,12 +14,10 @@ enum class AbyssDungeon(
         seeMoreGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.KAYANGEL,
             Raid.Difficulty.HARD to Gold.SeeMore.Hard.KAYANGEL,
-            Raid.Difficulty.SOLO to Gold.SeeMore.Solo.KAYANGEL
         ),
         clearGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.Clear.Normal.KAYANGEL,
             Raid.Difficulty.HARD to Gold.Clear.Hard.KAYANGEL,
-            Raid.Difficulty.SOLO to Gold.Clear.Solo.KAYANGEL
         )
     ),
     IVORY_TOWER(
@@ -27,12 +25,10 @@ enum class AbyssDungeon(
         seeMoreGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.IVORY_TOWER,
             Raid.Difficulty.HARD to Gold.SeeMore.Hard.IVORY_TOWER,
-            Raid.Difficulty.SOLO to Gold.SeeMore.Solo.IVORY_TOWER
         ),
         clearGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.Clear.Normal.IVORY_TOWER,
             Raid.Difficulty.HARD to Gold.Clear.Hard.IVORY_TOWER,
-            Raid.Difficulty.SOLO to Gold.Clear.Solo.IVORY_TOWER
         )
     );
 
@@ -59,10 +55,8 @@ class AbyssDungeonModel(character: Character?) {
 
 class Kayangel(character: Character?) {
     val name = AbyssDungeon.KAYANGEL.boss
-    private val seeMoreGold = AbyssDungeon.KAYANGEL.getBossInfo(Raid.Difficulty.NORMAL).first + AbyssDungeon.KAYANGEL.getBossInfo(Raid.Difficulty.HARD).first + AbyssDungeon.KAYANGEL.getBossInfo(
-        Raid.Difficulty.SOLO).first
-    private val clearGold = AbyssDungeon.KAYANGEL.getBossInfo(Raid.Difficulty.NORMAL).second + AbyssDungeon.KAYANGEL.getBossInfo(Raid.Difficulty.HARD).second + AbyssDungeon.KAYANGEL.getBossInfo(
-        Raid.Difficulty.SOLO).second
+    private val seeMoreGold = AbyssDungeon.KAYANGEL.getBossInfo(Raid.Difficulty.NORMAL).first + AbyssDungeon.KAYANGEL.getBossInfo(Raid.Difficulty.HARD).first
+    private val clearGold = AbyssDungeon.KAYANGEL.getBossInfo(Raid.Difficulty.NORMAL).second + AbyssDungeon.KAYANGEL.getBossInfo(Raid.Difficulty.HARD).second
 
     var isChecked = character?.checkList?.abyssDungeon?.get(0)?.isCheck?:false
 
@@ -77,13 +71,10 @@ class Kayangel(character: Character?) {
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[3],
-        seeMoreGoldS = seeMoreGold[6],
         clearGoldN = clearGold[0],
         clearGoldH = clearGold[3],
-        clearGoldS = clearGold[6]
     )
 
     private val getTwoPhase = character?.checkList?.abyssDungeon?.get(0)?.phases?.get(1)
@@ -97,13 +88,10 @@ class Kayangel(character: Character?) {
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[4],
-        seeMoreGoldS = seeMoreGold[7],
         clearGoldN = clearGold[1],
         clearGoldH = clearGold[4],
-        clearGoldS = clearGold[7]
     )
 
     private val getThreePhase = character?.checkList?.abyssDungeon?.get(0)?.phases?.get(2)
@@ -116,13 +104,10 @@ class Kayangel(character: Character?) {
         isClearCheck = threePhaseIsClear,
         moreCheck = threePhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[2],
         seeMoreGoldH = seeMoreGold[5],
-        seeMoreGoldS = seeMoreGold[8],
         clearGoldN = clearGold[2],
         clearGoldH = clearGold[5],
-        clearGoldS = clearGold[8]
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
@@ -140,11 +125,8 @@ class Kayangel(character: Character?) {
 
 class IvoryTower(character: Character?) {
     val name = AbyssDungeon.IVORY_TOWER.boss
-    private val seeMoreGold = AbyssDungeon.IVORY_TOWER.getBossInfo(Raid.Difficulty.NORMAL).first + AbyssDungeon.IVORY_TOWER.getBossInfo(Raid.Difficulty.HARD).first + AbyssDungeon.IVORY_TOWER.getBossInfo(
-        Raid.Difficulty.SOLO).first
-    private val clearGold = AbyssDungeon.IVORY_TOWER.getBossInfo(Raid.Difficulty.NORMAL).second + AbyssDungeon.IVORY_TOWER.getBossInfo(Raid.Difficulty.HARD).second + AbyssDungeon.IVORY_TOWER.getBossInfo(
-        Raid.Difficulty.SOLO).second
-
+    private val seeMoreGold = AbyssDungeon.IVORY_TOWER.getBossInfo(Raid.Difficulty.NORMAL).first + AbyssDungeon.IVORY_TOWER.getBossInfo(Raid.Difficulty.HARD).first
+    private val clearGold = AbyssDungeon.IVORY_TOWER.getBossInfo(Raid.Difficulty.NORMAL).second + AbyssDungeon.IVORY_TOWER.getBossInfo(Raid.Difficulty.HARD).second
     var isChecked = character?.checkList?.abyssDungeon?.get(1)?.isCheck?:false
 
     private val getOnePhase = character?.checkList?.abyssDungeon?.get(1)?.phases?.get(0)
@@ -158,13 +140,10 @@ class IvoryTower(character: Character?) {
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[3],
-        seeMoreGoldS = seeMoreGold[6],
         clearGoldN = clearGold[0],
         clearGoldH = clearGold[3],
-        clearGoldS = clearGold[6]
     )
 
     private val getTwoPhase = character?.checkList?.abyssDungeon?.get(1)?.phases?.get(1)
@@ -178,13 +157,10 @@ class IvoryTower(character: Character?) {
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[4],
-        seeMoreGoldS = seeMoreGold[7],
         clearGoldN = clearGold[1],
         clearGoldH = clearGold[4],
-        clearGoldS = clearGold[7]
     )
 
     private val getThreePhase = character?.checkList?.abyssDungeon?.get(1)?.phases?.get(2)
@@ -197,13 +173,10 @@ class IvoryTower(character: Character?) {
         isClearCheck = threePhaseIsClear,
         moreCheck = threePhaseMCheck,
         isChecked = isChecked,
-        noSolo = false,
         seeMoreGoldN = seeMoreGold[2],
         seeMoreGoldH = seeMoreGold[5],
-        seeMoreGoldS = seeMoreGold[8],
         clearGoldN = clearGold[2],
         clearGoldH = clearGold[5],
-        clearGoldS = clearGold[8]
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold
