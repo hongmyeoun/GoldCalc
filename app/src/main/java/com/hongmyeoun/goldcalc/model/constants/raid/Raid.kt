@@ -28,6 +28,8 @@ class Raid {
         const val EGIR = "1막 : 에기르"
         const val ABRELSHUD_2 = "2막 : 아브렐슈드"
         const val MORDUM = "3막 : 모르둠"
+        const val ARMOCHE = "4막 : 아르모체"
+        const val KAZEROTH_END = "종막 : 최후의 날"
 
         const val EPIC = "에픽"
         const val EPIC_RAID = "에픽 레이드"
