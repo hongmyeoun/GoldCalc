@@ -16,7 +16,7 @@ class Raid {
         const val ABRELSHUD_SHORT = "아브"
         const val ILLIAKAN_SHORT = "일리"
 
-        const val ABYSS_DUNGEON = "어비스 던전"
+        const val ABYSS_DUNGEON = "어비스"
         const val KAYANGEL = "카양겔"
         const val IVORY_TOWER = "상아탑"
 
