@@ -58,6 +58,8 @@ class HomeContentVM @Inject constructor(
     private val _egirTG = MutableStateFlow(0)
     private val _ablreshudTG2 = MutableStateFlow(0)
     private val _mordumTG = MutableStateFlow(0)
+    private val _armocheTG = MutableStateFlow(0)
+    private val _kazerothTG = MutableStateFlow(0)
 
     private val _behemothTG = MutableStateFlow(0)
     private val _eventTG = MutableStateFlow(0)
@@ -80,7 +82,7 @@ class HomeContentVM @Inject constructor(
     private fun calcTotalGold() {
         val commandTG = _kamenTG.value + _illiakanTG.value + _abrelshudTG.value + _koukuSatonTG.value + _biackissTG.value + _valtanTG.value
         val abyssDungeonTG = _ivoryTowerTG.value + _kayangelTG.value
-        val kazerothTG = _mordumTG.value + _ablreshudTG2.value + _egirTG.value + _echidnaTG.value
+        val kazerothTG = _kazerothTG.value + _armocheTG.value + _mordumTG.value + _ablreshudTG2.value + _egirTG.value + _echidnaTG.value
         val epicTG = _behemothTG.value
         val eventTG = _eventTG.value
         _totalGold.value = commandTG + abyssDungeonTG + kazerothTG + epicTG + eventTG
@@ -114,6 +116,27 @@ class HomeContentVM @Inject constructor(
 
                         val update = it.checkList.kazeroth.toMutableList()
                         update.add(mordum)
+
+                        val updateCheckList = it.checkList.copy(kazeroth = update)
+                        val updateChar = it.copy(checkList = updateCheckList)
+
+                        characterRepository.update(updateChar)
+                        _character.value = updateChar
+                        getModel(updateChar)
+                    } else if (it.checkList.kazeroth.size < 5) {
+                        val armoche = RaidList(
+                            name = Raid.Name.ARMOCHE,
+                            phases = listOf(Phase(), Phase())
+                        )
+
+                        val kazeroth = RaidList(
+                            name = Raid.Name.KAZEROTH_END,
+                            phases = listOf(Phase(), Phase())
+                        )
+
+                        val update = it.checkList.kazeroth.toMutableList()
+                        update.add(armoche)
+                        update.add(kazeroth)
 
                         val updateCheckList = it.checkList.copy(kazeroth = update)
                         val updateChar = it.copy(checkList = updateCheckList)
@@ -173,6 +196,8 @@ class HomeContentVM @Inject constructor(
         _egirTG.value = character.raidPhaseInfo.egirTotalGold
         _ablreshudTG2.value = character.raidPhaseInfo.abrel2TotalGold
         _mordumTG.value = character.raidPhaseInfo.mordumTotalGold
+        _armocheTG.value = character.raidPhaseInfo.armocheTotalGold
+        _kazerothTG.value = character.raidPhaseInfo.kazerothTotalGold
         _eventTG.value = character.raidPhaseInfo.eventTotalGold
 
         _maxGold.value = character.weeklyGold
@@ -421,6 +446,38 @@ class HomeContentVM @Inject constructor(
         }
     }
 
+    fun armocheGoldCalc(nowPhase: Int) {
+        _armocheTG.value = when (nowPhase) {
+            1 -> { _kzModel.value.armoche.onePhase.totalGold }
+            2 -> { _kzModel.value.armoche.totalGold }
+            else -> { 0 }
+        }
+
+        calcTotalGold()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val update = _character.value.copy(earnGold = _totalGold.value,raidPhaseInfo = _character.value.raidPhaseInfo.copy(armochePhase = nowPhase, armocheTotalGold = _armocheTG.value))
+            characterRepository.update(update)
+        }
+    }
+
+
+    fun kazerothGoldCalc(nowPhase: Int) {
+        _kazerothTG.value = when (nowPhase) {
+            1 -> { _kzModel.value.kazeroth.onePhase.totalGold }
+            2 -> { _kzModel.value.kazeroth.totalGold }
+            else -> { 0 }
+        }
+
+        calcTotalGold()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val update = _character.value.copy(earnGold = _totalGold.value,raidPhaseInfo = _character.value.raidPhaseInfo.copy(kazerothPhase = nowPhase, kazerothTotalGold = _kazerothTG.value))
+            characterRepository.update(update)
+        }
+    }
+
+
     fun eventGoldCalc(nowPhase: Int) {
         _eventTG.value = when(nowPhase) {
             1 -> { _eventModel.value.event.onePhase.totalGold }
@@ -463,6 +520,8 @@ class GoldContentStateVM(initPhase: Int) : ViewModel() {
             Raid.Name.EGIR -> R.drawable.kazeroth_egir
             Raid.Name.ABRELSHUD_2 -> R.drawable.kazeroth_abrelshud
             Raid.Name.MORDUM -> R.drawable.kazeroth_mordum
+            Raid.Name.ARMOCHE -> R.drawable.kazeroth_armoche
+            Raid.Name.KAZEROTH_END -> R.drawable.kazeroth_kazeroth
             Raid.Name.EVENT_RAID -> R.drawable.event_kamen
             else -> R.drawable.kazeroth_echidna
         }

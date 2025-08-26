@@ -14,9 +14,7 @@ import androidx.compose.ui.unit.sp
 import com.example.bottombar.AnimatedBottomBar
 import com.example.bottombar.model.IndicatorDirection
 import com.example.bottombar.model.IndicatorStyle
-import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayBG
-import com.hongmyeoun.goldcalc.view.profile.normalTextStyle
 import com.hongmyeoun.goldcalc.viewModel.homework.HomeworkVM
 
 @Composable
@@ -53,16 +51,10 @@ private fun TopBarBox(
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
-        if (title == Raid.Name.ABYSS_DUNGEON) {
-            Text(
-                text = title,
-                style = normalTextStyle(fontSize = 12.sp)
-            )
-        } else {
-            Text(
-                text = title,
-                color = Color.White
-            )
-        }
+        Text(
+            text = title,
+            color = Color.White,
+            fontSize = 12.sp
+        )
     }
 }

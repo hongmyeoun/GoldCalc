@@ -48,6 +48,20 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
         label = Labels.Animation.ROTATION
     )
 
+    var armocheRotated by remember { mutableStateOf(false) }
+    val armocheRotaR by animateFloatAsState(
+        targetValue = if (armocheRotated) 180f else 0f,
+        animationSpec = tween(500),
+        label = Labels.Animation.ROTATION
+    )
+
+    var kazerothRotated by remember { mutableStateOf(false) }
+    val kazerothRotaR by animateFloatAsState(
+        targetValue = if (kazerothRotated) 180f else 0f,
+        animationSpec = tween(500),
+        label = Labels.Animation.ROTATION
+    )
+
     RaidCheckLists(maxItem = 2) { modifier ->
         RaidCheckBox(
             name = Raid.Name.ECHIDNA,
@@ -75,6 +89,20 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
             modifier = modifier,
             checked = viewModel.mordumCheck,
             onCheckedChange = { viewModel.onKamenCheck() }
+        )
+
+        RaidCheckBox(
+            name = Raid.Name.ARMOCHE,
+            modifier = modifier,
+            checked = viewModel.armocheCheck,
+            onCheckedChange = { viewModel.onArmocheCheck() }
+        )
+
+        RaidCheckBox(
+            name = Raid.Name.KAZEROTH_END,
+            modifier = modifier,
+            checked = viewModel.kazerothCheck,
+            onCheckedChange = { viewModel.onKazerothCheck() }
         )
     }
 
@@ -302,5 +330,110 @@ fun Kazeroth(viewModel: KazerothRaidVM) {
             }
         )
     }
+
+    if (viewModel.armocheCheck) {
+        RaidCard(
+            bossImg = R.drawable.kazeroth_armoche,
+            isRotated = armocheRotated,
+            rotaR = armocheRotaR,
+            onClick = { armocheRotated = !armocheRotated },
+            phaseCard = {
+                TwoPhase(
+                    rotaR = armocheRotaR,
+
+                    name = viewModel.armoche.name,
+                    raidBossImg = R.drawable.logo_armoche,
+                    totalGold = viewModel.armoche.totalGold,
+
+                    phaseOneLevel = viewModel.armoche.onePhase.level,
+                    phaseOneGold = viewModel.armoche.onePhase.totalGold,
+                    phaseOneSMC = viewModel.armoche.onePhase.seeMoreCheck,
+                    phaseOneCC = viewModel.armoche.onePhase.clearCheck,
+                    onOnePhaseLevelClicked = {
+                        viewModel.armoche.onePhase.onLevelClicked()
+                        viewModel.sumGold()
+                    },
+                    onOnePhaseClearCheckBoxChecked = {
+                        viewModel.armoche.onePhase.onClearCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                    onOnePhaseSeeMoreCheckBoxChecked = {
+                        viewModel.armoche.onePhase.onSeeMoreCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+
+                    phaseTwoLevel = viewModel.armoche.twoPhase.level,
+                    phaseTwoGold = viewModel.armoche.twoPhase.totalGold,
+                    phaseTwoSMC = viewModel.armoche.twoPhase.seeMoreCheck,
+                    phaseTwoCC = viewModel.armoche.twoPhase.clearCheck,
+                    onTwoPhaseLevelClicked = {
+                        viewModel.armoche.twoPhase.onLevelClicked()
+                        viewModel.sumGold()
+                    },
+                    onTwoPhaseClearCheckBoxChecked = {
+                        viewModel.armoche.twoPhase.onClearCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                    onTwoPhaseSeeMoreCheckBoxChecked = {
+                        viewModel.armoche.twoPhase.onSeeMoreCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                )
+            }
+        )
+    }
+
+    if (viewModel.kazerothCheck) {
+        RaidCard(
+            bossImg = R.drawable.kazeroth_kazeroth,
+            isRotated = kazerothRotated,
+            rotaR = kazerothRotaR,
+            onClick = { kazerothRotated = !kazerothRotated },
+            phaseCard = {
+                TwoPhase(
+                    rotaR = kazerothRotaR,
+
+                    name = viewModel.kazeroth.name,
+                    raidBossImg = R.drawable.logo_kazeroth,
+                    totalGold = viewModel.kazeroth.totalGold,
+
+                    phaseOneLevel = viewModel.kazeroth.onePhase.level,
+                    phaseOneGold = viewModel.kazeroth.onePhase.totalGold,
+                    phaseOneSMC = viewModel.kazeroth.onePhase.seeMoreCheck,
+                    phaseOneCC = viewModel.kazeroth.onePhase.clearCheck,
+                    onOnePhaseLevelClicked = {
+                        viewModel.kazeroth.onePhase.onLevelClicked()
+                        viewModel.sumGold()
+                    },
+                    onOnePhaseClearCheckBoxChecked = {
+                        viewModel.kazeroth.onePhase.onClearCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                    onOnePhaseSeeMoreCheckBoxChecked = {
+                        viewModel.kazeroth.onePhase.onSeeMoreCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+
+                    phaseTwoLevel = viewModel.kazeroth.twoPhase.level,
+                    phaseTwoGold = viewModel.kazeroth.twoPhase.totalGold,
+                    phaseTwoSMC = viewModel.kazeroth.twoPhase.seeMoreCheck,
+                    phaseTwoCC = viewModel.kazeroth.twoPhase.clearCheck,
+                    onTwoPhaseLevelClicked = {
+                        viewModel.kazeroth.twoPhase.onLevelClicked()
+                        viewModel.sumGold()
+                    },
+                    onTwoPhaseClearCheckBoxChecked = {
+                        viewModel.kazeroth.twoPhase.onClearCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                    onTwoPhaseSeeMoreCheckBoxChecked = {
+                        viewModel.kazeroth.twoPhase.onSeeMoreCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                )
+            }
+        )
+    }
+
 
 }

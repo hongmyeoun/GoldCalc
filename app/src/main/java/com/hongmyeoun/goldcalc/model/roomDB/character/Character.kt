@@ -78,6 +78,12 @@ data class RaidPhaseInfo(
     @ColumnInfo("mordumPhase") val mordumPhase: Int = 0,
     @ColumnInfo("mordumTotalGold") val mordumTotalGold: Int = 0,
 
+    @ColumnInfo("armochePhase") val armochePhase: Int = 0,
+    @ColumnInfo("armocheTotalGold") val armocheTotalGold: Int = 0,
+
+    @ColumnInfo("kazerothPhase") val kazerothPhase: Int = 0,
+    @ColumnInfo("kazerothTotalGold") val kazerothTotalGold: Int = 0,
+
     @ColumnInfo("eventPhase") val eventPhase: Int = 0,
     @ColumnInfo("eventTotalGold") val eventTotalGold: Int = 0
 )
@@ -136,6 +142,14 @@ data class CheckList(
         RaidList(
             name = Raid.Name.MORDUM,
             phases = listOf(Phase(), Phase(), Phase())
+        ),
+        RaidList(
+            name = Raid.Name.ARMOCHE,
+            phases = listOf(Phase(), Phase())
+        ),
+        RaidList(
+            name = Raid.Name.KAZEROTH_END,
+            phases = listOf(Phase(), Phase())
         )
     ),
     @ColumnInfo("Epic") val epic: List<RaidList> = listOf(

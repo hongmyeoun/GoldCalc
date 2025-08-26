@@ -82,6 +82,32 @@ fun HomeworkProgress(
                 ) { viewModel.eventGoldCalc(it) }
             }
         }
+        if (character.checkList.kazeroth[5].phases[0].isClear) {
+            item {
+                val kazerothVM = remember { GoldContentStateVM(character.raidPhaseInfo.kazerothPhase) }
+
+                ProgressState(
+                    enabled = viewModel.enabled,
+                    phase = viewModel.phaseCalc(character.checkList.kazeroth[5].phases),
+                    raidName = Raid.Name.KAZEROTH_END,
+                    viewModel = kazerothVM,
+                    isListView = isListView
+                ) { viewModel.kazerothGoldCalc(it) }
+            }
+        }
+        if (character.checkList.kazeroth[4].phases[0].isClear) {
+            item {
+                val armocheVM = remember { GoldContentStateVM(character.raidPhaseInfo.armochePhase) }
+
+                ProgressState(
+                    enabled = viewModel.enabled,
+                    phase = viewModel.phaseCalc(character.checkList.kazeroth[4].phases),
+                    raidName = Raid.Name.ARMOCHE,
+                    viewModel = armocheVM,
+                    isListView = isListView
+                ) { viewModel.armocheGoldCalc(it) }
+            }
+        }
         if (character.checkList.kazeroth[3].phases[0].isClear) {
             item {
                 val mordumVM = remember { GoldContentStateVM(character.raidPhaseInfo.mordumPhase) }

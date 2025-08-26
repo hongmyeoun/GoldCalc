@@ -319,7 +319,7 @@ private fun Script(kzVM: KazerothRaidVM) {
         }
 
         Row(
-            modifier = Modifier.padding(if (kzVM.abrelCheck) 16.dp else 0.dp)
+            modifier = Modifier.padding(if (kzVM.abrelCheck || kzVM.mordumCheck) 16.dp else 0.dp)
         ) {
             PhaseInfo(
                 isCheck = kzVM.abrelCheck,
@@ -339,6 +339,30 @@ private fun Script(kzVM: KazerothRaidVM) {
                     Text(text = "${Homework.PHASE_ONE} ${kzVM.mordum.onePhase.level} : ${kzVM.mordum.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
                     Text(text = "${Homework.PHASE_TWO} ${kzVM.mordum.twoPhase.level} : ${kzVM.mordum.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
                     Text(text = "${Homework.PHASE_TWO} ${kzVM.mordum.threePhase.level} : ${kzVM.mordum.threePhase.totalGold.formatWithCommas()} G", color = Color.White)
+                }
+            )
+        }
+
+        Row(
+            modifier = Modifier.padding(if (kzVM.armocheCheck || kzVM.kazerothCheck) 16.dp else 0.dp)
+        ) {
+            PhaseInfo(
+                isCheck = kzVM.armocheCheck,
+                modifier = Modifier.weight(1f),
+                raidName = Raid.Name.ARMOCHE,
+                phaseInfo = {
+                    Text(text = "${Homework.PHASE_ONE} ${kzVM.armoche.onePhase.level} : ${kzVM.armoche.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_TWO} ${kzVM.armoche.twoPhase.level} : ${kzVM.armoche.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
+                }
+            )
+
+            PhaseInfo(
+                isCheck = kzVM.kazerothCheck,
+                modifier = Modifier.weight(1f),
+                raidName = Raid.Name.KAZEROTH_END,
+                phaseInfo =  {
+                    Text(text = "${Homework.PHASE_ONE} ${kzVM.kazeroth.onePhase.level} : ${kzVM.kazeroth.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_TWO} ${kzVM.kazeroth.twoPhase.level} : ${kzVM.kazeroth.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
                 }
             )
         }
