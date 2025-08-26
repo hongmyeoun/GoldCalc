@@ -447,6 +447,40 @@ class HomeworkVM @Inject constructor(
                         ),
                         isCheck = kazerothRaid.mordumCheck
                     ),
+                    originalCheckList.kazeroth[4].copy( // 4막 폭풍의 성체
+                        phases = listOf(
+                            originalCheckList.kazeroth[4].phases[0].copy(
+                                // 1페
+                                difficulty = kazerothRaid.armoche.onePhase.level,
+                                isClear =  if (kazerothRaid.armocheCheck) kazerothRaid.armoche.onePhase.clearCheck else false,
+                                mCheck = if (kazerothRaid.armocheCheck) kazerothRaid.armoche.onePhase.seeMoreCheck else false,
+                            ),
+                            originalCheckList.kazeroth[4].phases[1].copy(
+                                // 2페
+                                difficulty = kazerothRaid.armoche.twoPhase.level,
+                                isClear =  if (kazerothRaid.armocheCheck) kazerothRaid.armoche.twoPhase.clearCheck else false,
+                                mCheck = if (kazerothRaid.armocheCheck) kazerothRaid.armoche.twoPhase.seeMoreCheck else false,
+                            ),
+                        ),
+                        isCheck = kazerothRaid.armocheCheck
+                    ),
+                    originalCheckList.kazeroth[5].copy( // 종막 최후의 날
+                        phases = listOf(
+                            originalCheckList.kazeroth[5].phases[0].copy(
+                                // 1페
+                                difficulty = kazerothRaid.kazeroth.onePhase.level,
+                                isClear =  if (kazerothRaid.kazerothCheck) kazerothRaid.kazeroth.onePhase.clearCheck else false,
+                                mCheck = if (kazerothRaid.kazerothCheck) kazerothRaid.kazeroth.onePhase.seeMoreCheck else false,
+                            ),
+                            originalCheckList.kazeroth[5].phases[1].copy(
+                                // 2페
+                                difficulty = kazerothRaid.kazeroth.twoPhase.level,
+                                isClear =  if (kazerothRaid.kazerothCheck) kazerothRaid.kazeroth.twoPhase.clearCheck else false,
+                                mCheck = if (kazerothRaid.kazerothCheck) kazerothRaid.kazeroth.twoPhase.seeMoreCheck else false,
+                            ),
+                        ),
+                        isCheck = kazerothRaid.kazerothCheck
+                    ),
                 ),
                 epic = listOf(
                     originalCheckList.epic[0].copy( // 베히모스
@@ -485,6 +519,10 @@ class HomeworkVM @Inject constructor(
             val updatedRaidInfo = originalRaidInfo?.copy(
                 eventPhase = if (!eventRaid.eventCheck) 0 else originalRaidInfo.eventPhase,
                 eventTotalGold = if (!eventRaid.eventCheck) 0 else originalRaidInfo.eventTotalGold,
+                kazerothPhase = if (!kazerothRaid.kazerothCheck) 0 else originalRaidInfo.kazerothPhase,
+                kazerothTotalGold = if (!kazerothRaid.kazerothCheck) 0 else originalRaidInfo.kazerothTotalGold,
+                armochePhase = if (!kazerothRaid.armocheCheck) 0 else originalRaidInfo.armochePhase,
+                armocheTotalGold = if (!kazerothRaid.armocheCheck) 0 else originalRaidInfo.armocheTotalGold,
                 mordumPhase = if (!kazerothRaid.mordumCheck) 0 else originalRaidInfo.mordumPhase,
                 mordumTotalGold = if (!kazerothRaid.mordumCheck) 0 else originalRaidInfo.mordumTotalGold,
                 abrel2Phase = if (!kazerothRaid.abrelCheck) 0 else originalRaidInfo.abrel2Phase,
