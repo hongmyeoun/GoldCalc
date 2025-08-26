@@ -17,6 +17,8 @@ class Gold {
             val EGIR = listOf(1030, 2400)
             val ABRELSHUD_2 = listOf(3240, 4830)
             val MORDUM = listOf(2400, 3200, 4200)
+            val ARMOCHE = listOf(4000, 6560)
+            val KAZEROTH = listOf(4480, 8320)
 
             val BEHEMOTH = listOf(920, 1960)
 
@@ -38,6 +40,8 @@ class Gold {
             val EGIR = listOf(3640, 5880)
             val ABRELSHUD_2 = listOf(4500, 7200)
             val MORDUM = listOf(2700, 4100, 5800)
+            val ARMOCHE = listOf(4800, 8640)
+            val KAZEROTH = listOf(5440, 11200)
 
             val BEHEMOTH = listOf(920, 1960)
 
