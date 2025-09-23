@@ -1,7 +1,9 @@
 package com.hongmyeoun.goldcalc.viewModel.profile
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharArkGrid
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharArkPassive
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharArkPassiveNode
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharCard
@@ -11,6 +13,7 @@ import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharEquipment
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharGem
 import com.hongmyeoun.goldcalc.model.lostArkApi.APIRemote.getCharSkill
 import com.hongmyeoun.goldcalc.model.lostArkApi.SearchedCharacterDetail
+import com.hongmyeoun.goldcalc.model.profile.arkGrid.ArkGrid
 import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassive
 import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassiveNode
 import com.hongmyeoun.goldcalc.model.profile.card.CardEffects
@@ -107,6 +110,9 @@ class ProfileVM @Inject constructor(
     private val _arkPassiveNode = MutableStateFlow<List<ArkPassiveNode>?>(null)
     val arkPassiveNode: StateFlow<List<ArkPassiveNode>?> = _arkPassiveNode
 
+    private val _arkGrid = MutableStateFlow<ArkGrid?>(null)
+    val arkGrid: StateFlow<ArkGrid?> = _arkGrid
+
     // API에서 character 정보들을 받아옴
     fun getCharDetails(charName: String) {
         viewModelScope.launch {
@@ -121,6 +127,10 @@ class ProfileVM @Inject constructor(
             _skills.value = getCharSkill(charName)
             _arkPassive.value = getCharArkPassive(charName)
             _arkPassiveNode.value = getCharArkPassiveNode(charName)
+            var responsetest = getCharArkGrid(charName)
+            Log.d("아크그리드 날것", "${responsetest}")
+//            _arkGrid.value = getCharArkGrid(charName)
+//            Log.d("아크그리드", "${_arkGrid.value}")
         }
     }
 }
