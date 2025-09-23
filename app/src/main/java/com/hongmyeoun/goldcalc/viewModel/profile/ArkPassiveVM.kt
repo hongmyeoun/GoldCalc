@@ -14,6 +14,13 @@ class ArkPassiveVM : ViewModel() {
     private val _showDialog = MutableStateFlow(false)
     val showDialog: StateFlow<Boolean> = _showDialog
 
+    private val _isDetail = MutableStateFlow(false)
+    val isDetail: StateFlow<Boolean> = _isDetail
+
+    fun onDetailClicked() {
+        _isDetail.value = !_isDetail.value
+    }
+
     private val _arkPassiveNodeName = MutableStateFlow("")
 
     fun onDismissRequest() {

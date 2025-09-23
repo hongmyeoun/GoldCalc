@@ -11,7 +11,8 @@ data class ArkPassive(
 data class ArkPassivePoint(
     @SerializedName("Name") val name: String,
     @SerializedName("Value") val value: Int,
-    @SerializedName("Tooltip") val tooltip: String
+    @SerializedName("Tooltip") val tooltip: String,
+    @SerializedName("Description") val description: String
 )
 
 data class ArkPassiveSkillEffects(
