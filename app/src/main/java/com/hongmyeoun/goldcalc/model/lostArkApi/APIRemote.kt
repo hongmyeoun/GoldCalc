@@ -6,6 +6,8 @@ import com.hongmyeoun.goldcalc.BuildConfig
 import com.hongmyeoun.goldcalc.model.constants.ErrorMessage
 import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
 import com.hongmyeoun.goldcalc.model.profile.arkGrid.ArkGrid
+import com.hongmyeoun.goldcalc.model.profile.arkGrid.ArkGridCoreAndGemsTooltips
+import com.hongmyeoun.goldcalc.model.profile.arkGrid.ArkGridDetail
 import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassive
 import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassiveDetail
 import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassiveNode
@@ -249,6 +251,25 @@ object APIRemote {
                     val arkGrid = response.body()
                     arkGrid?.let {
                         return@withContext it
+                    }
+                } else {
+                    null
+                }
+            } catch (e: IOException) {
+                null
+            }
+        }
+    }
+
+    suspend fun getCharArkGridDetail(characterName: String): List<ArkGridCoreAndGemsTooltips>? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = lostArkApiService.getCharacterArkGrid(characterName).execute()
+                if (response.isSuccessful) {
+                    val arkGrid = response.body()
+                    arkGrid?.let {
+                        val arkgridDetail = ArkGridDetail(it)
+                        return@withContext arkgridDetail.getArkGridDetail()
                     }
                 } else {
                     null
