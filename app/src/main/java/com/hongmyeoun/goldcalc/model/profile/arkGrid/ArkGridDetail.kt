@@ -110,7 +110,7 @@ class ArkGridDetail(private val arkGrid: ArkGrid) {
         val tooltips = JsonParser.parseString(gem.tooltip).asJsonObject
 
         val option = tooltips
-            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_006)
+            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_005)
             .getAsJsonObject(TooltipStrings.MemberName.VALUE)
             .get(TooltipStrings.MemberName.ELEMENT_001)
             .asString

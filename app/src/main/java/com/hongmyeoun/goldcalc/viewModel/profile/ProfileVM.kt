@@ -133,7 +133,6 @@ class ProfileVM @Inject constructor(
             _arkPassiveNode.value = getCharArkPassiveNode(charName)
             _arkGrid.value = getCharArkGrid(charName)
             _arkGridDetail.value = getCharArkGridDetail(charName)
-//            Log.d("아크그리드", "${_arkGrid.value}")
         }
     }
 }

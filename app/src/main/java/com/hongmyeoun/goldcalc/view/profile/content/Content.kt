@@ -32,6 +32,7 @@ import com.hongmyeoun.goldcalc.ui.theme.ImageBG
 import com.hongmyeoun.goldcalc.view.common.LoadingScreen
 import com.hongmyeoun.goldcalc.view.common.profileTemplate.ProfileTemplate
 import com.hongmyeoun.goldcalc.view.profile.content.arkPassive.ArkPassiveNode
+import com.hongmyeoun.goldcalc.view.profile.content.arkgrid.ArkGrid
 import com.hongmyeoun.goldcalc.view.profile.content.card.Card
 import com.hongmyeoun.goldcalc.view.profile.content.engraving.Engraving
 import com.hongmyeoun.goldcalc.view.profile.content.equipments.Equipments
@@ -138,6 +139,7 @@ fun ProfileDetails(
             profile = profile
         )
         ArkPassiveNode(viewModel = viewModel)
+        ArkGrid(viewModel = viewModel)
     }
 }
 
