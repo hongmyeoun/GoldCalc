@@ -1,11 +1,13 @@
 package com.hongmyeoun.goldcalc.view.profile.content.arkgrid
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,15 +16,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hongmyeoun.goldcalc.model.profile.arkGrid.ArkGrid
 import com.hongmyeoun.goldcalc.model.profile.arkGrid.ArkGridCoreAndGemsTooltips
+import com.hongmyeoun.goldcalc.model.profile.arkGrid.ArkGridEffects
+import com.hongmyeoun.goldcalc.model.profile.arkGrid.ArkGridSlot
 import com.hongmyeoun.goldcalc.ui.theme.ArkPassiveEnlightenment
 import com.hongmyeoun.goldcalc.ui.theme.LightGrayTransBG
+import com.hongmyeoun.goldcalc.ui.theme.RareTextColor
 import com.hongmyeoun.goldcalc.view.common.noRippleClickable
 import com.hongmyeoun.goldcalc.view.profile.Title
 import com.hongmyeoun.goldcalc.viewModel.profile.ArkGridVM
@@ -61,25 +66,48 @@ fun ArkGridView(
         )
         Spacer(modifier = Modifier.height(8.dp))
 
-        arkGrid.slots.forEach {
-            CoreSimple(
-                icon = it.icon,
-                name = it.name,
-                grade = it.grade,
-                point = it.point,
-                viewModel = viewModel
-            )
-        }
-
-        arkGrid.effects.forEach {
-            Row {
-                Text(
-                    text = it.name
-                )
-                Text(
-                    text = "${it.level}"
+        Column(
+            modifier = Modifier.padding(8.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            arkGrid.slots.forEach {
+                CoreSimple(
+                    core = it,
+                    viewModel = viewModel
                 )
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
+            arkGrid.effects.forEach {
+                GemEffects(gemEffect = it)
+            }
+        }
+    }
+}
+
+@Composable
+private fun GemEffects(gemEffect: ArkGridEffects) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Row(
+            modifier = Modifier.weight(1f),
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Spacer(modifier = Modifier.width(34.dp))
+            Text(
+                text = gemEffect.name,
+                color = Color.White
+            )
+        }
+        Row(
+            horizontalArrangement = Arrangement.End
+        ) {
+            Text(
+                text = "Lv.${gemEffect.level}",
+                color = RareTextColor
+            )
         }
     }
 }
@@ -87,36 +115,35 @@ fun ArkGridView(
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun CoreSimple(
-  icon: String,
-  name: String,
-  grade: String,
-  point: Int,
-  viewModel: ArkGridVM
+    core: ArkGridSlot,
+    viewModel: ArkGridVM
 ) {
-    val coreNameColor = viewModel.getGradeBG(grade)
+    val coreNameColor = viewModel.getGradeBG(core.grade)
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        GlideImage(
-            model = icon,
-            contentDescription = ""
-        )
-        Text(
-            text = name,
-            color = coreNameColor
-        )
-        Text(
-            text = "$point",
-            color = ArkPassiveEnlightenment
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ArkGridViewPreview() {
-    Column {
-        Text(text = "test")
+        Row(
+            modifier = Modifier.weight(1f),
+            horizontalArrangement = Arrangement.Start
+        ) {
+            GlideImage(
+                model = core.icon,
+                contentDescription = "코어 이미지"
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = core.name,
+                color = coreNameColor
+            )
+        }
+        Row(
+            horizontalArrangement = Arrangement.End
+        ) {
+            Text(
+                text = "${core.point}P",
+                color = ArkPassiveEnlightenment
+            )
+        }
     }
 }
