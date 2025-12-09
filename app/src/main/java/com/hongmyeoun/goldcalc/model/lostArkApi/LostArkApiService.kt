@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.model.lostArkApi
 
 import com.hongmyeoun.goldcalc.model.constants.NetworkConfig
+import com.hongmyeoun.goldcalc.model.profile.arkGrid.ArkGrid
 import com.hongmyeoun.goldcalc.model.profile.arkpassive.ArkPassive
 import com.hongmyeoun.goldcalc.model.profile.card.CardsWithEffects
 import com.hongmyeoun.goldcalc.model.profile.engravings.SkillEngravingsAndEffects
@@ -51,4 +52,9 @@ interface LostArkApiService {
     fun getCharacterArkPassive(
         @Path(NetworkConfig.SEARCH_PATH) characterName: String
     ): Call<ArkPassive>
+
+    @GET(NetworkConfig.ARK_GRID)
+    fun getCharacterArkGrid(
+        @Path(NetworkConfig.SEARCH_PATH) characterName: String
+    ): Call<ArkGrid>
 }

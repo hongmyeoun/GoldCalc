@@ -16,6 +16,7 @@ class NetworkConfig {
         const val COMBAT_SKILLS = ARMORIES_ENTER_POINT + "combat-skills"
         const val ENGRAVINGS = ARMORIES_ENTER_POINT + "engravings"
         const val ARK_PASSIVE = ARMORIES_ENTER_POINT + "arkpassive"
+        const val ARK_GRID = ARMORIES_ENTER_POINT + "arkgrid"
 
         const val CHARACTER_THUMB = "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/"
 

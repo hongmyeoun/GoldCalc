@@ -2,6 +2,7 @@ package com.hongmyeoun.goldcalc.view.profile.content.arkPassive
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -57,6 +58,7 @@ fun ArkPassiveNode(
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ArkPassiveView(
     arkPassive: ArkPassive,
@@ -64,6 +66,7 @@ fun ArkPassiveView(
     viewModel: ArkPassiveVM = viewModel()
 ) {
     val showDialog by viewModel.showDialog.collectAsState()
+    val isDetail by viewModel.isDetail.collectAsState()
 
     if (showDialog) {
         Description(
@@ -77,32 +80,110 @@ fun ArkPassiveView(
             .background(LightGrayTransBG, RoundedCornerShape(8.dp))
             .clip(RoundedCornerShape(8.dp))
             .padding(8.dp)
+            .noRippleClickable { viewModel.onDetailClicked() }
     ) {
-        Title(title = "아크패시브")
+        Title(
+            title = "아크패시브",
+            onClick = { viewModel.onDetailClicked() }
+        )
         Spacer(modifier = Modifier.height(8.dp))
-        if (arkPassive.isArkPassive) {
-            ArkPassiveNodeBox(
-                arkPassiveType = arkPassive.points[0].name,
-                arkPassiveNodes = arkPassiveNodes,
-                arkPassivePoints = arkPassive.points[0].value,
-                viewModel = viewModel
-            )
-            ArkPassiveNodeBox(
-                arkPassiveType = arkPassive.points[1].name,
-                arkPassiveNodes = arkPassiveNodes,
-                arkPassivePoints = arkPassive.points[1].value,
-                viewModel = viewModel
-            )
-            ArkPassiveNodeBox(
-                arkPassiveType = arkPassive.points[2].name,
-                arkPassiveNodes = arkPassiveNodes,
-                arkPassivePoints = arkPassive.points[2].value,
-                viewModel = viewModel
-            )
+        if (isDetail) {
+            if (arkPassive.isArkPassive) {
+                ArkPassiveNodeBox(
+                    arkPassiveType = arkPassive.points[0].name,
+                    arkPassiveNodes = arkPassiveNodes,
+                    arkPassivePoints = arkPassive.points[0].value,
+                    viewModel = viewModel
+                )
+                ArkPassiveNodeBox(
+                    arkPassiveType = arkPassive.points[1].name,
+                    arkPassiveNodes = arkPassiveNodes,
+                    arkPassivePoints = arkPassive.points[1].value,
+                    viewModel = viewModel
+                )
+                ArkPassiveNodeBox(
+                    arkPassiveType = arkPassive.points[2].name,
+                    arkPassiveNodes = arkPassiveNodes,
+                    arkPassivePoints = arkPassive.points[2].value,
+                    viewModel = viewModel
+                )
+            }
+        } else {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Simple(
+                    arkPassiveType = arkPassive.points[0].name,
+                    arkPassivePoints = arkPassive.points[0].value,
+                    arkPassiveRank = arkPassive.points[0].description,
+                    viewModel = viewModel
+                )
+                Simple(
+                    arkPassiveType = arkPassive.points[1].name,
+                    arkPassivePoints = arkPassive.points[1].value,
+                    arkPassiveRank = arkPassive.points[1].description,
+                    viewModel = viewModel
+                )
+                Simple(
+                    arkPassiveType = arkPassive.points[2].name,
+                    arkPassivePoints = arkPassive.points[2].value,
+                    arkPassiveRank = arkPassive.points[2].description,
+                    viewModel = viewModel
+                )
+            }
         }
     }
 }
 
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+private fun Simple(
+    arkPassiveType: String,
+    arkPassivePoints: Int,
+    arkPassiveRank: String,
+    viewModel: ArkPassiveVM
+) {
+    val arkPassiveColor = viewModel.textColor(arkPassiveType)
+    val arkPassiveIcon = viewModel.arkPassiveIcon(arkPassiveType)
+
+    Box(
+        modifier = Modifier
+            .border(
+                width = 0.5.dp,
+                color = arkPassiveColor,
+                shape = RoundedCornerShape(16.dp),
+            )
+            .padding(12.dp)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                GlideImage(
+                    model = arkPassiveIcon,
+                    loading = placeholder(arkPassiveIcon),
+                    contentDescription = ""
+                )
+                Text(
+                    text = "$arkPassivePoints",
+                    color = arkPassiveColor,
+                    fontSize = 13.sp
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+            }
+            Text(
+                text = arkPassiveRank,
+                color = arkPassiveColor,
+                fontSize = 13.sp
+            )
+        }
+    }
+}
 
 @Composable
 private fun ArkPassiveNodeBox(
