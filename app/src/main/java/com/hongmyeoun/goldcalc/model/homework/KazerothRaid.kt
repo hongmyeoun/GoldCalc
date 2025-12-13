@@ -14,10 +14,12 @@ enum class KazerothRaid(
         seeMoreGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.ECHIDNA,
             Raid.Difficulty.HARD to Gold.SeeMore.Hard.ECHIDNA,
+            Raid.Difficulty.SOLO to Gold.SeeMore.Solo.ECHIDNA
         ),
         clearGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.Clear.Normal.ECHIDNA,
             Raid.Difficulty.HARD to Gold.Clear.Hard.ECHIDNA,
+            Raid.Difficulty.SOLO to Gold.Clear.Solo.ECHIDNA
         )
     ),
     EGIR(
@@ -37,22 +39,26 @@ enum class KazerothRaid(
         boss = Raid.Name.ABRELSHUD_2,
         seeMoreGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.ABRELSHUD_2,
-            Raid.Difficulty.HARD to Gold.SeeMore.Hard.ABRELSHUD_2
+            Raid.Difficulty.HARD to Gold.SeeMore.Hard.ABRELSHUD_2,
+            Raid.Difficulty.SOLO to Gold.SeeMore.Solo.ABRELSHUD_2
         ),
         clearGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.Clear.Normal.ABRELSHUD_2,
-            Raid.Difficulty.HARD to Gold.Clear.Hard.ABRELSHUD_2
+            Raid.Difficulty.HARD to Gold.Clear.Hard.ABRELSHUD_2,
+            Raid.Difficulty.SOLO to Gold.Clear.Solo.ABRELSHUD_2
         )
     ),
     MORDUM(
         boss = Raid.Name.MORDUM,
         seeMoreGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.MORDUM,
-            Raid.Difficulty.HARD to Gold.SeeMore.Hard.MORDUM
+            Raid.Difficulty.HARD to Gold.SeeMore.Hard.MORDUM,
+            Raid.Difficulty.SOLO to Gold.SeeMore.Solo.MORDUM
         ),
         clearGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.Clear.Normal.MORDUM,
-            Raid.Difficulty.HARD to Gold.Clear.Hard.MORDUM
+            Raid.Difficulty.HARD to Gold.Clear.Hard.MORDUM,
+            Raid.Difficulty.SOLO to Gold.Clear.Solo.MORDUM
         )
     ),
     ARMOCHE(
@@ -126,9 +132,9 @@ class KazerothRaidModel(character: Character?) {
 class Echidna(character: Character?) {
     val name = KazerothRaid.ECHIDNA.boss
     private val seeMoreGold =
-        KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.NORMAL).first + KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.HARD).first  // + KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.SOLO).first
+        KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.NORMAL).first + KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.HARD).first  + KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.SOLO).first
     private val clearGold =
-        KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.NORMAL).second + KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.HARD).second // + KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.SOLO).second
+        KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.NORMAL).second + KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.HARD).second + KazerothRaid.ECHIDNA.getBossInfo(Raid.Difficulty.SOLO).second
 
     var isChecked = character?.checkList?.kazeroth?.get(0)?.isCheck ?: false
 
@@ -143,10 +149,13 @@ class Echidna(character: Character?) {
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
         isChecked = isChecked,
+        noSolo = false,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[2],
+        seeMoreGoldS = seeMoreGold[4],
         clearGoldN = clearGold[0],
         clearGoldH = clearGold[2],
+        clearGoldS = clearGold[4]
     )
 
     private val getTwoPhase = character?.checkList?.kazeroth?.get(0)?.phases?.get(1)
@@ -160,10 +169,13 @@ class Echidna(character: Character?) {
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
         isChecked = isChecked,
+        noSolo = false,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[3],
+        seeMoreGoldS = seeMoreGold[5],
         clearGoldN = clearGold[1],
         clearGoldH = clearGold[3],
+        clearGoldS = clearGold[5]
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold
@@ -239,8 +251,8 @@ class Egir(character: Character?) {
 
 class Abrelshud2(character: Character?) {
     val name = KazerothRaid.ABRELSHUD.boss
-    private val seeMoreGold = KazerothRaid.ABRELSHUD.getBossInfo(Raid.Difficulty.NORMAL).first + KazerothRaid.ABRELSHUD.getBossInfo(Raid.Difficulty.HARD).first
-    private val clearGold = KazerothRaid.ABRELSHUD.getBossInfo(Raid.Difficulty.NORMAL).second + KazerothRaid.ABRELSHUD.getBossInfo(Raid.Difficulty.HARD).second
+    private val seeMoreGold = KazerothRaid.ABRELSHUD.getBossInfo(Raid.Difficulty.NORMAL).first + KazerothRaid.ABRELSHUD.getBossInfo(Raid.Difficulty.HARD).first + KazerothRaid.ABRELSHUD.getBossInfo(Raid.Difficulty.SOLO).first
+    private val clearGold = KazerothRaid.ABRELSHUD.getBossInfo(Raid.Difficulty.NORMAL).second + KazerothRaid.ABRELSHUD.getBossInfo(Raid.Difficulty.HARD).second + KazerothRaid.ABRELSHUD.getBossInfo(Raid.Difficulty.SOLO).second
 
     var isChecked = character?.checkList?.kazeroth?.get(2)?.isCheck ?: false
 
@@ -255,10 +267,13 @@ class Abrelshud2(character: Character?) {
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
         isChecked = isChecked,
+        noSolo = false,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[2],
+        seeMoreGoldS = seeMoreGold[4],
         clearGoldN = clearGold[0],
-        clearGoldH = clearGold[2]
+        clearGoldH = clearGold[2],
+        clearGoldS = clearGold[4]
     )
 
     private val getTwoPhase = character?.checkList?.kazeroth?.get(2)?.phases?.get(1)
@@ -272,10 +287,13 @@ class Abrelshud2(character: Character?) {
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
         isChecked = isChecked,
+        noSolo = false,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[3],
+        seeMoreGoldS = seeMoreGold[5],
         clearGoldN = clearGold[1],
-        clearGoldH = clearGold[3]
+        clearGoldH = clearGold[3],
+        clearGoldS = clearGold[5]
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold
@@ -292,8 +310,8 @@ class Abrelshud2(character: Character?) {
 
 class Mordum(character: Character?) {
     val name = KazerothRaid.MORDUM.boss
-    private val seeMoreGold = KazerothRaid.MORDUM.getBossInfo(Raid.Difficulty.NORMAL).first + KazerothRaid.MORDUM.getBossInfo(Raid.Difficulty.HARD).first
-    private val clearGold = KazerothRaid.MORDUM.getBossInfo(Raid.Difficulty.NORMAL).second + KazerothRaid.MORDUM.getBossInfo(Raid.Difficulty.HARD).second
+    private val seeMoreGold = KazerothRaid.MORDUM.getBossInfo(Raid.Difficulty.NORMAL).first + KazerothRaid.MORDUM.getBossInfo(Raid.Difficulty.HARD).first + KazerothRaid.MORDUM.getBossInfo(Raid.Difficulty.SOLO).first
+    private val clearGold = KazerothRaid.MORDUM.getBossInfo(Raid.Difficulty.NORMAL).second + KazerothRaid.MORDUM.getBossInfo(Raid.Difficulty.HARD).second + KazerothRaid.MORDUM.getBossInfo(Raid.Difficulty.SOLO).second
 
     var isChecked = character?.checkList?.kazeroth?.get(3)?.isCheck ?: false
 
@@ -308,10 +326,13 @@ class Mordum(character: Character?) {
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
         isChecked = isChecked,
+        noSolo = false,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[3],
+        seeMoreGoldS = seeMoreGold[6],
         clearGoldN = clearGold[0],
         clearGoldH = clearGold[3],
+        clearGoldS = clearGold[6]
     )
 
     private val getTwoPhase = character?.checkList?.kazeroth?.get(3)?.phases?.get(1)
@@ -325,10 +346,13 @@ class Mordum(character: Character?) {
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
         isChecked = isChecked,
+        noSolo = false,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[4],
+        seeMoreGoldS = seeMoreGold[7],
         clearGoldN = clearGold[1],
-        clearGoldH = clearGold[4]
+        clearGoldH = clearGold[4],
+        clearGoldS = clearGold[7]
     )
 
     private val getThreePhase = character?.checkList?.kazeroth?.get(3)?.phases?.get(2)
@@ -342,10 +366,13 @@ class Mordum(character: Character?) {
         isClearCheck = threePhaseIsClear,
         moreCheck = threePhaseMCheck,
         isChecked = isChecked,
+        noSolo = false,
         seeMoreGoldN = seeMoreGold[2],
         seeMoreGoldH = seeMoreGold[5],
+        seeMoreGoldS = seeMoreGold[8],
         clearGoldN = clearGold[2],
-        clearGoldH = clearGold[5]
+        clearGoldH = clearGold[5],
+        clearGoldS = clearGold[8]
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold + threePhase.totalGold

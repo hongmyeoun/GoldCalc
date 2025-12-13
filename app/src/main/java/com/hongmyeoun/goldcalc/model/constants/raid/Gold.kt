@@ -13,14 +13,14 @@ class Gold {
             val KAYANGEL = listOf(180, 200, 270)
             val IVORY_TOWER = listOf(180, 220, 300)
 
-            val ECHIDNA = listOf(380, 840)
-            val EGIR = listOf(1030, 2400)
-            val ABRELSHUD_2 = listOf(3240, 4830)
-            val MORDUM = listOf(2400, 3200, 4200)
+            val ECHIDNA = listOf(310, 700)
+            val EGIR = listOf(750, 1780)
+            val ABRELSHUD_2 = listOf(1820, 3720)
+            val MORDUM = listOf(1300, 2350, 3360)
             val ARMOCHE = listOf(4000, 6560)
             val KAZEROTH = listOf(4480, 8320)
 
-            val BEHEMOTH = listOf(920, 1960)
+            val BEHEMOTH = listOf(720, 1630)
 
             val EVENT_RAID = listOf(0)
         }
@@ -36,20 +36,23 @@ class Gold {
             val KAYANGEL = listOf(225, 350, 500)
             val IVORY_TOWER = listOf(350, 500, 950)
 
-            val ECHIDNA = listOf(920, 1960)
-            val EGIR = listOf(3640, 5880)
-            val ABRELSHUD_2 = listOf(4500, 7200)
-            val MORDUM = listOf(2700, 4100, 5800)
+            val ECHIDNA = listOf(720, 1630)
+            val EGIR = listOf(1820, 4150)
+            val ABRELSHUD_2 = listOf(2400, 5100)
+            val MORDUM = listOf(1650, 2640, 4060)
             val ARMOCHE = listOf(4800, 8640)
             val KAZEROTH = listOf(5440, 11200)
 
-            val BEHEMOTH = listOf(920, 1960)
+            val BEHEMOTH = listOf(720, 1630)
 
             val EVENT_RAID = listOf(0)
         }
 
         object Solo {
-            val EGIR = listOf(1030, 2400)
+            val ECHIDNA = listOf(310, 700)
+            val EGIR = listOf(750, 1780)
+            val ABRELSHUD_2 = listOf(1820, 3720)
+            val MORDUM = listOf(1300, 2350, 3360)
         }
     }
 
@@ -65,14 +68,14 @@ class Gold {
             val KAYANGEL = listOf(325, 550, 725)
             val IVORY_TOWER = listOf(600, 800, 1200)
 
-            val ECHIDNA = listOf(1150, 2500)
-            val EGIR = listOf(4750, 10750)
-            val ABRELSHUD_2 = listOf(7250, 14250)
-            val MORDUM = listOf(6000, 9500, 12500)
+            val ECHIDNA = listOf(1900, 4200)
+            val EGIR = listOf(3500, 8000)
+            val ABRELSHUD_2 = listOf(5500, 11000)
+            val MORDUM = listOf(4000, 7000, 10000)
             val ARMOCHE = listOf(12500, 20500)
             val KAZEROTH = listOf(14000, 26000)
 
-            val BEHEMOTH = listOf(2800, 6000)
+            val BEHEMOTH = listOf(2200, 5000)
 
             val EVENT_RAID = listOf(15000)
         }
@@ -88,20 +91,23 @@ class Gold {
             val KAYANGEL = listOf(450, 700, 1000)
             val IVORY_TOWER = listOf(700, 1000, 1900)
 
-            val ECHIDNA = listOf(2800, 6000)
-            val EGIR = listOf(8000, 16500)
-            val ABRELSHUD_2 = listOf(10000, 20500)
-            val MORDUM = listOf(7000, 11000, 20000)
+            val ECHIDNA = listOf(2200, 5000)
+            val EGIR = listOf(5500, 12500)
+            val ABRELSHUD_2 = listOf(7500, 15500)
+            val MORDUM = listOf(5000, 8000, 14000)
             val ARMOCHE = listOf(15000, 27000)
             val KAZEROTH = listOf(17000, 35000)
 
-            val BEHEMOTH = listOf(2800, 6000)
+            val BEHEMOTH = listOf(2200, 5000)
 
             val EVENT_RAID = listOf(30000)
         }
 
         object Solo {
+            val ECHIDNA = listOf(950, 2100)
             val EGIR = listOf(2375, 5375)
+            val ABRELSHUD_2 = listOf(2750, 5500)
+            val MORDUM = listOf(2000, 3500, 5000)
         }
     }
 }
