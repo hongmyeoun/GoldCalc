@@ -51,7 +51,10 @@ object CharacterResourceMapper {
             ClassName.Specialist.DEFAULT to R.drawable.emblem_specialist,
             ClassName.Specialist.ARTIST to R.drawable.emblem_yinyangshi,
             ClassName.Specialist.AEROMANCER to R.drawable.emblem_weather_artist,
-            ClassName.Specialist.ALCHEMIST to R.drawable.emblem_alchemist
+            ClassName.Specialist.ALCHEMIST to R.drawable.emblem_alchemist,
+
+            ClassName.GuardianKnight.DEFAULT to R.drawable.emblem_dragon_knight,
+            ClassName.GuardianKnight.DRAGON to R.drawable.emblem_dragon_knight,
         )
 
         return classImageMap[characterClassName] ?: R.drawable.emblem_specialist
@@ -103,7 +106,10 @@ object CharacterResourceMapper {
             ClassName.Specialist.DEFAULT to R.drawable.img_detail_artist,
             ClassName.Specialist.ARTIST to R.drawable.img_detail_artist,
             ClassName.Specialist.AEROMANCER to R.drawable.img_detail_aeromancer,
-            ClassName.Specialist.ALCHEMIST to R.drawable.img_detail_wildsoul
+            ClassName.Specialist.ALCHEMIST to R.drawable.img_detail_wildsoul,
+
+            ClassName.GuardianKnight.DEFAULT to R.drawable.img_detail_guardianknight,
+            ClassName.GuardianKnight.DRAGON to R.drawable.img_detail_guardianknight,
         )
 
         return classImageMap[characterClassName] ?: R.drawable.img_detail_breaker
@@ -157,7 +163,10 @@ object CharacterResourceMapper {
             ClassName.Specialist.DEFAULT to ClassName.Specialist.DEFAULT_EN,
             ClassName.Specialist.ARTIST to ClassName.Specialist.ARTIST_EN,
             ClassName.Specialist.AEROMANCER to ClassName.Specialist.AEROMANCER_EN,
-            ClassName.Specialist.ALCHEMIST to ClassName.Specialist.ALCHEMIST_EN
+            ClassName.Specialist.ALCHEMIST to ClassName.Specialist.ALCHEMIST_EN,
+
+            ClassName.GuardianKnight.DEFAULT to ClassName.GuardianKnight.DEFAULT_EN,
+            ClassName.GuardianKnight.DRAGON to ClassName.GuardianKnight.DEFAULT_EN
         )
         return startURL + classImageMap[characterClassName] + endURL
     }
