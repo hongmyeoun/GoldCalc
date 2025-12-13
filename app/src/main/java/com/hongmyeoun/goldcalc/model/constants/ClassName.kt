@@ -105,6 +105,13 @@ class ClassName {
         const val ALCHEMIST_EN = "alchemist"
     }
 
+    object GuardianKnight {
+        const val DEFAULT = "가디언나이트"
+        const val DRAGON = "가디언나이트"
+
+        const val DEFAULT_EN = "dragon_knight"
+    }
+
     object ClassLists {
         private val WARRIOR_LIST = listOf(
             Warrior.DEFAULT,
@@ -155,8 +162,12 @@ class ClassName {
             Specialist.AEROMANCER,
             Specialist.ALCHEMIST
         )
+        private val GURADIANKNIGHT_LIST = listOf(
+            GuardianKnight.DEFAULT,
+            GuardianKnight.DRAGON
+        )
 
-        val CHARACTER_LIST = WARRIOR_LIST + FIGHTER_LIST + HUNTER_LIST + MAGICIAN_LIST + DELAIN_LIST + SPECIALIST_LIST
+        val CHARACTER_LIST = WARRIOR_LIST + FIGHTER_LIST + HUNTER_LIST + MAGICIAN_LIST + DELAIN_LIST + SPECIALIST_LIST + GURADIANKNIGHT_LIST
     }
 
 }
