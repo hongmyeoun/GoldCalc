@@ -8,17 +8,19 @@ class ArkGridDetail(private val arkGrid: ArkGrid) {
     fun getArkGridDetail(): List<ArkGridCoreAndGemsTooltips> {
         val arkGridSlots = mutableListOf<ArkGridCoreAndGemsTooltips>()
 
-        for (slot in arkGrid.slots) {
-            val (gemBasicInfo, gemPoint, gemOption) = getGemsInfo(slot)
-            val arkGridCoreAndGemsTooltips = ArkGridCoreAndGemsTooltips(
-                coreOption = getCoreOption(slot),
-                coreTrigger = getCoreTrigger(slot),
-                gemBasicInfo = gemBasicInfo,
-                gemPoint = gemPoint,
-                gemOption = gemOption
-            )
+        if (arkGrid.slots != null) {
+            for (slot in arkGrid.slots) {
+                val (gemBasicInfo, gemPoint, gemOption) = getGemsInfo(slot)
+                val arkGridCoreAndGemsTooltips = ArkGridCoreAndGemsTooltips(
+                    coreOption = getCoreOption(slot),
+                    coreTrigger = getCoreTrigger(slot),
+                    gemBasicInfo = gemBasicInfo,
+                    gemPoint = gemPoint,
+                    gemOption = gemOption
+                )
 
-            arkGridSlots.add(arkGridCoreAndGemsTooltips)
+                arkGridSlots.add(arkGridCoreAndGemsTooltips)
+            }
         }
 
         return arkGridSlots
