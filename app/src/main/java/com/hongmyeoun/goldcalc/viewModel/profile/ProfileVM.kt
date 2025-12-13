@@ -63,7 +63,7 @@ class ProfileVM @Inject constructor(
             title = charDetail.title,
             characterLevel = charDetail.characterLevel,
             expeditionLevel = charDetail.expeditionLevel,
-            pvpGradeName = charDetail.pvpGradeName,
+            pvpGradeName = "-",
             townLevel = charDetail.townLevel,
             townName = charDetail.townName,
             characterImage = charDetail.characterImage,

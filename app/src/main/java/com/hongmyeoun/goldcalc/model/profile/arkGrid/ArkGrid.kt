@@ -3,8 +3,8 @@ package com.hongmyeoun.goldcalc.model.profile.arkGrid
 import com.google.gson.annotations.SerializedName
 
 data class ArkGrid(
-    @SerializedName("Slots") val slots: List<ArkGridSlot>,
-    @SerializedName("Effects") val effects: List<ArkGridEffects>
+    @SerializedName("Slots") val slots: List<ArkGridSlot>?,
+    @SerializedName("Effects") val effects: List<ArkGridEffects>?
 )
 
 data class ArkGridSlot(

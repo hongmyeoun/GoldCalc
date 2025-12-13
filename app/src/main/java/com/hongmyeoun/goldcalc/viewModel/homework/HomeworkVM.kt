@@ -139,7 +139,7 @@ class HomeworkVM @Inject constructor(
                 title = characterDetail.title,
                 characterLevel = characterDetail.characterLevel,
                 expeditionLevel = characterDetail.expeditionLevel,
-                pvpGradeName = characterDetail.pvpGradeName,
+                pvpGradeName = "-",
                 townLevel = characterDetail.townLevel,
                 townName = characterDetail.townName,
                 characterImage = characterDetail.characterImage,

@@ -71,7 +71,7 @@ fun ArkGridView(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            arkGrid.slots.forEach {
+            arkGrid.slots?.forEach {
                 CoreSimple(
                     core = it,
                     viewModel = viewModel
@@ -79,7 +79,7 @@ fun ArkGridView(
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-            arkGrid.effects.forEach {
+            arkGrid.effects?.forEach {
                 GemEffects(gemEffect = it)
             }
         }
