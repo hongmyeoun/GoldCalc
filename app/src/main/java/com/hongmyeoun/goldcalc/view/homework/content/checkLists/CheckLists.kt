@@ -79,17 +79,26 @@ fun CheckLists(
 
                 4 -> {
                     TitleCard(
-                        totalGold = eventVM.totalGold
+                        raidImg = null,
+                        totalGold = sdVM.totalGold,
                     ) {
-                        Event(viewModel = eventVM)
+                        Shadow(viewModel = sdVM)
                     }
                 }
 
                 5 -> {
                     ETCGold(
                         viewModel = viewModel,
-                        onDone = { viewModel.updateTotalGold(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold, eventVM.totalGold) },
+                        onDone = { viewModel.updateTotalGold(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold, sdVM.totalGold, eventVM.totalGold) },
                     )
+                }
+
+                6 -> {
+                    TitleCard(
+                        totalGold = eventVM.totalGold
+                    ) {
+                        Event(viewModel = eventVM)
+                    }
                 }
             }
         }
