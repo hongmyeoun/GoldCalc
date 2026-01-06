@@ -107,13 +107,13 @@ class HomeworkVM @Inject constructor(
     }
 
     var totalGold by mutableStateOf(0)
-    private fun calcTotalGold(cb: Int, ad: Int, kz: Int, ep: Int, ev: Int) {
+    private fun calcTotalGold(cb: Int, ad: Int, kz: Int, ep: Int, sd: Int, ev: Int) {
         calcETCGold()
-        totalGold = cb + ad + kz + ep + ev + etcGold
+        totalGold = cb + ad + kz + ep + sd + ev + etcGold
     }
 
-    fun updateTotalGold(cb: Int, ad: Int, kz: Int, ep: Int, ev: Int) {
-        calcTotalGold(cb, ad, kz, ep, ev)
+    fun updateTotalGold(cb: Int, ad: Int, kz: Int, ep: Int, sd: Int, ev: Int) {
+        calcTotalGold(cb, ad, kz, ep, sd, ev)
     }
 
     var expanded by mutableStateOf(false)
@@ -183,7 +183,7 @@ class HomeworkVM @Inject constructor(
         }
     }
 
-    fun onDoneClick(commandRaid: CommandBossVM, abyssDungeon: AbyssDungeonVM, kazerothRaid: KazerothRaidVM, epicRaid: EpicRaidVM, eventRaid: EventRaidVM) {
+    fun onDoneClick(commandRaid: CommandBossVM, abyssDungeon: AbyssDungeonVM, kazerothRaid: KazerothRaidVM, epicRaid: EpicRaidVM, shadowRaid: ShadowRaidVM ,eventRaid: EventRaidVM) {
         val originalCharacter = _character.value
         val originalCheckList = originalCharacter?.checkList
         val originalRaidInfo = originalCharacter?.raidPhaseInfo

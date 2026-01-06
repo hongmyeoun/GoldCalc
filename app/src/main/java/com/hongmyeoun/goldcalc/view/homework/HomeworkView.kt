@@ -29,6 +29,7 @@ import com.hongmyeoun.goldcalc.viewModel.homework.EpicRaidVM
 import com.hongmyeoun.goldcalc.viewModel.homework.EventRaidVM
 import com.hongmyeoun.goldcalc.viewModel.homework.HomeworkVM
 import com.hongmyeoun.goldcalc.viewModel.homework.KazerothRaidVM
+import com.hongmyeoun.goldcalc.viewModel.homework.ShadowRaidVM
 import kotlinx.coroutines.delay
 
 @Composable
@@ -58,6 +59,7 @@ fun HomeworkView(
             val adVM = remember { AbyssDungeonVM(character) }
             val kzVM = remember { KazerothRaidVM(character) }
             val epVM = remember { EpicRaidVM(character) }
+            val sdVM = remember { ShadowRaidVM(character) }
             val eventVM = remember { EventRaidVM(character) }
 
             Homework(
@@ -66,6 +68,7 @@ fun HomeworkView(
                 adVM = adVM,
                 kzVM = kzVM,
                 epVM = epVM,
+                sdVM = sdVM,
                 eventVM = eventVM,
                 navController = navController
             )
@@ -80,11 +83,12 @@ private fun Homework(
     adVM: AbyssDungeonVM,
     kzVM: KazerothRaidVM,
     epVM: EpicRaidVM,
+    sdVM: ShadowRaidVM,
     eventVM: EventRaidVM,
     navController: NavHostController
 ) {
-    LaunchedEffect(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold, eventVM.totalGold, viewModel.plusGold, viewModel.minusGold, viewModel.selectedTab) {
-        viewModel.updateTotalGold(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold, eventVM.totalGold)
+    LaunchedEffect(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold, sdVM.totalGold , eventVM.totalGold, viewModel.plusGold, viewModel.minusGold, viewModel.selectedTab) {
+        viewModel.updateTotalGold(cbVM.totalGold, adVM.totalGold, kzVM.totalGold, epVM.totalGold, sdVM.totalGold, eventVM.totalGold)
     }
 
     val scrollState = rememberLazyListState()
@@ -95,10 +99,10 @@ private fun Homework(
             .fillMaxSize(),
         containerColor = ImageBG,
         topBar = { HomeworkTopBar(viewModel, navController, scrollState) },
-        bottomBar = { HomeworkBottomBar(viewModel, cbVM, adVM, kzVM, epVM, eventVM, navController) },
+        bottomBar = { HomeworkBottomBar(viewModel, cbVM, adVM, kzVM, epVM, sdVM, eventVM, navController) },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         contentWindowInsets = WindowInsets(0.dp)
     ) { paddingValues ->
-        HomeworkContent(paddingValues, viewModel, scrollState, snackbarHostState, cbVM, adVM, kzVM, epVM, eventVM)
+        HomeworkContent(paddingValues, viewModel, scrollState, snackbarHostState, cbVM, adVM, kzVM, epVM, sdVM, eventVM)
     }
 }

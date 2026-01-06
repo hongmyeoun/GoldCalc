@@ -35,21 +35,27 @@ class Raid {
         const val EPIC_RAID = "에픽 레이드"
         const val BEHEMOTH = "베히모스"
 
+        const val SHADOW = "그림자"
+        const val SHADOW_RAID = "그림자 레이드"
+        const val SERCA = "세르카"
+
         const val EVENT = "이벤트"
         const val EVENT_RAID = "카멘 : 익스트림"
 
         const val ETC = "기타"
 
-        val RAID_LIST = listOf(COMMAND, ABYSS_DUNGEON, KAZEROTH, EPIC, EVENT, ETC)
+        val RAID_LIST = listOf(COMMAND, ABYSS_DUNGEON, KAZEROTH, EPIC, SHADOW, ETC, EVENT)
     }
 
     object Difficulty {
         const val NORMAL = "normal"
         const val HARD = "hard"
         const val SOLO = "solo"
+        const val NIGHTMARE = "nightmare"
 
         const val KR_NORMAL = "노말"
         const val KR_HARD = "하드"
         const val KR_SOLO = "솔로잉"
+        const val KR_NIGHTMARE = "나이트메어"
     }
 }

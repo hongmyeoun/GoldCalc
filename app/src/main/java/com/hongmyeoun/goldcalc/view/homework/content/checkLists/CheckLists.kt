@@ -13,12 +13,14 @@ import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidCon
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidContents.Epic
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidContents.Event
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidContents.Kazeroth
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.raidContents.Shadow
 import com.hongmyeoun.goldcalc.viewModel.homework.AbyssDungeonVM
 import com.hongmyeoun.goldcalc.viewModel.homework.CommandBossVM
 import com.hongmyeoun.goldcalc.viewModel.homework.EpicRaidVM
 import com.hongmyeoun.goldcalc.viewModel.homework.EventRaidVM
 import com.hongmyeoun.goldcalc.viewModel.homework.HomeworkVM
 import com.hongmyeoun.goldcalc.viewModel.homework.KazerothRaidVM
+import com.hongmyeoun.goldcalc.viewModel.homework.ShadowRaidVM
 
 @Composable
 fun CheckLists(
@@ -27,6 +29,7 @@ fun CheckLists(
     adVM: AbyssDungeonVM,
     kzVM: KazerothRaidVM,
     epVM: EpicRaidVM,
+    sdVM: ShadowRaidVM,
     eventVM: EventRaidVM
 ) {
     Crossfade(

@@ -52,6 +52,7 @@ import com.hongmyeoun.goldcalc.viewModel.homework.EpicRaidVM
 import com.hongmyeoun.goldcalc.viewModel.homework.EventRaidVM
 import com.hongmyeoun.goldcalc.viewModel.homework.HomeworkVM
 import com.hongmyeoun.goldcalc.viewModel.homework.KazerothRaidVM
+import com.hongmyeoun.goldcalc.viewModel.homework.ShadowRaidVM
 
 @Composable
 fun HomeworkBottomBar(
@@ -60,17 +61,18 @@ fun HomeworkBottomBar(
     adVM: AbyssDungeonVM,
     kzVM: KazerothRaidVM,
     epVM: EpicRaidVM,
+    sdVM: ShadowRaidVM,
     eventVM: EventRaidVM,
     navController: NavHostController
 ) {
     if (viewModel.expanded) {
-        Summary(viewModel, cbVM, adVM, kzVM, epVM, eventVM, navController)
+        Summary(viewModel, cbVM, adVM, kzVM, epVM, sdVM, eventVM, navController)
     }
 
     BottomBar(
         viewModel = viewModel,
         navController = navController
-    ) { viewModel.onDoneClick(cbVM, adVM, kzVM, epVM, eventVM) }
+    ) { viewModel.onDoneClick(cbVM, adVM, kzVM, epVM, sdVM, eventVM) }
 }
 
 
