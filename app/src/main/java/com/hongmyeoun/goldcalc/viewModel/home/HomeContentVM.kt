@@ -12,6 +12,7 @@ import com.hongmyeoun.goldcalc.model.homework.CommandBossModel
 import com.hongmyeoun.goldcalc.model.homework.EpicRaidModel
 import com.hongmyeoun.goldcalc.model.homework.EventRaidModel
 import com.hongmyeoun.goldcalc.model.homework.KazerothRaidModel
+import com.hongmyeoun.goldcalc.model.homework.ShadowRaidModel
 import com.hongmyeoun.goldcalc.model.roomDB.character.Character
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
 import com.hongmyeoun.goldcalc.model.roomDB.character.Phase
@@ -34,6 +35,7 @@ class HomeContentVM @Inject constructor(
     private val _abModel = MutableStateFlow(AbyssDungeonModel(null))
     private val _kzModel = MutableStateFlow(KazerothRaidModel(null))
     private val _epModel = MutableStateFlow(EpicRaidModel(null))
+    private val _sdModel = MutableStateFlow(ShadowRaidModel(null))
     private val _eventModel = MutableStateFlow(EventRaidModel(null))
 
     private val _totalGold = MutableStateFlow(0)
@@ -62,6 +64,9 @@ class HomeContentVM @Inject constructor(
     private val _kazerothTG = MutableStateFlow(0)
 
     private val _behemothTG = MutableStateFlow(0)
+
+    private val _sercaTG = MutableStateFlow(0)
+
     private val _eventTG = MutableStateFlow(0)
 
     private val _maxGold = MutableStateFlow(0)
@@ -84,8 +89,9 @@ class HomeContentVM @Inject constructor(
         val abyssDungeonTG = _ivoryTowerTG.value + _kayangelTG.value
         val kazerothTG = _kazerothTG.value + _armocheTG.value + _mordumTG.value + _ablreshudTG2.value + _egirTG.value + _echidnaTG.value
         val epicTG = _behemothTG.value
+        val shadowTG = _sercaTG.value
         val eventTG = _eventTG.value
-        _totalGold.value = commandTG + abyssDungeonTG + kazerothTG + epicTG + eventTG
+        _totalGold.value = commandTG + abyssDungeonTG + kazerothTG + epicTG + shadowTG + eventTG
         updateProgressPercentage()
     }
 
@@ -139,6 +145,21 @@ class HomeContentVM @Inject constructor(
                         update.add(kazeroth)
 
                         val updateCheckList = it.checkList.copy(kazeroth = update)
+                        val updateChar = it.copy(checkList = updateCheckList)
+
+                        characterRepository.update(updateChar)
+                        _character.value = updateChar
+                        getModel(updateChar)
+                    } else if (it.checkList.shadow.isEmpty()) {
+                        val serca = RaidList(
+                            name = Raid.Name.SERCA,
+                            phases = listOf(Phase(), Phase())
+                        )
+
+                        val update = it.checkList.shadow.toMutableList()
+                        update.add(serca)
+
+                        val updateCheckList = it.checkList.copy(shadow = update)
                         val updateChar = it.copy(checkList = updateCheckList)
 
                         characterRepository.update(updateChar)
@@ -198,6 +219,7 @@ class HomeContentVM @Inject constructor(
         _mordumTG.value = character.raidPhaseInfo.mordumTotalGold
         _armocheTG.value = character.raidPhaseInfo.armocheTotalGold
         _kazerothTG.value = character.raidPhaseInfo.kazerothTotalGold
+        _sercaTG.value = character.raidPhaseInfo.sercaTotalGold
         _eventTG.value = character.raidPhaseInfo.eventTotalGold
 
         _maxGold.value = character.weeklyGold
@@ -215,6 +237,7 @@ class HomeContentVM @Inject constructor(
         _abModel.value = AbyssDungeonModel(character)
         _kzModel.value = KazerothRaidModel(character)
         _epModel.value = EpicRaidModel(character)
+        _sdModel.value = ShadowRaidModel(character)
         _eventModel.value = EventRaidModel(character)
     }
 
@@ -477,6 +500,21 @@ class HomeContentVM @Inject constructor(
         }
     }
 
+    fun sercaGoldCalc(nowPhase: Int) {
+        _sercaTG.value = when (nowPhase) {
+            1 -> { _sdModel.value.serca.onePhase.totalGold }
+            2 -> { _sdModel.value.serca.totalGold }
+            else -> { 0 }
+        }
+
+        calcTotalGold()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(sercaPhase = nowPhase, sercaTotalGold = _sercaTG.value))
+            characterRepository.update(update)
+        }
+    }
+
 
     fun eventGoldCalc(nowPhase: Int) {
         _eventTG.value = when(nowPhase) {
@@ -522,6 +560,7 @@ class GoldContentStateVM(initPhase: Int) : ViewModel() {
             Raid.Name.MORDUM -> R.drawable.kazeroth_mordum
             Raid.Name.ARMOCHE -> R.drawable.kazeroth_armoche
             Raid.Name.KAZEROTH_END -> R.drawable.kazeroth_kazeroth
+            Raid.Name.SERCA -> R.drawable.kazeroth_echidna
             Raid.Name.EVENT_RAID -> R.drawable.event_kamen
             else -> R.drawable.kazeroth_echidna
         }
