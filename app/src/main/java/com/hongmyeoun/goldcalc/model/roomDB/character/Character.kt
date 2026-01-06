@@ -85,7 +85,10 @@ data class RaidPhaseInfo(
     @ColumnInfo("kazerothTotalGold") val kazerothTotalGold: Int = 0,
 
     @ColumnInfo("eventPhase") val eventPhase: Int = 0,
-    @ColumnInfo("eventTotalGold") val eventTotalGold: Int = 0
+    @ColumnInfo("eventTotalGold") val eventTotalGold: Int = 0,
+
+    @ColumnInfo("sercaPhase") val sercaPhase: Int = 0,
+    @ColumnInfo("sercaTotalGold") val sercaTotalGold: Int = 0
 )
 
 
@@ -155,6 +158,12 @@ data class CheckList(
     @ColumnInfo("Epic") val epic: List<RaidList> = listOf(
         RaidList(
             name = Raid.Name.BEHEMOTH,
+            phases = listOf(Phase(), Phase())
+        )
+    ),
+    @ColumnInfo("Shadow") val shadow: List<RaidList> = listOf(
+        RaidList(
+            name = Raid.Name.SERCA,
             phases = listOf(Phase(), Phase())
         )
     ),
