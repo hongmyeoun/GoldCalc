@@ -79,7 +79,7 @@ fun CheckLists(
 
                 4 -> {
                     TitleCard(
-                        raidImg = null,
+                        raidImg = R.drawable.shadow_icon,
                         totalGold = sdVM.totalGold,
                     ) {
                         Shadow(viewModel = sdVM)

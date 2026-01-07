@@ -37,7 +37,7 @@ fun Shadow(viewModel: ShadowRaidVM) {
 
     if (viewModel.sercaCheck) {
         RaidCard(
-            bossImg = R.drawable.kazeroth_echidna,
+            bossImg = R.drawable.shadow_serca,
             isRotated = sercaRoatated,
             rotaR = sercaRotaR,
             onClick = { sercaRoatated = !sercaRoatated },
@@ -46,7 +46,7 @@ fun Shadow(viewModel: ShadowRaidVM) {
                     rotaR = sercaRotaR,
 
                     name = viewModel.serca.name,
-                    raidBossImg = R.drawable.logo_echidna,
+                    raidBossImg = R.drawable.logo_serca,
                     totalGold = viewModel.serca.totalGold,
 
                     phaseOneLevel = viewModel.serca.onePhase.level,
