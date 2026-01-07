@@ -417,7 +417,7 @@ private fun Script(sdVM: ShadowRaidVM) {
             PhaseInfo(
                 isCheck = sdVM.sercaCheck,
                 modifier = Modifier.weight(1f),
-                raidName = Raid.Name.EVENT_RAID,
+                raidName = Raid.Name.SERCA,
                 phaseInfo = {
                     Text(text = "${Homework.PHASE_ONE} ${sdVM.serca.onePhase.level} : ${sdVM.serca.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
                     Text(text = "${Homework.PHASE_TWO} ${sdVM.serca.twoPhase.level} : ${sdVM.serca.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
