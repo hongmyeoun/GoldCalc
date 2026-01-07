@@ -82,6 +82,19 @@ fun HomeworkProgress(
                 ) { viewModel.eventGoldCalc(it) }
             }
         }
+        if (character.checkList.shadow[0].phases[0].isClear) {
+            item {
+                val shadowVM = remember { GoldContentStateVM(character.raidPhaseInfo.sercaPhase)}
+
+                ProgressState(
+                    enabled = viewModel.enabled,
+                    phase = viewModel.phaseCalc(character.checkList.shadow[0].phases),
+                    raidName = Raid.Name.SERCA,
+                    viewModel = shadowVM,
+                    isListView = isListView,
+                ) { viewModel.sercaGoldCalc(it) }
+            }
+        }
         if (character.checkList.kazeroth[5].phases[0].isClear) {
             item {
                 val kazerothVM = remember { GoldContentStateVM(character.raidPhaseInfo.kazerothPhase) }

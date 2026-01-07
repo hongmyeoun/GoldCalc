@@ -33,6 +33,7 @@ import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 import com.hongmyeoun.goldcalc.model.constants.viewConst.Homework
 import com.hongmyeoun.goldcalc.ui.theme.GreenQual
 import com.hongmyeoun.goldcalc.ui.theme.ImageBG
+import com.hongmyeoun.goldcalc.ui.theme.PurpleQual
 import com.hongmyeoun.goldcalc.ui.theme.RedQual
 import com.hongmyeoun.goldcalc.ui.theme.YellowQual
 import com.hongmyeoun.goldcalc.view.common.noRippleClickable
@@ -278,7 +279,18 @@ fun Level(
     onLevelClicked: () -> Unit = {},
     oneDifficult: Boolean = false
 ) {
-    val difficultyColor = if (difficulty == Raid.Difficulty.KR_HARD) RedQual else if (difficulty == Raid.Difficulty.KR_NORMAL) GreenQual else YellowQual
+    val difficultyColor = when (difficulty) {
+        Raid.Difficulty.KR_NIGHTMARE -> {
+            PurpleQual
+        }
+        Raid.Difficulty.KR_HARD -> {
+            RedQual
+        }
+        Raid.Difficulty.KR_NORMAL -> {
+            GreenQual
+        }
+        else -> YellowQual
+    }
 
     Row(
         modifier = Modifier

@@ -44,6 +44,7 @@ import com.hongmyeoun.goldcalc.viewModel.homework.EpicRaidVM
 import com.hongmyeoun.goldcalc.viewModel.homework.EventRaidVM
 import com.hongmyeoun.goldcalc.viewModel.homework.HomeworkVM
 import com.hongmyeoun.goldcalc.viewModel.homework.KazerothRaidVM
+import com.hongmyeoun.goldcalc.viewModel.homework.ShadowRaidVM
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,6 +54,7 @@ fun Summary(
     adVM: AbyssDungeonVM,
     kzVM: KazerothRaidVM,
     epVM: EpicRaidVM,
+    sdVM: ShadowRaidVM,
     eventVM: EventRaidVM,
     navController: NavHostController
 ) {
@@ -90,12 +92,16 @@ fun Summary(
                     Script(adVM)
                 }
 
-                if (kzVM.echiCheck || kzVM.egirCheck || kzVM.abrelCheck || kzVM.mordumCheck) {
+                if (kzVM.echiCheck || kzVM.egirCheck || kzVM.abrelCheck || kzVM.mordumCheck || kzVM.armocheCheck || kzVM.kazerothCheck) {
                     Script(kzVM)
                 }
 
                 if (epVM.beheCheck) {
                     Script(epVM)
+                }
+
+                if (sdVM.sercaCheck) {
+                    Script(sdVM)
                 }
 
                 if (eventVM.eventCheck) {
@@ -113,7 +119,7 @@ fun Summary(
                         navController = navController,
                         onDoneClicked = {
                             viewModel.close()
-                            viewModel.onDoneClick(cbVM, adVM, kzVM, epVM, eventVM)
+                            viewModel.onDoneClick(cbVM, adVM, kzVM, epVM, sdVM ,eventVM)
                         }
                     )
                 }
@@ -396,13 +402,40 @@ private fun Script(epVM: EpicRaidVM) {
 }
 
 @Composable
+private fun Script(sdVM: ShadowRaidVM) {
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
+    ) {
+        RaidTitle(title = Raid.Name.SHADOW_RAID, totalGold = sdVM.totalGold)
+        Divider()
+
+        Row(
+            modifier = Modifier.padding(if (sdVM.sercaCheck) 16.dp else 0.dp)
+        ) {
+            PhaseInfo(
+                isCheck = sdVM.sercaCheck,
+                modifier = Modifier.weight(1f),
+                raidName = Raid.Name.SERCA,
+                phaseInfo = {
+                    Text(text = "${Homework.PHASE_ONE} ${sdVM.serca.onePhase.level} : ${sdVM.serca.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_TWO} ${sdVM.serca.twoPhase.level} : ${sdVM.serca.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
+                }
+            )
+        }
+    }
+}
+
+
+@Composable
 private fun Script(eventVM: EventRaidVM) {
     Column(
         modifier = Modifier
             .padding(16.dp)
             .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
     ) {
-        RaidTitle(title = Raid.Name.EPIC_RAID, totalGold = eventVM.totalGold)
+        RaidTitle(title = Raid.Name.EVENT_RAID, totalGold = eventVM.totalGold)
         Divider()
 
         Row(

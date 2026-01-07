@@ -9,12 +9,15 @@ class PhaseInfo(
     isChecked: Boolean,
     private val noSolo: Boolean = true,
     private val noHardWithSolo: Boolean = false,
+    private val isShadowRaid: Boolean = false,
     private val seeMoreGoldN: Int,
     private val seeMoreGoldH: Int,
     private val seeMoreGoldS: Int? = null,
+    private val seeMoreGoldNM: Int? = null,
     private val clearGoldN: Int,
     private val clearGoldH: Int,
-    private val clearGoldS: Int? = null
+    private val clearGoldS: Int? = null,
+    private val clearGoldNM: Int? = null,
 ) {
     var level = difficulty
     var seeMoreCheck = moreCheck
@@ -27,27 +30,27 @@ class PhaseInfo(
 
     init {
         // 객체가 생성될 때 초기값 설정
-        seeMoreGold = GoldCalcFunction.smgCalculator(seeMoreCheck, level, seeMoreGoldN, seeMoreGoldH, seeMoreGoldS)
-        clearGold = GoldCalcFunction.cgCalculator(clearCheck, level, clearGoldN, clearGoldH, clearGoldS)
+        seeMoreGold = GoldCalcFunction.smgCalculator(seeMoreCheck, level, seeMoreGoldN, seeMoreGoldH, seeMoreGoldS, seeMoreGoldNM)
+        clearGold = GoldCalcFunction.cgCalculator(clearCheck, level, clearGoldN, clearGoldH, clearGoldS, clearGoldNM)
         totalGold = GoldCalcFunction.totalCGCalculator(clearGold, seeMoreGold)
     }
 
     fun onLevelClicked() {
         levelClicked()
-        seeMoreGoldCalculate(seeMoreGoldN, seeMoreGoldH, seeMoreGoldS)
-        clearGoldCalculate(clearGoldN, clearGoldH, clearGoldS)
+        seeMoreGoldCalculate(seeMoreGoldN, seeMoreGoldH, seeMoreGoldS, seeMoreGoldNM)
+        clearGoldCalculate(clearGoldN, clearGoldH, clearGoldS, clearGoldNM)
         totalClearGoldCalculate()
     }
 
     fun onClearCheckBoxClicked(phaseChecked: Boolean) {
         updateClearCheck(phaseChecked)
-        clearGoldCalculate(clearGoldN, clearGoldH, clearGoldS)
+        clearGoldCalculate(clearGoldN, clearGoldH, clearGoldS, clearGoldNM)
         totalClearGoldCalculate()
     }
 
     fun onSeeMoreCheckBoxClicked(phaseChecked: Boolean) {
         updateSeeMoreCheck(phaseChecked)
-        seeMoreGoldCalculate(seeMoreGoldN, seeMoreGoldH, seeMoreGoldS)
+        seeMoreGoldCalculate(seeMoreGoldN, seeMoreGoldH, seeMoreGoldS, seeMoreGoldNM)
         totalClearGoldCalculate()
     }
 
@@ -56,22 +59,22 @@ class PhaseInfo(
         if (!showCheck) {
             clearCheck = false
             seeMoreCheck = false
-            seeMoreGoldCalculate(seeMoreGoldN, seeMoreGoldH, seeMoreGoldS)
-            clearGoldCalculate(clearGoldN, clearGoldH, clearGoldS)
+            seeMoreGoldCalculate(seeMoreGoldN, seeMoreGoldH, seeMoreGoldS, seeMoreGoldNM)
+            clearGoldCalculate(clearGoldN, clearGoldH, clearGoldS, clearGoldNM)
             totalClearGoldCalculate()
         }
     }
 
     private fun levelClicked() {
-        level = GoldCalcFunction.levelDetector(level, noHardWithSolo, noSolo)
+        level = GoldCalcFunction.levelDetector(level, noHardWithSolo, noSolo, isShadowRaid)
     }
 
-    private fun seeMoreGoldCalculate(seeMoreGoldN: Int, seeMoreGoldH: Int, seeMoreGoldS: Int?) {
-        seeMoreGold = GoldCalcFunction.smgCalculator(seeMoreCheck, level, seeMoreGoldN, seeMoreGoldH, seeMoreGoldS)
+    private fun seeMoreGoldCalculate(seeMoreGoldN: Int, seeMoreGoldH: Int, seeMoreGoldS: Int?, seeMoreGoldNM: Int?) {
+        seeMoreGold = GoldCalcFunction.smgCalculator(seeMoreCheck, level, seeMoreGoldN, seeMoreGoldH, seeMoreGoldS, seeMoreGoldNM)
     }
 
-    private fun clearGoldCalculate(clearGoldN: Int, clearGoldH: Int, clearGoldS: Int?) {
-        clearGold = GoldCalcFunction.cgCalculator(clearCheck, level, clearGoldN, clearGoldH, clearGoldS)
+    private fun clearGoldCalculate(clearGoldN: Int, clearGoldH: Int, clearGoldS: Int?, clearGoldNM: Int?) {
+        clearGold = GoldCalcFunction.cgCalculator(clearCheck, level, clearGoldN, clearGoldH, clearGoldS, clearGoldNM)
     }
 
     private fun totalClearGoldCalculate() {
@@ -88,42 +91,70 @@ class PhaseInfo(
 }
 
 object GoldCalcFunction {
-    fun levelDetector(level: String, noHardWithSolo: Boolean, noSolo: Boolean): String {
-        return if (noHardWithSolo) {
+fun levelDetector(level: String, noHardWithSolo: Boolean, noSolo: Boolean, isShadowRaid: Boolean): String {
+    return if (noHardWithSolo) {
+        if (level == Raid.Difficulty.KR_NORMAL) {
+            Raid.Difficulty.KR_SOLO
+        } else {
+            Raid.Difficulty.KR_NORMAL
+        }
+    } else {
+        if (noSolo && !isShadowRaid) {
             if (level == Raid.Difficulty.KR_NORMAL) {
-                Raid.Difficulty.KR_SOLO
+                Raid.Difficulty.KR_HARD
             } else {
                 Raid.Difficulty.KR_NORMAL
             }
-        } else {
-            if (noSolo) {
-                if (level == Raid.Difficulty.KR_NORMAL) {
+        } else if (isShadowRaid) {
+            when (level) {
+                Raid.Difficulty.KR_NORMAL -> {
                     Raid.Difficulty.KR_HARD
-                } else {
+                }
+                Raid.Difficulty.KR_HARD -> {
+                    Raid.Difficulty.KR_NIGHTMARE
+                }
+                else -> {
                     Raid.Difficulty.KR_NORMAL
                 }
-            } else {
-                when (level) {
-                    Raid.Difficulty.KR_NORMAL -> {
-                        Raid.Difficulty.KR_HARD
-                    }
-                    Raid.Difficulty.KR_HARD -> {
-                        Raid.Difficulty.KR_SOLO
-                    }
-                    else -> {
-                        Raid.Difficulty.KR_NORMAL
-                    }
+            }
+        } else {
+            when (level) {
+                Raid.Difficulty.KR_NORMAL -> {
+                    Raid.Difficulty.KR_HARD
+                }
+                Raid.Difficulty.KR_HARD -> {
+                    Raid.Difficulty.KR_SOLO
+                }
+                else -> {
+                    Raid.Difficulty.KR_NORMAL
                 }
             }
         }
     }
+}
 
-    fun smgCalculator(isChecked: Boolean, level: String, seeMoreGoldN: Int, seeMoreGoldH: Int, seeMoreGoldS: Int?): Int {
-        return if (isChecked && level == Raid.Difficulty.KR_NORMAL) seeMoreGoldN else if (isChecked && level == Raid.Difficulty.KR_HARD) seeMoreGoldH else if (isChecked && seeMoreGoldS != null && level == Raid.Difficulty.KR_SOLO) seeMoreGoldS else 0
+    fun smgCalculator(isChecked: Boolean, level: String, seeMoreGoldN: Int, seeMoreGoldH: Int, seeMoreGoldS: Int?, seeMoreGoldNM: Int?): Int {
+        return if (isChecked && level == Raid.Difficulty.KR_NORMAL) {
+            seeMoreGoldN
+        } else if (isChecked && level == Raid.Difficulty.KR_HARD) {
+            seeMoreGoldH
+        } else if (isChecked && seeMoreGoldS != null && level == Raid.Difficulty.KR_SOLO) {
+            seeMoreGoldS
+        } else if (isChecked && seeMoreGoldNM != null && level == Raid.Difficulty.KR_NIGHTMARE) {
+            seeMoreGoldNM
+        } else 0
     }
 
-    fun cgCalculator(isChecked: Boolean, level: String, clearGoldN: Int, clearGoldH: Int, clearGoldS: Int?): Int {
-        return if (isChecked && level == Raid.Difficulty.KR_NORMAL) clearGoldN else if (isChecked && level == Raid.Difficulty.KR_HARD) clearGoldH else if (isChecked && clearGoldS != null && level == Raid.Difficulty.KR_SOLO) clearGoldS else 0
+    fun cgCalculator(isChecked: Boolean, level: String, clearGoldN: Int, clearGoldH: Int, clearGoldS: Int?, clearGoldNM: Int?): Int {
+        return if (isChecked && level == Raid.Difficulty.KR_NORMAL) {
+            clearGoldN
+        } else if (isChecked && level == Raid.Difficulty.KR_HARD) {
+            clearGoldH
+        } else if (isChecked && clearGoldS != null && level == Raid.Difficulty.KR_SOLO) {
+            clearGoldS
+        } else if (isChecked && clearGoldNM != null && level == Raid.Difficulty.KR_NIGHTMARE) {
+            clearGoldNM
+        }else 0
     }
 
     fun totalCGCalculator(cg: Int, smg: Int): Int {

@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.hongmyeoun.goldcalc.model.constants.viewConst.SnackbarMessage
 import com.hongmyeoun.goldcalc.model.roomDB.character.CharacterRepository
+import com.hongmyeoun.goldcalc.view.common.BannersAds
 import com.hongmyeoun.goldcalc.view.home.content.HomeContent
 import com.hongmyeoun.goldcalc.view.home.topbar.HomeTopBar
 import com.hongmyeoun.goldcalc.viewModel.home.HomeVM
@@ -61,6 +62,7 @@ fun HomeView(
                 viewChange = { isListView = !isListView }
             )
         },
+        bottomBar = { BannersAds() },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         contentWindowInsets = WindowInsets(0.dp)
     ) { paddingValues ->
