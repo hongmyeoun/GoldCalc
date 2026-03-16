@@ -9,7 +9,7 @@ class PhaseInfo(
     isChecked: Boolean,
     private val noSolo: Boolean = true,
     private val noHardWithSolo: Boolean = false,
-    private val isShadowRaid: Boolean = false,
+    private val hasNightmareDifficulty: Boolean = false,
     private val seeMoreGoldN: Int,
     private val seeMoreGoldH: Int,
     private val seeMoreGoldS: Int? = null,
@@ -66,7 +66,7 @@ class PhaseInfo(
     }
 
     private fun levelClicked() {
-        level = GoldCalcFunction.levelDetector(level, noHardWithSolo, noSolo, isShadowRaid)
+        level = GoldCalcFunction.levelDetector(level, noHardWithSolo, noSolo, hasNightmareDifficulty)
     }
 
     private fun seeMoreGoldCalculate(seeMoreGoldN: Int, seeMoreGoldH: Int, seeMoreGoldS: Int?, seeMoreGoldNM: Int?) {
