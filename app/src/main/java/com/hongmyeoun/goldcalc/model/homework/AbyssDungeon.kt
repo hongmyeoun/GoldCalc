@@ -30,6 +30,20 @@ enum class AbyssDungeon(
             Raid.Difficulty.NORMAL to Gold.Clear.Normal.IVORY_TOWER,
             Raid.Difficulty.HARD to Gold.Clear.Hard.IVORY_TOWER,
         )
+    ),
+    CATHEDRAL_OF_HORIZON(
+        boss = Raid.Name.CATHEDRAL_OF_HORIZON,
+        seeMoreGold = mapOf(
+            Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.CATHEDRAL_OF_HORIZON,
+            Raid.Difficulty.HARD to Gold.SeeMore.Hard.CATHEDRAL_OF_HORIZON,
+            Raid.Difficulty.NIGHTMARE to Gold.SeeMore.Nightmare.CATHEDRAL_OF_HORIZON,
+        ),
+        clearGold = mapOf(
+            Raid.Difficulty.NORMAL to Gold.Clear.Normal.CATHEDRAL_OF_HORIZON,
+            Raid.Difficulty.HARD to Gold.Clear.Hard.CATHEDRAL_OF_HORIZON,
+            Raid.Difficulty.NIGHTMARE to Gold.Clear.Nightmare.CATHEDRAL_OF_HORIZON,
+
+        )
     );
 
     fun getBossInfo(mode: String): Pair<List<Int>, List<Int>> {
@@ -50,6 +64,11 @@ class AbyssDungeonModel(character: Character?) {
         IvoryTower(character)
     } else {
         IvoryTower(null)
+    }
+    val cathedral: CathedralHorizon = if (character != null) {
+        CathedralHorizon(character)
+    } else {
+        CathedralHorizon(null)
     }
 }
 
@@ -189,5 +208,63 @@ class IvoryTower(character: Character?) {
         onePhase.onShowChecked()
         twoPhase.onShowChecked()
         threePhase.onShowChecked()
+    }
+}
+
+class CathedralHorizon(character: Character?) {
+    val name = AbyssDungeon.CATHEDRAL_OF_HORIZON.boss
+    private val seeMoreGold = AbyssDungeon.CATHEDRAL_OF_HORIZON.getBossInfo(Raid.Difficulty.NORMAL).first + AbyssDungeon.CATHEDRAL_OF_HORIZON.getBossInfo(Raid.Difficulty.HARD).first + AbyssDungeon.CATHEDRAL_OF_HORIZON.getBossInfo(Raid.Difficulty.NIGHTMARE).first
+    private val clearGold = AbyssDungeon.CATHEDRAL_OF_HORIZON.getBossInfo(Raid.Difficulty.NORMAL).second + AbyssDungeon.CATHEDRAL_OF_HORIZON.getBossInfo(Raid.Difficulty.HARD).second + AbyssDungeon.CATHEDRAL_OF_HORIZON.getBossInfo(Raid.Difficulty.NIGHTMARE).second
+    var isChecked = character?.checkList?.abyssDungeon?.get(2)?.isCheck?:false
+
+    private val getOnePhase = character?.checkList?.abyssDungeon?.get(2)?.phases?.get(0)
+
+    private val onePhaseDifficulty = getOnePhase?.difficulty?: Raid.Difficulty.KR_NORMAL
+    private val onePhaseIsClear = getOnePhase?.isClear?:false
+    private val onePhaseMCheck = getOnePhase?.mCheck?:false
+
+    val onePhase = PhaseInfo(
+        difficulty = onePhaseDifficulty,
+        isClearCheck = onePhaseIsClear,
+        moreCheck = onePhaseMCheck,
+        isChecked = isChecked,
+        hasNightmareDifficulty = true,
+        seeMoreGoldN = seeMoreGold[0],
+        seeMoreGoldH = seeMoreGold[2],
+        seeMoreGoldNM = seeMoreGold[4],
+        clearGoldN = clearGold[0],
+        clearGoldH = clearGold[2],
+        clearGoldNM = clearGold[4]
+    )
+
+    private val getTwoPhase = character?.checkList?.abyssDungeon?.get(2)?.phases?.get(1)
+
+    private val twoPhaseDifficulty = getTwoPhase?.difficulty?: Raid.Difficulty.KR_NORMAL
+    private val twoPhaseIsClear = getTwoPhase?.isClear?:false
+    private val twoPhaseMCheck = getTwoPhase?.mCheck?:false
+
+    val twoPhase = PhaseInfo(
+        difficulty = twoPhaseDifficulty,
+        isClearCheck = twoPhaseIsClear,
+        moreCheck = twoPhaseMCheck,
+        isChecked = isChecked,
+        hasNightmareDifficulty = true,
+        seeMoreGoldN = seeMoreGold[1],
+        seeMoreGoldH = seeMoreGold[3],
+        seeMoreGoldNM = seeMoreGold[5],
+        clearGoldN = clearGold[1],
+        clearGoldH = clearGold[3],
+        clearGoldNM = clearGold[5]
+    )
+
+    var totalGold = onePhase.totalGold + twoPhase.totalGold
+
+    fun totalGold() {
+        totalGold = onePhase.totalGold + twoPhase.totalGold
+    }
+
+    fun onShowChecked() {
+        onePhase.onShowChecked()
+        twoPhase.onShowChecked()
     }
 }

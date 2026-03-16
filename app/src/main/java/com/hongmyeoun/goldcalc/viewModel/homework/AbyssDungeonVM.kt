@@ -12,13 +12,15 @@ class AbyssDungeonVM(val character: Character?): ViewModel() {
 
     val kayangel = adModel.kayangel
     val ivoryTower = adModel.ivoryTower
+    val cathedral = adModel.cathedral
 
     var totalGold by mutableStateOf(0)
 
     fun sumGold(){
         kayangel.totalGold()
         ivoryTower.totalGold()
-        totalGold = kayangel.totalGold + ivoryTower.totalGold
+        cathedral.totalGold()
+        totalGold = kayangel.totalGold + ivoryTower.totalGold + cathedral.totalGold
     }
 
     init {
@@ -27,6 +29,7 @@ class AbyssDungeonVM(val character: Character?): ViewModel() {
 
     var kayangelCheck by mutableStateOf(kayangel.isChecked)
     var ivoryCheck by mutableStateOf(ivoryTower.isChecked)
+    var cathedralCheck by mutableStateOf(cathedral.isChecked)
 
     fun onKayangelCheck() {
         kayangelCheck = !kayangelCheck
@@ -37,6 +40,12 @@ class AbyssDungeonVM(val character: Character?): ViewModel() {
     fun onIvoryCheck() {
         ivoryCheck = !ivoryCheck
         ivoryTower.onShowChecked()
+        sumGold()
+    }
+
+    fun onCathedralCheck() {
+        cathedralCheck = !cathedralCheck
+        cathedral.onShowChecked()
         sumGold()
     }
 

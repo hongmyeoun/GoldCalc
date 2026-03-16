@@ -14,12 +14,14 @@ import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCar
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckBox
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.RaidCheckLists
 import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.ThreePhase
+import com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase.TwoPhase
 import com.hongmyeoun.goldcalc.viewModel.homework.AbyssDungeonVM
 
 @Composable
 fun AbyssDungeon(viewModel: AbyssDungeonVM) {
     var kayangelRotated by remember { mutableStateOf(false) }
     var ivoryTowerRotated by remember { mutableStateOf(false) }
+    var cathedralRotated by remember { mutableStateOf(false) }
 
     val kayangelRotaR by animateFloatAsState(
         targetValue = if (kayangelRotated) 180f else 0f,
@@ -28,6 +30,12 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
     )
     val ivoryTowerRotaR by animateFloatAsState(
         targetValue = if (ivoryTowerRotated) 180f else 0f,
+        animationSpec = tween(500),
+        label = Labels.Animation.ROTATION
+    )
+
+    val cathedralRotaR by animateFloatAsState(
+        targetValue = if (cathedralRotated) 180f else 0f,
         animationSpec = tween(500),
         label = Labels.Animation.ROTATION
     )
@@ -45,6 +53,13 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
             modifier = modifier,
             checked = viewModel.ivoryCheck,
             onCheckedChange = { viewModel.onIvoryCheck() }
+        )
+
+        RaidCheckBox(
+            name = Raid.Name.CATHEDRAL_OF_HORIZON,
+            modifier = modifier,
+            checked = viewModel.cathedralCheck,
+            onCheckedChange = { viewModel.onCathedralCheck() }
         )
     }
 
@@ -186,4 +201,57 @@ fun AbyssDungeon(viewModel: AbyssDungeonVM) {
             }
         )
     }
+
+    if (viewModel.cathedralCheck) {
+        RaidCard(
+            bossImg = R.drawable.abyss_dungeon_ivory_tower,
+            isRotated = cathedralRotated,
+            rotaR = cathedralRotaR,
+            onClick = { cathedralRotated = !cathedralRotated },
+            phaseCard = {
+                TwoPhase(
+                    rotaR = cathedralRotaR,
+
+                    name = viewModel.cathedral.name,
+                    raidBossImg = R.drawable.logo_ivory_tower,
+                    totalGold = viewModel.cathedral.totalGold,
+
+                    phaseOneLevel = viewModel.cathedral.onePhase.level,
+                    phaseOneGold = viewModel.cathedral.onePhase.totalGold,
+                    phaseOneSMC = viewModel.cathedral.onePhase.seeMoreCheck,
+                    phaseOneCC = viewModel.cathedral.onePhase.clearCheck,
+                    onOnePhaseLevelClicked = {
+                        viewModel.cathedral.onePhase.onLevelClicked()
+                        viewModel.sumGold()
+                    },
+                    onOnePhaseClearCheckBoxChecked = {
+                        viewModel.cathedral.onePhase.onClearCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                    onOnePhaseSeeMoreCheckBoxChecked = {
+                        viewModel.cathedral.onePhase.onSeeMoreCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+
+                    phaseTwoLevel = viewModel.cathedral.twoPhase.level,
+                    phaseTwoGold = viewModel.cathedral.twoPhase.totalGold,
+                    phaseTwoSMC = viewModel.cathedral.twoPhase.seeMoreCheck,
+                    phaseTwoCC = viewModel.cathedral.twoPhase.clearCheck,
+                    onTwoPhaseLevelClicked = {
+                        viewModel.cathedral.twoPhase.onLevelClicked()
+                        viewModel.sumGold()
+                    },
+                    onTwoPhaseClearCheckBoxChecked = {
+                        viewModel.cathedral.twoPhase.onClearCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                    onTwoPhaseSeeMoreCheckBoxChecked = {
+                        viewModel.cathedral.twoPhase.onSeeMoreCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    }
+                )
+            }
+        )
+    }
+
 }

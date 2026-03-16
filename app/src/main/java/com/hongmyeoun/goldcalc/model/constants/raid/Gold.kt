@@ -12,6 +12,7 @@ class Gold {
 
             val KAYANGEL = listOf(180, 200, 270)
             val IVORY_TOWER = listOf(180, 220, 300)
+            val CATHEDRAL_OF_HORIZON = listOf(0, 0, 0)
 
             val ECHIDNA = listOf(310, 700)
             val EGIR = listOf(750, 1780)
@@ -37,6 +38,7 @@ class Gold {
 
             val KAYANGEL = listOf(225, 350, 500)
             val IVORY_TOWER = listOf(350, 500, 950)
+            val CATHEDRAL_OF_HORIZON = listOf(0, 0, 0)
 
             val ECHIDNA = listOf(720, 1630)
             val EGIR = listOf(1820, 4150)
@@ -60,6 +62,8 @@ class Gold {
         }
 
         object Nightmare {
+            val CATHEDRAL_OF_HORIZON = listOf(0, 0, 0)
+
             val SERCA = listOf(6720, 10560)
         }
     }
@@ -75,6 +79,7 @@ class Gold {
 
             val KAYANGEL = listOf(325, 550, 725)
             val IVORY_TOWER = listOf(600, 800, 1200)
+            val CATHEDRAL_OF_HORIZON = listOf(0, 0, 0)
 
             val ECHIDNA = listOf(1900, 4200)
             val EGIR = listOf(3500, 8000)
@@ -100,6 +105,7 @@ class Gold {
 
             val KAYANGEL = listOf(450, 700, 1000)
             val IVORY_TOWER = listOf(700, 1000, 1900)
+            val CATHEDRAL_OF_HORIZON = listOf(0, 0, 0)
 
             val ECHIDNA = listOf(2200, 5000)
             val EGIR = listOf(5500, 12500)
@@ -123,6 +129,8 @@ class Gold {
         }
 
         object Nightmare {
+            val CATHEDRAL_OF_HORIZON = listOf(0, 0, 0)
+
             val SERCA = listOf(21000, 33000)
         }
     }
