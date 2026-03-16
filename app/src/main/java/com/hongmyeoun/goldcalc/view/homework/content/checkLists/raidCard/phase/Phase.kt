@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase
 
 import androidx.compose.runtime.Composable
+import com.hongmyeoun.goldcalc.model.common.BoundGoldReturn
 
 @Composable
 fun BasePhase(
@@ -43,6 +44,8 @@ fun OnePhase(
     onOnePhaseClearCheckBoxChecked: (Boolean) -> Unit,
     onOnePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
 ) {
+    val isBoundGold = BoundGoldReturn.isBoundGold(name, phaseOneLevel)
+
     BossCard(
         rotaR = rotaR,
         raidBossImg = raidBossImg,
@@ -50,6 +53,7 @@ fun OnePhase(
         phaseGoldTextUI = {
             OneGoldText(
                 name = name,
+                isBoundGold = isBoundGold,
                 phaseOneGold = phaseOneGold,
             )
         },
@@ -74,6 +78,7 @@ fun TwoPhase(
     name: String,
     raidBossImg: Int,
     totalGold: Int,
+    isBoundGold: Boolean = false,
 
     phaseOneLevel: String,
     phaseOneGold: Int,
@@ -91,6 +96,8 @@ fun TwoPhase(
     onTwoPhaseClearCheckBoxChecked: (Boolean) -> Unit,
     onTwoPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
 ) {
+//    val isBoundGold = BoundGoldReturn.isBoundGold(name, phaseOneLevel)
+
     BossCard(
         rotaR = rotaR,
         raidBossImg = raidBossImg,
@@ -98,6 +105,7 @@ fun TwoPhase(
         phaseGoldTextUI = {
             TwoGoldText(
                 name = name,
+                isBoundGold = isBoundGold,
                 phaseOneGold = phaseOneGold,
                 phaseTwoGold = phaseTwoGold
             )
@@ -158,6 +166,8 @@ fun ThreePhase(
     onThreePhaseClearCheckBoxChecked: (Boolean) -> Unit,
     onThreePhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
 ) {
+    val isBoundGold = BoundGoldReturn.isBoundGold(name, phaseOneLevel)
+
     BossCard(
         rotaR = rotaR,
         raidBossImg = raidBossImg,
@@ -165,6 +175,7 @@ fun ThreePhase(
         phaseGoldTextUI = {
             ThreeGoldText(
                 name = name,
+                isBoundGold = isBoundGold,
                 phaseOneGold = phaseOneGold,
                 phaseTwoGold = phaseTwoGold,
                 phaseThreeGold = phaseThreeGold
@@ -244,6 +255,8 @@ fun FourPhase(
     onFourPhaseClearCheckBoxChecked: (Boolean) -> Unit,
     onFourPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
 ) {
+    val isBoundGold = BoundGoldReturn.isBoundGold(name, phaseOneLevel)
+
     BossCard(
         rotaR = rotaR,
         raidBossImg = raidBossImg,
@@ -251,6 +264,7 @@ fun FourPhase(
         phaseGoldTextUI = {
             FourGoldText(
                 name = name,
+                isBoundGold = isBoundGold,
                 phaseOneGold = phaseOneGold,
                 phaseTwoGold = phaseTwoGold,
                 phaseThreeGold = phaseThreeGold,

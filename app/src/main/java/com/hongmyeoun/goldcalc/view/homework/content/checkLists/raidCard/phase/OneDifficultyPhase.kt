@@ -1,6 +1,7 @@
 package com.hongmyeoun.goldcalc.view.homework.content.checkLists.raidCard.phase
 
 import androidx.compose.runtime.Composable
+import com.hongmyeoun.goldcalc.model.common.BoundGoldReturn
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 
 @Composable
@@ -48,6 +49,8 @@ fun TwoPhaseNoHard(
     onTwoPhaseClearCheckBoxChecked: (Boolean) -> Unit,
     onTwoPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
 ) {
+    val isBoundGold = BoundGoldReturn.isBoundGold(name, Raid.Difficulty.KR_NORMAL)
+
     BossCard(
         rotaR = rotaR,
         raidBossImg = raidBossImg,
@@ -55,6 +58,7 @@ fun TwoPhaseNoHard(
         phaseGoldTextUI = {
             TwoGoldText(
                 name = name,
+                isBoundGold = isBoundGold,
                 phaseOneGold = phaseOneGold,
                 phaseTwoGold = phaseTwoGold
             )
@@ -119,6 +123,8 @@ fun FourPhaseLastHard(
     onFourPhaseClearCheckBoxChecked: (Boolean) -> Unit,
     onFourPhaseSeeMoreCheckBoxChecked: (Boolean) -> Unit,
 ) {
+    val isBoundGold = BoundGoldReturn.isBoundGold(name, phaseOneLevel)
+
     BossCard(
         rotaR = rotaR,
         raidBossImg = raidBossImg,
@@ -126,6 +132,7 @@ fun FourPhaseLastHard(
         phaseGoldTextUI = {
             FourGoldText(
                 name = name,
+                isBoundGold = isBoundGold,
                 phaseOneGold = phaseOneGold,
                 phaseTwoGold = phaseTwoGold,
                 phaseThreeGold = phaseThreeGold,

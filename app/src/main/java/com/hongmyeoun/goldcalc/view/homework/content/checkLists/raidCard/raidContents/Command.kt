@@ -118,6 +118,7 @@ fun Command(
                     name = viewModel.valtan.name,
                     raidBossImg = R.drawable.logo_valtan,
                     totalGold = viewModel.valtan.totalGold,
+                    isBoundGold = true,
 
                     phaseOneLevel = viewModel.valtan.onePhase.level,
                     phaseOneGold = viewModel.valtan.onePhase.totalGold,

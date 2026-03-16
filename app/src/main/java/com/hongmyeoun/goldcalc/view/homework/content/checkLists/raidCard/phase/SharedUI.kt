@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.hongmyeoun.goldcalc.R
 import com.hongmyeoun.goldcalc.model.common.ImageReturn.goldImage
 import com.hongmyeoun.goldcalc.model.common.formatWithCommas
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
@@ -131,6 +132,7 @@ private fun RaidNameText(name: String) {
 @Composable
 private fun BaseGoldText(
     phase: String,
+    isBoundGold: Boolean,
     phaseGold: Int
 ) {
     Row(
@@ -148,7 +150,7 @@ private fun BaseGoldText(
                 .weight(0.3f)
                 .size(16.dp),
             alignment = Alignment.Center,
-            model = goldImage(phaseGold),
+            model = if (isBoundGold) R.drawable.gold_bound else goldImage(phaseGold),
             contentDescription = "골드 아이콘"
         )
     }
@@ -157,12 +159,14 @@ private fun BaseGoldText(
 @Composable
 fun OneGoldText(
     name: String,
+    isBoundGold: Boolean,
     phaseOneGold: Int
 ) {
     RaidNameText(name = name)
 
     BaseGoldText(
         phase = Homework.PHASE_ONE_NUM,
+        isBoundGold = isBoundGold,
         phaseGold = phaseOneGold
     )
 }
@@ -170,6 +174,7 @@ fun OneGoldText(
 @Composable
 fun TwoGoldText(
     name: String,
+    isBoundGold: Boolean,
     phaseOneGold: Int,
     phaseTwoGold: Int,
 ) {
@@ -177,10 +182,12 @@ fun TwoGoldText(
 
     BaseGoldText(
         phase = Homework.PHASE_ONE_NUM,
+        isBoundGold = isBoundGold,
         phaseGold = phaseOneGold
     )
     BaseGoldText(
         phase = Homework.PHASE_TWO_NUM,
+        isBoundGold = isBoundGold,
         phaseGold = phaseTwoGold
     )
 }
@@ -188,16 +195,19 @@ fun TwoGoldText(
 @Composable
 fun ThreeGoldText(
     name: String,
+    isBoundGold: Boolean,
     phaseOneGold: Int,
     phaseTwoGold: Int,
     phaseThreeGold: Int,
 ) {
     TwoGoldText(
         name = name,
+        isBoundGold = isBoundGold,
         phaseOneGold = phaseOneGold,
         phaseTwoGold = phaseTwoGold
     )
     BaseGoldText(
+        isBoundGold = isBoundGold,
         phase = Homework.PHASE_THREE_NUM,
         phaseGold = phaseThreeGold
     )
@@ -206,6 +216,7 @@ fun ThreeGoldText(
 @Composable
 fun FourGoldText(
     name: String,
+    isBoundGold: Boolean,
     phaseOneGold: Int,
     phaseTwoGold: Int,
     phaseThreeGold: Int,
@@ -213,12 +224,14 @@ fun FourGoldText(
 ) {
     ThreeGoldText(
         name = name,
+        isBoundGold = isBoundGold,
         phaseOneGold = phaseOneGold,
         phaseTwoGold = phaseTwoGold,
         phaseThreeGold = phaseThreeGold
     )
     BaseGoldText(
         phase = Homework.PHASE_FOUR_NUM,
+        isBoundGold = isBoundGold,
         phaseGold = phaseFourGold
     )
 }

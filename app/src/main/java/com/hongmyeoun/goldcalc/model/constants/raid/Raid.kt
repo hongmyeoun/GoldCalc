@@ -10,6 +10,7 @@ class Raid {
         const val ABRELSHUD = "아브렐슈드"
         const val ILLIAKAN = "일리아칸"
         const val KAMEN = "카멘"
+        val BOUND_COMMAND_RAID_LIST = listOf(VALTAN, BIACKISS, KOUKU_SATON, ABRELSHUD, ILLIAKAN, KAMEN)
 
         const val BIACKISS_SHORT = "비아"
         const val KOUKU_SATON_SHORT = "쿠크"
@@ -19,6 +20,7 @@ class Raid {
         const val ABYSS_DUNGEON = "어비스"
         const val KAYANGEL = "카양겔"
         const val IVORY_TOWER = "상아탑"
+        val BOUND_ABYSS_DUNGEON_LIST = listOf(KAYANGEL, IVORY_TOWER)
 
         const val IVORY_TOWER_LONG = "혼돈의 상아탑"
 
@@ -30,6 +32,7 @@ class Raid {
         const val MORDUM = "3막 : 모르둠"
         const val ARMOCHE = "4막 : 아르모체"
         const val KAZEROTH_END = "종막 : 최후의 날"
+        val BOUND_KAZEROTH_RAID_LIST = listOf(ECHIDNA, EGIR, ABRELSHUD_2, MORDUM)
 
         const val EPIC = "에픽"
         const val EPIC_RAID = "에픽 레이드"
