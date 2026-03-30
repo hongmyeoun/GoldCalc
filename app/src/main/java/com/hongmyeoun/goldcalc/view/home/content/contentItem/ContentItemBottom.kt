@@ -82,6 +82,20 @@ fun HomeworkProgress(
                 ) { viewModel.eventGoldCalc(it) }
             }
         }
+        if (character.checkList.abyssDungeon[2].phases[0].isClear) {
+            item {
+                val cathedarlVM = remember { GoldContentStateVM(character.raidPhaseInfo.sercaPhase)}
+
+                ProgressState(
+                    enabled = viewModel.enabled,
+                    phase = viewModel.phaseCalc(character.checkList.abyssDungeon[2].phases),
+                    raidName = Raid.Name.CATHEDRAL,
+                    viewModel = cathedarlVM,
+                    isListView = isListView,
+                ) { viewModel.cathedralGoldCalc(it) }
+            }
+        }
+
         if (character.checkList.shadow[0].phases[0].isClear) {
             item {
                 val shadowVM = remember { GoldContentStateVM(character.raidPhaseInfo.sercaPhase)}
