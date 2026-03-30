@@ -88,7 +88,10 @@ data class RaidPhaseInfo(
     @ColumnInfo("eventTotalGold") val eventTotalGold: Int = 0,
 
     @ColumnInfo("sercaPhase") val sercaPhase: Int = 0,
-    @ColumnInfo("sercaTotalGold") val sercaTotalGold: Int = 0
+    @ColumnInfo("sercaTotalGold") val sercaTotalGold: Int = 0,
+
+    @ColumnInfo("cathedralPhase") val cathedralPhase: Int = 0,
+    @ColumnInfo("cathedralTotalGold") val cathedralTotalGold: Int = 0
 )
 
 
@@ -128,6 +131,10 @@ data class CheckList(
             name = Raid.Name.IVORY_TOWER,
             phases = listOf(Phase(), Phase(), Phase())
         ),
+        RaidList(
+            name = Raid.Name.CATHEDRAL,
+            phases = listOf(Phase(), Phase())
+        )
     ),
     @ColumnInfo("Kazeroth") val kazeroth: List<RaidList> = listOf(
         RaidList(
