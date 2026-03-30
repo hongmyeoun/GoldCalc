@@ -88,7 +88,7 @@ fun Summary(
                     Script(cbVM)
                 }
 
-                if (adVM.kayangelCheck || adVM.ivoryCheck) {
+                if (adVM.kayangelCheck || adVM.ivoryCheck || adVM.cathedralCheck) {
                     Script(adVM)
                 }
 
@@ -252,7 +252,7 @@ private fun Script(adVM: AbyssDungeonVM) {
         Divider()
 
         Row(
-            modifier = Modifier.padding(if (adVM.kayangelCheck || adVM.ivoryCheck) 16.dp else 0.dp)
+            modifier = Modifier.padding(if (adVM.kayangelCheck || adVM.ivoryCheck || adVM.cathedralCheck) 16.dp else 0.dp)
         ) {
             PhaseInfo(
                 isCheck = adVM.kayangelCheck,
@@ -286,6 +286,22 @@ private fun Script(adVM: AbyssDungeonVM) {
                     )
                 }
             )
+            PhaseInfo(
+                isCheck = adVM.cathedralCheck,
+                modifier = Modifier.weight(1f),
+                raidName = Raid.Name.CATHEDRAL,
+                phaseInfo = {
+                    Text(
+                        text = "${Homework.PHASE_ONE} ${adVM.cathedral.onePhase.level} : ${adVM.cathedral.onePhase.totalGold.formatWithCommas()} G",
+                        color = Color.White
+                    )
+                    Text(
+                        text = "${Homework.PHASE_TWO} ${adVM.cathedral.twoPhase.level} : ${adVM.cathedral.twoPhase.totalGold.formatWithCommas()} G",
+                        color = Color.White
+                    )
+                }
+            )
+
         }
     }
 }

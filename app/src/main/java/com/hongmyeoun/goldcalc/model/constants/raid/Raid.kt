@@ -19,6 +19,7 @@ class Raid {
         const val ABYSS_DUNGEON = "어비스"
         const val KAYANGEL = "카양겔"
         const val IVORY_TOWER = "상아탑"
+        const val CATHEDRAL = "지평의 성당"
 
         const val IVORY_TOWER_LONG = "혼돈의 상아탑"
 

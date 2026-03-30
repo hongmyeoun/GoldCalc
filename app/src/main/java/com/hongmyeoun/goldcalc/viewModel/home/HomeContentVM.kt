@@ -55,6 +55,7 @@ class HomeContentVM @Inject constructor(
 
     private val _kayangelTG = MutableStateFlow(0)
     private val _ivoryTowerTG = MutableStateFlow(0)
+    private val _cathedralTG = MutableStateFlow(0)
 
     private val _echidnaTG = MutableStateFlow(0)
     private val _egirTG = MutableStateFlow(0)
@@ -86,7 +87,7 @@ class HomeContentVM @Inject constructor(
 
     private fun calcTotalGold() {
         val commandTG = _kamenTG.value + _illiakanTG.value + _abrelshudTG.value + _koukuSatonTG.value + _biackissTG.value + _valtanTG.value
-        val abyssDungeonTG = _ivoryTowerTG.value + _kayangelTG.value
+        val abyssDungeonTG = _ivoryTowerTG.value + _kayangelTG.value + _cathedralTG.value
         val kazerothTG = _kazerothTG.value + _armocheTG.value + _mordumTG.value + _ablreshudTG2.value + _egirTG.value + _echidnaTG.value
         val epicTG = _behemothTG.value
         val shadowTG = _sercaTG.value
@@ -165,6 +166,21 @@ class HomeContentVM @Inject constructor(
                         characterRepository.update(updateChar)
                         _character.value = updateChar
                         getModel(updateChar)
+                    } else if(it.checkList.abyssDungeon.size < 3) {
+                        val cathedral = RaidList(
+                            name = Raid.Name.CATHEDRAL,
+                            phases = listOf(Phase(), Phase())
+                        )
+
+                        val update = it.checkList.abyssDungeon.toMutableList()
+                        update.add(cathedral)
+
+                        val updateCheckList = it.checkList.copy(abyssDungeon = update)
+                        val updateChar = it.copy(checkList = updateCheckList)
+
+                        characterRepository.update(updateChar)
+                        _character.value = updateChar
+                        getModel(updateChar)
                     } else {
                         val newInfo = ensureRaidPhaseInfoUpdated(it)
                         _character.value = newInfo
@@ -220,6 +236,7 @@ class HomeContentVM @Inject constructor(
         _armocheTG.value = character.raidPhaseInfo.armocheTotalGold
         _kazerothTG.value = character.raidPhaseInfo.kazerothTotalGold
         _sercaTG.value = character.raidPhaseInfo.sercaTotalGold
+        _cathedralTG.value = character.raidPhaseInfo.cathedralTotalGold
         _eventTG.value = character.raidPhaseInfo.eventTotalGold
 
         _maxGold.value = character.weeklyGold
@@ -515,6 +532,20 @@ class HomeContentVM @Inject constructor(
         }
     }
 
+    fun cathedralGoldCalc(nowPhase: Int) {
+        _sercaTG.value = when (nowPhase) {
+            1 -> { _abModel.value.cathedral.onePhase.totalGold }
+            2 -> { _abModel.value.cathedral.totalGold }
+            else -> { 0 }
+        }
+
+        calcTotalGold()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val update = _character.value.copy(earnGold = _totalGold.value, raidPhaseInfo = _character.value.raidPhaseInfo.copy(cathedralPhase = nowPhase, cathedralTotalGold = _cathedralTG.value))
+            characterRepository.update(update)
+        }
+    }
 
     fun eventGoldCalc(nowPhase: Int) {
         _eventTG.value = when(nowPhase) {
@@ -561,6 +592,7 @@ class GoldContentStateVM(initPhase: Int) : ViewModel() {
             Raid.Name.ARMOCHE -> R.drawable.kazeroth_armoche
             Raid.Name.KAZEROTH_END -> R.drawable.kazeroth_kazeroth
             Raid.Name.SERCA -> R.drawable.shadow_serca
+            Raid.Name.CATHEDRAL -> R.drawable.abyss_dungeon_cathedral
             Raid.Name.EVENT_RAID -> R.drawable.event_kamen
             else -> R.drawable.kazeroth_echidna
         }
