@@ -533,7 +533,7 @@ class HomeContentVM @Inject constructor(
     }
 
     fun cathedralGoldCalc(nowPhase: Int) {
-        _sercaTG.value = when (nowPhase) {
+        _cathedralTG.value = when (nowPhase) {
             1 -> { _abModel.value.cathedral.onePhase.totalGold }
             2 -> { _abModel.value.cathedral.totalGold }
             else -> { 0 }
