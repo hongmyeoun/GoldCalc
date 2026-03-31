@@ -18,6 +18,7 @@ data class Character(
     @ColumnInfo("minusGold") val minusGold: String = "0",
     @ColumnInfo("goldCheck") val goldCheck: Boolean = false,
     @ColumnInfo("earnGold") val earnGold: Int = 0,
+    @ColumnInfo("earnBoundedGold") val earnBoundedGold: Int = 0,
 
     @ColumnInfo("guildName") val guildName: String? = null,
     @ColumnInfo("title") val title: String? = null,
@@ -39,59 +40,77 @@ data class Character(
 )
 
 data class RaidPhaseInfo(
-    @ColumnInfo("egirPhase") val egirPhase: Int = 0,
-    @ColumnInfo("egirTotalGold") val egirTotalGold: Int = 0,
-
-    @ColumnInfo("behemothPhase") val behemothPhase: Int = 0,
-    @ColumnInfo("behemothTotalGold") val behemothTotalGold: Int = 0,
-
-    @ColumnInfo("echidnaPhase") val echidnaPhase: Int = 0,
-    @ColumnInfo("echidnaTotalGold") val echidnaTotalGold: Int = 0,
-
-    @ColumnInfo("kamenPhase") val kamenPhase: Int = 0,
-    @ColumnInfo("kamenTotalGold") val kamenTotalGold: Int = 0,
-
-    @ColumnInfo("ivoryPhase") val ivoryPhase: Int = 0,
-    @ColumnInfo("ivoryTotalGold") val ivoryTotalGold: Int = 0,
-
-    @ColumnInfo("illiakanPhase") val illiakanPhase: Int = 0,
-    @ColumnInfo("illiakanTotalGold") val illiakanTotalGold: Int = 0,
-
-    @ColumnInfo("kayangelPhase") val kayangelPhase: Int = 0,
-    @ColumnInfo("kayangelTotalGold") val kayangelTotalGold: Int = 0,
-
-    @ColumnInfo("abrelPhase") val abrelPhase: Int = 0,
-    @ColumnInfo("abrelTotalGold") val abrelTotalGold: Int = 0,
-
-    @ColumnInfo("koukuPhase") val koukuPhase: Int = 0,
-    @ColumnInfo("koukuTotalGold") val koukuTotalGold: Int = 0,
-
-    @ColumnInfo("biackissPhase") val biackissPhase: Int = 0,
-    @ColumnInfo("biackissTotalGold") val biackissTotalGold: Int = 0,
-
-    @ColumnInfo("valtanPhase") val valtanPhase: Int = 0,
-    @ColumnInfo("valtanTotalGold") val valtanTotalGold: Int = 0,
-
-    @ColumnInfo("abrel2Phase") val abrel2Phase: Int = 0,
-    @ColumnInfo("abrel2TotalGold") val abrel2TotalGold: Int = 0,
-
-    @ColumnInfo("mordumPhase") val mordumPhase: Int = 0,
-    @ColumnInfo("mordumTotalGold") val mordumTotalGold: Int = 0,
-
-    @ColumnInfo("armochePhase") val armochePhase: Int = 0,
-    @ColumnInfo("armocheTotalGold") val armocheTotalGold: Int = 0,
-
-    @ColumnInfo("kazerothPhase") val kazerothPhase: Int = 0,
-    @ColumnInfo("kazerothTotalGold") val kazerothTotalGold: Int = 0,
-
     @ColumnInfo("eventPhase") val eventPhase: Int = 0,
     @ColumnInfo("eventTotalGold") val eventTotalGold: Int = 0,
+    @ColumnInfo("eventTotalBoundedGold") val eventTotalBoundedGold: Int = 0,
+
+    @ColumnInfo("cathedralPhase") val cathedralPhase: Int = 0,
+    @ColumnInfo("cathedralTotalGold") val cathedralTotalGold: Int = 0,
+    @ColumnInfo("cathedralTotalBoundedGold") val cathedralTotalBoundedGold: Int = 0,
 
     @ColumnInfo("sercaPhase") val sercaPhase: Int = 0,
     @ColumnInfo("sercaTotalGold") val sercaTotalGold: Int = 0,
+    @ColumnInfo("sercaTotalBoundedGold") val sercaTotalBoundedGold: Int = 0,
 
-    @ColumnInfo("cathedralPhase") val cathedralPhase: Int = 0,
-    @ColumnInfo("cathedralTotalGold") val cathedralTotalGold: Int = 0
+    @ColumnInfo("kazerothPhase") val kazerothPhase: Int = 0,
+    @ColumnInfo("kazerothTotalGold") val kazerothTotalGold: Int = 0,
+    @ColumnInfo("kazerothTotalBoundedGold") val kazerothTotalBoundedGold: Int = 0,
+
+    @ColumnInfo("armochePhase") val armochePhase: Int = 0,
+    @ColumnInfo("armocheTotalGold") val armocheTotalGold: Int = 0,
+    @ColumnInfo("armocheTotalBoundedGold") val armocheTotalBoundedGold: Int = 0,
+
+    @ColumnInfo("mordumPhase") val mordumPhase: Int = 0,
+    @ColumnInfo("mordumTotalGold") val mordumTotalGold: Int = 0,
+    @ColumnInfo("mordumTotalBoundedGold") val mordumTotalBoundedGold: Int = 0,
+
+    @ColumnInfo("abrel2Phase") val abrel2Phase: Int = 0,
+    @ColumnInfo("abrel2TotalGold") val abrel2TotalGold: Int = 0,
+    @ColumnInfo("abrel2TotalBoundedGold") val abrel2TotalBoundedGold: Int = 0,
+
+    @ColumnInfo("egirPhase") val egirPhase: Int = 0,
+    @ColumnInfo("egirTotalGold") val egirTotalGold: Int = 0,
+    @ColumnInfo("egirTotalBoundedGold") val egirTotalBoundedGold: Int = 0,
+
+    @ColumnInfo("behemothPhase") val behemothPhase: Int = 0,
+    @ColumnInfo("behemothTotalGold") val behemothTotalGold: Int = 0,
+    @ColumnInfo("behemothTotalBoundedGold") val behemothTotalBoundedGold: Int = 0,
+
+    @ColumnInfo("echidnaPhase") val echidnaPhase: Int = 0,
+    @ColumnInfo("echidnaTotalGold") val echidnaTotalGold: Int = 0,
+    @ColumnInfo("echidnaTotalBoundedGold") val echidnaTotalBoundedGold: Int = 0,
+
+    @ColumnInfo("kamenPhase") val kamenPhase: Int = 0,
+    @ColumnInfo("kamenTotalGold") val kamenTotalGold: Int = 0,
+    @ColumnInfo("kamenTotalBoundedGold") val kamenTotalBoundedGold: Int = 0,
+
+    @ColumnInfo("ivoryPhase") val ivoryPhase: Int = 0,
+    @ColumnInfo("ivoryTotalGold") val ivoryTotalGold: Int = 0,
+    @ColumnInfo("ivoryTotalBoundedGold") val ivoryTotalBoundedGold: Int = 0,
+
+    @ColumnInfo("illiakanPhase") val illiakanPhase: Int = 0,
+    @ColumnInfo("illiakanTotalGold") val illiakanTotalGold: Int = 0,
+    @ColumnInfo("illiakanTotalBoundedGold") val illiakanTotalBoundedGold: Int = 0,
+
+    @ColumnInfo("kayangelPhase") val kayangelPhase: Int = 0,
+    @ColumnInfo("kayangelTotalGold") val kayangelTotalGold: Int = 0,
+    @ColumnInfo("kayangelTotalBoundedGold") val kayangelTotalBoundedGold: Int = 0,
+
+    @ColumnInfo("abrelPhase") val abrelPhase: Int = 0,
+    @ColumnInfo("abrelTotalGold") val abrelTotalGold: Int = 0,
+    @ColumnInfo("abrelTotalBoundedGold") val abrelTotalBoundedGold: Int = 0,
+
+    @ColumnInfo("koukuPhase") val koukuPhase: Int = 0,
+    @ColumnInfo("koukuTotalGold") val koukuTotalGold: Int = 0,
+    @ColumnInfo("koukuTotalBoundedGold") val koukuTotalBoundedGold: Int = 0,
+
+    @ColumnInfo("biackissPhase") val biackissPhase: Int = 0,
+    @ColumnInfo("biackissTotalGold") val biackissTotalGold: Int = 0,
+    @ColumnInfo("biackissTotalBoundedGold") val biackissTotalBoundedGold: Int = 0,
+
+    @ColumnInfo("valtanPhase") val valtanPhase: Int = 0,
+    @ColumnInfo("valtanTotalGold") val valtanTotalGold: Int = 0,
+    @ColumnInfo("valtanTotalBoundedGold") val valtanTotalBoundedGold: Int = 0,
 )
 
 
