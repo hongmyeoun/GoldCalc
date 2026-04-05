@@ -84,7 +84,7 @@ fun HomeworkProgress(
         }
         if (character.checkList.abyssDungeon[2].phases[0].isClear) {
             item {
-                val cathedarlVM = remember { GoldContentStateVM(character.raidPhaseInfo.sercaPhase)}
+                val cathedarlVM = remember { GoldContentStateVM(character.raidPhaseInfo.cathedralPhase)}
 
                 ProgressState(
                     enabled = viewModel.enabled,
