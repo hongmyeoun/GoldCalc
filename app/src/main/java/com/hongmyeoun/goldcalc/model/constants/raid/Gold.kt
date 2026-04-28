@@ -64,72 +64,76 @@ class Gold {
         object Nightmare {
             val SERCA = listOf(6720, 10560)
             val CATHEDRAL = listOf(6400, 9600)
+
+            val EVENT_RAID = listOf(0)
         }
     }
 
     class Clear {
         object Normal {
-            val VALTAN = listOf(250, 350)
-            val BIACKISS = listOf(300, 500)
-            val KOUKU_SATON = listOf(300, 450, 750)
-            val ABRELSHUD = listOf(500, 500, 500, 800)
-            val ILLIAKAN = listOf(425, 775, 1150)
-            val KAMEN = listOf(800, 1000, 1400, 0)
+            val VALTAN = listOf(0, 0)
+            val BIACKISS = listOf(0, 0)
+            val KOUKU_SATON = listOf(0, 0, 0)
+            val ABRELSHUD = listOf(0, 0, 0, 0)
+            val ILLIAKAN = listOf(0, 0, 0)
+            val KAMEN = listOf(0, 0, 0, 0)
 
-            val KAYANGEL = listOf(325, 550, 725)
-            val IVORY_TOWER = listOf(600, 800, 1200)
-            val CATHEDRAL = listOf(13500, 16500)
+            val KAYANGEL = listOf(0, 0, 0)
+            val IVORY_TOWER = listOf(0, 0, 0)
+            val CATHEDRAL = listOf(0, 0)
 
-            val ECHIDNA = listOf(1900, 4200)
-            val EGIR = listOf(3500, 8000)
-            val ABRELSHUD_2 = listOf(5500, 11000)
-            val MORDUM = listOf(4000, 7000, 10000)
-            val ARMOCHE = listOf(12500, 20500)
-            val KAZEROTH = listOf(14000, 26000)
+            val ECHIDNA = listOf(0, 0)
+            val EGIR = listOf(1750, 4000)
+            val ABRELSHUD_2 = listOf(2750, 5500)
+            val MORDUM = listOf(2000, 3500, 5000)
+            val ARMOCHE = listOf(6250, 10250)
+            val KAZEROTH = listOf(7000, 13000)
 
-            val SERCA = listOf(14000, 21000)
+            val SERCA = listOf(7000, 10500)
 
-            val BEHEMOTH = listOf(2200, 5000)
+            val BEHEMOTH = listOf(1100, 2500)
 
-            val EVENT_RAID = listOf(15000)
+            val EVENT_RAID = listOf(20000)
         }
 
         object Hard {
-            val VALTAN = listOf(350, 550)
-            val BIACKISS = listOf(450, 750)
-            val KOUKU_SATON = listOf(300, 450, 750)
-            val ABRELSHUD = listOf(600, 600, 600, 1000)
-            val ILLIAKAN = listOf(600, 1000, 1400)
-            val KAMEN = listOf(1000, 1200, 1800, 2500)
+            val VALTAN = listOf(0, 0)
+            val BIACKISS = listOf(0, 0)
+            val KOUKU_SATON = listOf(0, 0, 0)
+            val ABRELSHUD = listOf(0, 0, 0, 0)
+            val ILLIAKAN = listOf(0, 0, 0)
+            val KAMEN = listOf(0, 0, 0, 0)
 
-            val KAYANGEL = listOf(450, 700, 1000)
-            val IVORY_TOWER = listOf(700, 1000, 1900)
-            val CATHEDRAL = listOf(16000, 24000)
+            val KAYANGEL = listOf(0, 0, 0)
+            val IVORY_TOWER = listOf(0, 0, 0)
+            val CATHEDRAL = listOf(0, 0)
 
-            val ECHIDNA = listOf(2200, 5000)
-            val EGIR = listOf(5500, 12500)
-            val ABRELSHUD_2 = listOf(7500, 15500)
-            val MORDUM = listOf(5000, 8000, 14000)
+            val ECHIDNA = listOf(1100, 2500)
+            val EGIR = listOf(2750, 6250)
+            val ABRELSHUD_2 = listOf(3750, 7750)
+            val MORDUM = listOf(2500, 4000, 7000)
             val ARMOCHE = listOf(15000, 27000)
             val KAZEROTH = listOf(17000, 35000)
 
             val SERCA = listOf(17500, 26500)
 
-            val BEHEMOTH = listOf(2200, 5000)
+            val BEHEMOTH = listOf(1100, 2500)
 
-            val EVENT_RAID = listOf(30000)
+            val EVENT_RAID = listOf(45000)
         }
 
         object Solo {
-            val ECHIDNA = listOf(950, 2100)
-            val EGIR = listOf(2375, 5375)
+            val ECHIDNA = listOf(0, 0)
+            val EGIR = listOf(1750, 4000)
             val ABRELSHUD_2 = listOf(2750, 5500)
             val MORDUM = listOf(2000, 3500, 5000)
         }
 
         object Nightmare {
             val SERCA = listOf(21000, 33000)
-            val CATHEDRAL = listOf(20000, 30000)
+            val CATHEDRAL = listOf(0, 0)
+
+            val EVENT_RAID = listOf(45000)
         }
     }
 }

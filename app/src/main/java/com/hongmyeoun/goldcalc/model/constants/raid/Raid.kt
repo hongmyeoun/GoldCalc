@@ -41,11 +41,11 @@ class Raid {
         const val SERCA = "세르카"
 
         const val EVENT = "이벤트"
-        const val EVENT_RAID = "카멘 : 익스트림"
+        const val EVENT_RAID = "카제로스 : 익스트림"
 
         const val ETC = "기타"
 
-        val RAID_LIST = listOf(COMMAND, ABYSS_DUNGEON, KAZEROTH, EPIC, SHADOW, ETC, EVENT)
+        val RAID_LIST = listOf(COMMAND, ABYSS_DUNGEON, KAZEROTH, EPIC, SHADOW, EVENT, ETC)
     }
 
     object Difficulty {

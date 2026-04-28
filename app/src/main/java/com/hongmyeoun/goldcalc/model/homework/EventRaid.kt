@@ -14,10 +14,12 @@ enum class EventRaid(
         seeMoreGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.EVENT_RAID,
             Raid.Difficulty.HARD to Gold.SeeMore.Hard.EVENT_RAID,
+            Raid.Difficulty.NIGHTMARE to Gold.SeeMore.Nightmare.EVENT_RAID
         ),
         clearGold = mapOf(
             Raid.Difficulty.NORMAL to Gold.Clear.Normal.EVENT_RAID,
             Raid.Difficulty.HARD to Gold.Clear.Hard.EVENT_RAID,
+            Raid.Difficulty.NIGHTMARE to Gold.Clear.Nightmare.EVENT_RAID
         )
     );
 
@@ -38,8 +40,8 @@ class EventRaidModel(character: Character?) {
 
 class Event(character: Character?) {
     var name = EventRaid.EVENT.boss
-    private val seeMoreGold = EventRaid.EVENT.getBossInfo(Raid.Difficulty.NORMAL).first + EventRaid.EVENT.getBossInfo(Raid.Difficulty.HARD).first
-    private val clearGold = EventRaid.EVENT.getBossInfo(Raid.Difficulty.NORMAL).second + EventRaid.EVENT.getBossInfo(Raid.Difficulty.HARD).second
+    private val seeMoreGold = EventRaid.EVENT.getBossInfo(Raid.Difficulty.NORMAL).first + EventRaid.EVENT.getBossInfo(Raid.Difficulty.HARD).first + EventRaid.EVENT.getBossInfo(Raid.Difficulty.NIGHTMARE).first
+    private val clearGold = EventRaid.EVENT.getBossInfo(Raid.Difficulty.NORMAL).second + EventRaid.EVENT.getBossInfo(Raid.Difficulty.HARD).second + EventRaid.EVENT.getBossInfo(Raid.Difficulty.NIGHTMARE).second
 
     var isChecked = character?.checkList?.event?.get(0)?.isCheck ?: false
 
@@ -54,10 +56,13 @@ class Event(character: Character?) {
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
         isChecked = isChecked,
+        isShadowRaid = true,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[1],
+        seeMoreGoldNM = seeMoreGold[2],
         clearGoldN = clearGold[0],
-        clearGoldH = clearGold[1]
+        clearGoldH = clearGold[1],
+        clearGoldNM = clearGold[2]
     )
 
     var totalGold = onePhase.totalGold

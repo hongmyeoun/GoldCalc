@@ -593,7 +593,7 @@ class GoldContentStateVM(initPhase: Int) : ViewModel() {
             Raid.Name.KAZEROTH_END -> R.drawable.kazeroth_kazeroth
             Raid.Name.SERCA -> R.drawable.shadow_serca
             Raid.Name.CATHEDRAL -> R.drawable.abyss_dungeon_cathedral
-            Raid.Name.EVENT_RAID -> R.drawable.event_kamen
+            Raid.Name.EVENT_RAID -> R.drawable.event
             else -> R.drawable.kazeroth_echidna
         }
     }
