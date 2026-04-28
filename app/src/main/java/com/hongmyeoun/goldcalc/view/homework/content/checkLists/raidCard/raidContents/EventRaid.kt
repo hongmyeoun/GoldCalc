@@ -36,7 +36,7 @@ fun Event(viewModel: EventRaidVM) {
 
     if (viewModel.eventCheck) {
         RaidCard(
-            bossImg = R.drawable.event_kamen,
+            bossImg = R.drawable.event,
             isRotated = eventRotated,
             rotaR = eventRotaR,
             onClick = { eventRotated = !eventRotated },
@@ -45,7 +45,7 @@ fun Event(viewModel: EventRaidVM) {
                     rotaR = eventRotaR,
 
                     name = viewModel.event.name,
-                    raidBossImg = R.drawable.logo_kamen,
+                    raidBossImg = R.drawable.logo_egir,
                     totalGold = viewModel.event.totalGold,
 
                     phaseOneLevel = viewModel.event.onePhase.level,

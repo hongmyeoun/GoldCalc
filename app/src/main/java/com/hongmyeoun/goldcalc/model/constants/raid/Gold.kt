@@ -80,7 +80,7 @@ class Gold {
 
             val KAYANGEL = listOf(0, 0, 0)
             val IVORY_TOWER = listOf(0, 0, 0)
-            val CATHEDRAL = listOf(13500, 16500)
+            val CATHEDRAL = listOf(0, 0)
 
             val ECHIDNA = listOf(0, 0)
             val EGIR = listOf(1750, 4000)
@@ -106,7 +106,7 @@ class Gold {
 
             val KAYANGEL = listOf(0, 0, 0)
             val IVORY_TOWER = listOf(0, 0, 0)
-            val CATHEDRAL = listOf(16000, 24000)
+            val CATHEDRAL = listOf(0, 0)
 
             val ECHIDNA = listOf(1100, 2500)
             val EGIR = listOf(2750, 6250)
@@ -131,7 +131,7 @@ class Gold {
 
         object Nightmare {
             val SERCA = listOf(21000, 33000)
-            val CATHEDRAL = listOf(20000, 30000)
+            val CATHEDRAL = listOf(0, 0)
 
             val EVENT_RAID = listOf(45000)
         }
