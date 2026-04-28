@@ -45,7 +45,7 @@ class Raid {
 
         const val ETC = "기타"
 
-        val RAID_LIST = listOf(COMMAND, ABYSS_DUNGEON, KAZEROTH, EPIC, SHADOW, ETC, EVENT)
+        val RAID_LIST = listOf(COMMAND, ABYSS_DUNGEON, KAZEROTH, EPIC, SHADOW, EVENT, ETC)
     }
 
     object Difficulty {
