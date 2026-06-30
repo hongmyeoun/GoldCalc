@@ -18,10 +18,10 @@ class Gold {
             val EGIR = listOf(750, 1780)
             val ABRELSHUD_2 = listOf(1820, 3720)
             val MORDUM = listOf(1300, 2350, 3360)
-            val ARMOCHE = listOf(4000, 6560)
-            val KAZEROTH = listOf(4480, 8320)
+            val ARMOCHE = listOf(3200, 5440)
+            val KAZEROTH = listOf(3520, 6720)
 
-            val SERCA = listOf(4480, 6720)
+            val SERCA = listOf(4160, 6080)
 
             val BEHEMOTH = listOf(720, 1630)
 
@@ -44,8 +44,8 @@ class Gold {
             val EGIR = listOf(1820, 4150)
             val ABRELSHUD_2 = listOf(2400, 5100)
             val MORDUM = listOf(1650, 2640, 4060)
-            val ARMOCHE = listOf(4800, 8640)
-            val KAZEROTH = listOf(5440, 11200)
+            val ARMOCHE = listOf(4320, 7840)
+            val KAZEROTH = listOf(5120, 10240)
 
             val SERCA = listOf(5600, 8480)
 
@@ -59,6 +59,10 @@ class Gold {
             val EGIR = listOf(750, 1780)
             val ABRELSHUD_2 = listOf(1820, 3720)
             val MORDUM = listOf(1300, 2350, 3360)
+            val ARMOCHE = listOf(3200, 5440)
+            val KAZEROTH = listOf(3520, 6720)
+
+            val SERCA = listOf(4160, 6080)
         }
 
         object Nightmare {
@@ -86,10 +90,10 @@ class Gold {
             val EGIR = listOf(1750, 4000)
             val ABRELSHUD_2 = listOf(2750, 5500)
             val MORDUM = listOf(2000, 3500, 5000)
-            val ARMOCHE = listOf(6250, 10250)
-            val KAZEROTH = listOf(7000, 13000)
+            val ARMOCHE = listOf(5000, 8500)
+            val KAZEROTH = listOf(5500, 10500)
 
-            val SERCA = listOf(7000, 10500)
+            val SERCA = listOf(6500, 9500)
 
             val BEHEMOTH = listOf(1100, 2500)
 
@@ -112,8 +116,8 @@ class Gold {
             val EGIR = listOf(2750, 6250)
             val ABRELSHUD_2 = listOf(3750, 7750)
             val MORDUM = listOf(2500, 4000, 7000)
-            val ARMOCHE = listOf(15000, 27000)
-            val KAZEROTH = listOf(17000, 35000)
+            val ARMOCHE = listOf(13500, 24500)
+            val KAZEROTH = listOf(16000, 32000)
 
             val SERCA = listOf(17500, 26500)
 
@@ -127,6 +131,10 @@ class Gold {
             val EGIR = listOf(1750, 4000)
             val ABRELSHUD_2 = listOf(2750, 5500)
             val MORDUM = listOf(2000, 3500, 5000)
+            val ARMOCHE = listOf(5000, 8500)
+            val KAZEROTH = listOf(5500, 10500)
+
+            val SERCA = listOf(6500, 9500)
         }
 
         object Nightmare {
