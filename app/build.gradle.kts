@@ -1,4 +1,6 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -9,12 +11,13 @@ plugins {
 
 android {
     namespace = "com.hongmyeoun.goldcalc"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
+        manifestPlaceholders += mapOf("Admob_ID" to getKey("admobID"))
         applicationId = "com.hongmyeoun.goldcalc"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 42
         versionName = "1.4.7"
 
@@ -25,7 +28,6 @@ android {
 
         buildConfigField("String", "API_KEY", getKey("apiKey"))
         buildConfigField("String", "AD_BANNER", getKey("admobBanner"))
-        manifestPlaceholders["Admob_ID"] = getKey("admobID")
     }
 
     buildTypes {
@@ -117,5 +119,10 @@ dependencies {
 }
 
 fun getKey(propertyKey: String): String {
-    return gradleLocalProperties(rootDir).getProperty(propertyKey)
+    val prop = Properties()
+    val file = rootProject.file("local.properties")
+    if (file.exists()) {
+        FileInputStream(file).use { prop.load(it) }
+    }
+    return prop.getProperty(propertyKey) ?: ""
 }
