@@ -52,6 +52,8 @@ object CharacterResourceMapper {
             ClassName.Specialist.ARTIST to R.drawable.emblem_yinyangshi,
             ClassName.Specialist.AEROMANCER to R.drawable.emblem_weather_artist,
             ClassName.Specialist.ALCHEMIST to R.drawable.emblem_alchemist,
+            ClassName.Specialist.DEFAULT_MALE to R.drawable.emblem_specialist_male,
+            ClassName.Specialist.DIMENSION to R.drawable.emblem_dimension_master,
 
             ClassName.GuardianKnight.DEFAULT to R.drawable.emblem_dragon_knight,
             ClassName.GuardianKnight.DRAGON to R.drawable.emblem_dragon_knight,
@@ -107,6 +109,8 @@ object CharacterResourceMapper {
             ClassName.Specialist.ARTIST to R.drawable.img_detail_artist,
             ClassName.Specialist.AEROMANCER to R.drawable.img_detail_aeromancer,
             ClassName.Specialist.ALCHEMIST to R.drawable.img_detail_wildsoul,
+            ClassName.Specialist.DEFAULT_EN to R.drawable.img_detail_dimensionmaster,
+            ClassName.Specialist.DIMENSION to R.drawable.img_detail_dimensionmaster,
 
             ClassName.GuardianKnight.DEFAULT to R.drawable.img_detail_guardianknight,
             ClassName.GuardianKnight.DRAGON to R.drawable.img_detail_guardianknight,
@@ -164,6 +168,8 @@ object CharacterResourceMapper {
             ClassName.Specialist.ARTIST to ClassName.Specialist.ARTIST_EN,
             ClassName.Specialist.AEROMANCER to ClassName.Specialist.AEROMANCER_EN,
             ClassName.Specialist.ALCHEMIST to ClassName.Specialist.ALCHEMIST_EN,
+            ClassName.Specialist.DEFAULT_MALE to ClassName.Specialist.DEFAULT_MALE_EN,
+            ClassName.Specialist.DIMENSION to ClassName.Specialist.DIMENSION_EN,
 
             ClassName.GuardianKnight.DEFAULT to ClassName.GuardianKnight.DEFAULT_EN,
             ClassName.GuardianKnight.DRAGON to ClassName.GuardianKnight.DEFAULT_EN

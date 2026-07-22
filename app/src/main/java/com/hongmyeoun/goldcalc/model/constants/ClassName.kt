@@ -103,6 +103,12 @@ class ClassName {
         const val ARTIST_EN = "yinyangshi"
         const val AEROMANCER_EN = "weather_artist"
         const val ALCHEMIST_EN = "alchemist"
+
+        const val DEFAULT_MALE = "스페셜리스트(남)"
+        const val DIMENSION = "차원술사"
+
+        const val DEFAULT_MALE_EN = "specialist_male"
+        const val DIMENSION_EN = "dimension_master"
     }
 
     object GuardianKnight {
