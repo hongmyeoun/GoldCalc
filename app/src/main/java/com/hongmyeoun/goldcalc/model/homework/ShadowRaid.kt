@@ -21,6 +21,19 @@ enum class ShadowRaid (
             Raid.Difficulty.HARD to Gold.Clear.Hard.SERCA,
             Raid.Difficulty.NIGHTMARE to Gold.Clear.Nightmare.SERCA,
         )
+    ),
+    BELGARDIN(
+        boss = Raid.Name.BELGARDIN,
+        seeMoreGold = mapOf(
+            Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.BELGARDIN,
+            Raid.Difficulty.HARD to Gold.SeeMore.Hard.BELGARDIN,
+            Raid.Difficulty.NIGHTMARE to Gold.SeeMore.Nightmare.BELGARDIN,
+        ),
+        clearGold = mapOf(
+            Raid.Difficulty.NORMAL to Gold.Clear.Normal.BELGARDIN,
+            Raid.Difficulty.HARD to Gold.Clear.Hard.BELGARDIN,
+            Raid.Difficulty.NIGHTMARE to Gold.Clear.Nightmare.BELGARDIN,
+        )
     );
     fun getBossInfo(mode: String): Pair<List<Int>, List<Int>> {
         val seeMoreGold = seeMoreGold[mode] ?: emptyList()
@@ -34,6 +47,12 @@ class ShadowRaidModel(character: Character?) {
         Serca(character)
     } else {
         Serca(null)
+    }
+
+    val belgardin: Belgardin = if (character != null) {
+        Belgardin(character)
+    } else {
+        Belgardin(null)
     }
 }
 
@@ -65,6 +84,65 @@ class Serca(character: Character?) {
     )
 
     private val gettwoPhase = character?.checkList?.shadow?.get(0)?.phases?.get(1)
+
+    private val twoPhaseDifficulty = gettwoPhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val twoPhaseIsClear = gettwoPhase?.isClear ?: false
+    private val twoPhaseMCheck = gettwoPhase?.mCheck ?: false
+
+    val twoPhase = PhaseInfo(
+        difficulty = twoPhaseDifficulty,
+        isClearCheck = twoPhaseIsClear,
+        moreCheck = twoPhaseMCheck,
+        isChecked = isChecked,
+        isShadowRaid = true,
+        seeMoreGoldN = seeMoreGold[1],
+        seeMoreGoldH = seeMoreGold[3],
+        seeMoreGoldNM = seeMoreGold[5],
+        clearGoldN = clearGold[1],
+        clearGoldH = clearGold[3],
+        clearGoldNM = clearGold[5]
+    )
+
+    var totalGold = onePhase.totalGold + twoPhase.totalGold
+
+    fun totalGold() {
+        totalGold = onePhase.totalGold + twoPhase.totalGold
+    }
+
+    fun onShowChecked() {
+        onePhase.onShowChecked()
+        twoPhase.onShowChecked()
+    }
+}
+
+class Belgardin(character: Character?) {
+    val name = ShadowRaid.BELGARDIN.boss
+    private val seeMoreGold = ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.NORMAL).first + ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.HARD).first + ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.NIGHTMARE).first
+    private val clearGold = ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.NORMAL).second + ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.HARD).second + ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.NIGHTMARE).second
+
+    val isChecked = character?.checkList?.shadow?.get(1)?.isCheck ?: false
+
+    private val getOnePhase = character?.checkList?.shadow?.get(1)?.phases?.get(0)
+
+    private val onePhaseDifficulty = getOnePhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
+    private val onePhaseIsClear = getOnePhase?.isClear ?: false
+    private val onePhaseMCheck = getOnePhase?.mCheck ?: false
+
+    val onePhase = PhaseInfo(
+        difficulty = onePhaseDifficulty,
+        isClearCheck = onePhaseIsClear,
+        moreCheck = onePhaseMCheck,
+        isChecked = isChecked,
+        isShadowRaid = true,
+        seeMoreGoldN = seeMoreGold[0],
+        seeMoreGoldH = seeMoreGold[2],
+        seeMoreGoldNM = seeMoreGold[4],
+        clearGoldN = clearGold[0],
+        clearGoldH = clearGold[2],
+        clearGoldNM = clearGold[4]
+    )
+
+    private val gettwoPhase = character?.checkList?.shadow?.get(1)?.phases?.get(1)
 
     private val twoPhaseDifficulty = gettwoPhase?.difficulty ?: Raid.Difficulty.KR_NORMAL
     private val twoPhaseIsClear = gettwoPhase?.isClear ?: false

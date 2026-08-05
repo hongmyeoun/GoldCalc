@@ -90,6 +90,9 @@ data class RaidPhaseInfo(
     @ColumnInfo("sercaPhase") val sercaPhase: Int = 0,
     @ColumnInfo("sercaTotalGold") val sercaTotalGold: Int = 0,
 
+    @ColumnInfo("belgardinPhase") val belgardinPhase: Int = 0,
+    @ColumnInfo("belgardinTotalGold") val belgardinTotalGold: Int = 0,
+
     @ColumnInfo("cathedralPhase") val cathedralPhase: Int = 0,
     @ColumnInfo("cathedralTotalGold") val cathedralTotalGold: Int = 0
 )
