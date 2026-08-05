@@ -514,6 +514,23 @@ class HomeworkVM @Inject constructor(
                             )
                         ),
                         isCheck = shadowRaid.sercaCheck
+                    ),
+                    originalCheckList.shadow[1].copy( // 벨가르딘
+                        phases = listOf(
+                            originalCheckList.shadow[1].phases[0].copy(
+                                // 1페
+                                difficulty = shadowRaid.belgardin.onePhase.level,
+                                isClear = if (shadowRaid.sercaCheck) shadowRaid.belgardin.onePhase.clearCheck else false,
+                                mCheck = if (shadowRaid.sercaCheck) shadowRaid.belgardin.onePhase.seeMoreCheck else false
+                            ),
+                            originalCheckList.shadow[0].phases[1].copy(
+                                // 2페
+                                difficulty = shadowRaid.belgardin.twoPhase.level,
+                                isClear = if (shadowRaid.belgardinCheck) shadowRaid.belgardin.twoPhase.clearCheck else false,
+                                mCheck = if (shadowRaid.belgardinCheck) shadowRaid.belgardin.twoPhase.seeMoreCheck else false
+                            )
+                        ),
+                        isCheck = shadowRaid.belgardinCheck
                     )
                 ),
                 epic = listOf(
@@ -555,6 +572,8 @@ class HomeworkVM @Inject constructor(
                 eventTotalGold = if (!eventRaid.eventCheck) 0 else originalRaidInfo.eventTotalGold,
                 cathedralPhase = if (!abyssDungeon.cathedralCheck) 0 else originalRaidInfo.cathedralPhase,
                 cathedralTotalGold = if (!abyssDungeon.cathedralCheck) 0 else originalRaidInfo.cathedralTotalGold,
+                belgardinPhase = if (!shadowRaid.belgardinCheck) 0 else originalRaidInfo.belgardinPhase,
+                belgardinTotalGold = if (!shadowRaid.belgardinCheck) 0 else originalRaidInfo.belgardinTotalGold,
                 sercaPhase = if (!shadowRaid.sercaCheck) 0 else originalRaidInfo.sercaPhase,
                 sercaTotalGold = if (!shadowRaid.sercaCheck) 0 else originalRaidInfo.sercaTotalGold,
                 kazerothPhase = if (!kazerothRaid.kazerothCheck) 0 else originalRaidInfo.kazerothPhase,
@@ -591,7 +610,7 @@ class HomeworkVM @Inject constructor(
 
             var updateEarnGold = original.earnGold
             updatedRaidInfo?.let {
-                updateEarnGold = updatedRaidInfo.eventTotalGold + updatedRaidInfo.cathedralTotalGold + updatedRaidInfo.sercaTotalGold + updatedRaidInfo.kazerothTotalGold + updatedRaidInfo.armocheTotalGold + updatedRaidInfo.mordumTotalGold + updatedRaidInfo.abrel2TotalGold + updatedRaidInfo.egirTotalGold + updatedRaidInfo.behemothTotalGold + updatedRaidInfo.echidnaTotalGold + updatedRaidInfo.kamenTotalGold + updatedRaidInfo.ivoryTotalGold + updatedRaidInfo.illiakanTotalGold + updatedRaidInfo.kayangelTotalGold + updatedRaidInfo.abrelTotalGold + updatedRaidInfo.koukuTotalGold + updatedRaidInfo.biackissTotalGold + updatedRaidInfo.valtanTotalGold
+                updateEarnGold = updatedRaidInfo.eventTotalGold + updatedRaidInfo.cathedralTotalGold + updatedRaidInfo.belgardinTotalGold + updatedRaidInfo.sercaTotalGold + updatedRaidInfo.kazerothTotalGold + updatedRaidInfo.armocheTotalGold + updatedRaidInfo.mordumTotalGold + updatedRaidInfo.abrel2TotalGold + updatedRaidInfo.egirTotalGold + updatedRaidInfo.behemothTotalGold + updatedRaidInfo.echidnaTotalGold + updatedRaidInfo.kamenTotalGold + updatedRaidInfo.ivoryTotalGold + updatedRaidInfo.illiakanTotalGold + updatedRaidInfo.kayangelTotalGold + updatedRaidInfo.abrelTotalGold + updatedRaidInfo.koukuTotalGold + updatedRaidInfo.biackissTotalGold + updatedRaidInfo.valtanTotalGold
             }
 
             original.copy(

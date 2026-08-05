@@ -39,6 +39,7 @@ class Raid {
         const val SHADOW = "그림자"
         const val SHADOW_RAID = "그림자 레이드"
         const val SERCA = "세르카"
+        const val BELGARDIN = "벨가르딘"
 
         const val EVENT = "이벤트"
         const val EVENT_RAID = "카제로스 : 익스트림"

@@ -11,12 +11,14 @@ class ShadowRaidVM(val character: Character?): ViewModel() {
     private val sdModel = ShadowRaidModel(character)
 
     val serca = sdModel.serca
+    val belgardin = sdModel.belgardin
 
     var totalGold by mutableStateOf(0)
 
     fun sumGold() {
         serca.totalGold()
-        totalGold = serca.totalGold
+        belgardin.totalGold()
+        totalGold = serca.totalGold + belgardin.totalGold
     }
 
     init {
@@ -24,10 +26,17 @@ class ShadowRaidVM(val character: Character?): ViewModel() {
     }
 
     var sercaCheck by mutableStateOf(serca.isChecked)
+    var belgardinCheck by mutableStateOf(belgardin.isChecked)
 
     fun onSercaCheck() {
         sercaCheck = !sercaCheck
         serca.onShowChecked()
+        sumGold()
+    }
+
+    fun onBelgardinCheck() {
+        belgardinCheck = !belgardinCheck
+        belgardin.onShowChecked()
         sumGold()
     }
 }

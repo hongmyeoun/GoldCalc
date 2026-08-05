@@ -82,6 +82,18 @@ fun HomeworkProgress(
                 ) { viewModel.eventGoldCalc(it) }
             }
         }
+        if (character.checkList.shadow[1].phases[0].isClear) {
+            item {
+                val belgardinVM = remember { GoldContentStateVM(character.raidPhaseInfo.belgardinPhase) }
+                ProgressState(
+                    enabled = viewModel.enabled,
+                    phase = viewModel.phaseCalc(character.checkList.shadow[1].phases),
+                    raidName = Raid.Name.BELGARDIN,
+                    viewModel = belgardinVM,
+                    isListView = isListView
+                ) { viewModel.belgardinGoldCalc(it) }}
+        }
+
         if (character.checkList.abyssDungeon[2].phases[0].isClear) {
             item {
                 val cathedarlVM = remember { GoldContentStateVM(character.raidPhaseInfo.cathedralPhase)}

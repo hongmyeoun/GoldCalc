@@ -100,7 +100,7 @@ fun Summary(
                     Script(epVM)
                 }
 
-                if (sdVM.sercaCheck) {
+                if (sdVM.sercaCheck || sdVM.belgardinCheck) {
                     Script(sdVM)
                 }
 
@@ -428,7 +428,7 @@ private fun Script(sdVM: ShadowRaidVM) {
         Divider()
 
         Row(
-            modifier = Modifier.padding(if (sdVM.sercaCheck) 16.dp else 0.dp)
+            modifier = Modifier.padding(if (sdVM.sercaCheck || sdVM.belgardinCheck) 16.dp else 0.dp)
         ) {
             PhaseInfo(
                 isCheck = sdVM.sercaCheck,
@@ -437,6 +437,15 @@ private fun Script(sdVM: ShadowRaidVM) {
                 phaseInfo = {
                     Text(text = "${Homework.PHASE_ONE} ${sdVM.serca.onePhase.level} : ${sdVM.serca.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
                     Text(text = "${Homework.PHASE_TWO} ${sdVM.serca.twoPhase.level} : ${sdVM.serca.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
+                }
+            )
+            PhaseInfo(
+                isCheck = sdVM.belgardinCheck,
+                modifier = Modifier.weight(1f),
+                raidName = Raid.Name.BELGARDIN,
+                phaseInfo = {
+                    Text(text = "${Homework.PHASE_ONE} ${sdVM.belgardin.onePhase.level} : ${sdVM.belgardin.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_TWO} ${sdVM.belgardin.twoPhase.level} : ${sdVM.belgardin.twoPhase.totalGold.formatWithCommas()} G", color = Color.White)
                 }
             )
         }

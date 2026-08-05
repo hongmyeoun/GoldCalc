@@ -22,6 +22,7 @@ class Gold {
             val KAZEROTH = listOf(3520, 6720)
 
             val SERCA = listOf(4160, 6080)
+            val BELGARDIN = listOf(6400, 9600)
 
             val BEHEMOTH = listOf(720, 1630)
 
@@ -48,6 +49,7 @@ class Gold {
             val KAZEROTH = listOf(5120, 10240)
 
             val SERCA = listOf(5600, 8480)
+            val BELGARDIN = listOf(8000, 11840)
 
             val BEHEMOTH = listOf(720, 1630)
 
@@ -67,6 +69,7 @@ class Gold {
 
         object Nightmare {
             val SERCA = listOf(6720, 10560)
+            val BELGARDIN = listOf(9600, 14400)
             val CATHEDRAL = listOf(6400, 9600)
 
             val EVENT_RAID = listOf(0)
@@ -94,6 +97,7 @@ class Gold {
             val KAZEROTH = listOf(5500, 10500)
 
             val SERCA = listOf(6500, 9500)
+            val BELGARDIN = listOf(20000, 30000)
 
             val BEHEMOTH = listOf(1100, 2500)
 
@@ -120,6 +124,7 @@ class Gold {
             val KAZEROTH = listOf(16000, 32000)
 
             val SERCA = listOf(17500, 26500)
+            val BELGARDIN = listOf(25000, 37000)
 
             val BEHEMOTH = listOf(1100, 2500)
 
@@ -139,6 +144,7 @@ class Gold {
 
         object Nightmare {
             val SERCA = listOf(21000, 33000)
+            val BELGARDIN = listOf(30000, 45000)
             val CATHEDRAL = listOf(0, 0)
 
             val EVENT_RAID = listOf(45000)
