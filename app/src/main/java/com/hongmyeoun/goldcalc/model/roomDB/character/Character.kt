@@ -175,6 +175,10 @@ data class CheckList(
         RaidList(
             name = Raid.Name.SERCA,
             phases = listOf(Phase(), Phase())
+        ),
+        RaidList(
+            name = Raid.Name.BELGARDIN,
+            phases = listOf(Phase(), Phase())
         )
     ),
     @ColumnInfo("Event") val event: List<RaidList> = listOf(
