@@ -26,12 +26,26 @@ fun Shadow(viewModel: ShadowRaidVM) {
         label = Labels.Animation.ROTATION
     )
 
+    var belgardinRoatated by remember { mutableStateOf(false) }
+    val belgardinRotaR by animateFloatAsState(
+        targetValue = if (belgardinRoatated) 180f else 0f,
+        animationSpec = tween(500),
+        label = Labels.Animation.ROTATION
+    )
+
     RaidCheckLists(maxItem = 2) { modifier ->
         RaidCheckBox(
             name = Raid.Name.SERCA,
             modifier = modifier,
             checked = viewModel.sercaCheck,
             onCheckedChange = { viewModel.onSercaCheck() }
+        )
+
+        RaidCheckBox(
+            name = Raid.Name.BELGARDIN,
+            modifier = modifier,
+            checked = viewModel.belgardinCheck,
+            onCheckedChange = { viewModel.onBelgardinCheck() }
         )
     }
 
@@ -86,4 +100,57 @@ fun Shadow(viewModel: ShadowRaidVM) {
             }
         )
     }
+
+    if (viewModel.belgardinCheck) {
+        RaidCard(
+            bossImg = R.drawable.shadow_belgardin,
+            isRotated = belgardinRoatated,
+            rotaR = sercaRotaR,
+            onClick = { belgardinRoatated = !belgardinRoatated },
+            phaseCard = {
+                TwoPhase(
+                    rotaR = belgardinRotaR,
+
+                    name = viewModel.belgardin.name,
+                    raidBossImg = R.drawable.logo_belgardin,
+                    totalGold = viewModel.belgardin.totalGold,
+
+                    phaseOneLevel = viewModel.belgardin.onePhase.level,
+                    phaseOneGold = viewModel.belgardin.onePhase.totalGold,
+                    phaseOneSMC = viewModel.belgardin.onePhase.seeMoreCheck,
+                    phaseOneCC = viewModel.belgardin.onePhase.clearCheck,
+                    onOnePhaseLevelClicked = {
+                        viewModel.belgardin.onePhase.onLevelClicked()
+                        viewModel.sumGold()
+                    },
+                    onOnePhaseClearCheckBoxChecked = {
+                        viewModel.belgardin.onePhase.onClearCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                    onOnePhaseSeeMoreCheckBoxChecked = {
+                        viewModel.belgardin.onePhase.onSeeMoreCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+
+                    phaseTwoLevel = viewModel.belgardin.twoPhase.level,
+                    phaseTwoGold = viewModel.belgardin.twoPhase.totalGold,
+                    phaseTwoSMC = viewModel.belgardin.twoPhase.seeMoreCheck,
+                    phaseTwoCC = viewModel.belgardin.twoPhase.clearCheck,
+                    onTwoPhaseLevelClicked = {
+                        viewModel.belgardin.twoPhase.onLevelClicked()
+                        viewModel.sumGold()
+                    },
+                    onTwoPhaseClearCheckBoxChecked = {
+                        viewModel.belgardin.twoPhase.onClearCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    },
+                    onTwoPhaseSeeMoreCheckBoxChecked = {
+                        viewModel.belgardin.twoPhase.onSeeMoreCheckBoxClicked(it)
+                        viewModel.sumGold()
+                    }
+                )
+            }
+        )
+    }
+
 }
