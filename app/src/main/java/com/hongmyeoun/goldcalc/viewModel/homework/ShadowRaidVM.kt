@@ -17,6 +17,7 @@ class ShadowRaidVM(val character: Character?): ViewModel() {
 
     fun sumGold() {
         serca.totalGold()
+        belgardin.totalGold()
         totalGold = serca.totalGold + belgardin.totalGold
     }
 

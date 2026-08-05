@@ -105,7 +105,7 @@ fun Shadow(viewModel: ShadowRaidVM) {
         RaidCard(
             bossImg = R.drawable.shadow_belgardin,
             isRotated = belgardinRoatated,
-            rotaR = sercaRotaR,
+            rotaR = belgardinRotaR,
             onClick = { belgardinRoatated = !belgardinRoatated },
             phaseCard = {
                 TwoPhase(
