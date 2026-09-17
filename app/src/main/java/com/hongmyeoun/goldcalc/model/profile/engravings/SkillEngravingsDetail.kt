@@ -2,6 +2,7 @@ package com.hongmyeoun.goldcalc.model.profile.engravings
 
 import com.google.gson.JsonParser
 import com.hongmyeoun.goldcalc.model.constants.TooltipStrings
+import com.hongmyeoun.goldcalc.model.profile.Common
 
 class SkillEngravingsDetail(private val skillEngravings: SkillEngravingsAndEffects) {
     fun getEngravingsDetail(): List<SkillEngravings> {
@@ -40,11 +41,10 @@ class SkillEngravingsDetail(private val skillEngravings: SkillEngravingsAndEffec
     private fun getAwakenEngravingsPoint(skillEngraving: SkillEngraving): String {
         val tooltip = JsonParser.parseString(skillEngraving.tooltip).asJsonObject
 
-        val awakenPointStr = tooltip
-            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_001)
-            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-            .get(TooltipStrings.MemberName.ENGRAVINGS_POINT)
-            .asString
+        val awakenPointStr = Common.safeGetAsJsonObject(tooltip, TooltipStrings.MemberName.ELEMENT_001)
+            ?.let { Common.safeGetAsJsonObject(it, TooltipStrings.MemberName.VALUE) }
+            ?.get(TooltipStrings.MemberName.ENGRAVINGS_POINT)
+            ?.asString ?: ""
 
         return awakenPointStr
             .substringAfter(TooltipStrings.SubStringAfter.POINT_SPACE)

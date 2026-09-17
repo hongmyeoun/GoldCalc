@@ -106,24 +106,23 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
 
     private fun getItemLevel(equipment: Equipment): String {
         val tooltip = parserEquipmentTooltip(equipment)
-        val itemTitleValue = tooltip
-            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_001)
-            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+        val itemTitleValue = Common.safeGetAsJsonObject(tooltip, TooltipStrings.MemberName.ELEMENT_001)
+            ?.let { Common.safeGetAsJsonObject(it, TooltipStrings.MemberName.VALUE) }
 
         return itemTitleValue
-            .get(TooltipStrings.MemberName.ITEM_LEVEL)
-            .asString
-            .split(TooltipStrings.Split.SPACE)[3]
+            ?.get(TooltipStrings.MemberName.ITEM_LEVEL)
+            ?.asString
+            ?.split(TooltipStrings.Split.SPACE)
+            ?.getOrNull(3) ?: ""
     }
 
     private fun getItemQuality(equipment: Equipment): Int {
         val tooltip = parserEquipmentTooltip(equipment)
-        val itemTitleValue = tooltip
-            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_001)
-            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+        val itemTitleValue = Common.safeGetAsJsonObject(tooltip, TooltipStrings.MemberName.ELEMENT_001)
+            ?.let { Common.safeGetAsJsonObject(it, TooltipStrings.MemberName.VALUE) }
 
         return itemTitleValue
-            .get(TooltipStrings.MemberName.QUALITY).asInt
+            ?.get(TooltipStrings.MemberName.QUALITY)?.asInt ?: 0
     }
 
     private fun getItemIcon(equipment: Equipment): String {
@@ -134,19 +133,20 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         val contentStr = elixirContentSTR(equipment)
 
         contentStr?.let {
-            val firstOption = contentStr
-                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
-                .get(TooltipStrings.MemberName.CONTENT).asString
+            val firstOption = Common.safeGetAsJsonObject(contentStr, TooltipStrings.MemberName.ELEMENT_000)
+                ?.get(TooltipStrings.MemberName.CONTENT)?.asString
 
-            val option = firstOption
-                .substringAfter(TooltipStrings.SubStringAfter.FONT_END_SPACE)
-                .substringBefore(TooltipStrings.SubStringBefore.SPACE_FONT_ELIXIR_COLOR_LEVEL)
+            if (firstOption != null) {
+                val option = firstOption
+                    .substringAfter(TooltipStrings.SubStringAfter.FONT_END_SPACE)
+                    .substringBefore(TooltipStrings.SubStringBefore.SPACE_FONT_ELIXIR_COLOR_LEVEL)
 
-            val level = firstOption
-                .substringAfter(TooltipStrings.SubStringAfter.FONT_START_ELIXIR_COLOR_LEVEL_DOT)
-                .substringBeforeLast(TooltipStrings.SubStringBefore.FONT_END)
+                val level = firstOption
+                    .substringAfter(TooltipStrings.SubStringAfter.FONT_START_ELIXIR_COLOR_LEVEL_DOT)
+                    .substringBeforeLast(TooltipStrings.SubStringBefore.FONT_END)
 
-            return Pair(level, option)
+                return Pair(level, option)
+            }
         }
 
         return Pair("", "")
@@ -156,19 +156,20 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
         val contentStr = elixirContentSTR(equipment)
 
         if (contentStr != null && contentStr.has(TooltipStrings.MemberName.ELEMENT_001)) {
-            val secondOption = contentStr
-                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_001)
-                .get(TooltipStrings.MemberName.CONTENT).asString
+            val secondOption = Common.safeGetAsJsonObject(contentStr, TooltipStrings.MemberName.ELEMENT_001)
+                ?.get(TooltipStrings.MemberName.CONTENT)?.asString
 
-            val option = secondOption
-                .substringAfter(TooltipStrings.SubStringAfter.FONT_END_SPACE)
-                .substringBefore(TooltipStrings.SubStringBefore.SPACE_FONT_ELIXIR_COLOR_LEVEL)
+            if (secondOption != null) {
+                val option = secondOption
+                    .substringAfter(TooltipStrings.SubStringAfter.FONT_END_SPACE)
+                    .substringBefore(TooltipStrings.SubStringBefore.SPACE_FONT_ELIXIR_COLOR_LEVEL)
 
-            val level = secondOption
-                .substringAfter(TooltipStrings.SubStringAfter.FONT_START_ELIXIR_COLOR_LEVEL_DOT)
-                .substringBeforeLast(TooltipStrings.SubStringBefore.FONT_END)
+                val level = secondOption
+                    .substringAfter(TooltipStrings.SubStringAfter.FONT_START_ELIXIR_COLOR_LEVEL_DOT)
+                    .substringBeforeLast(TooltipStrings.SubStringBefore.FONT_END)
 
-            return Pair(level, option)
+                return Pair(level, option)
+            }
         }
 
         return Pair("", "")
@@ -190,18 +191,16 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                         continue
                     }
 
-                    val value = element.getAsJsonObject(TooltipStrings.MemberName.VALUE)
+                    val value = Common.safeGetAsJsonObject(element, TooltipStrings.MemberName.VALUE)
 
                     if (Common.has000(value)) {
-                        val topStr = value
-                            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
-                            .get(TooltipStrings.MemberName.TOP).asString
+                        val topStr = Common.safeGetAsJsonObject(value, TooltipStrings.MemberName.ELEMENT_000)
+                            ?.get(TooltipStrings.MemberName.TOP)?.asString ?: ""
 
                         if (topStr.contains(TooltipStrings.Contains.ELIXIR)) {
 
-                            return value
-                                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
-                                .getAsJsonObject(TooltipStrings.MemberName.CONTENT)
+                            return Common.safeGetAsJsonObject(value, TooltipStrings.MemberName.ELEMENT_000)
+                                ?.let { Common.safeGetAsJsonObject(it, TooltipStrings.MemberName.CONTENT) }
                         }
                     }
                 }
@@ -249,13 +248,11 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                         continue
                     }
 
-                    val value = element
-                        .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+                    val value = Common.safeGetAsJsonObject(element, TooltipStrings.MemberName.VALUE)
 
                     if (Common.has000(value)) {
-                        val topStr = value
-                            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
-                            .get(TooltipStrings.MemberName.TOP).asString
+                        val topStr = Common.safeGetAsJsonObject(value, TooltipStrings.MemberName.ELEMENT_000)
+                            ?.get(TooltipStrings.MemberName.TOP)?.asString ?: ""
 
                         if (topStr.contains(TooltipStrings.Contains.TRANSCENDENCE)) {
                             return topStr
@@ -284,13 +281,11 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                         continue
                     }
 
-                    val value = element
-                        .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+                    val value = Common.safeGetAsJsonObject(element, TooltipStrings.MemberName.VALUE)
 
                     if (Common.has000(value)) {
-                        val topStr = value
-                            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
-                            .get(TooltipStrings.MemberName.TOP).asString
+                        val topStr = Common.safeGetAsJsonObject(value, TooltipStrings.MemberName.ELEMENT_000)
+                            ?.get(TooltipStrings.MemberName.TOP)?.asString ?: ""
 
                         if (topStr.contains(TooltipStrings.Contains.ELIXIR_ADDITIONAL_EFFECT)) {
                             val setOption = topStr
@@ -309,12 +304,11 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
 
     private fun getHigherUpgradeLevel(equipment: Equipment): String {
         val tooltip = JsonParser.parseString(equipment.tooltip).asJsonObject
-        val element = tooltip
-            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_005)
+        val element = Common.safeGetAsJsonObject(tooltip, TooltipStrings.MemberName.ELEMENT_005)
 
         if (Common.singleTextBox(element)) {
             val value = element
-                .get(TooltipStrings.MemberName.VALUE).asString
+                ?.get(TooltipStrings.MemberName.VALUE)?.asString ?: ""
 
             return value
                 .substringAfterLast(TooltipStrings.SubStringAfter.FONT_TRANSCENDENCE_COLOR)
@@ -344,17 +338,17 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                         continue
                     }
 
-                    val value = element.getAsJsonObject(TooltipStrings.MemberName.VALUE)
+                    val value = Common.safeGetAsJsonObject(element, TooltipStrings.MemberName.VALUE)
 
                     val isGrind = value
-                        .get(TooltipStrings.MemberName.ELEMENT_000)
-                        .asString
-                        .contains(TooltipStrings.Contains.GRIND)
+                        ?.get(TooltipStrings.MemberName.ELEMENT_000)
+                        ?.asString
+                        ?.contains(TooltipStrings.Contains.GRIND) == true
 
                     if (isGrind) {
                         val rawGrinding = value
-                            .get(TooltipStrings.MemberName.ELEMENT_001)
-                            .asString
+                            ?.get(TooltipStrings.MemberName.ELEMENT_001)
+                            ?.asString ?: ""
 
                         return accGrindingProcess(rawGrinding).ifEmpty { TooltipStrings.NoResult.GRIND }
                     }
@@ -381,17 +375,17 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                         continue
                     }
 
-                    val value = element.getAsJsonObject(TooltipStrings.MemberName.VALUE)
+                    val value = Common.safeGetAsJsonObject(element, TooltipStrings.MemberName.VALUE)
 
                     val isGrind = value
-                        .get(TooltipStrings.MemberName.ELEMENT_000)
-                        .asString
-                        .contains(TooltipStrings.Contains.ARK_PASSIVE_POINT)
+                        ?.get(TooltipStrings.MemberName.ELEMENT_000)
+                        ?.asString
+                        ?.contains(TooltipStrings.Contains.ARK_PASSIVE_POINT) == true
 
                     if (isGrind) {
                         return value
-                            .get(TooltipStrings.MemberName.ELEMENT_001)
-                            .asString
+                            ?.get(TooltipStrings.MemberName.ELEMENT_001)
+                            ?.asString
                     }
                 }
             }
@@ -410,14 +404,13 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                 val element = tooltip[elementKey]?.takeIf { it.isJsonObject }?.asJsonObject
 
                 if (element != null && Common.itemPartBox(element)) {
-                    val value = element
-                        .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+                    val value = Common.safeGetAsJsonObject(element, TooltipStrings.MemberName.VALUE)
 
                     val bonusText = value
-                        .get(TooltipStrings.MemberName.ELEMENT_000).asString
+                        ?.get(TooltipStrings.MemberName.ELEMENT_000)?.asString ?: ""
 
                     if (bonusText.contains(TooltipStrings.Contains.ABILITY_STONE_BONUS)) {
-                        return value.get(TooltipStrings.MemberName.ELEMENT_001).asString
+                        return value?.get(TooltipStrings.MemberName.ELEMENT_001)?.asString ?: ""
                     }
                 }
             }
@@ -493,19 +486,16 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                         continue
                     }
 
-                    val topStr = element
-                        .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-                        .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
-                        .get(TooltipStrings.MemberName.TOP).asString
+                    val value = Common.safeGetAsJsonObject(element, TooltipStrings.MemberName.VALUE)
+                    val topStr = value?.let { Common.safeGetAsJsonObject(it, TooltipStrings.MemberName.ELEMENT_000) }
+                        ?.get(TooltipStrings.MemberName.TOP)?.asString ?: ""
 
                     if (topStr.contains(TooltipStrings.Contains.ABILITY_STONE_ENGRAVING)) {
 
-                        return element
-                            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-                            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
-                            .getAsJsonObject(TooltipStrings.MemberName.CONTENT)
-                            .getAsJsonObject(memberName)
-                            .get(TooltipStrings.MemberName.CONTENT).asString
+                        return value?.let { Common.safeGetAsJsonObject(it, TooltipStrings.MemberName.ELEMENT_000) }
+                            ?.let { Common.safeGetAsJsonObject(it, TooltipStrings.MemberName.CONTENT) }
+                            ?.let { Common.safeGetAsJsonObject(it, memberName) }
+                            ?.get(TooltipStrings.MemberName.CONTENT)?.asString ?: ""
                     }
                 }
             }
@@ -531,9 +521,9 @@ class EquipmentDetail(private val equipments: List<Equipment>) {
                         continue
                     }
 
-                    val value = element.getAsJsonObject(TooltipStrings.MemberName.VALUE)
+                    val value = Common.safeGetAsJsonObject(element, TooltipStrings.MemberName.VALUE)
 
-                    if (value.get(TooltipStrings.MemberName.ELEMENT_000).asString.contains(TooltipStrings.Contains.BRACELET)) {
+                    if (value?.get(TooltipStrings.MemberName.ELEMENT_000)?.asString?.contains(TooltipStrings.Contains.BRACELET) == true) {
                         val effect = value.get(TooltipStrings.MemberName.ELEMENT_001).asString
                         val (basic, combat, special) = braceletSpliter(effect)
 

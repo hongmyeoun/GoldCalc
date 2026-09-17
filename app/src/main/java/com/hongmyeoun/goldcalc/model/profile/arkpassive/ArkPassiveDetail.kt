@@ -2,6 +2,7 @@ package com.hongmyeoun.goldcalc.model.profile.arkpassive
 
 import com.google.gson.JsonParser
 import com.hongmyeoun.goldcalc.model.constants.TooltipStrings
+import com.hongmyeoun.goldcalc.model.profile.Common
 
 class ArkPassiveDetail(private val arkPassive: ArkPassive) {
     fun getArkPassiveDetail(): List<ArkPassiveNode> {
@@ -37,13 +38,13 @@ class ArkPassiveDetail(private val arkPassive: ArkPassive) {
     private fun getName(arkPassiveSkillEffects: ArkPassiveSkillEffects): String {
         val tooltip = JsonParser.parseString(arkPassiveSkillEffects.tooltip).asJsonObject
 
-        return tooltip.getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000).get(TooltipStrings.MemberName.VALUE).asString
+        return Common.safeGetAsJsonObject(tooltip, TooltipStrings.MemberName.ELEMENT_000)?.get(TooltipStrings.MemberName.VALUE)?.asString ?: ""
     }
 
     private fun getScript(arkPassiveSkillEffects: ArkPassiveSkillEffects): String {
         val tooltip = JsonParser.parseString(arkPassiveSkillEffects.tooltip).asJsonObject
 
-        return tooltip.getAsJsonObject(TooltipStrings.MemberName.ELEMENT_002).get(TooltipStrings.MemberName.VALUE).asString
+        return Common.safeGetAsJsonObject(tooltip, TooltipStrings.MemberName.ELEMENT_002)?.get(TooltipStrings.MemberName.VALUE)?.asString ?: ""
     }
 
 

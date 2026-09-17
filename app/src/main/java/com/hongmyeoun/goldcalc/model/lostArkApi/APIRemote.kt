@@ -30,8 +30,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
 object APIRemote {
-    private const val API_KEY = BuildConfig.API_KEY
-    private const val BASE_URL = NetworkConfig.DEV_URL
+    private val API_KEY = BuildConfig.API_KEY
+    private val BASE_URL = NetworkConfig.DEV_URL
 
     val gson: Gson = GsonBuilder().setLenient().create()
     private val retrofit: Retrofit = Retrofit.Builder()
@@ -78,12 +78,12 @@ object APIRemote {
                 if (characterInfo.isSuccessful) {
                     val characterInfoList = characterInfo.body()
                     val char = characterInfoList?.find { it.characterName == characterName }
-                    if (characterInfoList != null) {
+                    if (characterInfoList != null && char != null) {
                         val profilesResponse = lostArkApiService.getCharacterDetail(characterName).execute()
                         if (profilesResponse.isSuccessful) {
                             val charDetail = profilesResponse.body()
 
-                            charDetail?.serverName = char!!.serverName
+                            charDetail?.serverName = char.serverName
 
                             charDetail
                         } else{

@@ -3,6 +3,7 @@ package com.hongmyeoun.goldcalc.model.profile.arkGrid
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.hongmyeoun.goldcalc.model.constants.TooltipStrings
+import com.hongmyeoun.goldcalc.model.profile.Common
 
 class ArkGridDetail(private val arkGrid: ArkGrid) {
     fun getArkGridDetail(): List<ArkGridCoreAndGemsTooltips> {
@@ -27,11 +28,10 @@ class ArkGridDetail(private val arkGrid: ArkGrid) {
     }
 
     private fun getCoreType(tooltips: JsonObject): Boolean {
-        return tooltips
-            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_000)
-            .get(TooltipStrings.MemberName.VALUE)
-            .asString
-            .contains("질서")
+        return Common.safeGetAsJsonObject(tooltips, TooltipStrings.MemberName.ELEMENT_000)
+            ?.get(TooltipStrings.MemberName.VALUE)
+            ?.asString
+            ?.contains("질서") == true
     }
 
     private fun getCoreOption(slot: ArkGridSlot): String {
@@ -41,11 +41,10 @@ class ArkGridDetail(private val arkGrid: ArkGrid) {
 
         val coreType = if (isCosmos) TooltipStrings.MemberName.ELEMENT_006 else TooltipStrings.MemberName.ELEMENT_005
 
-        val coreOption = tooltips
-            .getAsJsonObject(coreType)
-            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-            .get(TooltipStrings.MemberName.ELEMENT_001)
-            .asString
+        val coreOption = Common.safeGetAsJsonObject(tooltips, coreType)
+            ?.let { Common.safeGetAsJsonObject(it, TooltipStrings.MemberName.VALUE) }
+            ?.get(TooltipStrings.MemberName.ELEMENT_001)
+            ?.asString ?: ""
 
         return coreOption
     }
@@ -56,11 +55,10 @@ class ArkGridDetail(private val arkGrid: ArkGrid) {
         val isCosmos = getCoreType(tooltips)
 
         return if (isCosmos) {
-            tooltips
-                .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_007)
-                .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-                .get(TooltipStrings.MemberName.ELEMENT_001)
-                .asString
+            Common.safeGetAsJsonObject(tooltips, TooltipStrings.MemberName.ELEMENT_007)
+                ?.let { Common.safeGetAsJsonObject(it, TooltipStrings.MemberName.VALUE) }
+                ?.get(TooltipStrings.MemberName.ELEMENT_001)
+                ?.asString ?: ""
         } else {
             ""
         }
@@ -87,11 +85,10 @@ class ArkGridDetail(private val arkGrid: ArkGrid) {
     private fun getGemBasicInfo(gem: ArkGridGem): String {
         val tooltips = JsonParser.parseString(gem.tooltip).asJsonObject
 
-        val basicInfo = tooltips
-            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_004)
-            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-            .get(TooltipStrings.MemberName.ELEMENT_001)
-            .asString
+        val basicInfo = Common.safeGetAsJsonObject(tooltips, TooltipStrings.MemberName.ELEMENT_004)
+            ?.let { Common.safeGetAsJsonObject(it, TooltipStrings.MemberName.VALUE) }
+            ?.get(TooltipStrings.MemberName.ELEMENT_001)
+            ?.asString ?: ""
 
         return basicInfo
     }
@@ -99,11 +96,10 @@ class ArkGridDetail(private val arkGrid: ArkGrid) {
     private fun getGemPoint(gem: ArkGridGem): String {
         val tooltips = JsonParser.parseString(gem.tooltip).asJsonObject
 
-        val point = tooltips
-            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_005)
-            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-            .get(TooltipStrings.MemberName.ELEMENT_001)
-            .asString
+        val point = Common.safeGetAsJsonObject(tooltips, TooltipStrings.MemberName.ELEMENT_005)
+            ?.let { Common.safeGetAsJsonObject(it, TooltipStrings.MemberName.VALUE) }
+            ?.get(TooltipStrings.MemberName.ELEMENT_001)
+            ?.asString ?: ""
 
         return point
     }
@@ -111,11 +107,10 @@ class ArkGridDetail(private val arkGrid: ArkGrid) {
     private fun getGemOption(gem: ArkGridGem): String {
         val tooltips = JsonParser.parseString(gem.tooltip).asJsonObject
 
-        val option = tooltips
-            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_005)
-            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-            .get(TooltipStrings.MemberName.ELEMENT_001)
-            .asString
+        val option = Common.safeGetAsJsonObject(tooltips, TooltipStrings.MemberName.ELEMENT_005)
+            ?.let { Common.safeGetAsJsonObject(it, TooltipStrings.MemberName.VALUE) }
+            ?.get(TooltipStrings.MemberName.ELEMENT_001)
+            ?.asString ?: ""
 
         return option
     }

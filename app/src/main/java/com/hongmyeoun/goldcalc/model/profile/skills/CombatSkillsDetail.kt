@@ -45,12 +45,11 @@ class CombatSkillsDetail(private val combatSkills: List<CombatSkills>) {
         for (index in 7..8) {
             val elementKey = Common.currentElementKey(index)
             if (tooltip.has(elementKey)) {
-                val element = tooltip.getAsJsonObject(elementKey)
-                if (Common.itemPartBox(element)) {
-                    val value = element
-                        .getAsJsonObject(TooltipStrings.MemberName.VALUE)
+                val element = tooltip[elementKey]?.takeIf { it.isJsonObject }?.asJsonObject
+                if (element != null && Common.itemPartBox(element)) {
+                    val value = Common.safeGetAsJsonObject(element, TooltipStrings.MemberName.VALUE)
 
-                    if (value.get(TooltipStrings.MemberName.ELEMENT_000).asString.contains(TooltipStrings.Contains.GEM_EFFECTS)) {
+                    if (value?.get(TooltipStrings.MemberName.ELEMENT_000)?.asString?.contains(TooltipStrings.Contains.GEM_EFFECTS) == true) {
                         return true
                     }
                 }
@@ -63,10 +62,9 @@ class CombatSkillsDetail(private val combatSkills: List<CombatSkills>) {
     private fun getRuneTooltip(rune: Rune): String? {
         val tooltip = JsonParser.parseString(rune.tooltip).asJsonObject
 
-        return tooltip
-            .getAsJsonObject(TooltipStrings.MemberName.ELEMENT_003)
-            .getAsJsonObject(TooltipStrings.MemberName.VALUE)
-            .get(TooltipStrings.MemberName.ELEMENT_001).asString
+        return Common.safeGetAsJsonObject(tooltip, TooltipStrings.MemberName.ELEMENT_003)
+            ?.let { Common.safeGetAsJsonObject(it, TooltipStrings.MemberName.VALUE) }
+            ?.get(TooltipStrings.MemberName.ELEMENT_001)?.asString
     }
 
 }
