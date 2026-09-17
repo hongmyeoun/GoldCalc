@@ -18,16 +18,16 @@ android {
         applicationId = "com.hongmyeoun.goldcalc"
         minSdk = 26
         targetSdk = 36
-        versionCode = 43
-        versionName = "1.4.8"
+        versionCode = 44
+        versionName = "1.4.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
 
-        buildConfigField("String", "API_KEY", getKey("apiKey"))
-        buildConfigField("String", "AD_BANNER", getKey("admobBanner"))
+        buildConfigField("String", "API_KEY", formatBuildConfigString(getKey("apikey")))
+        buildConfigField("String", "AD_BANNER", formatBuildConfigString(getKey("admobBanner")))
     }
 
     buildTypes {
@@ -125,4 +125,14 @@ fun getKey(propertyKey: String): String {
         FileInputStream(file).use { prop.load(it) }
     }
     return prop.getProperty(propertyKey) ?: ""
+}
+
+fun formatBuildConfigString(value: String): String {
+    val trimmed = value.trim()
+    val clean = if (trimmed.startsWith("\"") && trimmed.endsWith("\"")) {
+        trimmed.substring(1, trimmed.length - 1)
+    } else {
+        trimmed
+    }
+    return "\"$clean\""
 }
