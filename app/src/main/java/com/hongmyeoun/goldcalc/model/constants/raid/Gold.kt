@@ -128,7 +128,7 @@ class Gold {
 
             val BEHEMOTH = listOf(1100, 2500)
 
-            val EVENT_RAID = listOf(45000)
+            val EVENT_RAID = listOf(50000)
         }
 
         object Solo {
@@ -147,7 +147,7 @@ class Gold {
             val BELGARDIN = listOf(30000, 45000)
             val CATHEDRAL = listOf(0, 0)
 
-            val EVENT_RAID = listOf(45000)
+            val EVENT_RAID = listOf(50000)
         }
     }
 }
