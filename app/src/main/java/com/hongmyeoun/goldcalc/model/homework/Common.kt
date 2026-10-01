@@ -105,17 +105,18 @@ fun levelDetector(level: String, noHardWithSolo: Boolean, noSolo: Boolean, isSha
             } else {
                 Raid.Difficulty.KR_NORMAL
             }
+        } else if (!noSolo && isShadowRaid) {
+            when(level) {
+                Raid.Difficulty.KR_NORMAL -> { Raid.Difficulty.KR_HARD }
+                Raid.Difficulty.KR_HARD -> { Raid.Difficulty.KR_NIGHTMARE }
+                Raid.Difficulty.KR_NIGHTMARE -> { Raid.Difficulty.KR_SOLO }
+                else -> { Raid.Difficulty.KR_NORMAL }
+            }
         } else if (isShadowRaid) {
             when (level) {
-                Raid.Difficulty.KR_NORMAL -> {
-                    Raid.Difficulty.KR_HARD
-                }
-                Raid.Difficulty.KR_HARD -> {
-                    Raid.Difficulty.KR_NIGHTMARE
-                }
-                else -> {
-                    Raid.Difficulty.KR_NORMAL
-                }
+                Raid.Difficulty.KR_NORMAL -> { Raid.Difficulty.KR_HARD }
+                Raid.Difficulty.KR_HARD -> { Raid.Difficulty.KR_NIGHTMARE }
+                else -> { Raid.Difficulty.KR_NORMAL }
             }
         } else {
             when (level) {
