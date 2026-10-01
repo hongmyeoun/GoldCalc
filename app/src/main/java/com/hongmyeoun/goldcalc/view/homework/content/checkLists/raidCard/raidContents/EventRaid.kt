@@ -45,7 +45,7 @@ fun Event(viewModel: EventRaidVM) {
                     rotaR = eventRotaR,
 
                     name = viewModel.event.name,
-                    raidBossImg = R.drawable.logo_egir,
+                    raidBossImg = R.drawable.logo_mordum,
                     totalGold = viewModel.event.totalGold,
 
                     phaseOneLevel = viewModel.event.onePhase.level,

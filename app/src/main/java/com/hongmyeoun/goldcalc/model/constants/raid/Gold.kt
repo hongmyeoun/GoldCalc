@@ -65,6 +65,7 @@ class Gold {
             val KAZEROTH = listOf(3520, 6720)
 
             val SERCA = listOf(4160, 6080)
+            val BELGARDIN = listOf(3200, 4800)
         }
 
         object Nightmare {
@@ -128,7 +129,7 @@ class Gold {
 
             val BEHEMOTH = listOf(1100, 2500)
 
-            val EVENT_RAID = listOf(45000)
+            val EVENT_RAID = listOf(50000)
         }
 
         object Solo {
@@ -140,6 +141,7 @@ class Gold {
             val KAZEROTH = listOf(5500, 10500)
 
             val SERCA = listOf(6500, 9500)
+            val BELGARDIN = listOf(10000, 15000)
         }
 
         object Nightmare {
@@ -147,7 +149,7 @@ class Gold {
             val BELGARDIN = listOf(30000, 45000)
             val CATHEDRAL = listOf(0, 0)
 
-            val EVENT_RAID = listOf(45000)
+            val EVENT_RAID = listOf(50000)
         }
     }
 }

@@ -25,11 +25,13 @@ enum class ShadowRaid (
     BELGARDIN(
         boss = Raid.Name.BELGARDIN,
         seeMoreGold = mapOf(
+            Raid.Difficulty.SOLO to Gold.SeeMore.Solo.BELGARDIN,
             Raid.Difficulty.NORMAL to Gold.SeeMore.Normal.BELGARDIN,
             Raid.Difficulty.HARD to Gold.SeeMore.Hard.BELGARDIN,
             Raid.Difficulty.NIGHTMARE to Gold.SeeMore.Nightmare.BELGARDIN,
         ),
         clearGold = mapOf(
+            Raid.Difficulty.SOLO to Gold.Clear.Solo.BELGARDIN,
             Raid.Difficulty.NORMAL to Gold.Clear.Normal.BELGARDIN,
             Raid.Difficulty.HARD to Gold.Clear.Hard.BELGARDIN,
             Raid.Difficulty.NIGHTMARE to Gold.Clear.Nightmare.BELGARDIN,
@@ -117,8 +119,8 @@ class Serca(character: Character?) {
 
 class Belgardin(character: Character?) {
     val name = ShadowRaid.BELGARDIN.boss
-    private val seeMoreGold = ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.NORMAL).first + ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.HARD).first + ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.NIGHTMARE).first
-    private val clearGold = ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.NORMAL).second + ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.HARD).second + ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.NIGHTMARE).second
+    private val seeMoreGold = ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.NORMAL).first + ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.HARD).first + ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.NIGHTMARE).first + ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.SOLO).first
+    private val clearGold = ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.NORMAL).second + ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.HARD).second + ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.NIGHTMARE).second + ShadowRaid.BELGARDIN.getBossInfo(Raid.Difficulty.SOLO).second
 
     val isChecked = character?.checkList?.shadow?.get(1)?.isCheck ?: false
 
@@ -133,13 +135,16 @@ class Belgardin(character: Character?) {
         isClearCheck = onePhaseIsClear,
         moreCheck = onePhaseMCheck,
         isChecked = isChecked,
+        noSolo = false,
         isShadowRaid = true,
         seeMoreGoldN = seeMoreGold[0],
         seeMoreGoldH = seeMoreGold[2],
         seeMoreGoldNM = seeMoreGold[4],
+        seeMoreGoldS = seeMoreGold[6],
         clearGoldN = clearGold[0],
         clearGoldH = clearGold[2],
-        clearGoldNM = clearGold[4]
+        clearGoldNM = clearGold[4],
+        clearGoldS = clearGold[6]
     )
 
     private val gettwoPhase = character?.checkList?.shadow?.get(1)?.phases?.get(1)
@@ -153,13 +158,16 @@ class Belgardin(character: Character?) {
         isClearCheck = twoPhaseIsClear,
         moreCheck = twoPhaseMCheck,
         isChecked = isChecked,
+        noSolo = false,
         isShadowRaid = true,
         seeMoreGoldN = seeMoreGold[1],
         seeMoreGoldH = seeMoreGold[3],
         seeMoreGoldNM = seeMoreGold[5],
+        seeMoreGoldS = seeMoreGold[7],
         clearGoldN = clearGold[1],
         clearGoldH = clearGold[3],
-        clearGoldNM = clearGold[5]
+        clearGoldNM = clearGold[5],
+        clearGoldS = clearGold[7]
     )
 
     var totalGold = onePhase.totalGold + twoPhase.totalGold
