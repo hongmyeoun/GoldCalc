@@ -48,7 +48,7 @@ fun Event(viewModel: EventRaidVM) {
                     raidBossImg = R.drawable.logo_mordum,
                     totalGold = viewModel.event.totalGold,
 
-                    phaseOneLevel = viewModel.phaseOneLevel,
+                    phaseOneLevel = viewModel.event.onePhase.level,
                     phaseOneGold = viewModel.event.onePhase.totalGold,
                     phaseOneSMC = viewModel.event.onePhase.seeMoreCheck,
                     phaseOneCC = viewModel.event.onePhase.clearCheck,

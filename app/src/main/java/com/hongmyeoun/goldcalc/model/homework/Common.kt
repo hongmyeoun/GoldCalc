@@ -1,5 +1,8 @@
 package com.hongmyeoun.goldcalc.model.homework
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.hongmyeoun.goldcalc.model.constants.raid.Raid
 
 class PhaseInfo(
@@ -19,13 +22,13 @@ class PhaseInfo(
     private val clearGoldS: Int? = null,
     private val clearGoldNM: Int? = null,
 ) {
-    var level = difficulty
-    var seeMoreCheck = moreCheck
-    var clearCheck = isClearCheck
-    var showCheck = isChecked
+    var level by mutableStateOf(difficulty)
+    var seeMoreCheck by mutableStateOf(moreCheck)
+    var clearCheck by mutableStateOf(isClearCheck)
+    var showCheck by mutableStateOf(isChecked)
     private var seeMoreGold = 0
     private var clearGold = 0
-    var totalGold = 0
+    var totalGold by mutableStateOf(0)
 
 
     init {

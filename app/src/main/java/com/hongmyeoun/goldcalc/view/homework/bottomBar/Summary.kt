@@ -471,7 +471,7 @@ private fun Script(eventVM: EventRaidVM) {
                 modifier = Modifier.weight(1f),
                 raidName = Raid.Name.EVENT_RAID,
                 phaseInfo = {
-                    Text(text = "${Homework.PHASE_ONE} ${eventVM.phaseOneLevel} : ${eventVM.event.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
+                    Text(text = "${Homework.PHASE_ONE} ${eventVM.event.onePhase.level} : ${eventVM.event.onePhase.totalGold.formatWithCommas()} G", color = Color.White)
                 }
             )
         }
