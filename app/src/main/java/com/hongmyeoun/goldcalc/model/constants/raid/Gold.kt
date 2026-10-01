@@ -65,6 +65,7 @@ class Gold {
             val KAZEROTH = listOf(3520, 6720)
 
             val SERCA = listOf(4160, 6080)
+            val BELGARDIN = listOf(3200, 4800)
         }
 
         object Nightmare {
@@ -140,6 +141,7 @@ class Gold {
             val KAZEROTH = listOf(5500, 10500)
 
             val SERCA = listOf(6500, 9500)
+            val BELGARDIN = listOf(10000, 15000)
         }
 
         object Nightmare {
