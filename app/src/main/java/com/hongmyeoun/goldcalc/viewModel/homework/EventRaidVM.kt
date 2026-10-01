@@ -13,10 +13,12 @@ class EventRaidVM(val character: Character?): ViewModel() {
     val event = eventModel.event
 
     var totalGold by mutableStateOf(0)
+    var phaseOneLevel by mutableStateOf(event.onePhase.level)
 
     fun sumGold() {
         event.totalGold()
         totalGold = event.totalGold
+        phaseOneLevel = event.onePhase.level
     }
 
     init {
